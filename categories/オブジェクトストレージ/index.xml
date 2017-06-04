@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>オブジェクトストレージ on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8/</link>
+    <description>Recent content in オブジェクトストレージ on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sat, 18 Mar 2017 18:22:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>万能じゃない。オブジェクトストレージの仕組みと利用を正しく理解する</title>
+      <link>https://blog.mosuke.tech/entry/2017/03/18/182252/</link>
+      <pubDate>Sat, 18 Mar 2017 18:22:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2017/03/18/182252/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;h1&gt;1.はじめに&lt;/h1&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Amazon%20S3&#34;&gt;Amazon S3&lt;/a&gt;をはじめとして、オブジェクトストレージが身近になってきています。&lt;br&gt;
+各&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;ベンダーはオブジェクトストレージサービスを提供しています。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.aws.amazon.com/ja_jp/AmazonS3/latest/dev/Welcome.html&#34; target=&#34;_blank&#34;&gt;Amazon S3&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.microsoft.com/ja-jp/azure/storage/storage-introduction&#34; target=&#34;_blank&#34;&gt;Azure Blob Storage&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cloud.google.com/storage/&#34; target=&#34;_blank&#34;&gt;Google Cloud Storage&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://jp.aliyun.com/product/oss&#34; target=&#34;_blank&#34;&gt;Alibaba Cloud OSS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.ntt.com/business/services/cloud/iaas/cloudn/storage.html&#34; target=&#34;_blank&#34;&gt;Cloud n ObjectStorage&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.idcf.jp/cloud/storage/&#34; target=&#34;_blank&#34;&gt;IDCF オブジェクトストレージ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ですが、オブジェクトストレージをストレージの魔法として理解されているケースも多いように感じます。&lt;br&gt;
+原点に振り返ってそもそもオブジェクトストレージとはなんなのか。&lt;br&gt;
+どんな特徴を持っているストレージなのか。&lt;br&gt;
+気になってまとめました。&lt;/p&gt;
+
+&lt;h1&gt;2.オブジェクトストレージとは&lt;/h1&gt;
+
+&lt;p&gt;オブジェクトストレージとは一言で言うと、&lt;br&gt;
+&lt;b&gt;「オブジェクト単位（ファイル単位）で出し入れのできる、ネットワークストレージ」&lt;/b&gt;です。&lt;/p&gt;
+
+&lt;p&gt;オブジェクトストレージでは直接にストレージ上のファイルをRead/Writeすることはできません。&lt;br&gt;
+いうなれば、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;サーバに近い存在と言えます。&lt;/p&gt;
+
+&lt;p&gt;今や&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;上のストレージの代名詞として扱われるオブジェクトストレージですが、&lt;br&gt;
+実はファイルの出し入れしかできないストレージなのです！？！？&lt;/p&gt;
+
+&lt;h1&gt;3.特徴&lt;/h1&gt;
+
+&lt;p&gt;では、そんな出し入れしかできない&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;サーバに似たオブジェクトストレージですが、&lt;br&gt;
+その本当の特徴はどこにあるのでしょうか。&lt;/p&gt;
+
+&lt;h2&gt;特徴1: ディレクリ構造の排除&lt;/h2&gt;
+
+&lt;p&gt;1つ目の特徴としては、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8&#34;&gt;ディレクト&lt;/a&gt;リ構造でファイルを管理しないことです。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8&#34;&gt;ディレクト&lt;/a&gt;リ構造は、もしストレージサーバのハードディスク容量がいっぱいになり、&lt;br&gt;
+ファイルを別のディスクに移動する場合、その&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8&#34;&gt;ディレクト&lt;/a&gt;リパスも変更しなければいけません。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;サービスのようなたくさんのユーザが利用し拡張性の求められる場面では、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8&#34;&gt;ディレクト&lt;/a&gt;リ構造は適さないのです。&lt;/p&gt;
+
+&lt;p&gt;そこで、オブジェクトストレージでは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8&#34;&gt;ディレクト&lt;/a&gt;リ構造ではなく、階層のないフラットな関係でファイルが保存されます。&lt;br&gt;
+すべてのファイルにIDが付与され、そのIDがどこに保管されているか別で管理する仕組みとなっています。&lt;/p&gt;
+
+&lt;h2&gt;特徴2: 分散保存&lt;/h2&gt;
+
+&lt;p&gt;2つ目の特徴は「分散保存」です。&lt;br&gt;
+オブジェクトストレージでは、ファイルを分散保存する&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;によって、&lt;br&gt;
+ファイルの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;と大量のファイルへのアクセスさばくことを可能にしています。&lt;br&gt;
+詳しくは次の「オブジェクトストレージの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;」の項目でご紹介します。&lt;/p&gt;
+
+&lt;h2&gt;特徴3: アプリケーションからの利用を意識&lt;/h2&gt;
+
+&lt;p&gt;3つ目の特徴はアプリケーションでの利用を強く意識していることです。&lt;br&gt;
+この項目は製品によって異なる部分もありますが、主な点を３つあげます。&lt;/p&gt;
+
+&lt;h3&gt;(1)メタ情報管理&lt;/h3&gt;
+
+&lt;p&gt;従来の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D5%A5%A1%A5%A4%A5%EB%A5%B7%A5%B9%A5%C6%A5%E0&#34;&gt;ファイルシステム&lt;/a&gt;でのファイルへのメタ情報は、ファイルのサイズや更新日付などが一般的でした。&lt;br&gt;
+オブジェクトストレージでは更にファイルの有効期限などを設定することができ、インフラ管理を容易にします。&lt;/p&gt;
+
+&lt;h3&gt;(2)HTTP&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%C8%A5%B3%A5%EB&#34;&gt;プロトコル&lt;/a&gt;を使った&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%BF%A1%BC%A5%D5%A5%A7%A5%A4%A5%B9&#34;&gt;インターフェイス&lt;/a&gt;
+&lt;/h3&gt;
+
+&lt;p&gt;オブジェクトストレージでは、ファイルのアップロード、ダウンロードなどすべての操作はHTTP&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%C8%A5%B3%A5%EB&#34;&gt;プロトコル&lt;/a&gt;を利用します。&lt;br&gt;
+HTTPのような汎用的な&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%C8%A5%B3%A5%EB&#34;&gt;プロトコル&lt;/a&gt;を採用することにより、サーバからはもちろん、モバイル端末など幅広いデ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%A4%A5%B9&#34;&gt;バイス&lt;/a&gt;から利用が可能です。&lt;/p&gt;
+
+&lt;h3&gt;(3)Web公開機能&lt;/h3&gt;
+
+&lt;p&gt;更には、保存したオブジェクトに対してURLを割り当てて公開することもできます。&lt;br&gt;
+静的なWebサイトの公開や、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/css&#34;&gt;css&lt;/a&gt;や&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/JavaScript&#34;&gt;JavaScript&lt;/a&gt;、画像ファイルなどを直接オブジェクトストレージへ取得しにいくこともできます。&lt;/p&gt;
+
+&lt;h1&gt;4.オブジェクトストレージの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;
+&lt;/h1&gt;
+
+&lt;p&gt;オブジェクトストレージとひとまとめにいっても、製品によってその実現方法は様々で異なります。&lt;br&gt;
+しかし、ここでは一例として利用される&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;について紹介します。&lt;/p&gt;
+
+&lt;p&gt;&lt;span style=&#34;color: #999999&#34;&gt;&lt;span style=&#34;font-size: 80%&#34;&gt;※ここで紹介する&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;がオブジェクトストレージのすべての&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;を表すものではありません。また、わかりやすくするためかなり簡略化して記載しています。&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;大きく分けて、プロキシノードとストレージノードの２つによって構成されています。&lt;br&gt;
+ファイルをアップロードする時（保存する時）、プロキシノードは受け取ったファイルを、&lt;br&gt;
+バックエンドにあるストレージノードに保存するのですが、この際に複数のストレージノードに対してファイルを保存します。&lt;br&gt;
+これによって、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;を実現しています。&lt;br&gt;
+実は、各ストレージノードでは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/RAID&#34;&gt;RAID&lt;/a&gt;は行わず、複数のノードに対して保存することで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;をはかっています。&lt;/p&gt;
+
+&lt;p&gt;一方、ファイルをダウンロードときは、複数のノードに保存されているファイルのうちどれか1つを選びます。&lt;br&gt;
+これによって大量のファイルへのアクセスの負荷分散も実現しています。&lt;/p&gt;
+
+&lt;h4&gt;ファイルアップロード&lt;/h4&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170318/20170318164020.jpg&#34; alt=&#34;f:id:mosuke5:20170318164020j:plain:w600&#34; title=&#34;f:id:mosuke5:20170318164020j:plain:w600&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:600px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h4&gt;ファイルダウンロード&lt;/h4&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170318/20170318164028.jpg&#34; alt=&#34;f:id:mosuke5:20170318164028j:plain:w600&#34; title=&#34;f:id:mosuke5:20170318164028j:plain:w600&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:600px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;オブジェクトの配置情報の管理&lt;/h2&gt;
+
+&lt;p&gt;ファイルをアップロードする際に、プロキシノードは複数のノードに保存すると説明しました。&lt;br&gt;
+例えば10台のストレージノードがあり、そのうち3台に保存したとしたとします。&lt;br&gt;
+取り出す際にどのノードに対象のファイルがあるかわからなくなってしまうので管理が必要です。&lt;/p&gt;
+
+&lt;p&gt;そのため、すごく簡略化すると下記のような対応表を作って管理します。&lt;br&gt;
+あるファイルがどこに保存されているのか記述された対応表です。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;ファイル名1&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;ファイル名2&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;ファイル名3&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;保存場所1&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;1&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;2&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;保存場所2&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;5&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;3&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;8&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;保存場所3&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;9&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;10&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;10&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;また、オブジェクトストレージは拡張が優れている点が特徴と述べました。&lt;br&gt;
+ストレージノードが追加されることは頻繁に行われます。&lt;br&gt;
+その際には、リバランスと呼ばれる処理が行われ、追加されたノードを含めてオブジェクトの再配置が行われるようです。&lt;/p&gt;
+
+&lt;h2&gt;Eventual Consistency&lt;/h2&gt;
+
+&lt;p&gt;複数のストレージノードに対してファイルを保存しているわけですが、&lt;br&gt;
+例えばあるストレージノードが障害中に、ファイルの更新があった場合はどうなるのでしょうか。&lt;/p&gt;
+
+&lt;p&gt;障害があったストレージノードが復旧すると、そのノードだけファイルが古い状態となります。&lt;br&gt;
+この状態でファイルの取得を行うと、古いファイルを取得してしまう可能性があります。&lt;/p&gt;
+
+&lt;p&gt;そのため、オブジェクトストレージでは定期的に同期の処理が行われ、正しい状態へもどす機能があります。&lt;br&gt;
+この機能によりしばらく時間が立つと全体の整合性がとれた状態となります。&lt;br&gt;
+このことを「Eventual Consistency」と呼びます。&lt;br&gt;
+直訳で考えると「最終的には整合性があるよ」といったことろでしょうか。&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Amazon%20S3&#34;&gt;Amazon S3&lt;/a&gt;でもデータの整合性について記述されています。&lt;br&gt;
+&lt;a href=&#34;http://docs.aws.amazon.com/ja_jp/AmazonS3/latest/dev/Introduction.html#ConsistencyModel&#34; target=&#34;_blank&#34;&gt;Amazon S3 のデータ整合性モデル&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;Erasure Coding&lt;/h2&gt;
+
+&lt;p&gt;Erasure Codingとはデータの保存方法のことだ。&lt;br&gt;
+上の例では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EC%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;レプリケーション&lt;/a&gt;的なデータの複製保存をしている。&lt;br&gt;
+3箇所に分散して保存すると、単純にストレージの利用効率は1/3です。&lt;br&gt;
+その効率をあげるためにErasure Codingを採用することがある。&lt;/p&gt;
+
+&lt;p&gt;ここで詳細を説明するには重たすぎるので、ぐぐってほしい。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fwww.jdsf.gr.jp%2Fbackup%2FJEITA%2F2015%2Fjeita07.html&#34; title=&#34;RAIDを絶滅に追い込むイレ―ジャーコーディング
+テープには15年以上前から使われていた！&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://www.jdsf.gr.jp/backup/JEITA/2015/jeita07.html&#34;&gt;www.jdsf.gr.jp&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;5.オブジェクトストレージの向き不向き&lt;/h1&gt;
+
+&lt;p&gt;上記にみてきた特徴を持つオブジェクトストレージですが、その最適な利用用途はなんだろうか。&lt;br&gt;
+IDCFのサイトにいい感じにまとまった用途が図式されていたので、スキップしちゃいます笑&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fwww.idcf.jp%2Fcloud%2Fstorage%2F&#34; title=&#34;オブジェクトストレージ｜IDCFクラウド&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://www.idcf.jp/cloud/storage/&#34;&gt;www.idcf.jp&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;6.オブジェクトストレージの勘違いしがちな&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%E6%A1%BC%A5%B9%A5%B1%A1%BC%A5%B9&#34;&gt;ユースケース&lt;/a&gt;
+&lt;/h1&gt;
+
+&lt;h4&gt;(1)ログのオブジェクトストレージへの保存するケース&lt;/h4&gt;
+
+&lt;p&gt;よくFluentdを使ってS3へのログの保存が紹介されます。&lt;br&gt;
+この利用方法はとてもまっとうであり、正しい使い方といえます。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fblog.serverworks.co.jp%2Ftech%2F2013%2F06%2F27%2Ffluentdtos3%2F&#34; title=&#34;fluentdを使ってS3へログを送る&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://blog.serverworks.co.jp/tech/2013/06/27/fluentdtos3/&#34;&gt;blog.serverworks.co.jp&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;ですが、たまにリアルタイムでのログ保存と勘違いしている話をききます。&lt;br&gt;
+上で紹介してきたように、オブジェクトストレージはファイルの出し入れしかできません。&lt;br&gt;
+リアルタイムのログを1行ずつオブジェクトストレージに書き込むには、その都度ファイルを入れ替えるしかありません。&lt;/p&gt;
+
+&lt;p&gt;そのため、オブジェクトストレージを利用したログ管理はリアルタイムなものではなく、&lt;br&gt;
+例えばログファイルがローテーションされるたびにアップロードするなどの利用になる点は抑えておきましょう。&lt;/p&gt;
+
+&lt;p&gt;また、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;環境ではサーバは負荷に応じて増えたり減ったりすることが日常的です。&lt;br&gt;
+Fluentdではサーバのシャットダウンシグナルを受け取った時に、ログを出力する機能があるので、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;環境でもオブジェクトストレージを使ってログ管理を行うことは可能です。&lt;/p&gt;
+
+&lt;h4&gt;(2)サーバにオブジェクトストレージをマウントするケース&lt;/h4&gt;
+
+&lt;p&gt;オブジェクトストレージをサーバにマウントして利用するケースも多く見受けられます。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fqiita.com%2FYuki_BB3%2Fitems%2F9f5eb233b152be1c4bc9&#34; title=&#34;EC2インスタンスにS3をマウントして使用する（IAM Role ver) - Qiita&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://qiita.com/Yuki_BB3/items/9f5eb233b152be1c4bc9&#34;&gt;qiita.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;オブジェクトストレージでは階層構造はなく、フラットなファイル管理を行います。&lt;br&gt;
+またファイルの操作はすべてHTTPで行います。&lt;br&gt;
+サーバにマウントすると、一見通常の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D5%A5%A1%A5%A4%A5%EB%A5%B7%A5%B9%A5%C6%A5%E0&#34;&gt;ファイルシステム&lt;/a&gt;のように見えてしまいますが、見せかけだけです。&lt;br&gt;
+その点を理解して利用するようにしましょう。&lt;/p&gt;
+
+&lt;h2&gt;追記メモ (2017/03/28)&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;にも近いが、今は忘れられつつある&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WebDav&#34;&gt;WebDav&lt;/a&gt;が似たような実装&lt;/li&gt;
+&lt;li&gt;突き詰めれば、従来&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D5%A5%A1%A5%A4%A5%EB%A5%B7%A5%B9%A5%C6%A5%E0&#34;&gt;ファイルシステム&lt;/a&gt;もR/Wしかできないのは同じ。ブロックサイズの違い。&lt;/li&gt;
+&lt;li&gt;いつになってもR/Wしかできないのです。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

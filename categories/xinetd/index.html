@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xinetd &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Xinetd &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Xinetd &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">02 Jan 2015, 01:36</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/01/02/013658/" class="post-title">スーパーサーバってなに？ xinetdでサービスを常駐起動せずに利用する</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-サーバ" href="https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90">サーバ</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a><a class="post-category post-category-xinetd" href="https://blog.mosuke.tech/categories/xinetd">xinetd</a><a class="post-category post-category-スーパーサーバ" href="https://blog.mosuke.tech/categories/%E3%82%B9%E3%83%BC%E3%83%91%E3%83%BC%E3%82%B5%E3%83%BC%E3%83%90">スーパーサーバ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        使用頻度の低いサービスのデーモンをメモリに常駐させておくのは効率が悪い。 そこでスーパーサーバという使用頻度の低いサービスの窓口のサービスのみ起動しておき、要求があったときだけ特定のサービスを起動させることが可能らしい。 ということで、そのスーパーサーバとやらを実際に触ってみた。 スーパーサーバというとinetdとxinetdがあるらしいが、 xinetdはinetdの拡張版で、アクセス制御などの機能を搭載しているとのこと。 今回はxinetdを設定してみる。 1. 事前準備 【環境】 Vagrantで構築したCentOS 6.5 (仮想環境のIPアドレスは192.168.33.10) まずはスーパーサーバで管理するサービスを考えなければならない。 SSHとかhttpはどう考えてもスーパーサーバの管理するようなものではないだろうし… FTPやtelnet、POP3なんかのサービスに利用されることが多いそう？（このへんよくわかない） 今回はFTPをスーパーサーバの管理対象とした。 ※本来は複数のサービスを管理対象とするからこそ意味がある。 まずはxinetdとvsftpをインストール $ sudo yum install xinetd vsftpd xinetdどうこうの前に、ftp接続がきちんとできるか確認するのでサービスを起動。 $ sudo service vsftpd start ローカルPCから接続できることを確認する。 $ ftp 192.168.33.10 Connected to 192.168.33.10. 220 (vsFTPd 2.2.2) Name (192.168.33.10:username): 2. xinetdの設定 xinetdの基本設定は/etc/xinetd.confにかかれており、 xinetdで管理する各サービスの設定は/etc/xinetd.d/配下に書く方式。 ftpの設定を以下の通りにした。 "service"のあとに書くサービス名称は/etc/servicesに定義されているものを記載する。 vsftpとか書いても動かないので注意。 $ sudo vim /etc/xinetd.d/ftp service ftp { disable = no socket_type = stream wait = no user = root server = /usr/sbin/vsftpd log_on_failure += USERID } 設定項目については以下参照。 xinetd の設定 これでxinetdを起動 $ sudo service xinetd start (補足) /etc/servicesってなにもの？ /etc/servicesがなにか気になったので一応調べると。 サービス名とそこで使われるポート番号、プロトコル(tcp/udp)との 対応関係を記述したファイルが /etc/services です。 このファイルは 単なるサービス名のデータベースで、それ自体では何の働きもありませ んが、netstat コマンドや次の inetd などで参照されます。 (http://www.wakhok.ac.jp/~kanayama/summer/02/site/node43.html) 3.
+                    </div>
+                </section>
+                
+            </div>
+            
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

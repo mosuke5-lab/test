@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>サーバレス on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90%E3%83%AC%E3%82%B9/</link>
+    <description>Recent content in サーバレス on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sun, 02 Oct 2016 21:24:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90%E3%83%AC%E3%82%B9/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>三葉よ、サーバーレス、それもまた結び。</title>
+      <link>https://blog.mosuke.tech/entry/2016/10/02/212420/</link>
+      <pubDate>Sun, 02 Oct 2016 21:24:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/10/02/212420/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;タイトルちょっとふざけました。  (が、半分本気。最後の方でわかる。)&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://tokyo.serverlessconf.io/&#34;&gt;ServerlessConf Tokyo&lt;/a&gt;に参加してきた。&lt;br&gt;
+今年8月から&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;の事業に異動していて、（&lt;a href=&#34;https://blog.mosuke.tech/entry/2016/07/29/180000&#34;&gt;異動ブログ&lt;/a&gt;）&lt;br&gt;
+開発者の立場より&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;提供側の立場として参加してきたので、また面白かった。&lt;/p&gt;
+
+&lt;p&gt;せっかくなので、自分なりにサーバレスについてまとめる。&lt;br&gt;
+新しいことというよりは、自分の中での整理した感じ。&lt;/p&gt;
+
+&lt;h1&gt;1. サーバレスってなんだっけ&lt;/h1&gt;
+
+&lt;p&gt;カンファレンスの中でもサーバレスの定義についてはいろいろな意見がでていた。&lt;br&gt;
+Martin Fowlerのブログではサーバレスの定義として下記２つが書いてある。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;BaaS (Backend as a Service) : ex) firebase&lt;/li&gt;
+&lt;li&gt;FaaS (Function as a Service) : ex) &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt; Lambda&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fmartinfowler.com%2Farticles%2Fserverless.html&#34; title=&#34;Serverless Architectures&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://martinfowler.com/articles/serverless.html&#34;&gt;martinfowler.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;ですが、ここでは焦点を絞って話すためにもFaaSということにしておく。&lt;br&gt;
+主にFaaSについて話したいのと、BaaSもいれてしまうと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SaaS&#34;&gt;SaaS&lt;/a&gt;もサーバレスとかややこしいことになるので。&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt; Lambda&lt;/h1&gt;
+
+&lt;p&gt;なんといってもサーバレスの概念を推し進めたのは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt; Lambdaでしょう。&lt;br&gt;
+説明はいまさら不要だと思うが、少しだけ。&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;コードを &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt; Lambda にアップロードすると、サービスが &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt; インフラストラクチャを使用してコードの実行を代行するコンピューティングサービスです。コードをアップロードして、Lambda 関数と呼ばれる関数を作成することで、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt; Lambda がコードを実行するサーバーのプロビジョニングおよび管理を行います。(&lt;a href=&#34;https://aws.amazon.com/jp/lambda/details/&#34;&gt;https://aws.amazon.com/jp/lambda/details/&lt;/a&gt;)&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;課金モデルは関数呼び出した回数、および実行に利用したコンピュートのスペックによって決まる。&lt;br&gt;
+また特徴的なことは、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;の他のサービスで発生したイベントをトリガーに実行できること。&lt;br&gt;
+例えば、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Amazon%20S3&#34;&gt;Amazon S3&lt;/a&gt;にファイルアップロードされたことをトリガーにLambdaを実行できるのだ。&lt;/p&gt;
+
+&lt;h1&gt;サーバレスの特徴&lt;/h1&gt;
+
+&lt;p&gt;サーバレス自体そしてサーバレスで実装することの特徴しては下記がある。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;上のイベントを契機に実行できる&lt;/li&gt;
+&lt;li&gt;実行環境は、immutableで時間が立つと消える&lt;/li&gt;
+&lt;li&gt;実行環境は独立していて、コードは基本的にstatelessである&lt;/li&gt;
+&lt;li&gt;上記のようにimmutableでstatelessな構造につくるからこそスケールしやすい&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1&gt;2. どんな用途で利用しているか&lt;/h1&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;基盤のイベントをトリガーとして&lt;/h1&gt;
+
+&lt;p&gt;個人的に一番強力だと思っている使い方。上で説明したとおりだが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;上のプロダクトに対してのイベントをトリガーに処理を行うことができる。&lt;br&gt;
+例えばこんな場合を想定してみよう。&lt;/p&gt;
+
+&lt;p&gt;ユーザが写真をアップロードするサービスで、アップロードした写真にたいして何かしらの画像解析をしてメタ情報を持ちたいとする。&lt;br&gt;
+ざっと従来のやりかただと２つくらいやり方が思い浮かぶ。&lt;/p&gt;
+
+&lt;h4&gt;(1) アップロードするたびに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%B5%A1%BC%A5%D0&#34;&gt;アプリケーションサーバ&lt;/a&gt;で画像解析をする&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;解析にほとんど時間がかからない場合などはこれでいいと思う&lt;/li&gt;
+&lt;li&gt;時間がかかるようなだとユーザへのレスポンスが遅くなる&lt;/li&gt;
+&lt;li&gt;速くしようと思うとスケールアップで対応するしかない（やばい）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;(2) &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%C3%A5%C1%BD%E8%CD%FD&#34;&gt;バッチ処理&lt;/a&gt;でやる&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%C3%A5%C1%BD%E8%CD%FD&#34;&gt;バッチ処理&lt;/a&gt;で画像解析はまとめてやる。一番よくあるのでは？&lt;/li&gt;
+&lt;li&gt;例えば５分に一度の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%C3%A5%C1%BD%E8%CD%FD&#34;&gt;バッチ処理&lt;/a&gt;で、５分間にたまった写真にたいしてまとめて処理する&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%C3%A5%C1%BD%E8%CD%FD&#34;&gt;バッチ処理&lt;/a&gt;でまとめて処理した場合、どこかでコケたときが辛い&lt;/li&gt;
+&lt;li&gt;この例ならそうでもないが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%C3%A5%C1%BD%E8%CD%FD&#34;&gt;バッチ処理&lt;/a&gt;ではたいていスケールアウトが辛い&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;このケースに対してLambdaであればどうなるか。&lt;br&gt;
+1000件のアップロードに対して、1000回のLambda実行によって対応できる。&lt;br&gt;
+これは何万件きても同じことで、スケールの面で大変優れている。&lt;br&gt;
+また、1件ごとに処理するため、エラーが発生した場合に原因などとても追いやすい。&lt;/p&gt;
+
+&lt;h1&gt;アプリの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/API&#34;&gt;API&lt;/a&gt;として&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;でいうと、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/API&#34;&gt;API&lt;/a&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Gateway&#34;&gt;Gateway&lt;/a&gt;と組み合わせて、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/API&#34;&gt;API&lt;/a&gt;サーバとして利用するケース。&lt;br&gt;
+S3などのデータストアに直接アクセスできるように作ることもできるため、ファイルアップロードなどで使われることが多いとか。&lt;br&gt;
+個人的には今のところあまり魅力的には感じない使い方。&lt;/p&gt;
+
+&lt;h1&gt;事例紹介&lt;/h1&gt;
+
+&lt;p&gt;カンファレンスのなかで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%C6%FC%B7%D0%BF%B7%CA%B9&#34;&gt;日経新聞&lt;/a&gt;社さんののサーバレス&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;の事例が一番よかったのでぜひ目を通しほしい。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe allowfullscreen=&#34;true&#34; allowtransparency=&#34;true&#34; frameborder=&#34;0&#34; height=&#34;463&#34; id=&#34;talk_frame_361815&#34; mozallowfullscreen=&#34;true&#34; src=&#34;//speakerdeck.com/player/b4286c46056c404cbd272e253033d0df&#34; style=&#34;border:0; padding:0; margin:0; background:transparent;&#34; webkitallowfullscreen=&#34;true&#34; width=&#34;710&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://speakerdeck.com/ikait/serverless-architecture-supports-nikkeis-paper-viewer&#34;&gt;speakerdeck.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;ポイントとしては下記。見事にLambdaの特徴を活かした利用をしている。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;新聞は基本的には朝刊と夕刊の２回で限られたときだけ処理する点
+
+&lt;ul&gt;
+&lt;li&gt;常時稼働させたくない。EC2立ち上げっぱなしにする必要がない。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;しかし、号外や速報など臨時の場合もただあり、それにも備えられる点&lt;/li&gt;
+&lt;li&gt;日によってニュースの量が異なるため、いつでもスケールできる必要がある点&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;3. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;ベンダーからみたサーバレスの立ち位置&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;ベンダーにとってサーバレスはどういう立ち位置なのだろうか。&lt;br&gt;
+ぼくは&lt;span style=&#34;font-size: 150%&#34;&gt;「各サービスの横串」&lt;/span&gt;と考えています。&lt;br&gt;
+EC2、S3、RDSなどなどそれぞれのサービスは単体としてとてもよくできている。&lt;br&gt;
+しかし横の連携をしようと思うと別途様々な工夫が必要なのが現状だ。&lt;/p&gt;
+
+&lt;p&gt;サーバレスはその横の連携を担うのだ。&lt;br&gt;
+各サービス間を紐で固く結びつけてしまう。&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;ロックインを加速させる役割も持つ。&lt;/p&gt;
+
+&lt;p&gt;&lt;b&gt;「三葉よ、サーバレス、それもまた結び。」&lt;/b&gt;&lt;/p&gt;
+
+&lt;p&gt;そして、IoTへの布石。&lt;br&gt;
+IoTの世界ではリアルタイムなセンサーの情報のやりとりでデ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%A4&#34;&gt;バイ&lt;/a&gt;スとデータセンタ間の通信遅延が許容できないことがある。&lt;br&gt;
+そこでいま研究が進んでいるエッジコンピューティング（フォグコンピューティングとも）などがあるが、&lt;br&gt;
+LambdaのようにImmutable, Statelessが前提で作られる、どこの環境でも実行可能な状態はIoTと相性がいいようにみえる。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;今後どうなっていくかはわからないが、&lt;br&gt;
+デ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%A4&#34;&gt;バイ&lt;/a&gt;スに近いエッジコンピューティング側はLambdaでさばき、そのさばいたデータを中央のデータセンターへ、&lt;br&gt;
+なんていうことが主流になってくるかもしれない。と思うとFaaSの存在は見逃せない気がしてくる。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

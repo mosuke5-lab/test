@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Tech &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Tech &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">22 Nov 2014, 19:06</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/22/190648/" class="post-title">GithubクローンのGitlabの導入とその際のちょっとした注意点</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        もろもろな理由のためにGithubが利用できないことも多くあると思う。 というわけでGithubクローンのGitlabを試しに立ててみたが、簡単すぎでした… GitLab | Open source software to collaborate on code 環境 さくらVPS 1Gプラン OS：CentOS7 インストール 基本的にはドキュメントに書いてある以下のとおりで終わり。 ``` $ curl -O https://downloads-packages.s3.amazonaws.com/centos-7.0.1406/gitlab-7.5.1_omnibus.5.2.0.ci-1.el7.x86_64.rpm $ sudo yum install openssh-server $ sudo systemctl enable sshd $ sudo systemctl start sshd $ sudo yum install postfix $ sudo systemctl enable postfix $ sudo systemctl start postfix $ sudo rpm -i gitlab-7.5.1_omnibus.5.2.0.ci-1.el7.x86_64.rpm $ sudo gitlab-ctl reconfigure $ sudo firewall-cmd &ndash;permanent &ndash;add-service=http # open up the
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">20 Nov 2014, 23:03</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/20/230334/" class="post-title">後からGitレポジトリを共有設定に。sharedオプションの仕組みについて</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-git" href="https://blog.mosuke.tech/categories/git">git</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        Gitレポジトリを作って、複数人で開発をしていた。 しかし、レポジトリの中に作成されるファイルやディレクトリが個人のグループになってしまい、 Push, PullするときにPermission errorで怒られまくる。 ユーザには共通のグループを作っていたのに…なんでだっけ… 気づけばレポジトリを作るとき以下のようにしていた。 ``` $ git init &ndash;bare &lt;p&gt;&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4%BF%CD&quot;&gt;複数人&lt;/a&gt;で共有するときには以下のようにするべきであった。&lt;/p&gt; $ git init &ndash;bare &ndash;shared &lt;p&gt;では、そもそもgitのsharedオプションをつけると何が裏で起こっているのか。&lt;br&gt; 調べると「&lt;b&gt;setgid&lt;/b&gt;」というキーワードに辿り着いた。&lt;br&gt; setgidの権限を付けておくと、そのディレクトリに作成されたファイルの所有グループは、そのディレクトリの所有グループになる。&lt;/p&gt; &lt;p&gt;以下のようにchmodでsetgidを付けることができる。&lt;/p&gt; $ chmod g+s dir_name &lt;p&gt;setgidがつくとあまり馴染みのない権限がつく。&lt;br&gt; 「drwxrw&lt;span style=&quot;color: #ff40ff&quot;&gt;&lt;b&gt;s&lt;/b&gt;&lt;/span&gt;r-x」&lt;/p&gt; $ ls -l drwxrwsr-x 4 user group 136 11 16 22:49 test_dir &lt;p&gt;そして、すでに共有設定なしで作ってしまった&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&quot;&gt;レポジトリ&lt;/a&gt;では以下のように対応可能。&lt;br&gt; （新しく&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&quot;&gt;レポジトリ&lt;/a&gt;つくるのはめんどいので…）&lt;/p&gt; ##Gigレポジトリ内のディレクトリに $ chmod -R g+s ./branches $ chmod -R g+s ./hooks $ chmod -R g+s ./info $ chmod -R g+s
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">18 Nov 2014, 22:55</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/18/225542/" class="post-title">Ansible、コマンドでワイルドカードを使うときの注意</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        AnsibleのPlaybookを書いていると、ワイルドカードを含んだコマンドを実行したい時がある。 そんなときあるところでハマった。 Apacheをソースインストールして、パスを/usr/sbinにリンクを貼ろうとして以下を実行した。 - command: ln -s /usr/local/httpd/bin/* /usr/sbin /usr/sbin内に「*」というリンクが貼られてしまった。 * -&gt; /usr/local/httpd/bin どうやらcommandモジュールはワイルドカードに対応していないよう。 ワイルドカードを使いたいときはshellモジュールを利用すると良い。 yaml - shell: ln -s /usr/local/httpd/bin/* /usr/sbin また、というリンクを消すときは要注意（笑） ``` $ rm ./ &lt;p&gt;とやってしまうとあたりまえだがやばいので&lt;/p&gt; $ rm ./¥* ``` こうですね…
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">16 Nov 2014, 15:32</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/16/153223/" class="post-title">Ansible、ソースインストールする際のPalybookの書き方</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        最近、Ansibleを使い始めたのだが、yumやapt-getでインストールできるものはいいけど、 どうしてもソースインストールが必要な場合がある。 ソースインストールを行う際のPlaybookの書き方と注意点をまとめた。 まず、あたりまえだが、ソースインストールを行うには以下のフローを踏まなければいけな。 1. ソースファイルの取得(tarで固められていると仮定) 2. tarファイルの解凍 3. 解答してできたディレクトリへ移動 4. configure 5. make 6. make install また、Ansibleでは何回もPlaybookを実行していくため、 すでにインストールされている場合は、インストールをスキップする必要がある。 yumやapt-getで管理されていれば上記を心配することはないのだが、やはりソースインストールだとこの壁がある。 ※パッケージ化しろよ！というツッコミは禁止 今回は例として、ubuntu13にemacsをソースインストールするのを例としてみた。 環境 【Ansible実行側】 さくらVPSの1G OS: Centos 7 IPアドレス:192.168.33.1 【設定対象側】 上記さくらVPS上にたてたVagrantの仮想サーバ OS: Ubuntu 13.10 IPアドレス:192.168.33.100 Playbook 以下playbookの例。 --- - hosts: 192.168.33.100 user: vagrant sudo: yes vars: src_dir: /usr/local/src emacs_ver: emacs-23.4 tasks: ## emacsのソースファイルを取得済みか確認 - name: check exist emacs source file command: ls -l {{src_dir}}/{{emacs_ver}}.tar.gz ignore_errors: True register: result1 ## emacsのソースファイル取得。ただし、すでに取得済みならスキップ
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">09 Nov 2014, 17:27</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/09/172745/" class="post-title">【VPS1台でインフラ勉強】多段SSH設定（おまけ）</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-サーバ" href="https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90">サーバ</a><a class="post-category post-category-VPS" href="https://blog.mosuke.tech/categories/vps">VPS</a><a class="post-category post-category-Vagrant" href="https://blog.mosuke.tech/categories/vagrant">Vagrant</a><a class="post-category post-category-SSH" href="https://blog.mosuke.tech/categories/ssh">SSH</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        VPS1台でインフラ勉強の会で、VPSのホストサーバ上に仮想でさらにいつくかのサーバを立てたが、 仮想のサーバにアクセスするには、ホストサーバにアクセスしてから更にSSHをしなければならない。 これが面倒だったので多段SSHの設定をして、一発でSSH接続できるようにした。 以下の図で言うと、web10, web11(192.168.33.10&frasl;11)に一発でSSHできるようにする。 クライアントPC側に以下の設定をした。 ``` $ vim ~/.ssh/config host gateway HostName xxxxx.xxx User username Host web10 HostName 192.168.33.10 User vagrant ProxyCommand ssh -W %h:%p gateway Host web11 HostName 192.168.33.11 User vagrant ProxyCommand ssh -W %h:%p gateway ##これで以下で接続可能 $ ssh web10 $ ssh web11 ``` 簡単でした。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">09 Nov 2014, 17:14</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/09/171436/" class="post-title">【VPS1台でインフラ勉強】HAProxyでロードバランサーを構築</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a><a class="post-category post-category-HAProxy" href="https://blog.mosuke.tech/categories/haproxy">HAProxy</a><a class="post-category post-category-VPS" href="https://blog.mosuke.tech/categories/vps">VPS</a><a class="post-category post-category-vagrant" href="https://blog.mosuke.tech/categories/vagrant">vagrant</a><a class="post-category post-category-ロードバランサ" href="https://blog.mosuke.tech/categories/%E3%83%AD%E3%83%BC%E3%83%89%E3%83%90%E3%83%A9%E3%83%B3%E3%82%B5">ロードバランサ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        前回の【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築に続き、同様の環境を用いて、ロードバランサ構築を行った。 ロードバランサの構築にはHAProxyを利用した。 1. 環境 前回同様で、さくらVPSの1GBのプラン1台のみ。 ・メモリ：１GB ・CPU：仮想２コア ・HDD：100GB ・OS：CentOS7 ・サーバ仮想化：Vagrant(Utuntu13) ・ロードバランサ：HAProxy - The Reliable, High Performance TCP/HTTP Load Balancer 2. 構成図 3. ロードバランサの構築 ■ホストサーバ側の設定 ``` #HAProxyインストール $ sudo yum install haproxy #設定はすごく簡単で以下のファイルのみ。実際に $ sudo vim /etc/haproxy/haproxy.cfg #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; Example configuration for a possible web application. See the full configuration options online. # http://haproxy.1wt.eu/download/1.4/doc/configuration.txt # #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; Global settings #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; global log 127.0.0.1 local6 debug chroot /var/lib/haproxy pidfile /var/run/haproxy.pid maxconn 4000 user haproxy group haproxy daemon # turn on stats unix socket stats socket /var/lib/haproxy/stats #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; common defaults that all the &lsquo;listen&rsquo; and &lsquo;backend&rsquo; sections will use if not designated in their block #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; defaults ##ロードバランサの動作モード。tcpにするとL4ロードバランサになる。httpにするとL7ロードバランサ。 mode http log global option log-health-checks option httplog option dontlognull ##ヘルスチェック用のhtmlファイルをWebサーバ側に設置している。設置については後述。 option httpchk GET /health_check.html HTTP/1.0\r\nUser-agent:\ Proxy-Check option http-server-close option forwardfor except 127.0.0.0/8 option redispatch retries 3 timeout http-request 10s timeout queue 1m timeout connect 10s timeout client 1m timeout server 1m timeout http-keep-alive 10s timeout check 10s maxconn 3000 #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; main frontend which proxys to the backends #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; frontend main *:80 default_backend hoge #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; round robin balancing between the various backends #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; backend hoge balance roundrobin server web10 192.168.33.10:80 check inter 3000 fall 2 rise 2 server web11 192.168.33.11:80 check inter 3000 fall 2 rise 2 &lt;p&gt;L4, L7のロードバランサについては以下参照。&lt;br&gt; &lt;a href=&quot;http://www.atmarkit.co.jp/ait/articles/0302/05/news001.html&quot;&gt;ロードバランサの本質（1）：パケットフローから負荷分散の基本を理解する - ＠IT&lt;/a&gt;&lt;/p&gt; &lt;p&gt;ロードバランサ側でhttpのリクエストを返していないことを意味づけるために&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/apache&quot;&gt;apache&lt;/a&gt;, nginxを停止しておく。&lt;br&gt; （特に意味は無いが念押し確認のため）&lt;/p&gt; $ sudo systemctl stop nginx $ sudo systemctl stop httpd &lt;p&gt;HAProxyのログをsyslogに残すように設定する。&lt;br&gt; ただしメインのmessageではなく、独自のファイルに書くために以下の設定。&lt;/p&gt; ##ログの格納場所作成 $ sudo mkdir /var/log/haproxy ##syslogの設定変更 $ vim /etc/rsyslog.d/haproxy.conf $ModLoad imudp $UDPServerRun 514 $template Haproxy,&ldquo;%msg%\n&rdquo; local6.* -/var/log/haproxy/haproxy.log;Haproxy $ vim /etc/sysconfig/rsyslog 以下を追加 SYSLOGD_OPTIONS=&ldquo;-r&rdquo; haproxyの起動 $ sudo systemctl start haproxy &lt;p&gt;&lt;br&gt; ■Webサーバの設定&lt;br&gt; 仮想でのWebサーバ構築は省くが、Apache2をインストールしただけである。&lt;br&gt; 仮想でのサーバ構築は前回を参照。&lt;br&gt; &lt;a href=&quot;https://blog.mosuke.tech/entry/2014/10/09/230555&quot;&gt;【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築&lt;/a&gt;&lt;br&gt; &lt;/p&gt; /var/www/html配下にヘルスチェック用のhtml設置 $ sudo touch health_check.html &lt;/div&gt; &lt;div class=&quot;section&quot;&gt; &lt;h3&gt;4.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">19 Oct 2014, 17:08</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/10/19/170854/" class="post-title">自宅サーバ公開時などのDDNS、固定IPについて整理</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-ネットワーク" href="https://blog.mosuke.tech/categories/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF">ネットワーク</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        自宅サーバを公開するときに使うDDNSや固定IP。 それが必要な理由について図解的にまとめ。それだけ。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">09 Oct 2014, 23:05</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/10/09/230555/" class="post-title">【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-CentOS7" href="https://blog.mosuke.tech/categories/centos7">CentOS7</a><a class="post-category post-category-Nginx" href="https://blog.mosuke.tech/categories/nginx">Nginx</a><a class="post-category post-category-Vagrant" href="https://blog.mosuke.tech/categories/vagrant">Vagrant</a><a class="post-category post-category-リバースプロキシ" href="https://blog.mosuke.tech/categories/%E3%83%AA%E3%83%90%E3%83%BC%E3%82%B9%E3%83%97%E3%83%AD%E3%82%AD%E3%82%B7">リバースプロキシ</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-VPS" href="https://blog.mosuke.tech/categories/vps">VPS</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        ロードバランシングとかクラスタリングとかリバースプロキシとか、 業務でも使っているし、概念とかはわかってるけど、自分で構築したことはやっぱりない。 自分で構築してみたいなーと思いつつもあたりまえだけど、サーバやネットワーク機器をそう簡単に調達もできない。 お金も当然ない。 というわけで、さくらVPSで仮想化つかってロードバランシングとかクラスタリングとかリバースプロキシとか勉強しましょうという「サーバインフラ会」を友人と始めた。 その第１回目のメモ。 第1回 サーバ複数台構成、Nginxでリバースプロキシ構築 第2回 HAProxyでロードバランサ構築 1. 使用した環境 まず今回利用した環境は以下のとおり。 さくらVPSの1GBのプラン。 ・メモリ：１GB ・CPU：仮想２コア ・HDD：100GB ・OS：CentOS7 ・仮想化：Vagrant →dockerなどもはじめ検討していたが、コンテナ型仮想化だとサーバ感がでないので、よりサーバとして意識できるVagrantを採用 【参考】 料金・サービス仕様 | VPS（仮想専用サーバ）は「さくらのVPS」 2. 完成イメージ・物理イメージ 3. VagrantでWebサーバ２台分を構築する Vagrantの詳細な利用方法は公式ドキュメントをみてもらうとするが、セットアップまでのひととおりの流れと注意点のみ記載する。 Vagrant Documentation 今回はWebサーバ２台を仮想で実現するので、それぞれweb1, web2とする。 それぞれのディレクトリを作成。 ``` web1, web2のディレクトリ作成 $ pwd /home/vagrant $ mkdir web1 $ mkdir web2 仮想化で利用するOSイメージをダウンロード $ vagrant box add ubuntu1310 ¥ http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box web1サーバ構築 $ cd web1 $ vagrant init ubuntu1310 ほぼほぼデフォルトの設定だが以下２つだけは設定を行った。 $ vim Vagrantfile (1)プライベートアドレスの割り当て。 config.vm.network &ldquo;private_network&rdquo;, ip:
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">20 Sep 2014, 18:03</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/09/20/180326/" class="post-title">CentOS7, iptables設定でハマった</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-CentOS7" href="https://blog.mosuke.tech/categories/centos7">CentOS7</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        最近VPSのOSをcentos7にしたのだが、なかなか手付かずでiptablesの設定も放置していた… （sshの最低限の設定はしていたが、ほんとうに良くない…） 久しぶりに手が空いたので設定するかーと思いきや まず/etc/sysconfig/iptablesがないし&hellip; Cent7からのsystemctlでiptablesのサービスを確認してもでてこないし… # systemctl status iptables iptables.service Loaded: not-found (Reason: No such file or directory) Active: inactive (dead) というわけで、調べてみると、まずiptables.serviceをインスールしないといけないとのこと。 そして、centos7からはfirewalldがデフォルトでオンになっているからオフにしないといけない。 （いけないわけではないけど両方使う意味が無いので。） まずはiptables-serviceをインスールし、firewalldをオフ、iptablesをオンとした。 # yum install iptables-services # systemctl status firewalld Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled) Active: active (running) since Sat 2014-09-20 17:47:11 JST; 4s ago Main PID: 11162 (firewalld) CGroup: /system.slice/firewalld.service └─11162 /usr/bin/python -Es /usr/sbin/firewalld --nofork --nopid # # systemctl stop firewalld # # systemctl status firewalld Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled) Active: inactive (dead) # #systemctl disable firewalld # #systemctl enable iptables #systemctl start iptables # #systemctl status iptables Loaded: loaded (/usr/lib/systemd/system/iptables.service; enabled) Active: inactive (dead) since Sat 2014-09-20 17:47:10 JST; 2min 48s ago Process: 11139 ExecStop=/usr/libexec/iptables/iptables.init stop (code=exited, status=0/SUCCESS) Process: 10096 ExecStart=/usr/libexec/iptables/iptables.init start (code=exited, status=0/SUCCESS) Main PID: 10096 (code=exited, status=0/SUCCESS) ....
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">15 Sep 2014, 13:56</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/09/15/135611/" class="post-title">D3.js、DBからのデータ連携方法の検討</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-D3.js" href="https://blog.mosuke.tech/categories/d3.js">D3.js</a><a class="post-category post-category-Sinatra" href="https://blog.mosuke.tech/categories/sinatra">Sinatra</a><a class="post-category post-category-Ruby" href="https://blog.mosuke.tech/categories/ruby">Ruby</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        最近D3.jsを使う機会があり、DBのデータを読み込ませる方法についていくつか検討した。 例えば以下の状況を考える。 【やりたいこと】 「DBに格納されているデータを使って、D3.jsで折れ線グラフを描く」 【DBの構造】 カラム名：型 date : datetime value : int ※また、下記ではSinatra上で行っているが、他の言語でも同様のことがいえる。 (1) 簡単なAPIのようなものを利用する 先に結論から書くと、今まで次の(2)(3)のようなやりかたをやっていたのだけれど、 これが一番複雑にならずに良いと思ったということ。 Sinatra側で/csvにアクセスするとcsvファイルをダウンロードできるようにする。 ```ruby #Sinatra側 get &lsquo;/csv&rsquo; do content_type &lsquo;application/csv&rsquo; attachment &lsquo;download.csv&rsquo; #DBからデータ取得(Activerecord利用) @data = Model.all() #出力するCSVデータの変数。csvヘッダーを先につけている。 @csv = &quot;date,value\n&quot; #DBのデータをCSVの形にして格納 @data.each do |d| @csv += d.date.to_s + &quot;,&quot; + d.value.to_s + &quot;\n&quot; end #csvtest.erbというビューに出力 erb :csvtest, :layout =&gt; false end &lt;p&gt;csvtest.erb&lt;/p&gt; ```ruby &lt;%= @csv %&gt; こうすることで"http://*****/csv"にアクセスするとcsvファイルとしてダウンロードできる状態になる。 条件指定をしてデータをダウンロードできるようにしたい場合はGETでパラメータ指定できるようにすれば良いと思う。 （SinatraでCSVファイルを生成するところのコードがナンセンスだと思っているので、もっといい方法があるはず…） また、今回はcsvにしているがjsonなどの他の形式でも同様のことがいえる。 これをD3.js側で以下のように読み込ませる。 d3.csv(&quot;/csv&quot;, function(error, data) {
+                    </div>
+                </section>
+                
+            </div>
+            
+<div class="pagination">
+  <nav role="pagination" class="post-list-pagination">
+      
+      <a href="/tags/tech/page/5/" class="post-list-pagination-item pure-button post-list-pagination-item-prev">
+        <i class="fa fa-angle-double-left"></i>&nbsp;Newer
+      </a>
+      
+    <span class="post-list-pagination-item post-list-pagination-item-current">Page 6 of 7</span>
+    
+      <a href="/tags/tech/page/7/" class="post-list-pagination-item pure-button post-list-pagination-item-next">
+        Older&nbsp;<i class="fa fa-angle-double-right"></i>
+      </a>
+    
+  </nav>
+</div>
+
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

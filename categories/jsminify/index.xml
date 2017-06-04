@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jsminify on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/jsminify/</link>
+    <description>Recent content in Jsminify on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Fri, 08 May 2015 17:47:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/jsminify/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>sinatra-assetpackをproduction環境で使う時にはまったー</title>
+      <link>https://blog.mosuke.tech/entry/2015/05/08/174732/</link>
+      <pubDate>Fri, 08 May 2015 17:47:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/05/08/174732/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Sinatra&#34;&gt;Sinatra&lt;/a&gt;アプリケーションで、JSファイルを圧縮する&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/sinatra&#34;&gt;sinatra&lt;/a&gt;-assetpackを利用していて、&lt;br&gt;
+production環境で動作させようとしたら動かなくなってしまった問題について調査した。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;起こったこと&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Sinatra&#34;&gt;Sinatra&lt;/a&gt;を使ってアプリケーションを作っていて、development環境で完成したので、
+prorudction環境で動作させようとしたら、jsのエラーが出るようになってしまい、正常に動かなくなった。&lt;/p&gt;
+
+&lt;p&gt;アクセスすると、以下のエラーがでる。要は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/jquery&#34;&gt;jquery&lt;/a&gt;がないとのこと。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Uncaught ReferenceError: $ is not defined 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/jQuery&#34;&gt;jQuery&lt;/a&gt;はもちろん読み込ませてるし、なんでproduction環境でだけ？？？&lt;/p&gt;
+
+&lt;h1&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9&#34;&gt;ソースコード&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/sinatra&#34;&gt;sinatra&lt;/a&gt;のメインアプリケーションであるapp.rbには以下のように、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/sinatra&#34;&gt;sinatra&lt;/a&gt;-assetpackを利用してjsを読み込んでいる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;assets do
+  serve &#39;/js&#39;, from: &#39;public/js&#39;
+  serve &#39;/bower_components&#39;, from: &#39;bower_components&#39;
+
+  js :app, &#39;/js/app.js&#39;, [
+    &#39;/js/index.js&#39;,
+  ]
+
+  js :libs, &#39;/js/libs.js&#39;, [
+    &#39;/bower_components/jquery/dist/jquery.js&#39;,
+    &#39;/bower_components/bootstrap/dist/js/bootstrap.js&#39;,
+  ]
+
+  js_compression :jsmin
+end
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;layout.erbにはもちろん、libs.jsが先に来るように記述している。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;&amp;lt;%= js :libs %&amp;gt;
+&amp;lt;%= js :app %&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/sinatra&#34;&gt;sinatra&lt;/a&gt;-assetpackの挙動&lt;/h1&gt;
+
+&lt;p&gt;productionでのみ発生する&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BB%F6%BE%DD&#34;&gt;事象&lt;/a&gt;なので、改めて&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/sinatra&#34;&gt;sinatra&lt;/a&gt;-assetpackのproduction環境時の挙動を確認した。&lt;br&gt;
+production環境では、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4&#34;&gt;複数&lt;/a&gt;のjsファイルを1つのファイルにまとめ、圧縮を行う。&lt;/p&gt;
+
+&lt;h4&gt;development環境&lt;/h4&gt;
+
+&lt;p&gt;３つのjsファイルがあったら以下のように３つ別々に読み込まれる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;script type=&#39;text/javascript&#39; src=&#39;https://blog.mosuke.tech/js/vendor/jquery.283479.js&#39;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script type=&#39;text/javascript&#39; src=&#39;https://blog.mosuke.tech/js/vendor/underscore.589491.js&#39;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script type=&#39;text/javascript&#39; src=&#39;https://blog.mosuke.tech/js/app/main.589491.js&#39;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;production環境&lt;/h4&gt;
+
+&lt;p&gt;３つあったjsファイルは1つにまとめられ、また圧縮される。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;script type=&#39;text/javascript&#39; src=&#39;https://blog.mosuke.tech/js/app.589491.js&#39;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;詳細はこちら&lt;br&gt;
+&lt;a href=&#34;https://github.com/rstacruz/sinatra-assetpack#results&#34;&gt;rstacruz/sinatra-assetpack · GitHub&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BB%F6%BE%DD&#34;&gt;事象&lt;/a&gt;の理由&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Chrome&#34;&gt;Chrome&lt;/a&gt;の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0&#34;&gt;デバッグ&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB&#34;&gt;ツール&lt;/a&gt;のNetworkでファイルのダウンロード状況を確認してみると意外なことがわかった。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150508/20150508171833.png&#34; alt=&#34;f:id:mosuke5:20150508171833p:plain&#34; title=&#34;f:id:mosuke5:20150508171833p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;画像が小さくて見づらいかもしれないが、
+5行目と6行目のapp.jsとlibs.jsで先にlibs.jsを読み込んでいるのに、おそらく圧縮とダウンロードに時間がかかり、&lt;br&gt;
+app.jsのほうが先にダウンロードが終わっている。&lt;/p&gt;
+
+&lt;p&gt;libs.jsには&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/jQuery&#34;&gt;jQuery&lt;/a&gt;などが含まれていて、app.js内で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/jQuery&#34;&gt;jQuery&lt;/a&gt;を利用する。&lt;br&gt;
+よって、先にapp.jsが読み込まれてしまったことで、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/jQuery&#34;&gt;jQuery&lt;/a&gt;がねーぞ！と怒られてしまったのである。&lt;/p&gt;
+
+&lt;h1&gt;対策と考慮&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/sinatra&#34;&gt;sinatra&lt;/a&gt;-assetpackなどを利用して、jsを圧縮する際には、
+ファイルを1つにまとめたり圧縮したりする時間がかかることを十分に考慮しなければいけない。&lt;/p&gt;
+
+&lt;p&gt;あまり賢い手段をは言えないが、libs.jsとapp.jsひとつにまとめることで今回の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BB%F6%BE%DD&#34;&gt;事象&lt;/a&gt;は避けられる。
+app.rb&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;assets do
+  serve &#39;/js&#39;, from: &#39;public/js&#39;
+  serve &#39;/bower_components&#39;, from: &#39;bower_components&#39;
+
+  js :app, &#39;/js/app.js&#39;, [
+    &#39;/bower_components/jquery/dist/jquery.js&#39;,
+    &#39;/bower_components/bootstrap/dist/js/bootstrap.js&#39;,
+    &#39;/js/index.js&#39;,
+  ]
+
+  js_compression :jsmin
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;p&gt;また、事前に圧縮しておいて、ダウンロードだけする状態にしてもいいかもしれない。&lt;br&gt;
+&lt;a href=&#34;https://github.com/rstacruz/sinatra-assetpack#precompile&#34;&gt;rstacruz/sinatra-assetpack · GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

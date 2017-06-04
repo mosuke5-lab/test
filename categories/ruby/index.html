@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruby &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Ruby &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Ruby &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">06 Mar 2016, 14:05</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/03/06/140531/" class="post-title">【錦織圭も分析】ATP TennisのデータスクレイパーGem作った</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ruby" href="https://blog.mosuke.tech/categories/ruby">Ruby</a><a class="post-category post-category-Gem" href="https://blog.mosuke.tech/categories/gem">Gem</a><a class="post-category post-category-ATP" href="https://blog.mosuke.tech/categories/atp">ATP</a><a class="post-category post-category-テニス" href="https://blog.mosuke.tech/categories/%E3%83%86%E3%83%8B%E3%82%B9">テニス</a><a class="post-category post-category-ATP Tennis" href="https://blog.mosuke.tech/categories/atp-tennis">ATP Tennis</a><a class="post-category post-category-スクレイピング" href="https://blog.mosuke.tech/categories/%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%94%E3%83%B3%E3%82%B0">スクレイピング</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        背景 このブログは基本的に技術ブログとしてやっているので、 テニスの話題ははじめてだが、テニスがすごく好きだ。 特に、プロの試合の観戦はとても好きだ。 2005年からずーっと見てて、欠かさずすべての試合結果はチェックしている。 数年前から、テニス選手をある指標から分析したいなと思っていた。 例えば、 ランキングは高くないけど、爆発するとトップ選手に勝つ力を持っているかどうか 自分より格下の選手に負けることが少ないかどうか 小さい大会ではあまり勝てないけど、大舞台で勝てる選手かどうか これから伸びそうな選手かどうかなどをデータ的にみたかった。 ATPの公式サイトにもいくつか統計情報が載っているが、自分が大事と思う指標で分析したいと思っていた。 まずは、データを取得しなければいけないので、それでスクレイピングのライブラリを作るにいたった。 AtpScraper AtpScraperは男子のプロテニスの公式サイトである、ATPのサイトから情報をスクレイピングしてくれるRubyライブラリだ。 github.com 現時点では、ぼくが今欲している機能しか実装していないが、下記ができる。 シングルスのランキングの取得 プレイヤーの対戦レコードの取得 一例だが、どんなふうに利用できるかのせる。 シングルスのランキング取得 デフォルトだとトップ100のランキングを取得する。 pry(main)&gt; AtpScraper::Get.singles_ranking =&gt; [{:ranking=&gt;&quot;1&quot;, :player_name=&gt;&quot;Novak Djokovic&quot;, :player_url_name=&gt;&quot;novak-djokovic&quot;, :player_id=&gt;&quot;d643&quot;, :points=&gt;&quot;16580&quot;}, {:ranking=&gt;&quot;2&quot;, :player_name=&gt;&quot;Andy Murray&quot;, :player_url_name=&gt;&quot;andy-murray&quot;, :player_id=&gt;&quot;mc10&quot;, :points=&gt;&quot;8765&quot;}, {:ranking=&gt;&quot;3&quot;, :player_name=&gt;&quot;Roger Federer&quot;, :player_url_name=&gt;&quot;roger-federer&quot;, :player_id=&gt;&quot;f324&quot;, :points=&gt;&quot;8295&quot;}, (略) 下記のようにすれば、50位から60位のランキングを取得できる。 （※引数の指定の仕方がアレなのは突っ込まないこと） pry(main)&gt; AtpScraper::Get.singles_ranking(&quot;50-60&quot;) =&gt; [{:ranking=&gt;&quot;50&quot;, :player_name=&gt;&quot;Lukas Rosol&quot;, :player_url_name=&gt;&quot;lukas-rosol&quot;, :player_id=&gt;&quot;r685&quot;, :points=&gt;&quot;897&quot;}, {:ranking=&gt;&quot;51&quot;, :player_name=&gt;&quot;Federico Delbonis&quot;, :player_url_name=&gt;&quot;federico-delbonis&quot;, :player_id=&gt;&quot;d874&quot;, :points=&gt;&quot;895&quot;}, (略) 錦織圭の対戦レコード取得 錦織圭の2016年の対戦レコードを見たいと思えば下記のように取得できる。 （第一引数のn552は選手のIDのようなもので、これは上のランキングの取得時に手に入るのでそこで確認しなければいけない） pry(main)&gt; AtpScraper::Get.player_activity(&quot;n552&quot;, 2016) =&gt; [{:year=&gt;&quot;2016&quot;, :player_name=&gt;&quot;Kei Nishikori&quot;, :player_rank=&gt;&quot;6&quot;, :opponent_name=&gt;&quot;Sam Querrey&quot;, :opponent_rank=&gt;&quot;43&quot;, :round=&gt;&quot;Round of 16&quot;, :score=&gt;&quot;46 36&quot;, :win_loss=&gt;&quot;L&quot;, :tournament_name=&gt;&quot;Abierto Mexicano Telcel&quot;, :tournament_category=&gt;&quot;500&quot;, :tournament_location=&gt;&quot;Acapulco, Mexico&quot;, :tournament_start_date=&gt;&quot;2016.02.22&quot;, :tournament_end_date=&gt;&quot;2016.02.27&quot;, :tournament_surface=&gt;&quot;Hard&quot;, :tournament_surface_inout=&gt;&quot;Outdoor&quot;}, {:year=&gt;&quot;2016&quot;, :player_name=&gt;&quot;Kei Nishikori&quot;, :player_rank=&gt;&quot;6&quot;, :opponent_name=&gt;&quot;Thiemo de Bakker&quot;, :opponent_rank=&gt;&quot;105&quot;, :round=&gt;&quot;Round of 32&quot;, :score=&gt;&quot;60 63&quot;, :win_loss=&gt;&quot;W&quot;, :tournament_name=&gt;&quot;Abierto Mexicano Telcel&quot;, :tournament_category=&gt;&quot;500&quot;, :tournament_location=&gt;&quot;Acapulco, Mexico&quot;, :tournament_start_date=&gt;&quot;2016.02.22&quot;, :tournament_end_date=&gt;&quot;2016.02.27&quot;, :tournament_surface=&gt;&quot;Hard&quot;, :tournament_surface_inout=&gt;&quot;Outdoor&quot;}, (略) もし、過去のすべての錦織圭の対戦レコードを取得したければ下記で取得できる。 pry(main)&gt; AtpScraper::Get.player_activity(&quot;n552&quot;, &quot;all&quot;) 対戦レコードは１対戦ごとのレコードになっている。 トーナメントごとにまとめたりはしていない。 これから データ取得ライブラリを作ったので、これからこれを使った分析をしていこうと思っている。 分析結果が見れるサービスを作るかもしれないし作らないかもしれない。 また、データ取得について要望があれば受け付けるし、プルリクをしてくれてもOKです。 GitHub - mosuke5/atp_scraper: atp_scraper is a tool scraping tennis data from atpworldtour.com.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">08 May 2015, 17:47</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/05/08/174732/" class="post-title">sinatra-assetpackをproduction環境で使う時にはまったー</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-ruby" href="https://blog.mosuke.tech/categories/ruby">ruby</a><a class="post-category post-category-sinatra" href="https://blog.mosuke.tech/categories/sinatra">sinatra</a><a class="post-category post-category-sinatra-assetpack" href="https://blog.mosuke.tech/categories/sinatra-assetpack">sinatra-assetpack</a><a class="post-category post-category-jsminify" href="https://blog.mosuke.tech/categories/jsminify">jsminify</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        Sinatraアプリケーションで、JSファイルを圧縮するsinatra-assetpackを利用していて、 production環境で動作させようとしたら動かなくなってしまった問題について調査した。 起こったこと Sinatraを使ってアプリケーションを作っていて、development環境で完成したので、 prorudction環境で動作させようとしたら、jsのエラーが出るようになってしまい、正常に動かなくなった。 アクセスすると、以下のエラーがでる。要はjqueryがないとのこと。 Uncaught ReferenceError: $ is not defined jQueryはもちろん読み込ませてるし、なんでproduction環境でだけ？？？ ソースコード sinatraのメインアプリケーションであるapp.rbには以下のように、sinatra-assetpackを利用してjsを読み込んでいる。 assets do serve '/js', from: 'public/js' serve '/bower_components', from: 'bower_components' js :app, '/js/app.js', [ '/js/index.js', ] js :libs, '/js/libs.js', [ '/bower_components/jquery/dist/jquery.js', '/bower_components/bootstrap/dist/js/bootstrap.js', ] js_compression :jsmin end layout.erbにはもちろん、libs.jsが先に来るように記述している。 &lt;%= js :libs %&gt; &lt;%= js :app %&gt; sinatra-assetpackの挙動 productionでのみ発生する事象なので、改めてsinatra-assetpackのproduction環境時の挙動を確認した。 production環境では、複数のjsファイルを1つのファイルにまとめ、圧縮を行う。 development環境 ３つのjsファイルがあったら以下のように３つ別々に読み込まれる。 &lt;script type='text/javascript' src='/js/vendor/jquery.283479.js'&gt;&lt;/script&gt; &lt;script type='text/javascript' src='/js/vendor/underscore.589491.js'&gt;&lt;/script&gt; &lt;script type='text/javascript' src='/js/app/main.589491.js'&gt;&lt;/script&gt; production環境 ３つあったjsファイルは1つにまとめられ、また圧縮される。 &lt;script type='text/javascript' src='/js/app.589491.js'&gt;&lt;/script&gt; 詳細はこちら
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">22 Feb 2015, 21:13</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/02/22/211316/" class="post-title">Ruby, thin(bundler利用)を使った環境でのアプリの自動起動設定</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a><a class="post-category post-category-init" href="https://blog.mosuke.tech/categories/init">init</a><a class="post-category post-category-自動起動" href="https://blog.mosuke.tech/categories/%E8%87%AA%E5%8B%95%E8%B5%B7%E5%8B%95">自動起動</a><a class="post-category post-category-Ruby" href="https://blog.mosuke.tech/categories/ruby">Ruby</a><a class="post-category post-category-thin" href="https://blog.mosuke.tech/categories/thin">thin</a><a class="post-category post-category-unicorn" href="https://blog.mosuke.tech/categories/unicorn">unicorn</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        bunlderを使ったWebアプリをプロダクション環境で動かすときに、アプリの起動をどうやって実現しているだろうか。 Apache Passengerを使う場合には、Apacheの起動がアプリの起動につながるので、 アプリの起動はあまり気にしなかったかもしれない。 しかし、例えばNginx × Unicorn/thinの構成などの場合はUnicornやthinの起動もしなければいけなくなってくる。 （あるいはこのようなケースがあるかは謎だが、Unicornやthinを単体で動かそうとしている場合など） Unicornやthin（例ではthinを扱うが本質は同じ）の自動起動を実現する際の勘所、注意事項をまとめた。 0. 前提 CentOS6.5上でRubyでのWebアプリケーションを作っている。 アプリケーションサーバはthinを利用している。 また、gemパッケージ管理にbundlerを利用している。 1. 開発環境でよくするアプリの起動 開発環境では、アプリケーションのログの閲覧性なども兼ねて以下のようにアプリを起動していた。 $ bundle exec rackup $ bundle exec thin start でも、これではいつまでたってもプロダクション環境での利用はできません。 2. 上記方法ではプロダクション環境で利用できない理由 当然のことながら、プロダクション環境ではいちいち手動でコマンドを実行しアプリケーションを立ち上げるわけにはいかない。 例えば、なんらかの理由でサーバが再起動してしまった場合には、 このままではアプリケーションが自動的に立ち上がらないため、サービスの停止につながってしまう。 ではどうするのか？ 以下の状態であることがプロダクション環境では理想なのではないだろうか？ オリジナルアプリケーションもserviceコマンドで起動・停止ができる 他のサービスと同様の操作方法が可能なのでわかりやすい サーバ立ち上げ時にサービスが自動で起動される 3. 起動スクリプトを作ろう 上記の状態にもっていくためには、起動スクリプトを作らなければならない。 起動スクリプトを作る…！？ 「作ったことないし、すぐには作れないよ〜」って思うかもしれないが、 サンプルはたくさんあるし、よく見てみるとそれほど難しくはない。 thinを使ったサンプルを探そうと思うと数は少ないが、Unicornも同じ仕組なので、 "unicorn init script"なんて検索をかけてもいろいろでてくるのでおすすめ。 参考ししたもの https://gist.github.com/sbeam/3454488 上を参考にしながら、こんな起動スクリプトを作ってみた。（未完成版） これを/etc/init.d以下へ配置する。 #!/bin/bash ### BEGIN CHKCONFIG INFO # chkconfig: 2345 55 25 # description: sample-app ### END CHKCONFIG INFO SCRIPT_NAME=/etc/init.d/sample-app CONFIG_PATH=/path/to/config BUNDLE_CMD=/usr/local/bin/bundle bundle_exec_thin () { for CONFIG_FILE in &quot;$CONFIG_PATH/*.yml&quot;; do SITE_DIR=`awk '/^chdir:/ { print $2; }' $CONFIG_FILE` cd $SITE_DIR $BUNDLE_CMD exec thin $1 -C $CONFIG_FILE done } case &quot;$1&quot; in start) bundle_exec_thin start ;; stop) bundle_exec_thin stop ;; restart) bundle_exec_thin restart ;; *) echo &quot;Usage: $SCRIPT_NAME {start|stop|restart}&quot; &gt;&amp;2 exit 3 ;; esac : 起動スクリプトも完成したし、実際にserviceコマンドで実行してみる。 $ sudo service sample-app start /usr/bin/env: ruby: No such file or directory んん。。。起動せず、撃沈… 起動スクリプトを作る上での注意 起動しなかった原因に移る前に、起動スクリプトを作る上での注意点を１つ。 chkconfigで認識させるためには冒頭のCHKCONFIG INFO部分(コメントアウト部分)も重要になってくる。 CHKCONFIG INFO部分を書かないままchkconfigでaddしようとすると以下のように怒られます。 $ sudo chkconfig --add sample-app service sample-app does not support chkconfig 4.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">15 Sep 2014, 13:56</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/09/15/135611/" class="post-title">D3.js、DBからのデータ連携方法の検討</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-D3.js" href="https://blog.mosuke.tech/categories/d3.js">D3.js</a><a class="post-category post-category-Sinatra" href="https://blog.mosuke.tech/categories/sinatra">Sinatra</a><a class="post-category post-category-Ruby" href="https://blog.mosuke.tech/categories/ruby">Ruby</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        最近D3.jsを使う機会があり、DBのデータを読み込ませる方法についていくつか検討した。 例えば以下の状況を考える。 【やりたいこと】 「DBに格納されているデータを使って、D3.jsで折れ線グラフを描く」 【DBの構造】 カラム名：型 date : datetime value : int ※また、下記ではSinatra上で行っているが、他の言語でも同様のことがいえる。 (1) 簡単なAPIのようなものを利用する 先に結論から書くと、今まで次の(2)(3)のようなやりかたをやっていたのだけれど、 これが一番複雑にならずに良いと思ったということ。 Sinatra側で/csvにアクセスするとcsvファイルをダウンロードできるようにする。 ```ruby #Sinatra側 get &lsquo;/csv&rsquo; do content_type &lsquo;application/csv&rsquo; attachment &lsquo;download.csv&rsquo; #DBからデータ取得(Activerecord利用) @data = Model.all() #出力するCSVデータの変数。csvヘッダーを先につけている。 @csv = &quot;date,value\n&quot; #DBのデータをCSVの形にして格納 @data.each do |d| @csv += d.date.to_s + &quot;,&quot; + d.value.to_s + &quot;\n&quot; end #csvtest.erbというビューに出力 erb :csvtest, :layout =&gt; false end &lt;p&gt;csvtest.erb&lt;/p&gt; ```ruby &lt;%= @csv %&gt; こうすることで"http://*****/csv"にアクセスするとcsvファイルとしてダウンロードできる状態になる。 条件指定をしてデータをダウンロードできるようにしたい場合はGETでパラメータ指定できるようにすれば良いと思う。 （SinatraでCSVファイルを生成するところのコードがナンセンスだと思っているので、もっといい方法があるはず…） また、今回はcsvにしているがjsonなどの他の形式でも同様のことがいえる。 これをD3.js側で以下のように読み込ませる。 d3.csv(&quot;/csv&quot;, function(error, data) {
+                    </div>
+                </section>
+                
+            </div>
+            
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

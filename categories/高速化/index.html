@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高速化 &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="高速化 &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="高速化 &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">01 Dec 2015, 18:13</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/12/01/181304/" class="post-title">Ansible、実行速度高速化の実験。ControlMasterとPipeliningについて</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-SSH" href="https://blog.mosuke.tech/categories/ssh">SSH</a><a class="post-category post-category-高速化" href="https://blog.mosuke.tech/categories/%E9%AB%98%E9%80%9F%E5%8C%96">高速化</a><a class="post-category post-category-ControlMaster" href="https://blog.mosuke.tech/categories/controlmaster">ControlMaster</a><a class="post-category post-category-pipelining" href="https://blog.mosuke.tech/categories/pipelining">pipelining</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        1. はじめに Vim::Factoryの開発や、仕事などでAnsibleを使うことが多いのだが、 その実行速度があまりでないことに不満をもっていて、どうしたら早くできるか考えていました。 調べると、ControlMasterを利用してSSHのコネクションを再利用するとか、pipelineの機能を利用するとかでてくる。 が、それによってどのくらいの効果が得られるのかよくわからないし、仕組みもよくわかっていなかったので、仕組みの理解と実行速度の実験をした。 もう少し余談をすると、 ControlMasterを有効にすれば早くなることは前から知っていたが、 最近MacをEl Capitanに変えてから「なんか最近Ansibleはやいな〜」とか思っていて、 「OpenSSHのバージョンもあがったし、まさか。。。」と思って今にいきついている。 ControlMasterについて OpenSSH は、1 つの接続で複数のセッションを共有する(束ねる)「コントロール マスター」と呼ばれる機能を持っています。コントロールマスターを使用すると、 リモートホストに接続する最初のセッションは制御用のセッション(マスターセッショ ンと呼ばれます)として利用され、制御用のソケットを作成します。セッションを 共有する SSH クライアントは、この制御用のソケットを通じてリモートホストと 接続し通信を行います。 出典：「OpenSSH実践入門」 上記のように、１つの接続で複数のセッションを共有するため、 Ansibleのようにタスク実行ごとにSSH接続するような場合には大きな効果を得ることができる。 Pipeliningについて Pipelining機能の説明の前に、軽くAnsibleの実行までの流れを説明する。 Ansibleは対象サーバにSSHログインしたあと実行するタスクのモジュールをファイルとして転送しそれを実行する。 Pipelining機能をなしの状態だと、このファイル転送とファイルの削除を１タスクごとに行う。 ansibleを-vvvvオプションをつけて実行するとわかるが、 ４行目でファイルのPUT（転送）を、５行目の最後の方にrm -rfでディレクトリ・ファイルの削除を行っている。 &lt;192.168.33.100&gt; ESTABLISH CONNECTION FOR USER: deploy &lt;192.168.33.100&gt; REMOTE_MODULE command ls -l /root &lt;192.168.33.100&gt; EXEC ssh -C -tt -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=user -o ConnectTimeout=10 192.168.33.100 /bin/sh -c 'mkdir -p $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321 &amp;&amp; chmod a+rx $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321 &amp;&amp; echo $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321' &lt;192.168.33.100&gt; PUT /var/folders/7_/d_dwdlcx1m95mn_846x30xb40000gn/T/tmpc8amAw TO /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/command &lt;192.168.33.100&gt; EXEC ssh -C -tt -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=user -o ConnectTimeout=10 192.168.33.100 /bin/sh -c 'sudo -k &amp;&amp; sudo -E -S -p &quot;[sudo via ansible, key=koibtlgpbiprbaihcqxiqgcnnreofxuo] password: &quot; -u root /bin/sh -c '&quot;'&quot;'echo BECOME-SUCCESS-koibtlgpbiprbaihcqxiqgcnnreofxuo; LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8 /usr/bin/python /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/command; rm -rf /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/ &gt;/dev/null 2&gt;&amp;1'&quot;'&quot;'' Pipiliningの機能を有効にすると、タスク実行ごとのモジュールファイルの転送と削除をしなくなる。 そのため、実効速度があがるのです。 下記はPipeliningを有効にした際の出力。SSHでタスクを実行しているだけなのがわかる。 &lt;192.168.33.100&gt; ESTABLISH CONNECTION FOR USER: deploy &lt;192.168.33.100&gt; REMOTE_MODULE command ls -l /root &lt;192.168.33.100&gt; EXEC ssh -C -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=deploy -o ConnectTimeout=10 192.168.33.100 /bin/sh -c 'sudo -k &amp;&amp; sudo -E -S -p &quot;[sudo via ansible, key=kjtoopnjepksibiitumqfycsoldadiws] password: &quot; -u root /bin/sh -c '&quot;'&quot;'echo BECOME-SUCCESS-kjtoopnjepksibiitumqfycsoldadiws; LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8 /usr/bin/python'&quot;'&quot;'' Configuration file — Ansible Documentation 2.
+                    </div>
+                </section>
+                
+            </div>
+            
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

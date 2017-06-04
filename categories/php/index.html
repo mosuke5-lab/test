@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Php &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Php &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Php &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">17 Jun 2015, 21:28</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/06/17/212852/" class="post-title">PostgreSQL環境でFuelPHPのDBマイグレーションを使う</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-php" href="https://blog.mosuke.tech/categories/php">php</a><a class="post-category post-category-fuelphp" href="https://blog.mosuke.tech/categories/fuelphp">fuelphp</a><a class="post-category post-category-DBマイグレーション" href="https://blog.mosuke.tech/categories/db%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3">DBマイグレーション</a><a class="post-category post-category-PostgreSQL" href="https://blog.mosuke.tech/categories/postgresql">PostgreSQL</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        今更FuelPHP感はあるのだが、 postgresql利用時のFuelPHPのmigration導入について、注意点をまとめた。 でも、結論は納得がいっていない。 0. 前提 下記の環境で行ったものです。 PHP: 5.5.7 FuelPHP: 1.7 Postgresql: 9.4 1. テーブル文字コードの問題 事象 公式サイトのサンプルの通りはじめにapp/migrations/001_example.phpを作り、migrationを実行した。 app/migrations/001_example.phpの作成 &lt;?php namespace Fuel\Migrations; class Example { function up() { \DBUtil::create_table('posts', array( 'id' =&gt; array('type' =&gt; 'int', 'constraint' =&gt; 5), 'title' =&gt; array('type' =&gt; 'varchar', 'constraint' =&gt; 100), 'body' =&gt; array('type' =&gt; 'text'), ), array('id')); } function down() { \DBUtil::drop_table('posts'); } } マイグレーション実行すると以下のエラーに襲われた。 $ php oil refine migrate Uncaught exception Fuel\Core\Database_Exception: SQLSTATE[42601]: Syntax error: 7 ERROR: syntax error at or near &quot;DEFAULT&quot; LINE 5: )DEFAULT CHARACTER SET utf8; ^ with query: &quot;CREATE TABLE IF NOT EXISTS &quot;migration&quot; ( &quot;type&quot; varchar(25) NOT NULL, &quot;name&quot; varchar(50) NOT NULL, &quot;migration&quot; varchar(100) DEFAULT '' NOT NULL )DEFAULT CHARACTER SET utf8;&quot; 理由 しょっぱなから躓くわけだが… 初めてマイグレーションを実行する際にはマイグレーション管理用のテーブルを作る。 そのテーブルを作るSQLが下記の通り発行されている。 CREATE TABLE IF NOT EXISTS &quot;migration&quot; ( &quot;type&quot; varchar(25) NOT NULL, &quot;name&quot; varchar(50) NOT NULL, &quot;migration&quot; varchar(100) DEFAULT '' NOT NULL )DEFAULT CHARACTER SET utf8; 理由は単純で、postgresqlのcreate tableでは次のdefault構文は利用できないから。 create table xxxx ( ) default character set xxx; なぜ、利用できない構文のSQLが発行されたのか？ それは単にFuelPHPの問題です。次期バージョンでは解決されることを祈る。 解決方法 解決方法は下記の記事がわかりやすかった。 FuelPHP で PDOによるPostgreSQL接続の罠 - Qiitaqiita.com 簡単に言うとdbのコンフィグで、charsetをnullにするとDEFAULT CHARACTER SET xxx部分が発行されない。 'charset' =&gt; NULL, 2.
+                    </div>
+                </section>
+                
+            </div>
+            
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

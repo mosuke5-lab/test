@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Virtualbox on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/virtualbox/</link>
+    <description>Recent content in Virtualbox on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Fri, 31 Jul 2015 21:15:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/virtualbox/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Packerやる前にKickstartはじめよう</title>
+      <link>https://blog.mosuke.tech/entry/2015/07/31/211542/</link>
+      <pubDate>Fri, 31 Jul 2015 21:15:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/07/31/211542/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;h1&gt;1.はじめに&lt;/h1&gt;&lt;/p&gt;
+
+&lt;p&gt;開発環境はVirualboxを使った&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;を利用しているが、&lt;br&gt;
+本番環境は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;だったり&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/KVM&#34;&gt;KVM&lt;/a&gt;だったり違う仮想化機構で動作しているなんてことよくあると思います。&lt;br&gt;
+そういう環境下でどのように開発環境と本番環境の差分をなくしていますか？&lt;/p&gt;
+
+&lt;p&gt;わたしの場合、基本的にAnsibleを使ってプロビジョニングをしていますが、&lt;br&gt;
+そのプロビジョニング前のベースが異なってしまって困ることがよくあります。&lt;br&gt;
+一般に公開されているVagrantBox使ったら余計な設定が入っていたとか、すでにパッケージが入っていたとか…&lt;/p&gt;
+
+&lt;p&gt;そんな問題を解決しようとPackerを使おう！って考えました。&lt;br&gt;
+ですが、Packerも当たり前だけど魔法ではなく、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kickstart&#34;&gt;Kickstart&lt;/a&gt;などの自動インストールが前提なので、&lt;br&gt;
+Packerをやる前に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kickstart&#34;&gt;Kickstart&lt;/a&gt;を学習せよ、、、ということに気づきました。&lt;/p&gt;
+
+&lt;p&gt;ということで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kickstart&#34;&gt;Kickstart&lt;/a&gt;をはじめたよってことです。&lt;/p&gt;
+
+&lt;h1&gt;2.&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;ってなに&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;はOSのインストールを自動化する仕組みです。&lt;br&gt;
+anaconda社が提供するインストールの仕組みで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Redhat&#34;&gt;Redhat&lt;/a&gt;系のOSが採用しているものです。&lt;br&gt;
+ですので&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ubuntu&#34;&gt;Ubuntu&lt;/a&gt;だとPreseedっていう別の仕組みだそうです。（詳しくありませんっ）&lt;/p&gt;
+
+&lt;p&gt;で、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kickstart&#34;&gt;Kickstart&lt;/a&gt;でなにができるかというと...&lt;/p&gt;
+
+&lt;p&gt;OSのインストールをしたことがある方ならわかるかと思いますが、&lt;br&gt;
+普通にDVDなどからインストールすると、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;言語はなににしますかー？&lt;/li&gt;
+&lt;li&gt;ホスト名なににしますかー？&lt;/li&gt;
+&lt;li&gt;パッケージはなにをいれますかー？&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;とか、聞かれて選択していく必要があります。
+この作業を自動化できるのが&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;です。&lt;/p&gt;
+
+&lt;p&gt;URLのようなもの。
+&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fkajuhome.com%2Fcentos6_inst.shtml&#34; title=&#34;はじめての自宅サーバ構築 - Fedora/CentOS - CentOS6 のインストール手順&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;a href=&#34;http://kajuhome.com/centos6_inst.shtml&#34;&gt;はじめての自宅サーバ構築 - Fedora/CentOS - CentOS6 のインストール手順&lt;/a&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://kajuhome.com/centos6_inst.shtml&#34;&gt;kajuhome.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;(おまけ)Ansible, Chef, Puppetとの違い？&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;にはプロビジョニング機能もついているため、&lt;br&gt;
+AnsibleとかChefとかPuppetとの違いは？住み分けは？と思うかもしれません。&lt;br&gt;
+明確に、住み分けが決まっているわけではありませんが、
+個人的にはAnsibleやChefを実行する前の最低限の設定を&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;にやらせようと思っています。&lt;br&gt;
+（一般的かとは思いますが…？）&lt;/p&gt;
+
+&lt;p&gt;Lee ThompsonのProvisioning Toolchainを参考にKiskstarのやる範囲をまとめると。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150731/20150731223953.jpg&#34; alt=&#34;f:id:mosuke5:20150731223953j:plain&#34; title=&#34;f:id:mosuke5:20150731223953j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fen.oreilly.com%2Fvelocity-mar2010%2Fpublic%2Fschedule%2Fdetail%2F14180&#34; title=&#34;Provisioning Toolchain: Web Performance and Operations - Velocity Online Conference - March 17, 2010 - O&#39;Reilly Media&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;a href=&#34;http://en.oreilly.com/velocity-mar2010/public/schedule/detail/14180&#34;&gt;Provisioning Toolchain: Web Performance and Operations - Velocity Online Conference - March 17, 2010 - O&#39;Reilly Media&lt;/a&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://en.oreilly.com/velocity-mar2010/public/schedule/detail/14180&#34;&gt;en.oreilly.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;3.Hello &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kickstart&#34;&gt;Kickstart&lt;/a&gt;!!&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Virtualbox&#34;&gt;Virtualbox&lt;/a&gt;を使って&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kickstart&#34;&gt;Kickstart&lt;/a&gt;を試しました。&lt;/p&gt;
+
+&lt;h1&gt;3-1.用意したもの&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Virtualbox&#34;&gt;Virtualbox&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;自分の環境は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;で、バージョンは5.0&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;OSのisoファイル
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://isoredirect.centos.org/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-1503-01.iso&#34;&gt;CentOS Mirror&lt;/a&gt; ここからダウンロードしました&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;ファイル
+
+&lt;ul&gt;
+&lt;li&gt;ネットワーク上においてhttpでアクセスできるようにしておきました&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;利用した&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;ファイル。自分の学習のためコメントを多く残しました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# アップグレードするかインストールするか
+install
+
+# インストールタイプの設定
+# CD-ROM経由かネットワーク経由かとか
+cdrom
+
+# 言語設定
+lang ja_JP.UTF-8
+
+# キーボード設定
+keyboard jp106
+
+# ネットワーク設定
+# /etc/sysconfig/network-scripts/ifcfg-xxxx 部分
+network --onboot yes --device eth0 --bootproto dhcp --noipv6
+
+# rootのパスワード
+# xxxxxx部分はopensslコマンドで作成するといい
+# $openssl passwd -1
+rootpw --iscrypted xxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# iptablesの設定
+# プロビジョニングで設定するのでここでは無効にしておく
+firewall --disabled
+
+# 認証オプション
+authconfig --enableshadow --passalgo=sha512
+
+# SELinuxの設定
+# こちらも詳細はプロビジョニングで設定するので無効にしておく
+selinux --disabled
+
+# タイムゾーン
+timezone --utc Asia/Tokyo
+
+# ブートローダのインストール方法
+bootloader --location=mbr --driveorder=sda --append=&amp;quot;nomodeset crashkernel=auto rhgb quiet&amp;quot;
+
+# 設定後にリブート
+reboot
+
+# パーティション設定
+clearpart --linux --drives=sda
+autopart
+
+# インストールパッケージ選択
+%packages --nobase
+@core
+
+%end 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;参考になったもの&lt;/h3&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Redhat&#34;&gt;Redhat&lt;/a&gt;社のインストールガイドがよくまとまっていた。&lt;br&gt;
+特に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;ファイルについては下記あたりが役立ちます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://access.redhat.com/documentation/ja-JP/Red_Hat_Enterprise_Linux/6/html/Installation_Guide/s1-kickstart2-options.html&#34;&gt;32.4. キックスタートのオプション&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://access.redhat.com/documentation/ja-JP/Red_Hat_Enterprise_Linux/6/html/Installation_Guide/s1-kickstart2-packageselection.html&#34;&gt;32.5. パッケージの選択&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;3-2.&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;ファイルの使い方&lt;/h1&gt;
+
+&lt;p&gt;しかし、OSインストール前なのにどうやってファイルを使うのか…？&lt;br&gt;
+はじめ戸惑いました…&lt;/p&gt;
+
+&lt;p&gt;実は以下の方法で利用できます。&lt;/p&gt;
+
+&lt;p&gt;OSのisoファイルで起動するとこの画面がでるやろ。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150802/20150802125544.png&#34; alt=&#34;f:id:mosuke5:20150802125544p:plain&#34; title=&#34;f:id:mosuke5:20150802125544p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;そして、ここでTabをおすと、なにか入力できるが画面が出てきて。&lt;br&gt;
+そこに、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;ファイルのパスを入力してやる。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150802/20150802125630.png&#34; alt=&#34;f:id:mosuke5:20150802125630p:plain&#34; title=&#34;f:id:mosuke5:20150802125630p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;これで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kickstart&#34;&gt;Kickstart&lt;/a&gt;完了や。&lt;/p&gt;
+
+&lt;h1&gt;4.最後に&lt;/h1&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kickstart&#34;&gt;Kickstart&lt;/a&gt;入門したし、次はPackerをやりたいと思います。&lt;br&gt;
+が、ふと思ったのが、自分の用途だとPackerではなく&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kickstart&#34;&gt;Kickstart&lt;/a&gt;で十分かもなーとか思ったり思わなかったり…&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

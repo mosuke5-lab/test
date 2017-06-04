@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ansible on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/ansible/</link>
+    <description>Recent content in Ansible on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 25 Jan 2016 22:21:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/ansible/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Vagrant×Ansible環境の３つのスタイルとそのメリット・デメリットについて</title>
+      <link>https://blog.mosuke.tech/entry/2016/01/25/222150/</link>
+      <pubDate>Mon, 25 Jan 2016 22:21:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/01/25/222150/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;×Ansibleで開発環境を作っているみなさんは、
+どんなふうにそれを実現していますか？&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;きっといくつかのやり方、考え方があると思います。&lt;br&gt;
+例えば、ご自身のPCにAnsibleをインストールして&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;の仮想環境にプロビジョニングしているとか。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;で立てた仮想環境にAnsibleを入れて実行するとか。&lt;/p&gt;
+
+&lt;p&gt;本ブログでは下記３つの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;×Ansibleのやり方に注目し、&lt;br&gt;
+そのメリット・デメリットについて自分なりにまとめます。&lt;/p&gt; 
+&lt;ol&gt;
+&lt;li&gt;&lt;b&gt;ホストにAnsibleをインストールして利用する&lt;/b&gt;&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;ゲストにAnsibleをインストールして利用する&lt;/b&gt;&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;Ansible実行用のゲストを作って利用する&lt;/b&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;h1&gt;1. ホストにAnsibleをインストールして利用する&lt;/h1&gt;
+
+&lt;h2&gt;概要&lt;/h2&gt;
+
+&lt;p&gt;1番よくあるやり方だと思う。&lt;br&gt;
+ご自身のPCにAnsibleを入れて&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;で立ち上げたゲストにプロビジョニングを行う。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160125/20160125214934.png&#34; alt=&#34;f:id:mosuke5:20160125214934p:plain:w300&#34; title=&#34;f:id:mosuke5:20160125214934p:plain:w300&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:300px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;メリット&lt;/h2&gt;
+
+&lt;p&gt;なんといっても直感的でシンプル。&lt;br&gt;
+3.との比較になるが、Ansibleを実行する環境を別途用意する必要がないのでホストのリソースにも優しい。&lt;br&gt;
+また、2.との比較でゲストに無駄なものが入らない点でよい。&lt;/p&gt;
+
+&lt;h2&gt;デメリット&lt;/h2&gt;
+
+&lt;p&gt;ただ、そもそもwimdowsユーザはホストにAnsibleをインストールすることはできない。&lt;br&gt;
+つまり、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4%BF%CD&#34;&gt;複数人&lt;/a&gt;での開発をしていて、人によって端末が異なる場合には向いていない。&lt;br&gt;
+個人の端末の設定などにも大きく依存するため、チーム開発向きでないといえる。&lt;/p&gt;
+
+&lt;h1&gt;2. ゲストにAnsibleをインストールして利用する&lt;/h1&gt;
+
+&lt;h2&gt;概要&lt;/h2&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;で立ち上げたゲストの中にAnsibleをインストールし、自身へプロビジョニングするやりかた。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160125/20160125215405.png&#34; alt=&#34;f:id:mosuke5:20160125215405p:plain:w300&#34; title=&#34;f:id:mosuke5:20160125215405p:plain:w300&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:300px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;この方式はshin1x1さんもおすすめしている。&lt;/p&gt;
+&lt;a href=&#34;http://shin1x1.hatenablog.com/embed/ansible_local-provisioner-in-vagrant&#34; target=&#34;_blank&#34;&gt;Vagrant + Ansible で開発環境を作るなら ansible_local プロビジョナがいい！ - Shin x Hatena Blog&lt;/a&gt;
+
+&lt;h2&gt;メリット&lt;/h2&gt;
+
+&lt;p&gt;（詳しくは上のブログを読むといいと思う。）&lt;br&gt;
+1.のデメリットで述べた、端末への依存度をなくすことができる。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/vagrant&#34;&gt;vagrant&lt;/a&gt;の新機能であるansible_localも利用できるのでプロビジョニングが楽だ。&lt;br&gt;
+3.と比べてAnsible実行環境を用意しなくて済む。&lt;/p&gt;
+
+&lt;h2&gt;デメリット&lt;/h2&gt;
+
+&lt;p&gt;メリットだけみると1.の問題点を解決していて最高のようにみえる。&lt;br&gt;
+しかし、ゲストに&lt;b&gt;本来インストールされるべきものでないものがはいる&lt;/b&gt;点は忘れてはいけない。&lt;br&gt;
+Ansibleを使ってプロダクション環境にデプロイするユーザにとっては大きな問題だと思う。&lt;br&gt;
+開発環境とプロダクション環境での差分が広がってしまう。&lt;br&gt;
+また、Ansibleと並行してserverspecを使ってる人も多いと思うが、&lt;br&gt;
+そうなると今度はゲスト側に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;もいれるのか？など様々な疑問が湧いてくる。&lt;/p&gt;
+
+&lt;h1&gt;3. Ansible実行用のゲストを作って利用する&lt;/h1&gt;
+
+&lt;h2&gt;概要&lt;/h2&gt;
+
+&lt;p&gt;Ansible実行用のゲストを&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;で立ち上げて、開発用のゲストへプロビジョニングにする。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160125/20160125215618.png&#34; alt=&#34;f:id:mosuke5:20160125215618p:plain:w300&#34; title=&#34;f:id:mosuke5:20160125215618p:plain:w300&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:300px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;メリット&lt;/h2&gt;
+
+&lt;p&gt;2.のデメリットで述べた、ゲストへの不要なもののインストールを防ぐことが可能。&lt;br&gt;
+例えばserverspecで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;が必要な場合もAnsible実行用のゲストに入れればいい。&lt;br&gt;
+必要なものをインストールしたAnsible実行用のイメージファイルをチーム内で共有すれば端末依存もセットアップの手間も省ける。&lt;/p&gt;
+
+&lt;h2&gt;デメリット&lt;/h2&gt;
+
+&lt;p&gt;なんといっても、ゲストを二つは立ちあげる必要があること。&lt;br&gt;
+これは少し面倒だ。&lt;/p&gt;
+
+&lt;h1&gt;まとめ&lt;/h1&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160125/20160125220823.png&#34; alt=&#34;f:id:mosuke5:20160125220823p:plain:w500&#34; title=&#34;f:id:mosuke5:20160125220823p:plain:w500&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:500px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;この見解は正直&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;やAnsibleの使いみち、用途によってだいぶ変わると思う。&lt;br&gt;
+なので絶対な評価ではないと思うが、私のいままでの経験上はこのような評価となったので参考にしてもらえればと思う。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>インフラのデプロイとテストを同時実行できるようにしてHappyになった</title>
+      <link>https://blog.mosuke.tech/entry/2015/12/17/192554/</link>
+      <pubDate>Thu, 17 Dec 2015 19:25:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/12/17/192554/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;h1&gt;はじめに&lt;/h1&gt;&lt;/p&gt;
+
+&lt;p&gt;私が開発しているシステムでは、Ansibleでサーバ構築からアプリケーションのデプロイまですべて実行できるようにしています。
+そして、serverspecを使って、インフラテストも行っています。&lt;br&gt;
+しかし、その運用にいくつか課題点がありました。&lt;/p&gt;
+
+&lt;p&gt;その課題点についてと、課題点へ対策したことについて書きます。&lt;/p&gt;
+
+&lt;h1&gt;課題だったこと&lt;/h1&gt;
+
+&lt;h2&gt;(課題1) デプロイとテストをそれぞれ実行していた&lt;/h2&gt;
+
+&lt;p&gt;Ansibleでのデプロイとserverspecのテストはそれぞれ別のコマンドで実行していました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ansible-playbook site.yml -i 
+$ bundle exec rake serverspec 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2つ実行することが面倒であり、面倒であるがゆえにserverspecの実行を怠ったりしていました。&lt;br&gt;
+これではテストの効果があまり発揮できませんね。&lt;/p&gt;
+
+&lt;h2&gt;(課題2) sudoパスワードをうまく管理できなかった&lt;/h2&gt;
+
+&lt;p&gt;上のような課題1について、真っ先に以下の様にコマンドを続けることを思いつきました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ansible -playbook site.yml -i ; bundle exec rake serverspec 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ですが、これだとansible実行終了後にserverspecを実行する際にsudoパスワードが再度聞かれるため、&lt;br&gt;
+コマンドを打ったまま「放置」ができませんでした。&lt;br&gt;
+&lt;span style=&#34;font-size: 80%&#34;&gt;※もちろん、sudoパスワードを要求しないようにユーザ設定をすればできますが、多くの場合ではセキュリティ上難しかったりすると思います。&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;接続は鍵認証、sudoには必ずパスワードを要求するようにしています。&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;Ansibleもserverspecにもコマンド実行時にsudoパスワードを記述する方法があります。&lt;br&gt;
+Ansibleでは、ansible.cfgにsudo_passwordを記述、あるいはコマンド実行時に--extra-argsでsudoパスワードを指定できます。&lt;br&gt;
+serverspecでも&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B4%C4%B6%AD%CA%D1%BF%F4&#34;&gt;環境変数&lt;/a&gt;でSUDO_PASSWORDが指定できます。&lt;/p&gt;
+
+&lt;p&gt;例 ）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ansible -playbook site.yml -i --extra-args=&#39;ansible_sudo_pass=xxxxxxxx&#39;
+bundle exec rake serverspec SUDO_PASSWORD=xxxxxxxx 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ですが、おわかりの通り、&lt;b&gt;コマンドの履歴にもパスワードが残ります&lt;/b&gt;。&lt;br&gt;
+なのであまり良い方法ではないと思っています。&lt;/p&gt;
+
+&lt;h2&gt;(課題3) タスクの実行方法がバラバラ&lt;/h2&gt;
+
+&lt;p&gt;デプロイはansibleコマンドで実行、テストはrakeで実行、他のタスクは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%A7%A5%EB%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;シェルスクリプト&lt;/a&gt;。。。&lt;br&gt;
+といったように、タスクによって実行方法が異なってしまう状況になっていました。&lt;br&gt;
+運用的にとても不便でしたので、１つに統一したいと思っていました。&lt;/p&gt;
+
+&lt;h1&gt;いい感じに同時に実行してくれるRakeタスクを作った&lt;/h1&gt;
+
+&lt;p&gt;上で述べたような課題点をクリアするように、下記の要件を満たすように工夫をしました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;デプロイ、テストが同じ形式で実行できる&lt;/li&gt;
+&lt;li&gt;sudoパスワードをベタ書きすることなく実行できる&lt;/li&gt;
+&lt;li&gt;sudoパスワードの入力を一回だけにする&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;結論は、すべてRakeタスクで実行できるようにしました。&lt;br&gt;
+タスク一覧を見ると以下の様な感じになりました。（※実行結果は例であり実際の内容とは少し異なる。）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ bundle exec rake -T
+rake deploy:development    # Deploy to development server
+rake deploy:production     # Deploy to production server
+rake serverspec            # Run serverspec to all hosts
+rake serverspec:app        # Run serverspec to app server
+rake serverspec:db        # Run serverspec to db server 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rakefile&#34;&gt;Rakefile&lt;/a&gt;の実装例（一部省略）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;desc &amp;quot;Deploy and Test&amp;quot;
+namespace :deploy do
+  require &amp;quot;io/console&amp;quot;
+  require &amp;quot;open3&amp;quot;
+
+  STDOUT.sync = true
+  desc &amp;quot;Deploy to development server&amp;quot;
+  task :development do
+    # sudoパスワードははじめに１回だけ聞くようにします。
+    sudo_password = ask_sudo_password
+
+    # デプロイとテストを同時に実行します。
+    deploy_and_test(&#39;development&#39;, sudo_password)
+  end
+
+  # デプロイとテストの同時実行関数
+  def deploy_and_test(env, sudo_password)
+    deploy_cmd = &amp;quot;ansible-playbook -i #{env} site.yml --extra-vars &#39;ansible_sudo_pass=#{sudo_password}&#39;&amp;quot;
+    test_cmd = &amp;quot;bundle exec rake serverspec ENVIRONMENT=#{env} SUDO_PASSWORD=#{sudo_password}&amp;quot;
+    Open3.pipeline(&amp;quot;#{deploy_cmd}; #{test_cmd}&amp;quot;)
+  end
+
+  # sudoパスワードを要求関数
+  def ask_sudo_password
+    print &amp;quot;SUDO Password: &amp;quot;
+    sudo_password = STDIN.noecho &amp;amp;:gets
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;まとめ&lt;/h1&gt;
+
+&lt;p&gt;タスクによってその実行方法が異なることは運用上とても不便です。&lt;br&gt;
+統一した実行方法にすることで、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;テストの実行し忘れがなくなり&lt;/li&gt;
+&lt;li&gt;ドキュメントも残しやすくなり&lt;/li&gt;
+&lt;li&gt;チームメンバーへの運用方法の伝授も楽になり&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ました。（今回に限る話ではないけれど）&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;また、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rakefile&#34;&gt;Rakefile&lt;/a&gt;はかなりやっつけで作ってしまったので、何をタスクにするか・その命名・実装方法などの改善は年末の課題ですかね。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ansible、実行速度高速化の実験。ControlMasterとPipeliningについて</title>
+      <link>https://blog.mosuke.tech/entry/2015/12/01/181304/</link>
+      <pubDate>Tue, 01 Dec 2015 18:13:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/12/01/181304/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;h1&gt;1. はじめに&lt;/h1&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryの開発や、仕事などでAnsibleを使うことが多いのだが、&lt;br&gt;
+その実行速度があまりでないことに不満をもっていて、どうしたら早くできるか考えていました。&lt;br&gt;
+調べると、ControlMasterを利用して&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;のコネクションを再利用するとか、pipelineの機能を利用するとかでてくる。&lt;/p&gt;
+
+&lt;p&gt;が、それによってどのくらいの効果が得られるのかよくわからないし、仕組みもよくわかっていなかったので、仕組みの理解と実行速度の実験をした。&lt;/p&gt;
+
+&lt;p&gt;もう少し余談をすると、&lt;br&gt;
+ControlMasterを有効にすれば早くなることは前から知っていたが、&lt;br&gt;
+最近&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;をEl Capitanに変えてから「なんか最近Ansibleはやいな〜」とか思っていて、&lt;br&gt;
+「OpenSSHのバージョンもあがったし、まさか。。。」と思って今にいきついている。&lt;/p&gt;
+
+&lt;h2&gt;ControlMasterについて&lt;/h2&gt;
+
+&lt;blockquote&gt;&lt;p&gt;OpenSSH は、1 つの接続で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4&#34;&gt;複数&lt;/a&gt;のセッションを共有する(束ねる)「コントロール マスター」と呼ばれる機能を持っています。コントロールマスターを使用すると、 &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EA%A5%E2%A1%BC%A5%C8%A5%DB%A5%B9%A5%C8&#34;&gt;リモートホスト&lt;/a&gt;に接続する最初のセッションは制御用のセッション(マスターセッショ ンと呼ばれます)として利用され、制御用のソケットを作成します。セッションを 共有する &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt; クライアントは、この制御用のソケットを通じて&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EA%A5%E2%A1%BC%A5%C8%A5%DB%A5%B9%A5%C8&#34;&gt;リモートホスト&lt;/a&gt;と 接続し通信を行います。&lt;br&gt;
+出典：「&lt;a href=&#34;http://www.amazon.co.jp/OpenSSH-%E5%AE%9F%E8%B7%B5-Software-Design-plus/dp/4774168076&#34;&gt;OpenSSH実践入門&lt;/a&gt;」&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;上記のように、１つの接続で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4&#34;&gt;複数&lt;/a&gt;のセッションを共有するため、&lt;br&gt;
+Ansibleのようにタスク実行ごとに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;接続するような場合には大きな効果を得ることができる。&lt;/p&gt;
+
+&lt;h2&gt;Pipeliningについて&lt;/h2&gt;
+
+&lt;p&gt;Pipelining機能の説明の前に、軽くAnsibleの実行までの流れを説明する。&lt;br&gt;
+Ansibleは対象サーバに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;ログインしたあと実行するタスクのモジュールをファイルとして転送しそれを実行する。&lt;br&gt;
+Pipelining機能をなしの状態だと、このファイル転送とファイルの削除を１タスクごとに行う。&lt;/p&gt;
+
+&lt;p&gt;ansibleを&lt;code&gt;-vvvv&lt;/code&gt;オプションをつけて実行するとわかるが、&lt;br&gt;
+４行目でファイルの&lt;code&gt;PUT&lt;/code&gt;（転送）を、５行目の最後の方に&lt;code&gt;rm -rf&lt;/code&gt;でディレクトリ・ファイルの削除を行っている。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;192.168.33.100&amp;gt; ESTABLISH CONNECTION FOR USER: deploy
+&amp;lt;192.168.33.100&amp;gt; REMOTE_MODULE command ls -l /root
+&amp;lt;192.168.33.100&amp;gt; EXEC ssh -C -tt -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&amp;quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&amp;quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=user -o ConnectTimeout=10 192.168.33.100 /bin/sh -c &#39;mkdir -p $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321 &amp;amp;&amp;amp; chmod a+rx $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321 &amp;amp;&amp;amp; echo $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321&#39;
+&amp;lt;192.168.33.100&amp;gt; PUT /var/folders/7_/d_dwdlcx1m95mn_846x30xb40000gn/T/tmpc8amAw TO /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/command
+&amp;lt;192.168.33.100&amp;gt; EXEC ssh -C -tt -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&amp;quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&amp;quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=user -o ConnectTimeout=10 192.168.33.100 /bin/sh -c &#39;sudo -k &amp;amp;&amp;amp; sudo -E -S -p &amp;quot;[sudo via ansible, key=koibtlgpbiprbaihcqxiqgcnnreofxuo] password: &amp;quot; -u root /bin/sh -c &#39;&amp;quot;&#39;&amp;quot;&#39;echo BECOME-SUCCESS-koibtlgpbiprbaihcqxiqgcnnreofxuo; LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8 /usr/bin/python /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/command; rm -rf /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/ &amp;gt;/dev/null 2&amp;gt;&amp;amp;1&#39;&amp;quot;&#39;&amp;quot;&#39;&#39; 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Pipiliningの機能を有効にすると、タスク実行ごとのモジュールファイルの転送と削除をしなくなる。&lt;br&gt;
+そのため、実効速度があがるのです。&lt;/p&gt;
+
+&lt;p&gt;下記はPipeliningを有効にした際の出力。&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;でタスクを実行しているだけなのがわかる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;192.168.33.100&amp;gt; ESTABLISH CONNECTION FOR USER: deploy
+&amp;lt;192.168.33.100&amp;gt; REMOTE_MODULE command ls -l /root
+&amp;lt;192.168.33.100&amp;gt; EXEC ssh -C -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&amp;quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&amp;quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=deploy -o ConnectTimeout=10 192.168.33.100 /bin/sh -c &#39;sudo -k &amp;amp;&amp;amp; sudo -E -S -p &amp;quot;[sudo via ansible, key=kjtoopnjepksibiitumqfycsoldadiws] password: &amp;quot; -u root /bin/sh -c &#39;&amp;quot;&#39;&amp;quot;&#39;echo BECOME-SUCCESS-kjtoopnjepksibiitumqfycsoldadiws; LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8 /usr/bin/python&#39;&amp;quot;&#39;&amp;quot;&#39;&#39; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://docs.ansible.com/ansible/intro_configuration.html#pipelining&#34;&gt;Configuration file — Ansible Documentation&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;2. 実験方法&lt;/h1&gt;
+
+&lt;p&gt;下記の３パターンでどれだけ実行速度に差があるか確認してみた。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;① ControlMaster: &lt;b&gt;無効&lt;/b&gt; ＆ pipeline: &lt;b&gt;無効&lt;/b&gt;
+&lt;/li&gt;
+&lt;li&gt;② ControlMaster: &lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;有効&lt;/span&gt;&lt;/b&gt; ＆ pipeline: &lt;b&gt;無効&lt;/b&gt;
+&lt;/li&gt;
+&lt;li&gt;③ ControlMaster: &lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;有効&lt;/span&gt;&lt;/b&gt; ＆ pipeline: &lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;有効&lt;/span&gt;&lt;/b&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;実行環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;クライアント
+
+&lt;ul&gt;
+&lt;li&gt;ハードウェア：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MacBook%20Air&#34;&gt;MacBook Air&lt;/a&gt; (13-inch, Mid 2012)&lt;/li&gt;
+&lt;li&gt;プロセッサ：1.8 GHz &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Intel&#34;&gt;Intel&lt;/a&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Core%20i5&#34;&gt;Core i5&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;メモリ：4 GB 1600 MHz DDR3&lt;/li&gt;
+&lt;li&gt;OS：El Capitan&lt;/li&gt;
+&lt;li&gt;OpenSSH：OpenSSH_6.9p1, LibreSSL 2.1.7&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;サーバ
+
+&lt;ul&gt;
+&lt;li&gt;ハードウェア：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;による仮想環境。メモリ１GB。&lt;/li&gt;
+&lt;li&gt;OS： &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/CentOS&#34;&gt;CentOS&lt;/a&gt; 7.0&lt;/li&gt;
+&lt;li&gt;ネットワーク：プライベートの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;をふっています&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;実行タスク&lt;/h2&gt;
+
+&lt;p&gt;ネットワーク環境やタスクの実行時間に左右されないように、&lt;br&gt;
+&lt;code&gt;ls -l /&lt;/code&gt;を実行するタスクを300個用意した。&lt;/p&gt;
+
+&lt;h2&gt;設定&lt;/h2&gt;
+
+&lt;p&gt;ansible.cfgを下記のように書いてためした。&lt;/p&gt;
+
+&lt;p&gt;① ControlMaster: &lt;b&gt;無効&lt;/b&gt; ＆ pipeline: &lt;b&gt;無効&lt;/b&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[defaults]
+transport = ssh
+
+[ssh_connection]
+pipeline = false
+ssh_args = -o ControlMaster=no 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;② ControlMaster: &lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;有効&lt;/span&gt;&lt;/b&gt; ＆ pipeline: &lt;b&gt;無効&lt;/b&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[defaults]
+transport = ssh
+
+[ssh_connection]
+pipeline = false
+ssh_args = -o ControlMaster=auto -o ControlPersist=300s 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;③ ControlMaster: &lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;有効&lt;/span&gt;&lt;/b&gt; ＆ pipeline: &lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;有効&lt;/span&gt;&lt;/b&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[defaults]
+transport = ssh
+
+[ssh_connection]
+pipeline = true
+ssh_args = -o ControlMaster=auto -o ControlPersist=300s 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;実行コマンド&lt;/h2&gt;
+
+&lt;p&gt;実行時間を図るために、下記のようにコマンドを実行した。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ date; ansible-playbook site.yml ; date
+※ansible-playbookコマンドは環境に合わせてオプションとかつけてください。 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;3. 結果&lt;/h1&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt; ControlMaster &lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt; Pipelining &lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt; 実行時間 &lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; ✕       &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;        ✕ &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;     6分38秒    &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; ◯       &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;        ✕&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;     1分31秒   &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; ◯       &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;        ◯&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;     &lt;span style=&#34;color: #ff0000&#34;&gt;&lt;b&gt;52秒&lt;/b&gt;&lt;/span&gt;   &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;p&gt;結果は明らかでした。&lt;br&gt;
+実際の環境ではタスクの実行時間などがあるため、この数字のように6倍はやくなるとかそういうことではないが、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EA%A5%E2%A1%BC%A5%C8%A5%DB%A5%B9%A5%C8&#34;&gt;リモートホスト&lt;/a&gt;への接続回数が多くなればなるほど大きな差が生まれそうです。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ansibleを踏み台サーバ越しに実行する</title>
+      <link>https://blog.mosuke.tech/entry/2015/09/25/232751/</link>
+      <pubDate>Fri, 25 Sep 2015 23:27:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/09/25/232751/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;タイトルの通りで、なにも特別なことはない内容。&lt;br&gt;
+そして、9月も終わりなのに今月はひとつも記事を書いていなかった。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/KVM&#34;&gt;KVM&lt;/a&gt;を使って仮想のゲストサーバを立てたが、&lt;br&gt;
+ゲストサーバはホストサーバと通信する用の（外に出る場合にはNAT通信で）&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;しか持っていない状況で、&lt;br&gt;
+Ansibleの実行対象としたかったのが背景。&lt;/p&gt;
+
+&lt;p&gt;ホストサーバにAnsibleをいれるわけにもいかず、ホストサーバを踏み台にして、&lt;br&gt;
+Ansibleを打ちたかったというもの。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150925/20150925232414.png&#34; alt=&#34;f:id:mosuke5:20150925232414p:plain&#34; title=&#34;f:id:mosuke5:20150925232414p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;の設定ファイルを作る&lt;/h1&gt;
+
+&lt;p&gt;&#34;Ansibleで&#34; と書いたが要は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;です。&lt;br&gt;
+まずは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;で踏み台サーバを経由してAnsible実行対象サーバへ接続できるように準備しました。&lt;br&gt;
+これはいわゆる「多段&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;」というやつで、以前にもブログに書いたので復習です。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://blog.mosuke.tech/entry/2014/11/09/172745&#34;&gt;【VPS1台でインフラ勉強】多段SSH設定（おまけ） - Goldstine研究所&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;一般的には&lt;code&gt;~/.ssh/config&lt;/code&gt;にこういった設定は書いたりもしますが、&lt;br&gt;
+Ansible実行の場合、&lt;b&gt;&lt;u&gt;端末に依存したくなかった&lt;/u&gt;&lt;/b&gt;ので、&lt;br&gt;
+Ansible&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&#34;&gt;レポジトリ&lt;/a&gt;に別途ファイルを作ることにした。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;## sshconfigという名前のファイルにした
+Host ansible-target
+    HostName 192.168.33.10
+    User xxxxx
+    ProxyCommand ssh -W %h:%p yyyyy@hostserver 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上記のファイルを使って多段&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;できることを確認します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ssh -F sshconfig ansible-target 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;Ansible実行時に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;設定ファイルを利用する&lt;/h1&gt;
+
+&lt;p&gt;ここまで来たらとても簡単で、&lt;br&gt;
+ansible.cfgに下記を追記し、ansible実行時に上記のsshconfigを読み込まれるようにしました。&lt;/p&gt;
+
+&lt;p&gt;ansible.cfg&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[ssh_connection]
+ssh_args = -F sshconfig 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ansibleで最新のMySQLをインストールする際にハマったこと。MySQL-shared-compatのこと。</title>
+      <link>https://blog.mosuke.tech/entry/2015/04/15/171127/</link>
+      <pubDate>Wed, 15 Apr 2015 17:11:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/04/15/171127/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/CentOS&#34;&gt;CentOS&lt;/a&gt; 6.5環境でAnsibleを使って最新の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;のセットアップをしようと思った際にハマったことをまとめた。&lt;br&gt;
+本質的にはAnsibleというより&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Linux&#34;&gt;Linux&lt;/a&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/RPM&#34;&gt;RPM&lt;/a&gt;パッケージのはなし。&lt;br&gt;
+ついでに、しょっぼい&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/github&#34;&gt;github&lt;/a&gt;を公開しました。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;(1) 本記事を書くに至った経緯&lt;/h1&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Ansibleで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;を使ったサーバを構築(CentOS6.5)することになった。
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;のバージョンは5.6を採用した。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;の公式&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/rpm&#34;&gt;rpm&lt;/a&gt;をダウンロードしインストールした。
+
+&lt;ul&gt;
+&lt;li&gt;インストールしたもの：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-client, &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-devel, &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-server, &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-shared&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-sharedをインストールする際にデフォルトの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;-libsと競合&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;-libsをアンインストールし再インストール&lt;/li&gt;
+&lt;li&gt;Ansibleで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;の操作をするには&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL-python&#34;&gt;MySQL-python&lt;/a&gt;が必要なのでインストール&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL-python&#34;&gt;MySQL-python&lt;/a&gt;をインストールするにはさっきアンインストールした&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;-libsが必要…(困った)&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-shared-compatの存在に気づく&lt;/li&gt;
+&lt;li&gt;備忘録に書いておくか…&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1&gt;(2) &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-shared-compatの存在&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;-libsは多くのパッケージの依存となっており、公式のMySQL5.6をインストールすることで、&lt;br&gt;
+他のパッケージがいれられない状況となっていた。&lt;br&gt;
+そんな状況を解決するために&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-shared-compatというパッケージが用意されていた。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-shared-compatは「過去の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;バージョン向けの共有クライアントライブラリが納められているもの」だ。&lt;/p&gt;
+
+&lt;p&gt;詳細は下記参照をおすすめ。&lt;br&gt;
+&lt;a href=&#34;http://y-ken.hatenablog.com/entry/inside-of-libmysqlclient-with-mysql-shared-compat&#34;&gt;MySQL-5.5.6から仕様が変わった「MySQL-shared-compat」の中身を徹底解剖 - Y-Ken Studio&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ちなみに&#34;compat&#34;という単語がよく使われるが&#34;compatibility&#34;の略で「互換性」とかそういう意味。&lt;/p&gt;
+
+&lt;h1&gt;(3) &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Github&#34;&gt;Github&lt;/a&gt;で公開しました&lt;/h1&gt;
+
+&lt;p&gt;内容は今のところ死ぬほど薄いのだが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;をインストールするansibleを公開しました。
+&lt;a href=&#34;https://github.com/mosuke5/mysql-ansible&#34;&gt;mosuke5/mysql-ansible · GitHub&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;内容はあれだが、特徴としては、インターネット上から&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/RPM&#34;&gt;RPM&lt;/a&gt;をダウンロードしてインストールする際に、&lt;br&gt;
+Ansibleでも「ダウンロード」→「インストール」の流れを踏む人が多いが、以下のようにするとシンプルになる。&lt;br&gt;
+varsでインストールしたい&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/rpm&#34;&gt;rpm&lt;/a&gt;やその取得先を記述しておいて、task側では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/yum&#34;&gt;yum&lt;/a&gt;でnameにvarsで定義した変数を読むだけでできる。&lt;/p&gt;
+
+&lt;p&gt;role/&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;/vars/main.yml&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;mysql_url: http://ftp.jaist.ac.jp/pub/mysql/Downloads/MySQL-5.6
+mysql_ver: &amp;quot;5.6.24-1&amp;quot;
+mysql_rpms:
+  - MySQL-client-{{ mysql_ver }}.el6.x86_64.rpm
+  - MySQL-shared-compat-{{ mysql_ver }}.el6.x86_64.rpm
+  - MySQL-shared-{{ mysql_ver }}.el6.x86_64.rpm
+  - MySQL-devel-{{ mysql_ver }}.el6.x86_64.rpm
+  - MySQL-server-{{ mysql_ver }}.el6.x86_64.rpm
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;role/&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;/tasks/main.yml&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;- name: Install MySQL without MySQL-shared
+  yum: name={{ mysql_url}}/{{ item }}
+  with_items: mysql_rpms
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ansible、コマンド実行結果を&amp;quot;ok&amp;quot;にする（冪等性を保つ方法）</title>
+      <link>https://blog.mosuke.tech/entry/2015/02/02/201008/</link>
+      <pubDate>Mon, 02 Feb 2015 20:10:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/02/02/201008/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;Ansibleで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9&#34;&gt;ソースコード&lt;/a&gt;インストールする際とか&lt;br&gt;
+すでにインストールされているかのチェックなどで、&lt;br&gt;
+シェルコマンドを実行してその結果で判断したい時がある。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;ぼくがよくやる例では以下とか。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;- name: check httpd installed
+  command: which httpd
+  ignore_errors: true
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なんですが...&lt;br&gt;
+こうやってしまうと、仮に既にインストールされていて、正常なときでも&#34;&lt;b&gt;&lt;span style=&#34;color: #f9ce1d&#34;&gt;changed&lt;/span&gt;&lt;/b&gt;&#34;と表示されてしまう。&lt;br&gt;
+これでは、本当にchangedなものなのか、わからなくなってくる。&lt;/p&gt;
+
+&lt;p&gt;これを解決するのに&lt;b&gt;chaged_when&lt;/b&gt;を使うといい。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;- name: check httpd installed
+  command: which httpd
+  ignore_errors: true
+  changed_when: false
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こうするとコマンドが成功した際には&#34;&lt;b&gt;&lt;span style=&#34;color: #00cc00&#34;&gt;ok&lt;/span&gt;&lt;/b&gt;&#34;が表示される。&lt;/p&gt;
+
+&lt;p&gt;これで、何も変化がないときにはokとskippingしかでないから、&lt;br&gt;
+誰がみても結果がわかりやすいですね！&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;秘伝のタレ回避！&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ansible, sudoパスワード要求を忘れただけでめんどくなる</title>
+      <link>https://blog.mosuke.tech/entry/2014/11/28/001748/</link>
+      <pubDate>Fri, 28 Nov 2014 00:17:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/11/28/001748/</guid>
+      <description>
+
+&lt;p&gt;&lt;body&gt;
+&lt;p&gt;Ansibleを&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;上でずっと使ってて、Playbookも完成したし本番サーバへ&amp;hellip;&lt;br&gt;
+と思ったところである初歩的な罠にハマった。&lt;/p&gt;
+&lt;p&gt;本番環境へPalybook実行！！&lt;/p&gt;
+```
+$ ansible-playbook playbook.yml -i hosts&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;あれ、GATHERING FACTSで10分以上も待たされた...&amp;lt;br&amp;gt;
+しかも、エラー出た...&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;GATHERING FACTS
+failed to parse [ sudo via ansible, key= &amp;hellip;.. ]
+&lt;code&gt;
+&amp;lt;p&amp;gt;sudoできていない...？&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;playbook内のsudo: yesを外して実行。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;GATHERING FACTSは通過。&amp;lt;br&amp;gt;
+しかし、当たり前だがsudo で実行すべき部分で失敗...&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;とても単純なことに気づいた...&amp;lt;br&amp;gt;
+・&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/Vagrant&amp;quot;&amp;gt;Vagrant&amp;lt;/a&amp;gt;環境ではsudoのパスワードを要求されない&amp;lt;br&amp;gt;
+・本番環境はsudoのパスワードを要求されること&amp;lt;br&amp;gt;
+・sudoのパスワードを入力するようにしていなかったこと&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;というわけで-Kをつけて実行&amp;lt;/p&amp;gt;
+&lt;/code&gt;
+$ ansible-playbook playbook.yml -i hosts -K&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;うまくいった...&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;完全なる私のミスなんだが、ただ-Kオプションを忘れるだけで、一回の実行に10分ほども待たされるのは…。&amp;lt;br&amp;gt;
+しかもGATHERING FACTSで止まっているときはCtl+Cで中断も聞かなかった。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;要注意ですね。。。&amp;lt;/p&amp;gt;
+&amp;lt;br&amp;gt;
+&amp;lt;p&amp;gt;ちなみに、こんな方法で解決もできる。&amp;lt;br&amp;gt;
+sudoのパスワードを聞かれなくして対応。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;visudo:e62e8b218521d80b052b676f1c595d9b&#34;&gt;visudo&lt;/h1&gt;
+
+&lt;p&gt;user_name ALL=(ALL) NOPASSWD: ALL
+```
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ansible、コマンドでワイルドカードを使うときの注意</title>
+      <link>https://blog.mosuke.tech/entry/2014/11/18/225542/</link>
+      <pubDate>Tue, 18 Nov 2014 22:55:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/11/18/225542/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;AnsibleのPlaybookを書いていると、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EF%A5%A4%A5%EB%A5%C9%A5%AB%A1%BC%A5%C9&#34;&gt;ワイルドカード&lt;/a&gt;を含んだコマンドを実行したい時がある。&lt;br&gt;
+そんなときあるところでハマった。&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;をソースインストールして、パスを/usr/sbinにリンクを貼ろうとして以下を実行した。&lt;/p&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;- command: ln -s /usr/local/httpd/bin/* /usr/sbin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;/usr/sbin内に「*」というリンクが貼られてしまった。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;* -&amp;gt; /usr/local/httpd/bin 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;p&gt;どうやらcommandモジュールは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EF%A5%A4%A5%EB%A5%C9%A5%AB%A1%BC%A5%C9&#34;&gt;ワイルドカード&lt;/a&gt;に対応していないよう。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EF%A5%A4%A5%EB%A5%C9%A5%AB%A1%BC%A5%C9&#34;&gt;ワイルドカード&lt;/a&gt;を使いたいときはshellモジュールを利用すると良い。&lt;/p&gt;
+&lt;code&gt;yaml
+- shell: ln -s /usr/local/httpd/bin/* /usr/sbin
+&lt;/code&gt;
+&lt;p&gt;また、&lt;em&gt;というリンクを消すときは要注意（笑）&lt;/p&gt;
+```
+$ rm ./&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;とやってしまうとあたりまえだがやばいので&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ rm ./¥*
+```
+&lt;p&gt;こうですね…&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ansible、ソースインストールする際のPalybookの書き方</title>
+      <link>https://blog.mosuke.tech/entry/2014/11/16/153223/</link>
+      <pubDate>Sun, 16 Nov 2014 15:32:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/11/16/153223/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;最近、Ansibleを使い始めたのだが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/yum&#34;&gt;yum&lt;/a&gt;やapt-getでインストールできるものはいいけど、&lt;br&gt;
+どうしてもソースインストールが必要な場合がある。&lt;/p&gt;
+&lt;p&gt;ソースインストールを行う際のPlaybookの書き方と注意点をまとめた。&lt;/p&gt;
+&lt;p&gt;まず、あたりまえだが、ソースインストールを行うには以下のフローを踏まなければいけな。&lt;br&gt;
+1. ソースファイルの取得(tarで固められていると仮定)&lt;br&gt;
+2. tarファイルの解凍&lt;br&gt;
+3. 解答してできたディレクトリへ移動&lt;br&gt;
+4. configure&lt;br&gt;
+5. make&lt;br&gt;
+6. make install&lt;/p&gt;
+&lt;p&gt;また、Ansibleでは何回もPlaybookを実行していくため、&lt;br&gt;
+&lt;b&gt;すでにインストールされている場合は、インストールをスキップする&lt;/b&gt;必要がある。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/yum&#34;&gt;yum&lt;/a&gt;やapt-getで管理されていれば上記を心配することはないのだが、やはりソースインストールだとこの壁がある。&lt;br&gt;
+※パッケージ化しろよ！というツッコミは禁止&lt;/p&gt;
+&lt;p&gt;今回は例として、ubuntu13に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/emacs&#34;&gt;emacs&lt;/a&gt;をソースインストールするのを例としてみた。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;環境&lt;/h3&gt;
+    &lt;p&gt;【Ansible実行側】&lt;br&gt;
+さくら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;の1G&lt;br&gt;
+OS: &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Centos&#34;&gt;Centos&lt;/a&gt; 7&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;:192.168.33.1&lt;/p&gt;
+&lt;p&gt;【設定対象側】&lt;br&gt;
+上記さくら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;上にたてた&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;の仮想サーバ&lt;br&gt;
+OS: &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ubuntu&#34;&gt;Ubuntu&lt;/a&gt; 13.10&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;:192.168.33.100&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;Playbook&lt;/h3&gt;
+    &lt;p&gt;以下playbookの例。&lt;/p&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;---
+- hosts: 192.168.33.100
+  user: vagrant
+  sudo: yes
+
+  vars:
+    src_dir: /usr/local/src
+    emacs_ver: emacs-23.4
+
+  tasks:
+   ## emacsのソースファイルを取得済みか確認
+   - name: check exist emacs source file
+     command: ls -l {{src_dir}}/{{emacs_ver}}.tar.gz
+     ignore_errors: True
+     register: result1
+
+   ## emacsのソースファイル取得。ただし、すでに取得済みならスキップ
+   - name: get emacs source file
+     command: chdir={{src_dir}} wget http://mirror.jre655.com/GNU/emacs/{{emacs_ver}}.tar.gz
+     when: result1|failed
+
+   ## emacsのソースインストールを解凍
+   - name: get emacs source file
+     command: chdir={{src_dir}} tar xvf {{emacs_ver}}.tar.gz
+     when: result1|failed
+
+   ## emacsがインストールされているか確認
+   #  確認基準はemacsコマンドのpathが通っているかで判断した
+   - name: check emacs install
+     command: which emacs
+     ignore_errors: True
+     register: result2
+
+   ## emacsのインストール。ただしすでにemacsがインストールされいたらスキップ
+   - name: expand emacs src
+     command: chdir={{src_dir}} tar xvf {{emacs_ver}}.tar.gz
+     when: result2|failed
+
+   - name: comfigure emacs
+     command: chdir={{src_dir}}/{{emacs_ver}} ./configure
+     when: result2|failed
+
+   - name: make emacs
+     command: chdir={{src_dir}}/{{emacs_ver}} make
+     when: result2|failed
+
+   - name: install emacs
+     command: chdir={{src_dir}}/{{emacs_ver}} make install
+     when: result2|failed
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

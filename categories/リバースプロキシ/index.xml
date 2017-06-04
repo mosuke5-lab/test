@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>リバースプロキシ on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/%E3%83%AA%E3%83%90%E3%83%BC%E3%82%B9%E3%83%97%E3%83%AD%E3%82%AD%E3%82%B7/</link>
+    <description>Recent content in リバースプロキシ on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Thu, 09 Oct 2014 23:05:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/%E3%83%AA%E3%83%90%E3%83%BC%E3%82%B9%E3%83%97%E3%83%AD%E3%82%AD%E3%82%B7/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築</title>
+      <link>https://blog.mosuke.tech/entry/2014/10/09/230555/</link>
+      <pubDate>Thu, 09 Oct 2014 23:05:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/10/09/230555/</guid>
+      <description>
+
+&lt;p&gt;&lt;body&gt;
+&lt;p&gt;ロードバランシングとか&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%B9%A5%BF%A5%EA%A5%F3%A5%B0&#34;&gt;クラスタリング&lt;/a&gt;とかリバースプロキシとか、&lt;br&gt;
+業務でも使っているし、概念とかはわかってるけど、自分で構築したことはやっぱりない。&lt;/p&gt;
+&lt;p&gt;自分で構築してみたいなーと思いつつもあたりまえだけど、サーバやネットワーク機器をそう簡単に調達もできない。&lt;br&gt;
+お金も当然ない。&lt;/p&gt;
+&lt;p&gt;というわけで、さくら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;で仮想化つかってロードバランシングとか&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%B9%A5%BF%A5%EA%A5%F3%A5%B0&#34;&gt;クラスタリング&lt;/a&gt;とかリバースプロキシとか勉強しましょうという「サーバインフラ会」を友人と始めた。&lt;br&gt;
+その第１回目のメモ。&lt;/p&gt;
+&lt;p&gt;第1回 サーバ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4&#34;&gt;複数&lt;/a&gt;台構成、Nginxでリバースプロキシ構築&lt;br&gt;
+第2回 &lt;a href=&#34;https://blog.mosuke.tech/entry/2014/11/09/171436&#34;&gt;HAProxyでロードバランサ構築&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div style=&#34;border: solid 1px #dddddd;&#34;&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;1. 使用した環境&lt;/h2&gt;
+    &lt;p&gt;まず今回利用した環境は以下のとおり。&lt;br&gt;
+さくら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;の1GBのプラン。&lt;br&gt;
+・メモリ：１GB&lt;br&gt;
+・CPU：仮想２コア&lt;br&gt;
+・HDD：100GB&lt;br&gt;
+・OS：CentOS7&lt;br&gt;
+・仮想化：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;&lt;br&gt;
+　→dockerなどもはじめ検討していたが、コンテナ型仮想化だとサーバ感がでないので、よりサーバとして意識できる&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;を採用&lt;/p&gt;
+&lt;p&gt;【参考】&lt;br&gt;
+&lt;a href=&#34;http://vps.sakura.ad.jp/specification.html&#34;&gt;料金・サービス仕様 | VPS（仮想専用サーバ）は「さくらのVPS」&lt;/a&gt;&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;2. 完成イメージ・物理イメージ&lt;/h2&gt;
+    &lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140930/20140930210924.png&#34; alt=&#34;f:id:mosuke5:20140930210924p:plain&#34; title=&#34;f:id:mosuke5:20140930210924p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div style=&#34;border: solid 1px #dddddd;&#34;&gt;&lt;/div&gt;
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140930/20140930210914.png&#34; alt=&#34;f:id:mosuke5:20140930210914p:plain&#34; title=&#34;f:id:mosuke5:20140930210914p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;3. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;でWebサーバ２台分を構築する&lt;/h2&gt;
+    &lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;の詳細な利用方法は公式ドキュメントをみてもらうとするが、セットアップまでのひととおりの流れと注意点のみ記載する。&lt;br&gt;
+&lt;a href=&#34;https://docs.vagrantup.com/v2/&#34;&gt;Vagrant Documentation&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;今回はWebサーバ２台を仮想で実現するので、それぞれweb1, web2とする。&lt;br&gt;
+それぞれのディレクトリを作成。&lt;/p&gt;
+```&lt;/p&gt;
+
+&lt;h2 id=&#34;web1-web2のディレクトリ作成:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;web1, web2のディレクトリ作成&lt;/h2&gt;
+
+&lt;p&gt;$ pwd
+/home/vagrant
+$ mkdir web1
+$ mkdir web2&lt;/p&gt;
+
+&lt;h2 id=&#34;仮想化で利用するosイメージをダウンロード:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;仮想化で利用するOSイメージをダウンロード&lt;/h2&gt;
+
+&lt;p&gt;$ vagrant box add ubuntu1310 ¥
+&lt;a href=&#34;http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box&#34;&gt;http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;web1サーバ構築:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;web1サーバ構築&lt;/h2&gt;
+
+&lt;p&gt;$ cd web1
+$ vagrant init ubuntu1310&lt;/p&gt;
+
+&lt;h2 id=&#34;ほぼほぼデフォルトの設定だが以下２つだけは設定を行った:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;ほぼほぼデフォルトの設定だが以下２つだけは設定を行った。&lt;/h2&gt;
+
+&lt;p&gt;$ vim Vagrantfile&lt;/p&gt;
+
+&lt;h1 id=&#34;1-プライベートアドレスの割り当て:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;(1)プライベートアドレスの割り当て。&lt;/h1&gt;
+
+&lt;p&gt;config.vm.network &amp;ldquo;private_network&amp;rdquo;, ip: &amp;ldquo;192.168.33.10&amp;rdquo;&lt;/p&gt;
+
+&lt;h1 id=&#34;2-1gbしかメモリがないのでこの設定をしないと２つ仮想化するとだいぶ大変なことになりました:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;(2)1GBしかメモリがないのでこの設定をしないと２つ仮想化するとだいぶ大変なことになりました。&lt;/h1&gt;
+
+&lt;p&gt;config.vm.provider &amp;ldquo;virtualbox&amp;rdquo; do |vb|
+     vb.customize [&amp;ldquo;modifyvm&amp;rdquo;, :id, &amp;ldquo;&amp;ndash;memory&amp;rdquo;, &amp;ldquo;128&amp;rdquo;]
+end&lt;/p&gt;
+
+&lt;p&gt;$ vagrant ssh&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;同様にweb2においても同じことを行った。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;また、&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/vagrant&amp;quot;&amp;gt;vagrant&amp;lt;/a&amp;gt;では一般的に対象のディレクトリで&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/vagrant&amp;quot;&amp;gt;vagrant&amp;lt;/a&amp;gt; &amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/ssh&amp;quot;&amp;gt;ssh&amp;lt;/a&amp;gt;を利用してサーバに入るが、&amp;lt;br&amp;gt;
+今回はプライベートアドレスも振ってあるし、物理サーバとしてイメージしているので以下のようにしてサーバにはいるようにした。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ ssh vagrant@192.168.33.10  # web1への接続
+$ ssh vagrant@192.168.33.11  # web2への接続
+&lt;code&gt;
+&amp;lt;p&amp;gt;ホストサーバ側の&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%BF%A1%BC%A5%D5%A5%A7%A5%A4%A5%B9&amp;quot;&amp;gt;インターフェイス&amp;lt;/a&amp;gt;情報をみると。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;cent7なので以下コマンドだがifconfig-aのこと:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;cent7なので以下コマンドだがifconfig -aのこと&lt;/h1&gt;
+
+&lt;p&gt;$ ip a
+(中略)
+5: vboxnet0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UNKNOWN qlen 1000
+    link/ether 0a:00:27:00:00:00 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.33.&lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;24&lt;/sub&gt; brd 192.168.33.255 scope global vboxnet0
+       valid_lft forever preferred_lft forever
+    inet 192.168.56.&lt;sup&gt;101&lt;/sup&gt;&amp;frasl;&lt;sub&gt;24&lt;/sub&gt; brd 192.168.56.255 scope global dynamic vboxnet0
+       valid_lft 839sec preferred_lft 839sec
+    inet6 fe80::800:27ff:fe00:0/64 scope link
+       valid_lft forever preferred_lft forever&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;vboxnet0という仮想の&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%BF%A1%BC%A5%D5%A5%A7%A5%A4%A5%B9&amp;quot;&amp;gt;インターフェイス&amp;lt;/a&amp;gt;が作成され、&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&amp;quot;&amp;gt;IPアドレス&amp;lt;/a&amp;gt;も192.168.33.1が振られていることを確認。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;ルーティングテーブルも確認しておくと&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ netstat -rn
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+0.0.0.0         153.120.2.1     0.0.0.0         UG        0 0          0 eth0
+153.120.2.0     0.0.0.0         255.255.254.0   U         0 0          0 eth0
+192.168.33.0    0.0.0.0         255.255.255.0   U         0 0          0 vboxnet0
+&lt;code&gt;
+&amp;lt;p&amp;gt;192.168.33.0/24行はvboxnet0から出るように設定されている。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;上の物理イメージに詳細書き込むと以下。&amp;lt;br&amp;gt;
+&amp;lt;span itemscope itemtype=&amp;quot;http://schema.org/Photograph&amp;quot;&amp;gt;&amp;lt;img src=&amp;quot;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141006/20141006000246.png&amp;quot; alt=&amp;quot;f:id:mosuke5:20141006000246p:plain&amp;quot; title=&amp;quot;f:id:mosuke5:20141006000246p:plain&amp;quot; class=&amp;quot;hatena-fotolife&amp;quot; itemprop=&amp;quot;image&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;div style=&amp;quot;border: solid 1px #dddddd;&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;p&amp;gt;&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/Apache&amp;quot;&amp;gt;Apache&amp;lt;/a&amp;gt;のみインスールする必要があるので、&amp;lt;br&amp;gt;
+web1, web2で以下を実施。（プロビジョニングしたほうが後々楽です。）&amp;lt;/p&amp;gt;
+&lt;/code&gt;
+$ sudo apt-get apache2&lt;/p&gt;
+
+&lt;p&gt;##どちらがweb1でどちらがweb2か区別するために以下ファイルは変えておきます。
+$ sudo vim /var/www/index.html
+#Web1とかWeb2とかわかりやすい文言を入れておきます。&lt;/p&gt;
+
+&lt;p&gt;##Apache起動
+$ sudo service apache2 start&lt;/p&gt;
+
+&lt;p&gt;##Apache起動確認
+$ curl localhost
+　上記で変更したindex.htmlの内容が表示されること&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;これでWebサーバの準備は完了。&amp;lt;/p&amp;gt;
+
+&amp;lt;/div&amp;gt;
+&amp;lt;div class=&amp;quot;section&amp;quot;&amp;gt;
+    &amp;lt;h2&amp;gt;4, Nginxでリバースプロキシサーバを構築する&amp;lt;/h2&amp;gt;
+    &amp;lt;p&amp;gt;Nginx初めて触ったがとてもシンプル。&amp;lt;br&amp;gt;
+今回はNginxをリバースプロキシとして利用したので、proxy.confを作成するだけ。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;##インスール
+$ sudo yum install nginx&lt;/p&gt;
+
+&lt;h2 id=&#34;etc-nginx以下に設定ファイルなどあること確認:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;/etc/nginx以下に設定ファイルなどあること確認&lt;/h2&gt;
+
+&lt;p&gt;$ ls /etc/nginx&lt;/p&gt;
+
+&lt;h2 id=&#34;プロキシ構築のための設定ファイル作成:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;プロキシ構築のための設定ファイル作成&lt;/h2&gt;
+
+&lt;p&gt;$ cd /etc/nginx/conf.d
+$ sudo vim proxy.conf
+server {&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# /web1にアクセスが来た時
+location /web1 {
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;	proxy_http_version 1.1;&lt;/p&gt;
+
+&lt;p&gt;	#受け渡す際のヘッダ情報を指定
+	proxy_set_header Host $host:$server_port;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header X-Forwarded_Proto http;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    # 飛ばす先のURL(Web1サーバ)
+    proxy_pass http://192.168.33.10/;
+}
+
+# /web2にアクセスが来た時
+location /web2 {
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;	proxy_http_version 1.1;&lt;/p&gt;
+
+&lt;p&gt;	#受け渡す際のヘッダ情報を指定
+	proxy_set_header Host $host:$server_port;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header X-Forwarded_Proto http;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    # 飛ばす先のURL(Web2サーバ)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;	proxy_pass &lt;a href=&#34;http://192.168.33.11/&#34;&gt;http://192.168.33.11/&lt;/a&gt;;
+    }
+}&lt;/p&gt;
+
+&lt;h2 id=&#34;あとは起動させるのみ:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;あとは起動させるのみ&lt;/h2&gt;
+
+&lt;p&gt;$ sudo systemctl enable nginx
+$ sudo systemctl start nginx
+```
+&lt;/div&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

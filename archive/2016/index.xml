@@ -1,0 +1,2138 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>2016 on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/archive/2016/</link>
+    <description>Recent content in 2016 on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sun, 25 Dec 2016 14:27:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/archive/2016/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>「嵐」 2016年振り返り</title>
+      <link>https://blog.mosuke.tech/entry/2016/12/25/142744/</link>
+      <pubDate>Sun, 25 Dec 2016 14:27:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/12/25/142744/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;だいぶお久しぶりのブログ。
+そして恒例の年振り返りブログ。ついに2016年も終わってしまう。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;というわけで2016年を振り返りたいと思う。&lt;br&gt;
+一応このサイトは技術ブログのはずなんだけど、プライベートのことが大いに混ざったポエムになってしまった。&lt;/p&gt;
+
+&lt;h1&gt;なんの変哲もないはじまり&lt;/h1&gt;
+
+&lt;p&gt;2016年のはじめのほう。振り返ってもとくに振り返ることがあまりないくらい変哲もない日々だった。&lt;br&gt;
+嵐の前の静けさだったと今思う。&lt;/p&gt;
+
+&lt;h1&gt;TDD研修、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%DE%A5%CD&#34;&gt;プロマネ&lt;/a&gt;研修&lt;/h1&gt;
+
+&lt;p&gt;後述するが8月までは、社内システムのエンジニアとして活動していた。&lt;br&gt;
+いつもどおり、内製開発のチームをどう強くするかばかり考え働いていた。&lt;/p&gt;
+
+&lt;p&gt;そんななか、新しい開発チームの模索のために部署を代表としてTDD（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C6%A5%B9%A5%C8%B6%EE%C6%B0%B3%AB%C8%AF&#34;&gt;テスト駆動開発&lt;/a&gt;）の研修や、&lt;br&gt;
+プロジェクトマネージャーの研修など受けさせてもらった。&lt;/p&gt;
+
+&lt;p&gt;そのなかでもTDD研修はとても印象深い。&lt;br&gt;
+なぜなら、私が気に入っていた「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;による&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C7%A5%B6%A5%A4%A5%F3%A5%D1%A5%BF%A1%BC%A5%F3&#34;&gt;デザインパターン&lt;/a&gt;」の翻訳者の一人が講師だったからだ。&lt;br&gt;
+さらには、研修の受講生は2人しかおらず、徹底してTDDを実践できた。&lt;br&gt;
+こんな恵まれた外部研修があるもんかと、感心したのを思い出す。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4894712857/hatena-blog-22/&#34;&gt;&lt;img src=&#34;https://images-fe.ssl-images-amazon.com/images/I/41PNvUxHtgL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;Rubyによるデザインパターン&#34; title=&#34;Rubyによるデザインパターン&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4894712857/hatena-blog-22/&#34;&gt;Rubyによるデザインパターン&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;作者:&lt;/span&gt; Russ Olsen,ラス・&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AA%A5%EB%A5%BB%A5%F3&#34;&gt;オルセン&lt;/a&gt;,小&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CE%D3%B7%F2&#34;&gt;林健&lt;/a&gt;一,菅野裕,吉野雅人,山岸夢人,小島努&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; ピアソン桐原&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2009/04/01&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; 単行本&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;購入&lt;/span&gt;: 13人 &lt;span class=&#34;hatena-asin-detail-label&#34;&gt;クリック&lt;/span&gt;: 220回&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/4894712857/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログ (67件) を見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h1&gt;Gem公開、ATP-stat開発&lt;/h1&gt;
+
+&lt;p&gt;会社のとあるプロジェクトで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rails&#34;&gt;Rails&lt;/a&gt;使うことになり、&lt;br&gt;
+趣味がてらに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rails&#34;&gt;Rails&lt;/a&gt;を使ってATP-statというサービスを開発していた。&lt;br&gt;
+正直、ほんとに趣味で作ったものでクオリティは全く高くないし、最近はメンテもできていない。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://atpstat.org/&#34;&gt;AtpStat&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;また、このサービスに利用する仕組みをAtpScraperというGemにして公開した。&lt;br&gt;
+これは、せっかく受けたTDD研修を活かして、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C6%A5%B9%A5%C8%B6%EE%C6%B0%B3%AB%C8%AF&#34;&gt;テスト駆動開発&lt;/a&gt;で行ったりしていた。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fgithub.com%2Fmosuke5%2Fatp_scraper&#34; title=&#34;mosuke5/atp_scraper&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://github.com/mosuke5/atp_scraper&#34;&gt;github.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;嵐&lt;/h1&gt;
+
+&lt;p&gt;と、まあさほどいままでと変わらない感じの日々を送っていた。&lt;br&gt;
+だが、6月くらいから嵐が吹き始める。&lt;br&gt;
+プライベートでかなりショッキングなことがあった。ショッキングであると同時に生活がだいぶ変わるようなこと。  &lt;br&gt;
+それだけでもショッキングではあるのだけれど、その出来事はなにかのトリガーを引いてしまったようだ。&lt;br&gt;
+世界線が変動したのかもしれない。&lt;/p&gt;
+
+&lt;h1&gt;異動&lt;/h1&gt;
+
+&lt;p&gt;まず、ショッキングな出来事からわずか1週間後に、社内転職の結果がでた。&lt;br&gt;
+詳しくは下記のブログを読んでほしいが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;を提供する新規事業を行う会社に行くことになったのだ。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://blog.mosuke.tech/entry/2016/07/29/180000&#34;&gt;社内システム開発からパブリッククラウドの会社へジョインします - Goldstine研究所&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;仕事環境の変化&lt;/h1&gt;
+
+&lt;p&gt;仕事の環境は劇的に変わった。正直何もかもが違うといっても過言ではない。&lt;br&gt;
+変わった項目をまとめてみた。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;項目&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;前の仕事&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;今の仕事&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;システム種別&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;ネットワーク監視システム&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;職種&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%B9%A5%C6%A5%E0%A5%A8%A5%F3%A5%B8%A5%CB%A5%A2&#34;&gt;システムエンジニア&lt;/a&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;セールスエンジニア？&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;組織規模&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;大組織の中の１部署で100人程度&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;会社全体で数十人&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;チーム&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;エンジニアのみ&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;エンジニア、営業、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A1%BC%A5%B1%A5%C6%A5%A3%A5%F3%A5%B0&#34;&gt;マーケティング&lt;/a&gt;など&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;お客様&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;社内&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;社外&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;人&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;ほぼ100%日本人&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;半分くらい外国人&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;英語&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;利用しない&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;飛び交ってる&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1&gt;実際の仕事&lt;/h1&gt;
+
+&lt;h4&gt;セールスエンジニア&lt;/h4&gt;
+
+&lt;p&gt;最初に断っておくが、今の職種をセールスエンジニアというと少し語弊はあるのだが、&lt;br&gt;
+そういう一面があることは確かなのでそういうことにしておく。&lt;/p&gt;
+
+&lt;p&gt;今までやってきた開発エンジニアとはまったく異なった難しさを感じている。&lt;br&gt;
+お客さんはシステムを開発運用する現場のエンジニアの方であり何かしらに課題点を感じている人たちだ。&lt;br&gt;
+その課題についてソリューションを提案する必要があるわけであり、実際に自分が経験したことのないレベルで語ることは難しい。&lt;br&gt;
+自分が売る製品に知っているのは当たり前であり、それ以上に運用現場のことについて精通していてこそ仕事になる感がある。&lt;br&gt;
+職種的には運用現場から離れることになるわけだが、そこに精通し続ける必要があるのはとても難しさを感じとともに、だからこその価値と感じる。&lt;/p&gt;
+
+&lt;p&gt;どうやって現場感覚も失わないでいるか、課題の１つである。&lt;/p&gt;
+
+&lt;p&gt;そういえばこんな記事ありましたね。&lt;br&gt;
+&lt;a href=&#34;https://job-draft.jp/articles/70&#34;&gt;はてなの中でたった1人！Mackerelを支える「セールスエンジニア」って何だ!?｜転職ドラフトReport&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4&gt;サービスローンチ&lt;/h4&gt;
+
+&lt;p&gt;異動したときの会社のミッションはAlibaba Cloudの日本リージョンの開設だ。&lt;br&gt;
+とにかくそれに向けてもろもろの準備をしてきた。&lt;br&gt;
+まずは、リリースできたので宣伝しておきます(笑)&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fjp.aliyun.com%2F&#34; title=&#34;クラウドプロダクト、サービス、ソリューションの統合スイート | Alibaba Cloud&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://jp.aliyun.com/&#34;&gt;jp.aliyun.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fwww.sbcloud.co.jp%2F&#34; title=&#34;SBクラウド株式会社｜SB Cloud Corp.&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://www.sbcloud.co.jp/&#34;&gt;www.sbcloud.co.jp&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;Gihyoデビュー&lt;/h1&gt;
+
+&lt;p&gt;日本リージョンのリリースに伴って、Gihyoにデビューしました。&lt;br&gt;
+あとSoftwareDesignとWed+DB Pressに掲載されてます。みんなみてね。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fgihyo.jp%2Fadmin%2Fserial%2F01%2Fsb_cloud%2F0001&#34; title=&#34;いよいよ日本上陸！！ 現場のエンジニアが語る，「Alibaba Cloud」の魅力と可能性：世界有数のEC企業とソフトバンクが手を組んだクラウドサービス―いま注目される「Alibaba Cloud」の可能性&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://gihyo.jp/admin/serial/01/sb_cloud/0001&#34;&gt;gihyo.jp&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;英語&lt;/h1&gt;
+
+&lt;p&gt;コメント省略します。がんばりゅ…&lt;/p&gt;
+
+&lt;h1&gt;ISUCON6&lt;/h1&gt;
+
+&lt;p&gt;念願のISUCON6に参加した。圧倒的な力不足を痛感。&lt;br&gt;
+力不足を実感したこと自体とてもいいことだったし、またISUCON対策で得た知見は確実にいいものとなっているのでよし。&lt;br&gt;
+来年も出れたらリベンジしたいです。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://blog.mosuke.tech/entry/2016/09/19/172009/&#34;&gt;ISUCON6予選で惨敗した. 足りなかったのは&amp;rsquo;Courage&amp;rsquo; - Goldstine研究所&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;脱&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;
+&lt;/h1&gt;
+
+&lt;p&gt;長年&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;を使ってたけどやめた。
+本当は新&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MacBook%20Pro&#34;&gt;MacBook Pro&lt;/a&gt;が出たら買おうと思っていたんだけれど、&lt;br&gt;
+USB Tpye-Cしかないことと値段の高さに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ThinkPad&#34;&gt;ThinkPad&lt;/a&gt;をかってしまった。&lt;br&gt;
+この件については別途ブログを書きたいと思う。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://shopap.lenovo.com/jp/notebooks/thinkpad/t-series/t460s/&#34;&gt;ThinkPad T460s - 14.0型　ハイパフォーマンス・スリム・モバイル・ノートブックTシリーズ| レノボジャパン&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;脱&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;が目的というよりは、一度いい機会なので&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;を離れてみようという感じ。&lt;/p&gt;
+
+&lt;h4&gt;今のPC状況&lt;/h4&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;種類&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;PC&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;会社&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MacBook%20Pro&#34;&gt;MacBook Pro&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;自宅ノート&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ThinkPad&#34;&gt;ThinkPad&lt;/a&gt; T460S Windows10&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;自宅デスクトップ&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BC%AB%BA%EEPC&#34;&gt;自作PC&lt;/a&gt; Ubuntu16.04&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1&gt;一人暮らし&lt;/h1&gt;
+
+&lt;p&gt;一人暮らしも決めた。引っ越し自体は2月予定だが、物件は決めて申し込みした。&lt;br&gt;
+なんだろう、勢いでこういうことになった。&lt;/p&gt;
+
+&lt;h1&gt;最後に&lt;/h1&gt;
+
+&lt;p&gt;今年は気持ちの面、生活の面、仕事の面といろいろと変化が大きかった。&lt;br&gt;
+これで嵐は吹き終わるのだろうか。それとも続くのだろうか。&lt;br&gt;
+それはわからないけれど、次に来る変化も受け止め楽しむことにする。&lt;/p&gt;
+
+&lt;h4&gt;去年の抱負的なこと&lt;/h4&gt;
+
+&lt;p&gt;せっかくなので去年の振り返りブログに書いてあった抱負的なことを振り返ってみる。&lt;br&gt;
+あんまり達成度はよくないけど、それ以上にいろいろあったからいいか。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;項目&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;達成&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;コメント&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryを自分が使いたいと思うようなサービスにする&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;×&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;検討したが、サービスの方向性を見失った&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryをベースにより自分たちが学習できる環境を作る&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;△&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;基盤は勉強材料としては活躍している&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;引き続き、インフラ系エンジニア？っぽい感じで邁進する&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;〇&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;現場のエンジニアではないが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;インフラよりで頑張ってる&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;ISUCONにでます（あれば…）&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;〇&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;結果は惨敗&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4&gt;来年の抱負的なこと&lt;/h4&gt;
+
+&lt;p&gt;大きく2つの面で頑張りたいと思ってる。&lt;br&gt;
+１つは、技術面の話。&lt;br&gt;
+今の職種は現場の開発エンジニアでもインフラエンジニアでもない。
+しかし、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;を使うのは現場エンジニアであり、その感覚を忘れてはいけないと常に思っている。
+プライベートでは今まで通り何らかの形で開発エンジニアをやっていたいと思う。&lt;/p&gt;
+
+&lt;p&gt;また、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;はシステムを開発・運用していく中で必要なサービスが盛り込まれている。&lt;br&gt;
+今まで以上に幅広い視野を持ってテクノロジーと向き合わなければいけない。&lt;br&gt;
+トレンドやツールの使い方とかに流されない、基礎的な部分をきちんとみていきたい。&lt;/p&gt;
+
+&lt;p&gt;2つは、技術面以外の話。&lt;br&gt;
+我々の仕事はシステムの開発ではなく、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;のビジネスを技術面から理解し支援することが大事。&lt;br&gt;
+そして、サービス利用者のビジネスについても技術面から理解し支援しなければいけない。&lt;br&gt;
+じゃ、なにをするのかっていうと難しいんだけど、テクノロジーの範囲を超えてビジネスモデルなどに意識してみようと思う。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;そんじゃーね。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>三葉よ、サーバーレス、それもまた結び。</title>
+      <link>https://blog.mosuke.tech/entry/2016/10/02/212420/</link>
+      <pubDate>Sun, 02 Oct 2016 21:24:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/10/02/212420/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;タイトルちょっとふざけました。  (が、半分本気。最後の方でわかる。)&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://tokyo.serverlessconf.io/&#34;&gt;ServerlessConf Tokyo&lt;/a&gt;に参加してきた。&lt;br&gt;
+今年8月から&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;の事業に異動していて、（&lt;a href=&#34;https://blog.mosuke.tech/entry/2016/07/29/180000&#34;&gt;異動ブログ&lt;/a&gt;）&lt;br&gt;
+開発者の立場より&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;提供側の立場として参加してきたので、また面白かった。&lt;/p&gt;
+
+&lt;p&gt;せっかくなので、自分なりにサーバレスについてまとめる。&lt;br&gt;
+新しいことというよりは、自分の中での整理した感じ。&lt;/p&gt;
+
+&lt;h1&gt;1. サーバレスってなんだっけ&lt;/h1&gt;
+
+&lt;p&gt;カンファレンスの中でもサーバレスの定義についてはいろいろな意見がでていた。&lt;br&gt;
+Martin Fowlerのブログではサーバレスの定義として下記２つが書いてある。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;BaaS (Backend as a Service) : ex) firebase&lt;/li&gt;
+&lt;li&gt;FaaS (Function as a Service) : ex) &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt; Lambda&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fmartinfowler.com%2Farticles%2Fserverless.html&#34; title=&#34;Serverless Architectures&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://martinfowler.com/articles/serverless.html&#34;&gt;martinfowler.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;ですが、ここでは焦点を絞って話すためにもFaaSということにしておく。&lt;br&gt;
+主にFaaSについて話したいのと、BaaSもいれてしまうと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SaaS&#34;&gt;SaaS&lt;/a&gt;もサーバレスとかややこしいことになるので。&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt; Lambda&lt;/h1&gt;
+
+&lt;p&gt;なんといってもサーバレスの概念を推し進めたのは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt; Lambdaでしょう。&lt;br&gt;
+説明はいまさら不要だと思うが、少しだけ。&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;コードを &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt; Lambda にアップロードすると、サービスが &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt; インフラストラクチャを使用してコードの実行を代行するコンピューティングサービスです。コードをアップロードして、Lambda 関数と呼ばれる関数を作成することで、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt; Lambda がコードを実行するサーバーのプロビジョニングおよび管理を行います。(&lt;a href=&#34;https://aws.amazon.com/jp/lambda/details/&#34;&gt;https://aws.amazon.com/jp/lambda/details/&lt;/a&gt;)&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;課金モデルは関数呼び出した回数、および実行に利用したコンピュートのスペックによって決まる。&lt;br&gt;
+また特徴的なことは、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;の他のサービスで発生したイベントをトリガーに実行できること。&lt;br&gt;
+例えば、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Amazon%20S3&#34;&gt;Amazon S3&lt;/a&gt;にファイルアップロードされたことをトリガーにLambdaを実行できるのだ。&lt;/p&gt;
+
+&lt;h1&gt;サーバレスの特徴&lt;/h1&gt;
+
+&lt;p&gt;サーバレス自体そしてサーバレスで実装することの特徴しては下記がある。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;上のイベントを契機に実行できる&lt;/li&gt;
+&lt;li&gt;実行環境は、immutableで時間が立つと消える&lt;/li&gt;
+&lt;li&gt;実行環境は独立していて、コードは基本的にstatelessである&lt;/li&gt;
+&lt;li&gt;上記のようにimmutableでstatelessな構造につくるからこそスケールしやすい&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1&gt;2. どんな用途で利用しているか&lt;/h1&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;基盤のイベントをトリガーとして&lt;/h1&gt;
+
+&lt;p&gt;個人的に一番強力だと思っている使い方。上で説明したとおりだが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;上のプロダクトに対してのイベントをトリガーに処理を行うことができる。&lt;br&gt;
+例えばこんな場合を想定してみよう。&lt;/p&gt;
+
+&lt;p&gt;ユーザが写真をアップロードするサービスで、アップロードした写真にたいして何かしらの画像解析をしてメタ情報を持ちたいとする。&lt;br&gt;
+ざっと従来のやりかただと２つくらいやり方が思い浮かぶ。&lt;/p&gt;
+
+&lt;h4&gt;(1) アップロードするたびに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%B5%A1%BC%A5%D0&#34;&gt;アプリケーションサーバ&lt;/a&gt;で画像解析をする&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;解析にほとんど時間がかからない場合などはこれでいいと思う&lt;/li&gt;
+&lt;li&gt;時間がかかるようなだとユーザへのレスポンスが遅くなる&lt;/li&gt;
+&lt;li&gt;速くしようと思うとスケールアップで対応するしかない（やばい）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;(2) &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%C3%A5%C1%BD%E8%CD%FD&#34;&gt;バッチ処理&lt;/a&gt;でやる&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%C3%A5%C1%BD%E8%CD%FD&#34;&gt;バッチ処理&lt;/a&gt;で画像解析はまとめてやる。一番よくあるのでは？&lt;/li&gt;
+&lt;li&gt;例えば５分に一度の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%C3%A5%C1%BD%E8%CD%FD&#34;&gt;バッチ処理&lt;/a&gt;で、５分間にたまった写真にたいしてまとめて処理する&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%C3%A5%C1%BD%E8%CD%FD&#34;&gt;バッチ処理&lt;/a&gt;でまとめて処理した場合、どこかでコケたときが辛い&lt;/li&gt;
+&lt;li&gt;この例ならそうでもないが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%C3%A5%C1%BD%E8%CD%FD&#34;&gt;バッチ処理&lt;/a&gt;ではたいていスケールアウトが辛い&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;このケースに対してLambdaであればどうなるか。&lt;br&gt;
+1000件のアップロードに対して、1000回のLambda実行によって対応できる。&lt;br&gt;
+これは何万件きても同じことで、スケールの面で大変優れている。&lt;br&gt;
+また、1件ごとに処理するため、エラーが発生した場合に原因などとても追いやすい。&lt;/p&gt;
+
+&lt;h1&gt;アプリの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/API&#34;&gt;API&lt;/a&gt;として&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;でいうと、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/API&#34;&gt;API&lt;/a&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Gateway&#34;&gt;Gateway&lt;/a&gt;と組み合わせて、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/API&#34;&gt;API&lt;/a&gt;サーバとして利用するケース。&lt;br&gt;
+S3などのデータストアに直接アクセスできるように作ることもできるため、ファイルアップロードなどで使われることが多いとか。&lt;br&gt;
+個人的には今のところあまり魅力的には感じない使い方。&lt;/p&gt;
+
+&lt;h1&gt;事例紹介&lt;/h1&gt;
+
+&lt;p&gt;カンファレンスのなかで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%C6%FC%B7%D0%BF%B7%CA%B9&#34;&gt;日経新聞&lt;/a&gt;社さんののサーバレス&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;の事例が一番よかったのでぜひ目を通しほしい。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe allowfullscreen=&#34;true&#34; allowtransparency=&#34;true&#34; frameborder=&#34;0&#34; height=&#34;463&#34; id=&#34;talk_frame_361815&#34; mozallowfullscreen=&#34;true&#34; src=&#34;//speakerdeck.com/player/b4286c46056c404cbd272e253033d0df&#34; style=&#34;border:0; padding:0; margin:0; background:transparent;&#34; webkitallowfullscreen=&#34;true&#34; width=&#34;710&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://speakerdeck.com/ikait/serverless-architecture-supports-nikkeis-paper-viewer&#34;&gt;speakerdeck.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;ポイントとしては下記。見事にLambdaの特徴を活かした利用をしている。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;新聞は基本的には朝刊と夕刊の２回で限られたときだけ処理する点
+
+&lt;ul&gt;
+&lt;li&gt;常時稼働させたくない。EC2立ち上げっぱなしにする必要がない。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;しかし、号外や速報など臨時の場合もただあり、それにも備えられる点&lt;/li&gt;
+&lt;li&gt;日によってニュースの量が異なるため、いつでもスケールできる必要がある点&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;3. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;ベンダーからみたサーバレスの立ち位置&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;ベンダーにとってサーバレスはどういう立ち位置なのだろうか。&lt;br&gt;
+ぼくは&lt;span style=&#34;font-size: 150%&#34;&gt;「各サービスの横串」&lt;/span&gt;と考えています。&lt;br&gt;
+EC2、S3、RDSなどなどそれぞれのサービスは単体としてとてもよくできている。&lt;br&gt;
+しかし横の連携をしようと思うと別途様々な工夫が必要なのが現状だ。&lt;/p&gt;
+
+&lt;p&gt;サーバレスはその横の連携を担うのだ。&lt;br&gt;
+各サービス間を紐で固く結びつけてしまう。&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;ロックインを加速させる役割も持つ。&lt;/p&gt;
+
+&lt;p&gt;&lt;b&gt;「三葉よ、サーバレス、それもまた結び。」&lt;/b&gt;&lt;/p&gt;
+
+&lt;p&gt;そして、IoTへの布石。&lt;br&gt;
+IoTの世界ではリアルタイムなセンサーの情報のやりとりでデ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%A4&#34;&gt;バイ&lt;/a&gt;スとデータセンタ間の通信遅延が許容できないことがある。&lt;br&gt;
+そこでいま研究が進んでいるエッジコンピューティング（フォグコンピューティングとも）などがあるが、&lt;br&gt;
+LambdaのようにImmutable, Statelessが前提で作られる、どこの環境でも実行可能な状態はIoTと相性がいいようにみえる。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;今後どうなっていくかはわからないが、&lt;br&gt;
+デ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%A4&#34;&gt;バイ&lt;/a&gt;スに近いエッジコンピューティング側はLambdaでさばき、そのさばいたデータを中央のデータセンターへ、&lt;br&gt;
+なんていうことが主流になってくるかもしれない。と思うとFaaSの存在は見逃せない気がしてくる。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ISUCON6予選で惨敗した. 足りなかったのは&#39;Courage&#39;</title>
+      <link>https://blog.mosuke.tech/entry/2016/09/19/172009/</link>
+      <pubDate>Mon, 19 Sep 2016 17:20:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/09/19/172009/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;span style=&#34;font-size: 80%&#34;&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apple&#34;&gt;Apple&lt;/a&gt;の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/keynote&#34;&gt;keynote&lt;/a&gt;で話題の&amp;rsquo;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Courage&#34;&gt;Courage&lt;/a&gt;&amp;lsquo;使ってみた笑&lt;/span&gt;&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;ISUCON6予選で惨敗した。(18000点くらい)&lt;br&gt;
+端的に言って、とても未熟だった。&lt;/p&gt;
+
+&lt;p&gt;とはいえ、とてもいい思い出になったのでまとめる。&lt;/p&gt;
+
+&lt;h1&gt;メンバー&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%EA%A1%BC%A5%A8%A5%E0&#34;&gt;スリーエム&lt;/a&gt;というチーム名で、@mogulla3と@mintsu123と一緒に出場した。&lt;br&gt;
+ふたりともぼくよりもアプリの改善などは10倍くらい優秀なエンジニアなので、&lt;br&gt;
+ぼくはインフラとか総務的な立ち回りをして、２人がチューニングに集中できるようにすることを心がけていた。&lt;/p&gt;
+
+&lt;h1&gt;準備&lt;/h1&gt;
+
+&lt;p&gt;準備は３週間の間に土日どちらかに集まってISUCONの過去問を解いたり戦略について事前に打ち合わせしてた。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;プライベートレポジトリの用意(Gitlab)&lt;/li&gt;
+&lt;li&gt;チャットルームの用意(Slack)&lt;/li&gt;
+&lt;li&gt;ISUCON4とISUCON5の予選の過去問解き
+
+&lt;ul&gt;
+&lt;li&gt;土日集まったときには戦略や振り返りを重視&lt;/li&gt;
+&lt;li&gt;実際の過去問ときは平日に各々が空いた時間などにやってた&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;基本戦略を準備
+
+&lt;ul&gt;
+&lt;li&gt;なんの技術を主に使うか&lt;/li&gt;
+&lt;li&gt;だれが何を担当するか&lt;/li&gt;
+&lt;li&gt;定形作業の手順化&lt;/li&gt;
+&lt;li&gt;その他ナレッジなど&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;採用した技術&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/PHP&#34;&gt;PHP&lt;/a&gt; 7.0&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/php&#34;&gt;php&lt;/a&gt;-fpm&lt;/li&gt;
+&lt;li&gt;Openresty(nginx) 1.11&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt; 5.7&lt;/li&gt;
+&lt;li&gt;Redis 3.2&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;当日&lt;/h1&gt;
+
+&lt;p&gt;出だしはとても順調だった。&lt;br&gt;
+Azure担当だったぼくはすぐにサーバをデプロイし、OSバージョンを確認した。&lt;br&gt;
+予想通りの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ubuntu&#34;&gt;Ubuntu&lt;/a&gt; 16.04であったので、準備したとおり必要な&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DF%A5%C9%A5%EB%A5%A6%A5%A7%A5%A2&#34;&gt;ミドルウェア&lt;/a&gt;のインストールをすませた。&lt;/p&gt;
+
+&lt;p&gt;ほぼ定石と言える下記（定形作業と呼んでいた）もすぐにこなすことができた。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;調査のための各種ログ出力化&lt;/li&gt;
+&lt;li&gt;Nginxでの静的ファイルの配信、キャッシュ化&lt;/li&gt;
+&lt;li&gt;Kataribeインストールと実行&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;のインデックスの付与と設定見直し&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/php&#34;&gt;php&lt;/a&gt;-fpmの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Unix&#34;&gt;Unix&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;ソケット化&lt;/li&gt;
+&lt;li&gt;デプロイの仕組みの整理&lt;/li&gt;
+&lt;li&gt;不要デーモンの停止&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;この状態でもスコアは0のままであり、少し焦りを感じたが、&lt;br&gt;
+ここからが本番のチューニング開始である。&lt;br&gt;
+Kataribeの結果から、&lt;code&gt;GET /&lt;/code&gt;が改善ポイントであることは明らかなのはわかっていた。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Top 20 Sort By Count
+Count    Total      Mean    Stddev     Min   P50.0   P90.0   P95.0   P99.0     Max  2xx  3xx  4xx  5xx  Request
+  326  366.105  1.123021  2.619395   0.000   0.000   6.188   7.418   9.827  10.207  326    0    0    0  GET / HTTP/1.0
+  326  366.154  1.123172  2.618228   0.000   0.001   6.190   7.418   9.778  10.207  326    0    0    0  GET / HTTP/1.1
+  240    0.000  0.000000  0.000000   0.000   0.000   0.000   0.000   0.000   0.000  240    0    0    0  GET /css/bootstrap.min.css HTTP/1.0
+  240    0.737  0.003071  0.002843   0.000   0.002   0.006   0.010   0.013   0.015  240    0    0    0  GET /css/bootstrap.min.css HTTP/1.1
+  120    0.101  0.000842  0.002078   0.000   0.000   0.002   0.003   0.015   0.015  120    0    0    0  GET /img/star.gif HTTP/1.1
+  120    0.000  0.000000  0.000000   0.000   0.000   0.000   0.000   0.000   0.000  120    0    0    0  GET /js/jquery.min.js HTTP/1.0
+  120    0.000  0.000000  0.000000   0.000   0.000   0.000   0.000   0.000   0.000  120    0    0    0  GET /img/star.gif HTTP/1.0
+  120    0.152  0.001267  0.001788   0.000   0.001   0.003   0.004   0.011   0.012  120    0    0    0  GET /css/bootstrap-responsive.min.css HTTP/1.1
+  120    0.000  0.000000  0.000000   0.000   0.000   0.000   0.000   0.000   0.000  120    0    0    0  GET /js/bootstrap.min.js HTTP/1.0
+  120    0.148  0.001233  0.001843   0.000   0.001   0.003   0.004   0.011   0.012  120    0    0    0  GET /favicon.ico HTTP/1.1
+  120    0.157  0.001308  0.001829   0.000   0.001   0.003   0.004   0.011   0.011  120    0    0    0  GET /js/bootstrap.min.js HTTP/1.1
+  120    0.379  0.003158  0.002890   0.000   0.002   0.007   0.010   0.013   0.015  120    0    0    0  GET /js/jquery.min.js HTTP/1.1
+  120    0.000  0.000000  0.000000   0.000   0.000   0.000   0.000   0.000   0.000  120    0    0    0  GET /favicon.ico HTTP/1.0
+  120    0.000  0.000000  0.000000   0.000   0.000   0.000   0.000   0.000   0.000  120    0    0    0  GET /css/bootstrap-responsive.min.css HTTP/1.0
+   67  116.697  1.741746  1.159447   0.020   1.760   2.999   3.000   3.001   3.001    0   42   25    0  POST /login HTTP/1.0
+   67  116.706  1.741881  1.159099   0.020   1.760   2.999   2.999   3.001   3.001    0   42   25    0  POST /login HTTP/1.1
+   35    0.857  0.024486  0.022147   0.000   0.026   0.040   0.085   0.096   0.096   35    0    0    0  GET /stars?keyword=%E5%86%85%E7%94%B0%E4%BF%AE%E5%B9%B3 HTTP/1.1
+   35    0.977  0.027914  0.020538   0.000   0.031   0.049   0.062   0.077   0.077   35    0    0    0  GET /stars?keyword=%E3%82%A6%E3%83%BC%E3%82%BA HTTP/1.1
+   34    0.867  0.025500  0.018035   0.000   0.028   0.044   0.059   0.071   0.071   34    0    0    0  GET /stars?keyword=%E5%8C%97%E6%B6%88%E9%98%B2%E7%BD%B2 HTTP/1.1
+   32    0.731  0.022844  0.015575   0.000   0.025   0.040   0.050   0.052   0.052   32    0    0    0  GET /stars?keyword=%E8%BC%AA%E7%8A%B6%E7%94%B2%E7%8A%B6%E7%AD%8B HTTP/1.1 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;しかし、なかなか突破口が見いだせず、できるところからやっていく方針を取った。&lt;br&gt;
+アプリの改善を振り返ってみると、なにもしてねーなって感じがやばい。（何してたんだっけ…(・_・;)）&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;isudaとisutarのfpmプロセスの調整&lt;/li&gt;
+&lt;li&gt;isudaとisutar間のhttpによる&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/API&#34;&gt;API&lt;/a&gt;呼び出しをなくし、DB接続とした&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;改善
+
+&lt;ul&gt;
+&lt;li&gt;htmlifyのkeyword取り出し&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;load_starの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;など&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;keywordのlengthを予め持つように変更&lt;/li&gt;
+&lt;li&gt;isudaとisutarの統合
+
+&lt;ul&gt;
+&lt;li&gt;効果の検証ができず、結局マージはできなかった&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;反省&lt;/h1&gt;
+
+&lt;p&gt;&lt;code&gt;htmlify&lt;/code&gt;の改善がなによりも効果がでることはわかっていた。&lt;br&gt;
+しかし、その改善についてのいい方法がすぐに思いつかなかったこともあり、&lt;br&gt;
+他のやれることを優先しすぎてしまったことが一番の反省点だ。&lt;/p&gt;
+
+&lt;p&gt;時間がない、大きな変更したら怖いという思いが強くなり、&lt;br&gt;
+どちらかというとやれることをきちんとやればいける、というディフェンシブな思考になってしまっていた気がする。&lt;/p&gt;
+
+&lt;p&gt;せっかくRedisやOpenrestyを準備していたが、&lt;br&gt;
+そのあたりを発揮せずにおわってしまい残念な感じではあった。&lt;br&gt;
+（ここは準備不足ポイントでもあった）&lt;/p&gt;
+
+&lt;p&gt;根本の改善に勇気を持って切り込む&#34;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Courage&#34;&gt;Courage&lt;/a&gt;&#34;を次は発揮したい。&lt;/p&gt;
+
+&lt;p&gt;反省会の炙りしめ鯖うまかった。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Ftabelog.com%2Ftokyo%2FA1303%2FA130301%2F13003370%2F&#34; title=&#34;BISTRO三十五段屋 (渋谷/居酒屋)&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://tabelog.com/tokyo/A1303/A130301/13003370/&#34;&gt;tabelog.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;最後に&lt;/h1&gt;
+
+&lt;p&gt;反省点は多かったものの、準備期間も含めてこの１ヶ月とても楽しかったし、&lt;br&gt;
+また自分の未熟さを実感できてとてもよかった。&lt;/p&gt;
+
+&lt;p&gt;今まで、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B6%A5%B5%BB%A5%D7%A5%ED%A5%B0%A5%E9%A5%DF%A5%F3%A5%B0&#34;&gt;競技プログラミング&lt;/a&gt;などもしたこともなく、&lt;br&gt;
+技術面で「競う」ということはほとんどしたことがなかった。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;この敗北で、技術をきちんと理解し追求していきたいという想いが湧いてきた。&lt;br&gt;
+ISUCON主催者ありがとうございました。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>社内システム開発からパブリッククラウドの会社へジョインします</title>
+      <link>https://blog.mosuke.tech/entry/2016/07/29/180000/</link>
+      <pubDate>Fri, 29 Jul 2016 18:00:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/07/29/180000/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;本日、2016年7月29日をもって、新卒から３年４ヶ月働いてきた部署が最後となり、8月1日から異動（出向）する。&lt;br&gt;
+社内転職制度を使って、自らの希望で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;事業の会社へジョインすることになった。&lt;br&gt;
+（新規事業を行う部署へ異動となり、そこから別会社へ出向という扱い）&lt;br&gt;
+グループ内の異動ではあるが、違う会社・事業で、職種も変わるので、今の部署でやってきたことをまとめて残しておこうと思う。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;私は通信会社のネットワーク運用部隊に所属している（いた）。&lt;br&gt;
+ネットワーク運用部隊なのだが、私の部署はネットワーク運用を自動化したり運用を楽にするための&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%B9%A5%C6%A5%E0%B3%AB%C8%AF&#34;&gt;システム開発&lt;/a&gt;を担うところで、下記のような仕事をしてきた。&lt;/p&gt;
+
+&lt;h1&gt;1. ベンダーコントロールという仕事&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%B9%A5%C6%A5%E0%B3%AB%C8%AF&#34;&gt;システム開発&lt;/a&gt;にはうちでは外注物も内製物（後述）もある。&lt;br&gt;
+業務の都合上、システムの種類によってはSIベンダーへ発注をして作ることがあった。&lt;br&gt;
+ベンダーコン&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C8%A5%ED%A1%BC%A5%EB&#34;&gt;トロール&lt;/a&gt;なんて言ったりするが、発注での&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%B9%A5%C6%A5%E0%B3%AB%C8%AF&#34;&gt;システム開発&lt;/a&gt;の業務では下記のようなことをしてきた。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;要求仕様の検討&lt;/li&gt;
+&lt;li&gt;見積もり依頼と価格交渉&lt;/li&gt;
+&lt;li&gt;発注、スケジュール調整&lt;/li&gt;
+&lt;li&gt;社内での業務調整&lt;/li&gt;
+&lt;li&gt;受入試験、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B8%A1%BC%FD&#34;&gt;検収&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;運用&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;仕事のほとんどは、社内外の人との調整（コミュニケーション）だ。&lt;br&gt;
+エンジニアとしては一見つまらなそうな仕事にみえるかもしれない。&lt;br&gt;
+しかし、この仕事から様々なコミュニケーションを学び、それはいろんな場面で役に立っている。&lt;br&gt;
+例えばだが、以下の様なコミュニケーションがあったりした。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;要求を他者にしっかり、わかりやすく伝える&lt;/li&gt;
+&lt;li&gt;仕様や価格についての折衝をする&lt;/li&gt;
+&lt;li&gt;システムの利用部門との業務調整をする&lt;/li&gt;
+&lt;li&gt;作業の手順について精査し指摘する&lt;/li&gt;
+&lt;li&gt;ミスなど良くないことが起きた際には、今後の対策はどうするか相手側に考えさせるよう導く&lt;/li&gt;
+&lt;li&gt;場合によっては厳しく叱ることもする（感情的に怒るわけではない）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;特に価格の折衝などは、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SIer&#34;&gt;SIer&lt;/a&gt;や購買部と激しく激突することもあり今でもとても印象に残っている。&lt;br&gt;
+こういった業務はビジネスマンとしてとても大事なことを学んだと思うし、内製での開発業務でもとても活きてきている。&lt;/p&gt;
+
+&lt;h4&gt;外注はいいけど・・・&lt;/h4&gt;
+
+&lt;p&gt;社内リソースが少なくても同時並行でいろんなシステムの開発ができるし外注はいい。&lt;br&gt;
+一方で外注開発について、もどかしさや非効率さなどもたくさん経験してきた。&lt;/p&gt;
+
+&lt;p&gt;まず、なにをやるにもお金と時間がかかることだ。&lt;br&gt;
+一度納品されてしまったものについて、なんらかの改修をしたい場合、&lt;br&gt;
+その改修規模を問わず、見積もり→発注→開発・改修→納品のプロセスを通さなければならない。&lt;br&gt;
+if文を１行追加するだけだろ…って思うようなものでも数百万で数週間かかることだってあった。&lt;/p&gt;
+
+&lt;p&gt;そして、プロセスの効率化が難しいことだ。&lt;br&gt;
+ベンダーが開発したシステムをリリースするには、発注側の会社に度々きてリリース作業を行う。&lt;br&gt;
+勝手に発注側のシステムをアップデートすることはありえないので、必ずリリース作業には社員が立ち会わなければいけない。&lt;br&gt;
+そのとき、リリース作業が自動化されていないことも多く（発注時の要求によってもちろん異なる）、&lt;br&gt;
+何時間もかけて数十台のサーバにデプロイしたりしなければいけなかったりするので大変だ。&lt;/p&gt;
+
+&lt;p&gt;これは当たり前だがとても効率が悪いし時間の無駄だ。&lt;br&gt;
+だがこれを改善しようと思うとまたお金がかかるわけである。&lt;br&gt;
+扱っているシステムが、業務システムなのでアップデートの頻度がおおくないこともあるので、&lt;br&gt;
+はじめからデプロイの自動化などを要件にいれることは少ないのである。&lt;/p&gt;
+
+&lt;p&gt;これらはSIの開発をディスっているわけではない。（要求も悪いのはわかる。）&lt;br&gt;
+これは仕方ないこととして、そのメリット・デメリットをきちんと理解した上で選択、要求をしなれけばいけないということだ。&lt;/p&gt;
+
+&lt;h1&gt;2. 内製開発の仕事&lt;/h1&gt;
+
+&lt;p&gt;外注開発とは別にシステムの内製での開発業務も多くおこなってきた。&lt;br&gt;
+社内的には外注開発から内製開発に徐々に切り替えの最中であった。&lt;br&gt;
+ちなみに開発言語は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rails&#34;&gt;Rails&lt;/a&gt;やPadrino）や&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/PHP&#34;&gt;PHP&lt;/a&gt;（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FuelPHP&#34;&gt;FuelPHP&lt;/a&gt;）なんか使っていた。&lt;/p&gt;
+
+&lt;p&gt;業務システムの他にもメールサーバやリバースプロキシサーバなど基盤システムも構築してきた。&lt;br&gt;
+2015年の振り返りブログに雑だが少し書いていた。&lt;/p&gt;
+&lt;a href=&#34;https://blog.mosuke.tech/entry/2015/12/28/150042/&#34;&gt;2015年振り返り - Goldstine研究所&lt;/a&gt;
+
+&lt;h4&gt;開発組織の改善活動&lt;/h4&gt;
+
+&lt;p&gt;また、開発組織を改善するための活動をおおく行ってきた。&lt;br&gt;
+どこの組織でもある問題だと思うが、うちもまた「属人化」「秘伝のタレ」などといった類の悩みをたくさん抱えていた。&lt;/p&gt;
+
+&lt;p&gt;うちはソフトウェア企業ではないし、システムを外注で作る部署も多い。&lt;br&gt;
+そのため、新卒や異動してくる人などがソフトウェアエンジニア思考の人ばかりではない。というかむしろ少数派。&lt;br&gt;
+だからこそ、よりいっそう「属人化」「秘伝のタレ」が弊害となる。&lt;br&gt;
+わかりやすいところでいうと下記のようなことをやったりして開発組織の改善をしてきた。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;gitlabを使った&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/github&#34;&gt;github&lt;/a&gt;-flowの導入。レビュー必須化&lt;/li&gt;
+&lt;li&gt;Ansibleを使ったインフラ環境のコード化、構築自動化&lt;/li&gt;
+&lt;li&gt;またそういったツールの導入だけでなく講師としてワークショップの実施やサポート活動&lt;/li&gt;
+&lt;li&gt;部署内の開発ルールの策定&lt;/li&gt;
+&lt;li&gt;最低限身につけてほしいスキルや知識を習得できる環境や研修の準備&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ツールの導入や普及、組織改善活動について次の２つがとても重要だったと思う。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;キーパーソンを見方につける。&lt;/li&gt;
+&lt;li&gt;ハンズオンを行う。サポートを手厚くする。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;どんなにいい試みをやっても、独断で行ってしまうと「勝手にやったことだよね？」ってやっぱり思われてしまう。&lt;br&gt;
+また、その試みを広めるのに苦労する。&lt;br&gt;
+試みに対して理解してくれる上の人、キーパーソンを見方につけて働くことがとても有効的だった。&lt;/p&gt;
+
+&lt;p&gt;そして、ツール類はとくにそうだが、紹介したりするだけじゃなくて、&lt;br&gt;
+ハンズオン会をやったりサポートをし「軌道にのせる」ところまでやったのがとてもよかった。&lt;br&gt;
+サポートがないと、気が付くと昔のやりかたにもどってしまっていた、なんてこともあった。&lt;/p&gt;
+
+&lt;h1&gt;3. データセンター、ネットワークの仕事&lt;/h1&gt;
+
+&lt;h4&gt;データセンター系&lt;/h4&gt;
+
+&lt;p&gt;サーバ環境はオンプレだった。&lt;br&gt;
+また、専任のサーバ・インフラ管理者がいるわけではなかったので、&lt;br&gt;
+データセンターへのサー&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%E9%A5%C3%A5%AF&#34;&gt;バラック&lt;/a&gt;の立架工事やサーバ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%E9%A5%C3%A5%AD%A5%F3%A5%B0&#34;&gt;ラッキング&lt;/a&gt;、配線などそういったことも業務の１つだった。&lt;br&gt;
+データセンタ系業務とそれで身につけたことなどは下記。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;データセンターへのサー&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%E9%A5%C3%A5%AF&#34;&gt;バラック&lt;/a&gt;の立架工事やサーバ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%E9%A5%C3%A5%AD%A5%F3%A5%B0&#34;&gt;ラッキング&lt;/a&gt;、配線をやった
+
+&lt;ul&gt;
+&lt;li&gt;ラックの立架工事や電源工事は当たり前だが外注&lt;/li&gt;
+&lt;li&gt;工事の監督はさんざんやった&lt;/li&gt;
+&lt;li&gt;サーバの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%E9%A5%C3%A5%AD%A5%F3%A5%B0&#34;&gt;ラッキング&lt;/a&gt;やLANケーブルの敷設は自前でもたくさんやった&lt;/li&gt;
+&lt;li&gt;LANケーブル作るのはだいぶこなれた&lt;/li&gt;
+&lt;li&gt;でもやっぱりプロの配線は神&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;安全に工事するための知恵をたくさん身につけた&lt;/li&gt;
+&lt;li&gt;電源工事などに備え、電気的な知識を身につけた&lt;/li&gt;
+&lt;li&gt;openstack（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%A4%A5%D9%A1%BC%A5%C8%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;プライベートクラウド&lt;/a&gt;）の検証などもした&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;ネットワーク系&lt;/h4&gt;
+
+&lt;p&gt;バックボーンのネットワークは範囲外ではあるが、&lt;br&gt;
+システム内のネットワーク設計・構築・運用は自分たちの仕事だった。&lt;/p&gt;
+
+&lt;p&gt;そういう組織体系が業務的によかったかどうかはわからないけど、&lt;br&gt;
+現代では特に触れる機会が少ないネットワークについて理解を深められたのはとてもプラスになっている。&lt;br&gt;
+下記あたりは自前でやってきた。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;システム内のネットワークの設計&lt;/li&gt;
+&lt;li&gt;L2スイッチ、L3スイッチの設定
+
+&lt;ul&gt;
+&lt;li&gt;VLANとかNAT、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ACL&#34;&gt;ACL&lt;/a&gt;とか&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;NW機器が故障した際の交換とか設定投入&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ネットワークは専門ではないけれど、オンプレでやっているとネットワーク系の仕事をやることや、&lt;br&gt;
+他部署とネットワークの話をしなければいけないことが多い。&lt;br&gt;
+ネットワークの知識は仮想サーバを構築するときなどにも役に立つし、ソフトウェア開発でも何かと役に立っている。&lt;br&gt;
+ちょうど最近、システムが調子悪い原因が&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B8%F7%A5%D5%A5%A1%A5%A4%A5%D0&#34;&gt;光ファイバ&lt;/a&gt;ーの不良ということを発見できてとてもスッキリした。&lt;/p&gt;
+
+&lt;h1&gt;4. その他&lt;/h1&gt;
+
+&lt;p&gt;その他にあったことを雑にまとめる&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;たくさん出張にいった
+
+&lt;ul&gt;
+&lt;li&gt;大阪、北陸、名古屋、広島、四国など&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;社内での業務改善コンテストで賞をとった&lt;/li&gt;
+&lt;li&gt;新卒の面倒をみたりした&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%BF%A1%BC%A5%F3&#34;&gt;インターン&lt;/a&gt;生も毎年きて面倒をみた&lt;/li&gt;
+&lt;li&gt;採用リクルータをやって就活生とたくさん出会った&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%EA%A5%AA%A5%AB%A1%BC%A5%C8&#34;&gt;マリオカート&lt;/a&gt;大会企画した&lt;/li&gt;
+&lt;li&gt;勤務地が変更になったりした&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;最後に&lt;/h1&gt;
+
+&lt;p&gt;ほんとうに多岐にわたる仕事をさせてもらい、視野が広がった３年間だった。&lt;br&gt;
+アプリケーション開発しか知らなかった学生時代を振り返ると驚くほどの成長をしたと思う。&lt;/p&gt;
+
+&lt;p&gt;部署や上司、メンバーへ、本当に感謝です（＾人＾）&lt;/p&gt;
+
+&lt;p&gt;次は、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;の会社に行く。&lt;br&gt;
+（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;を構築し運用するところなので、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;や&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/GCP&#34;&gt;GCP&lt;/a&gt;が敵…）&lt;/p&gt;
+
+&lt;p&gt;会社ではオンプレを使っていたし、また&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%A4%A5%D9%A1%BC%A5%C8%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;プライベートクラウド&lt;/a&gt;の構築の検証にも携わった。&lt;br&gt;
+規模感や組織構造によるのはわかっているが、どうもシステムを維持することにばかり時間を費やし、本来やるべき&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%B9%A5%C6%A5%E0%B3%AB%C8%AF&#34;&gt;システム開発&lt;/a&gt;による問題解決になかなかいたらなかった感じはあった。&lt;br&gt;
+一方、趣味開発では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;やHerokuなどの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;を使っていたので、本来やるべき問題解決に集中できることの価値を感じていた。&lt;br&gt;
+そういった経験から、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;をもっと多くの人が活用して&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%B9%A5%C6%A5%E0%B3%AB%C8%AF&#34;&gt;システム開発&lt;/a&gt;の本質により注力できるように、と思うようになった。&lt;/p&gt;
+
+&lt;p&gt;最後に…&lt;br&gt;
+この３年間で社内の仕事の質がかわった瞬間を目の当たりにした。&lt;br&gt;
+外注も内製もやってきたと書いたが、はじめは外注が多かったが徐々に内製開発の比率が増えてきた。&lt;br&gt;
+それに伴って、社員が行う仕事の質や求められるスキルが変化していったのを感じた。&lt;br&gt;
+きっと、次の３年間もなんらかで変化が起こるはずで、振り落とされないよう頑張りたい。&lt;/p&gt;
+
+&lt;p&gt;&lt;span style=&#34;font-size: 80%&#34;&gt;※次のところ英語話さなきゃいけなくてほんとにヤ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%A4&#34;&gt;バイ&lt;/a&gt;・・・&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;とてもながめのいいオフィスでした。&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;a href=&#34;http://f.hatena.ne.jp/mosuke5/20160729160810&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;url&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160729/20160729160810.jpg&#34; alt=&#34;f:id:mosuke5:20160729160810j:image&#34; title=&#34;f:id:mosuke5:20160729160810j:image&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/a&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;a href=&#34;http://f.hatena.ne.jp/mosuke5/20160729160817&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;url&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160729/20160729160817.jpg&#34; alt=&#34;f:id:mosuke5:20160729160817j:image&#34; title=&#34;f:id:mosuke5:20160729160817j:image&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/a&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>【めも】httpヘッダー、x-forwarded-forとか任意のヘッダーとか</title>
+      <link>https://blog.mosuke.tech/entry/2016/07/26/215939/</link>
+      <pubDate>Tue, 26 Jul 2016 21:59:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/07/26/215939/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;ただのめも。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;もともと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/PHP&#34;&gt;PHP&lt;/a&gt;で動作していたシステムに、リバースプロキシ（Nginx）を前段に挟むことになった。（理由はここではどうでもいいので書かない）&lt;br&gt;
+つまり、Nginx-&amp;gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;-&amp;gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/PHP&#34;&gt;PHP&lt;/a&gt;という構成になった。&lt;br&gt;
+よくあることだが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;からみるとすべてリバースプロキシから通信がきているので、
+接続元の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;がすべてリバースプロキシのものになる。&lt;/p&gt;
+
+&lt;p&gt;HTTPヘッダーに接続元の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;を追加しアプリ側（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/PHP&#34;&gt;PHP&lt;/a&gt;）で受け取ろうとしたときのめも。&lt;/p&gt;
+
+&lt;h1&gt;リバースプロキシ側でHTTPヘッダー追加&lt;/h1&gt;
+
+&lt;p&gt;まず、そもそもデフォルトのNginxの設定では接続元の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;をHTTPヘッダーに含まれない。&lt;br&gt;
+ググればすぐに設定方法自体はでてくる。&lt;br&gt;
+ X-Forwarded-Forというヘッダー名にNginxでもっている変数$proxy_add_x_forwarded_forをつっこむ。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;設定は簡単なんだけど、そもそもX-Forwarded-Forなんていうヘッダーあったっけ。。。？&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Wikipedia&#34;&gt;Wikipedia&lt;/a&gt;でみる。&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;X-Forwarded-For (XFF) とは、HTTPヘッダフィールドの一つ。HTTPプロキシサーバまたは負荷分散装置（ロードバランサ）を経由してウェブサーバに接続するクライアントの送信元&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;を特定する際の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C7%A5%D5%A5%A1%A5%AF%A5%C8%A5%B9%A5%BF%A5%F3%A5%C0%A1%BC%A5%C9&#34;&gt;デファクトスタンダード&lt;/a&gt;である。
+（略）&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/RFC&#34;&gt;RFC&lt;/a&gt;の標準的なヘッダフィールドではないが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IETF&#34;&gt;IETF&lt;/a&gt;のネットワーク作業部会 (Network Working Group) は2011年10月より同種のHTTPヘッダForwardedの標準化作業を開始した[1]。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;なるほど、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/RFC&#34;&gt;RFC&lt;/a&gt;の標準ではないけど、一般的なものなんですね。&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/php&#34;&gt;php&lt;/a&gt;でX-Forwarded-Forを受け取る&lt;/h1&gt;
+
+&lt;p&gt;というわけで、おりゃ！&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;echo $_SERVER[&#39;X-Forwarded-For&#39;];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;エラー...&lt;br&gt;
+※普段&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/PHP&#34;&gt;PHP&lt;/a&gt;使ってないのがバレますね。&lt;/p&gt;
+
+&lt;p&gt;サーバ変数とりあえず、全部はきだす。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;&amp;lt;?php
+var_dump($_SERVER);
+
+# array(x) { [&amp;quot;HTTP_X_FORWARDED_FOR&amp;quot;] =&amp;gt; string(12) &amp;quot;192.168.33.1&amp;quot; ...... }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;HTTP先頭についてて、大文字になってて、ハイフンがアンスコに変わっている。&lt;br&gt;
+あたりまえだけどこれは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/PHP&#34;&gt;PHP&lt;/a&gt;の仕様でいいんだよな...？&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;&amp;lt;?php
+var_dump(getallheaders());
+
+# array(x) { [&amp;quot;X-Forwarded-For&amp;quot;] =&amp;gt; string(12) &amp;quot;192.168.33.1&amp;quot; ...... }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;サーバ変数にいれるときに、変わるんだわ。&lt;/p&gt;
+
+&lt;h1&gt;念のため&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/tcpdump&#34;&gt;tcpdump&lt;/a&gt;で軽く確認してみる&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo yum install tcpdump
+$ tcpdump dst port 80 -X
+
+# ながいんで適当に端折りました
+11:04:01.883209 IP 10.0.2.15.43038 &amp;gt; 192.168.0.10.54655: Flags [.], seq 802:1603, ack 1, win 14600, length 1460
+     (略)
+     0x0000:  4500 0355 c705 0000 3706 24ca adc2 265f  1.0..X-Forwarded
+     0x0010:  c0a8 000a 0050 d57f 51ad 1e62 e596 78a4  -For:.192.168.33
+     0x0020:  8018 0137 8dbe 0000 0101 080a d1dc c19e  .1..Host:.xxxxxx 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;いたいた。&lt;br&gt;
+Nginxからプロキシされるときはちゃんとヘッダー名は&#34;X-Forwarded-For &#34;になっていること確認。&lt;/p&gt;
+
+&lt;h1&gt;任意の適当なHTTPヘッダーつけてみた&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;proxy_set_header my-header &#39;hogefugafoobar&#39;; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;var_dump($_SERVER);
+
+# array(35) { [&amp;quot;HTTP_MY_HEADER&amp;quot;] =&amp;gt; string(14) &amp;quot;hogefugafoobar&amp;quot; ...... }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;p&gt;ふーん、なるほどな&amp;hellip;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Vim::Factory、LTではなす</title>
+      <link>https://blog.mosuke.tech/entry/2016/07/03/224531/</link>
+      <pubDate>Sun, 03 Jul 2016 22:45:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/07/03/224531/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;7月6日の会社のエンジニアイベントでLTするやつ、先にあげておく。&lt;br&gt;
+自分の中でのネタとしては古いけど、話すのはなんだかんだ初。&lt;/p&gt;&lt;/p&gt;
+
+&lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;edf3569025fd4894867e772d5731a20f&#34; data-ratio=&#34;1.33333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>IkaLog環境整えた。画面が突然映らなくなる事象とかについて</title>
+      <link>https://blog.mosuke.tech/entry/2016/06/25/113009/</link>
+      <pubDate>Sat, 25 Jun 2016 11:30:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/06/25/113009/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;昔まで、人の家で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%D7%A5%E9%A5%C8%A5%A5%A1%BC%A5%F3&#34;&gt;スプラトゥーン&lt;/a&gt;をやったりたまに借りたりして楽しんでいたが、&lt;br&gt;
+ついにというか今更というか自宅用に買ってしまった。&lt;br&gt;
+ついでにという感じで、お金を注ぎ込んで、IkaLogを楽しめる環境も作った。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;IkaLogあるととても楽しい。&lt;/p&gt;
+
+&lt;p&gt;IkaLog環境はほぼ下記ブログを参考にしたので、詳しいことはかかないが、&lt;br&gt;
+全体図やハマったポイントなどを中心にまとめておく。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://uriku.hatenablog.com/entry/2015/12/05/134411&#34; target=&#34;_blank&#34;&gt;雑記：Mac + IkaLog + stat.inkで戦績管理 - 新人SEの学習記録&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;完成後写真&lt;/h1&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160625/20160625112118.png&#34; alt=&#34;f:id:mosuke5:20160625112118p:plain&#34; title=&#34;f:id:mosuke5:20160625112118p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;図にしてわかりやすくすると&lt;/h1&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160625/20160625112128.png&#34; alt=&#34;f:id:mosuke5:20160625112128p:plain&#34; title=&#34;f:id:mosuke5:20160625112128p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;突然画面が映らなくなることが起きた！！&lt;/h1&gt;
+
+&lt;p&gt;ゲームを楽しんでいた時突然、ディスプレーに画面が映らなくなることが度々あった。&lt;br&gt;
+ケーブルを抜き差ししても直らない。&lt;br&gt;
+ただ時間が経つと映るようになる・・・&lt;/p&gt;
+
+&lt;p&gt;原因が最初わからなかったのだが、&lt;br&gt;
+どうやら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/HDMI&#34;&gt;HDMI&lt;/a&gt;スプリッターの電源供給が追いつかなくなった時になっていた。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/HDMI&#34;&gt;HDMI&lt;/a&gt;スプリッターは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/HDMI&#34;&gt;HDMI&lt;/a&gt;からある程度給電することができるので、はじめはそのまま利用していた。&lt;br&gt;
+だが、IkaLogを回し始めるとどうやら給電が追いつかなくなるようであった。&lt;/p&gt;
+
+&lt;p&gt;説明書にも下記のように書いてあって、「あっ」って感じだった&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;入力機器側の電力不足により正常に表示できない場合に使用します。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;USB経由で別途電源供給をするようになってから事象が発生しなくなった！&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;※画面が映らなくなってガチマッチ何度負けたことか・・・&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Nginxの仕組みについて入門</title>
+      <link>https://blog.mosuke.tech/entry/2016/06/04/180122/</link>
+      <pubDate>Sat, 04 Jun 2016 18:01:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/06/04/180122/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;普段Nginxを使ってはいるものの、その仕組やなぜNignxを使うべきなのかというところがあまりわかっていなかったので、
+改めてNginxを入門しその仕組などについて調べてみた。&lt;br&gt;
+勉強不足もあって、間違ってることもあるかもしれないがその際は教えて下さい。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;1. C10K問題&lt;/h1&gt;
+
+&lt;p&gt;まず、Nginxを理解する上でC10K問題について知る必要がある。&lt;br&gt;
+C10K問題とは下記の問題のことだ。&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;ハードウェアの性能上は問題がなくても、クライアント数があまりにも多くなるとサーバがパンクする問題のこと。
+C は「Client（クライアント）」の頭文字、10K は「1 万台」を意味する。「クライアント 1 万台問題」ともいわれる。&lt;br&gt;
+（&lt;a href=&#34;http://d.hatena.ne.jp/keyword/C10K%20%CC%E4%C2%EA&#34;&gt;C10K 問題とは - はてなキーワード&lt;/a&gt; より引用）&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h1&gt;2. 従来のWebサーバの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;
+&lt;/h1&gt;
+
+&lt;h1&gt;prefork&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;のデフォルトの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;などで採用されている。&lt;br&gt;
+特徴としては、１リクエストに対して１プロセスが処理する。&lt;br&gt;
+すなわち同時接続が 1000であれば 1000個のプロセスが必要となる。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604171531.png&#34; alt=&#34;f:id:mosuke5:20160604171531p:plain&#34; title=&#34;f:id:mosuke5:20160604171531p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;worker&lt;/h1&gt;
+
+&lt;p&gt;リクエストはスレッドが処理する。&lt;br&gt;
+スレッドは１プロセスのなかで複数立ち上げることができる。&lt;br&gt;
+プロセス数は少なくて済むが、同時接続が1000であれば1000個のスレッドが必要となる。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;で指定可能な&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;の１つ。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604171542.png&#34; alt=&#34;f:id:mosuke5:20160604171542p:plain&#34; title=&#34;f:id:mosuke5:20160604171542p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;いずれにしても、1000の同時接続があれば、1000のプロセスやスレッドが必要ということだ。&lt;br&gt;
+プロセス/スレッド数が多くなってくると「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1&#34;&gt;コンテキストスイッチ&lt;/a&gt;」が多く発生し、処理が遅くなってしまう。&lt;/p&gt;
+
+&lt;h3&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1&#34;&gt;コンテキストスイッチ&lt;/a&gt;とは&lt;/h3&gt;
+
+&lt;blockquote&gt;&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1&#34;&gt;コンテキストスイッチ&lt;/a&gt;とは、コンピュータの処理装置（CPU）が現在実行している処理の流れ（プロセス、スレッド）を一時停止し、別のものに切り替えて実行を再開すること。&lt;br&gt;
+（&lt;a href=&#34;http://e-words.jp/w/%E3%82%B3%E3%83%B3%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81.html&#34;&gt;コンテキストスイッチとは｜コンテキストスイッチング｜context switch - 意味/定義 ： IT用語辞典&lt;/a&gt; より引用）&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h1&gt;3. Nginxの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;
+&lt;/h1&gt;
+
+&lt;p&gt;Nginxが&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/C10K%20%CC%E4%C2%EA&#34;&gt;C10K 問題&lt;/a&gt;を解決するために開発されたともいわれている。&lt;br&gt;
+上記のような課題を解決するような&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;を採用している。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604171559.png&#34; alt=&#34;f:id:mosuke5:20160604171559p:plain&#34; title=&#34;f:id:mosuke5:20160604171559p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;ワーカプロセスがリクエストを処理する。&lt;br&gt;
+前述のpreforkやworkerと決定的に違うところは、１つのワーカプロセスが複数のリクエストを処理するということだ。&lt;/p&gt;
+
+&lt;p&gt;また、マスタープロセスはワーカプロセスの立ち上げや、制御、管理などが主な仕事。&lt;br&gt;
+Nginxを終了あるいは再起動、設定ファイルを再読み込みして変更を反映するなど。&lt;/p&gt;
+
+&lt;p&gt;下記のような仕組みがNginxの高速化（C10K問題対応）を可能としている。&lt;/p&gt;
+
+&lt;h1&gt;シングルスレッド&lt;/h1&gt;
+
+&lt;p&gt;接続ごとにプロセスやスレッドを立ち上げていては、C10K問題に対応できない。&lt;br&gt;
+そこで、Nginxは１つのスレッドで処理を行うようにしている。&lt;br&gt;
+それにより、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1&#34;&gt;コンテキストスイッチ&lt;/a&gt;と呼ばれるCPUの切り替え処理が発生しない。&lt;br&gt;
+正確に言うと、完全に１スレッドで処理するわけではなく図にあるようにワーカプロセス自体はマルチプロセス化できる。&lt;/p&gt;
+
+&lt;h1&gt;イベント駆動&lt;/h1&gt;
+
+&lt;p&gt;通常のプログラムは上から書かれた順に実行されますよね。&lt;br&gt;
+イベ ント駆動で動作するプログラムは何かしらのイベントが発生するまで待機し、発生したイベントの種類に応じて実行される。&lt;br&gt;
+ブラウザ上の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/JavaScript&#34;&gt;JavaScript&lt;/a&gt;の動きをイメージするとわかりやすいと思う。&lt;/p&gt;
+
+&lt;h1&gt;非同期処理&lt;/h1&gt;
+
+&lt;p&gt;一般的なwebサーバでは同期処理を行う。
+つまり、複数のリクエストがあったときに順番に処理していく。&lt;br&gt;
+そのため、１つのリクエストが遅いとそれに引きづられてあとのリクエストも遅くなる。&lt;br&gt;
+非同期処理では、リクエストがきたら他のリクエストの状況に関わらず処理を行う。&lt;/p&gt;
+
+&lt;h4&gt;同期処理&lt;/h4&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604173212.png&#34; alt=&#34;f:id:mosuke5:20160604173212p:plain&#34; title=&#34;f:id:mosuke5:20160604173212p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h4&gt;非同期処理&lt;/h4&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604173226.png&#34; alt=&#34;f:id:mosuke5:20160604173226p:plain&#34; title=&#34;f:id:mosuke5:20160604173226p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;向いていること / 向いていないこと&lt;/h1&gt;
+
+&lt;p&gt;Nginxではイベント駆動で非同期的なIO処理によって、リクエストを完全に処理することを待たずに次から次へと処理を受け付けていきます。&lt;br&gt;
+そのため、１処理に時間のかかるものをNginx自身で行おうとするとキューがどんどん溜まってしまいます。&lt;br&gt;
+そのため、一般にアプリケーションの実行やデータベース処理などは向いていません。&lt;br&gt;
+一方で、軽量な静的データの配信やリバースプロキシなどに向いています。&lt;/p&gt;
+
+&lt;p&gt;Nginxは、静的データの配信や、プロキシなどに特化させ、アプリケーションの実行などは別途&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%B5%A1%BC%A5%D0&#34;&gt;アプリケーションサーバ&lt;/a&gt;等で行わせることで有効活用できます。&lt;/p&gt;
+
+&lt;h2&gt;向いていること&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;軽量データの大量配信&lt;/li&gt;
+&lt;li&gt;ディスクI/Oの発生しないキャッシュ&lt;/li&gt;
+&lt;li&gt;リバースプロキシ&lt;/li&gt;
+&lt;li&gt;ロードバランサ&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;向いていないこと&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;アプリケーション実行&lt;/li&gt;
+&lt;li&gt;データベース処理&lt;/li&gt;
+&lt;li&gt;動画などの重たいデータの配信&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;4. 最後に&lt;/h1&gt;
+
+&lt;p&gt;NginxやWebサーバについてより理解を深めるためには、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/UNIX&#34;&gt;UNIX&lt;/a&gt;のプロセスやネットワーク&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/API&#34;&gt;API&lt;/a&gt;についての知識が足りないと感じた。。。&lt;/p&gt;
+
+&lt;p&gt;というわけでこれを買ってみたが、978ページもあってとりあえず挫折＼(^o^)／&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4894712059/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/213B9PVJD1L._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;UNIXネットワークプログラミング〈Vol.1〉ネットワークAPI:ソケットとXTI&#34; title=&#34;UNIXネットワークプログラミング〈Vol.1〉ネットワークAPI:ソケットとXTI&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4894712059/hatena-blog-22/&#34;&gt;UNIXネットワークプログラミング〈Vol.1〉ネットワークAPI:ソケットとXTI&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;作者:&lt;/span&gt; W.リチャードスティーヴンス,W.Richard Stevens,篠田陽一&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; ピアソンエデュケーション&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 1999/07&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; 単行本&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;購入&lt;/span&gt;: 8人 &lt;span class=&#34;hatena-asin-detail-label&#34;&gt;クリック&lt;/span&gt;: 151回&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/4894712059/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログ (37件) を見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;まずはこれからはじめようと思う。。。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Ftatsu-zine.com%2Fbooks%2Fnaruhounix&#34; title=&#34;なるほどUnixプロセス ― Rubyで学ぶUnixの基礎&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://tatsu-zine.com/books/naruhounix&#34;&gt;tatsu-zine.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;参考文献&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://gihyo.jp/magazine/SD/archive/2014/201407&#34;&gt;SoftwareDesign 2015年7月号&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.amazon.co.jp/nginx%E5%AE%9F%E8%B7%B5%E5%85%A5%E9%96%80-WEB-DB-PRESS-plus-%E4%B9%85%E4%BF%9D/dp/4774178667&#34;&gt;Nginx実践入門&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.amazon.co.jp/24%E6%99%82%E9%96%93365%E6%97%A5-%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E3%82%92%E6%94%AF%E3%81%88%E3%82%8B%E6%8A%80%E8%A1%93-%E2%80%BE%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%A9%E3%83%93%E3%83%AA%E3%83%86%E3%82%A3%E3%80%81%E3%83%8F%E3%82%A4%E3%83%91%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%B3%E3%82%B9%E3%80%81%E7%9C%81%E5%8A%9B%E9%81%8B%E7%94%A8-PRESS-plus%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA/dp/4774135666/ref=sr_1_1?s=books&amp;amp;ie=UTF8&amp;amp;qid=1465030268&amp;amp;sr=1-1&amp;amp;keywords=%E3%82%B5%E3%83%BC%E3%83%90%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E3%82%92%E6%94%AF%E3%81%88%E3%82%8B&#34;&gt;[サーバインフラを支える技術](https://gihyo.jp/magazine/wdpress/plus/978-4-7741-3566-3)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.yuuk.io/entry/2015-webserver-architecture&#34;&gt;2015年Webサーバアーキテクチャ序論 - ゆううきブログ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>今度こそ入門するtmux</title>
+      <link>https://blog.mosuke.tech/entry/2016/04/15/002004/</link>
+      <pubDate>Fri, 15 Apr 2016 00:20:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/04/15/002004/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;tmuxの入門は何度目だろうか…&lt;br&gt;
+SoftwareDesignの2015年7月号を見ながら、何度目かの入門をしたのでメモする。&lt;br&gt;
+ブログに書いたので、これで運用にのりそうだ。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;tmuxってなに？&lt;/h1&gt;
+
+&lt;p&gt;公式ページ(&lt;a href=&#34;http://tmux.github.io/&#34;&gt;http://tmux.github.io/&lt;/a&gt;)から引用すると。&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;tmux is a terminal multiplexer. What is a terminal multiplexer? It &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/lets&#34;&gt;lets&lt;/a&gt; you switch easily between several programs in one terminal, detach them (they keep running in the background) and reattach them to a different terminal. And do a lot more.&lt;br&gt;
+（訳）tmuxはターミナルマルチプレクサです。ターミナルマルチプレクサは複数のプログラムを容易に1つのターミナル上で切り替えられるようにします。またそれらのプログラムをバックグラウンドで動かしながらデタッチしたり、別のターミナルにアタッチすることができます。さらにいろいろなことができます。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h1&gt;tmuxを使ってみる&lt;/h1&gt;
+
+&lt;h1&gt;インストール&lt;/h1&gt;
+
+&lt;p&gt;今回&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;の環境で行っています。&lt;br&gt;
+今日時点ではバージョン2.2まででていますが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/brew&#34;&gt;brew&lt;/a&gt;では2.1がインストールされました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ brew install tmux
+$ tmux -V
+tmux 2.1 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;起動&lt;/h1&gt;
+
+&lt;p&gt;&lt;code&gt;$ tmux&lt;/code&gt;と入力すると、tmuxが起動し&lt;code&gt;$ exit&lt;/code&gt;で抜けることができます。&lt;br&gt;
+これから説明していきますが、tmuxの機能を利用するときプレフィックスキーを入力する必要があります。&lt;br&gt;
+デフォルトではプレフィックスキーは&lt;code&gt;Ctrl-b&lt;/code&gt;になっています。&lt;/p&gt;
+
+&lt;h1&gt;ウィンドウの作成、切り替え&lt;/h1&gt;
+
+&lt;p&gt;１つのtmuxの中にウィンドウ（タブ機能と考えてください）を作って切り替えたりします。&lt;br&gt;
+&lt;code&gt;Ctrl-b&lt;/code&gt;+&lt;code&gt;c&lt;/code&gt;でウィンドウを作成できます。&lt;br&gt;
+ウィンドウを作成するとターミナルの下部分（ステータスバー）に表示されます。&lt;br&gt;
+*印があるのがいまいるウィンドウです。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160414/20160414233836.png&#34; alt=&#34;f:id:mosuke5:20160414233836p:plain&#34; title=&#34;f:id:mosuke5:20160414233836p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;ウィンドウ分割&lt;/h1&gt;
+
+&lt;p&gt;ウィンドウの分割もできます。開発するときに便利ですよね！&lt;br&gt;
+分割された画面をペインと言います。&lt;br&gt;
+&lt;code&gt;Ctrl-b&lt;/code&gt;+&lt;code&gt;%&lt;/code&gt;で縦に分割、&lt;code&gt;Ctrl-b&lt;/code&gt;+&lt;code&gt;&#34;&lt;/code&gt;で横に分割できます。&lt;br&gt;
+ペイン間の移動は&lt;code&gt;Ctrl-b&lt;/code&gt;+&lt;code&gt;o&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160414/20160414230041.png&#34; alt=&#34;f:id:mosuke5:20160414230041p:plain&#34; title=&#34;f:id:mosuke5:20160414230041p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;なにが嬉しいの？&lt;/h1&gt;
+
+&lt;p&gt;まてまて、タブ機能もウィンドウ分割もiTerm2で全然できるよ？&lt;br&gt;
+ほら！？
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160414/20160414230301.png&#34; alt=&#34;f:id:mosuke5:20160414230301p:plain&#34; title=&#34;f:id:mosuke5:20160414230301p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;tmuxのいいところはデタッチとアタッチ機能やカスタマイズ性の高さだと思う。&lt;br&gt;
+カスタマイズ性についてはまだそんなにわかってませんが。。。&lt;/p&gt;
+
+&lt;h1&gt;デタッチとアタッチ&lt;/h1&gt;
+
+&lt;p&gt;tmuxはターミナルを仮想化します。その威力を発揮するのがデタッチとアタッチ機能です。&lt;br&gt;
+tmuxを起動した状態で&lt;code&gt;Ctrl-b&lt;/code&gt;+&lt;code&gt;d&lt;/code&gt;を押してみよう。&lt;br&gt;
+そうすると下のステータスバーも消え、元のターミナルに戻ってきたと思う。&lt;br&gt;
+これをデタッチといい、tmuxが終了したわけではない。&lt;/p&gt;
+
+&lt;p&gt;プロセスを確認すると、tmuxがまだ存在してることがわかる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ps -ef | grep tmux
+  501 16038     1   0  9:26PM ??         0:02.26 tmux
+  501 17800 13345   0 11:53PM ttys005    0:00.00 grep tmux 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;tmux ls&lt;/code&gt;で現在のtmuxのセッションの一覧がみれます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ tmux ls
+0: 1 windows (created Thu Apr 14 21:26:19 2016) [129x32] 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ではアタッチしてみよう。下記で元のtmuxに戻ってくるはずです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ tmux attach 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;デタッチしている間もバックグラウンドでプログラムは動き続けています。&lt;br&gt;
+試しに、tmux上でvmstatなどを打ってデタッチしてアタッチすると動き続けていることがわかると思います。&lt;/p&gt;
+
+&lt;h1&gt;pstree見るといい&lt;/h1&gt;
+
+&lt;p&gt;tmuxの概念を理解するにはpstreeをみるといい。&lt;br&gt;
+tmuxを使わずにpstreeコマンドを打つと、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;のプロセスの下でpstreeが動いているのがわかる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ pstree -p
+systemd(1)
+    ├─sshd(13589)─┬─sshd(15066)───sshd(15068)───bash(15069)───pstree(15115) 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;一方、tmuxを起動し、tmux上でpstreeを実行すると、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/sshd&#34;&gt;sshd&lt;/a&gt;のプロセスの下にはtmuxが動いており、&lt;br&gt;
+pstreeコマンドはtmuxプロセスの下で動いている。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ pstree -p
+systemd(1)
+    ├─sshd(13589)─┬─sshd(15066)───sshd(15068)───bash(15069)───tmux(15146)
+    └─tmux(15148)───bash(15149)───pstree(15168) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なにがいいたいかというと、tmuxの上で動かすプロセスは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/sshd&#34;&gt;sshd&lt;/a&gt;とは別プロセスで動いているということ。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;が切れても動作し続けるとはまあそういうことです。&lt;/p&gt;
+
+&lt;h1&gt;カスタマイズ&lt;/h1&gt;
+
+&lt;p&gt;tmuxはカスタマイズ性に優れます（ようです）。&lt;code&gt;.tmux.conf&lt;/code&gt;を修正することでカスタマイズ可能です。&lt;br&gt;
+今回は入門ということで、よく使いそうな基本設定だけしたが、これだけでも相当便利でした。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;プレフィックスキーを&lt;code&gt;Ctrl-t&lt;/code&gt;とする&lt;/li&gt;
+&lt;li&gt;ペインのサイズを&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/vim&#34;&gt;vim&lt;/a&gt;の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AD%A1%BC%A5%D0%A5%A4%A5%F3%A5%C9&#34;&gt;キーバインド&lt;/a&gt;で調整できるようにする&lt;/li&gt;
+&lt;li&gt;ウィンドウの分割を&lt;code&gt;|&lt;/code&gt;と&lt;code&gt;-&lt;/code&gt;でできるようにする&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# プレフィックスキー
+unbind C-b
+set-option -g prefix C-t
+
+# paneのサイズ変更（Vimerにはかかせない）
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
+
+# window分割（わかりやすくていいね！）
+bind | split-window -h
+bind - split-window -v 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AD%A1%BC%A5%D0%A5%A4%A5%F3%A5%C9&#34;&gt;キーバインド&lt;/a&gt;でペインのサイズ自由自在！
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160415/20160415000811.gif&#34; alt=&#34;f:id:mosuke5:20160415000811g:plain&#34; title=&#34;f:id:mosuke5:20160415000811g:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>HerokuをRailsアプリのステージング環境として使う</title>
+      <link>https://blog.mosuke.tech/entry/2016/03/28/181636/</link>
+      <pubDate>Mon, 28 Mar 2016 18:16:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/03/28/181636/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;趣味で作っているアプリ(&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rails&#34;&gt;Rails&lt;/a&gt;)があるのだが、はじめHerokuで運用しようと検討していたが、 &lt;br&gt;
+データ量が多いためすぐにHobbyプランでは対応できなくなってしまった。&lt;br&gt;
+仕方ないので、別のアプリで持っている&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;をProduction環境とすることにしたのだが、&lt;br&gt;
+せっかくなのでherokuもうまく使いたいなーと思ってステージング環境として使うことにした。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;そのときにやったことをメモする。&lt;/p&gt;
+
+&lt;h1&gt;Staging環境の設定を作る&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rails&#34;&gt;Rails&lt;/a&gt;ではデフォルトではdevelopment, test, productionの環境を持っている。&lt;br&gt;
+そこに今回、stagingという環境を追加した。&lt;br&gt;
+そして、herokuではデフォルトではproductionを利用するようになっているのでstagingに切り替えるだけ。&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rails&#34;&gt;Rails&lt;/a&gt;側はstaging環境追加。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ vim config/database.yml
+# 下記を追加した
+staging:
+  &amp;lt;&amp;lt;: *default
+  adapter: postgresql
+  encoding: unicode
+  database:
+  pool: 5
+  username:
+  password:
+
+$ vim config/enviroments/staging.rb
+# 基本的にはproduction.rbをコピーし、必要に応じて設定を変更
+
+$ vim config/secrets.yml
+# 必要に応じてstagingを追加 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;heroku側はステージングへの切り替え。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ heroku config --app app-name    # デフォではproductionになってる
+RAILS_ENV:                production
+$ heroku config:set RAILS_ENV=staging --app app-name
+$ heroku config --app app-name
+RAILS_ENV:                staging 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Basic%C7%A7%BE%DA&#34;&gt;Basic認証&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;ステージング環境なので、外部から簡単にアクセス出来ないように&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Basic%C7%A7%BE%DA&#34;&gt;Basic認証&lt;/a&gt;をかけた。&lt;br&gt;
+いくつかやり方があると思うが、&lt;code&gt;app/controllers/application_controller.rb&lt;/code&gt;に設定を追加した。&lt;br&gt;
+ユーザ名とパスワードをベタ書きだと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Github&#34;&gt;Github&lt;/a&gt;に上げてる場合は丸見えになってしまうので&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B4%C4%B6%AD%CA%D1%BF%F4&#34;&gt;環境変数&lt;/a&gt;でやりましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;http_basic_authenticate_with :name =&amp;gt; ENV[&#39;BASIC_AUTH_USERNAME&#39;], :password =&amp;gt; ENV[&#39;BASIC_AUTH_PASSWORD&#39;] if Rails.env == &amp;quot;staging&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;heroku側では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B4%C4%B6%AD%CA%D1%BF%F4&#34;&gt;環境変数&lt;/a&gt;を設定してあげる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ heroku config:set BASIC_AUTH_USERNAME=&amp;quot;xxxxx&amp;quot; BASIC_AUTH_PASSWORD=&amp;quot;xxxxx&amp;quot; --app app-name
+$ heroku config --app app-name
+BASIC_AUTH_PASSWORD:      xxxxx
+BASIC_AUTH_USERNAME:      xxxxx 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Github&#34;&gt;Github&lt;/a&gt;連携で自動デプロイ&lt;/h1&gt;
+
+&lt;p&gt;今更ながら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Github&#34;&gt;Github&lt;/a&gt;と連携した自動デプロイ機能があることを知った…&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Github&#34;&gt;Github&lt;/a&gt;へ&lt;code&gt;git push origin master&lt;/code&gt;すればheroku側にも反映される機能だ。&lt;br&gt;
+昔使った時には&lt;code&gt;git push origin master&lt;/code&gt;と&lt;code&gt;git push heroku master&lt;/code&gt;と２回コマンド打ってたのでめんどいなーと思ってた。&lt;br&gt;
+デプロイが楽なのでステージング環境としてはほんとに優秀だと思う。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;a href=&#34;http://kayakuguri.github.io/blog/2015/02/10/heroku-github-sync/&#34;&gt;[heroku]githubから自動でherokuにデプロイ - KayaMemo&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Github Pagesを今更作った話と、独自ドメイン適応時の通信のこと</title>
+      <link>https://blog.mosuke.tech/entry/2016/03/19/232437/</link>
+      <pubDate>Sat, 19 Mar 2016 23:24:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/03/19/232437/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;今更ながら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/github&#34;&gt;github&lt;/a&gt;ページでプロフィールサイトを作った。&lt;br&gt;
+(もう少しデザインブラッシュアップしたい…)&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://mosuke.tech/&#34;&gt;mosuke tech&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;また、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%C6%C8%BC%AB%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;独自ドメイン&lt;/a&gt;（カスタム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;）の設定やその仕組みをおっている時に、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%C6%C8%BC%AB%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;独自ドメイン&lt;/a&gt;適応時の通信について面白いことがわかったのでかく。&lt;/p&gt;
+
+&lt;h1&gt;求めていたもの&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ブログとか作ったプロダクトをまとめたかった&lt;/li&gt;
+&lt;li&gt;極力シンプルでメンテしやすいものがよかった&lt;/li&gt;
+&lt;li&gt;でもレスポンシブなデザインがよかった&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;どのようにつくったか&lt;/h1&gt;
+
+&lt;p&gt;上の条件を満たすために以下の２パターンのどっちで作ろうか迷った。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Jekyllなどを使いテンプレートを使って作る&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/CSS&#34;&gt;CSS&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D5%A5%EC%A1%BC%A5%E0%A5%EF%A1%BC%A5%AF&#34;&gt;フレームワーク&lt;/a&gt;のみ利用し、あとは自分で作る&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;１ページだけのシンプルなプロフィールサイトがよかったので、&lt;br&gt;
+Jekyllとか複雑なものは利用したくないと考えた。&lt;/p&gt;
+
+&lt;p&gt;また、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/CSS&#34;&gt;CSS&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D5%A5%EC%A1%BC%A5%E0%A5%EF%A1%BC%A5%AF&#34;&gt;フレームワーク&lt;/a&gt;だが、いつもよくTwitterBootstrapを使っているので、&lt;br&gt;
+それ以外のものでやってみようと考えた。&lt;/p&gt;
+
+&lt;p&gt;その結果、行き着いたのが&lt;a href=&#34;http://getskeleton.com/&#34;&gt;Skeleton&lt;/a&gt;だった。&lt;br&gt;
+Skeletonは&lt;b&gt;&#34;A dead simple, responsive boilerplate.&#34;&lt;/b&gt;をうたっているものでよかった。&lt;/p&gt;
+
+&lt;h1&gt;カスタム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;の設定&lt;/h1&gt;
+
+&lt;p&gt;デフォルトだと&lt;code&gt;mosuke5.github.io&lt;/code&gt;のURLが利用できる。&lt;br&gt;
+しかし、この前&lt;code&gt;mosuke.tech&lt;/code&gt;といういい感じの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;を安く手に入れてたので、カスタム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;の設定を行うことにした。&lt;/p&gt;
+
+&lt;p&gt;カスタム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;の設定方法は以下のみだ。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&#34;&gt;レポジトリ&lt;/a&gt;にCNAMEファイルを作成する &lt;code&gt;$ echo mosuke.tech &amp;gt; CNAME&lt;/code&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/DNS&#34;&gt;DNS&lt;/a&gt;の設定：Aレコードに&lt;code&gt;192.30.252.153&lt;/code&gt;と&lt;code&gt;192.30.252.154&lt;/code&gt;を追加&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;(本家ドキュメント)&lt;br&gt;
+&lt;a href=&#34;https://help.github.com/articles/setting-up-an-apex-domain/&#34;&gt;Setting up an apex domain - User Documentation&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;カスタム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;設定時の通信について&lt;/h1&gt;
+
+&lt;p&gt;カスタム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;がどのような仕組みで実現されているのか気になって、&lt;br&gt;
+いろいろと調べている時にあることに気づいた。&lt;/p&gt;
+
+&lt;p&gt;Aレコードに登録した&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;を逆引きで調べると、pages.&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/github&#34;&gt;github&lt;/a&gt;.comが出てくるが、&lt;br&gt;
+pages.&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/github&#34;&gt;github&lt;/a&gt;.comをdigすると違う結果が返ってくる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ dig -x 192.30.252.153
+;; ANSWER SECTION:
+153.252.30.192.in-addr.arpa. 3600 IN    PTR pages.github.com.
+
+$ dig pages.github.com
+;; ANSWER SECTION:
+pages.github.com.   900 IN  CNAME   github.map.fastly.net.
+github.map.fastly.net.  23  IN  A   103.245.222.133[f:id:mosuke5:20160319233634j:plain] 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;後者のほうでは、fastly（CDN）の結果が返ってくる。&lt;br&gt;
+つまり、カスタム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;を設定しなければ、通常はCDN経由で通信されるが、&lt;br&gt;
+カスタム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;を割り当てるとCDNを利用できないのではないかということがわかった。&lt;/p&gt;
+
+&lt;p&gt;実際に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ping&#34;&gt;Ping&lt;/a&gt;で確かめてみる。明らかに速度差がでている。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;% ping mosuke5.github.io
+PING github.map.fastly.net (103.245.222.133): 56 data bytes
+64 bytes from 103.245.222.133: icmp_seq=0 ttl=58 time=18.485 ms
+64 bytes from 103.245.222.133: icmp_seq=1 ttl=58 time=19.108 ms
+64 bytes from 103.245.222.133: icmp_seq=2 ttl=58 time=18.709 ms
+64 bytes from 103.245.222.133: icmp_seq=3 ttl=58 time=19.161 ms
+64 bytes from 103.245.222.133: icmp_seq=4 ttl=58 time=20.574 ms
+
+
+% ping mosuke.tech
+PING mosuke.tech (192.30.252.154): 56 data bytes
+64 bytes from 192.30.252.154: icmp_seq=0 ttl=52 time=203.329 ms
+64 bytes from 192.30.252.154: icmp_seq=1 ttl=52 time=205.535 ms
+64 bytes from 192.30.252.154: icmp_seq=2 ttl=52 time=203.178 ms
+64 bytes from 192.30.252.154: icmp_seq=3 ttl=52 time=201.345 ms
+64 bytes from 192.30.252.154: icmp_seq=4 ttl=52 time=205.125 ms 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;また、それぞれの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;から場所も調べてみた。&lt;br&gt;
+CDN利用時がオーストラリア、そうでないとアメリカ西海岸ということがわかった。
+&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fwww.iputilities.net%2F&#34; title=&#34;IPアドレス所在地検索 IP Geolocation Search&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://www.iputilities.net/&#34;&gt;www.iputilities.net&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;以上のことをまとめつつ、地図に表した。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160319/20160319233634.jpg&#34; alt=&#34;f:id:mosuke5:20160319233634j:plain&#34; title=&#34;f:id:mosuke5:20160319233634j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;オーストラリアとアメリカ西海岸だとそんなに直線距離は変わらない気もするけど、&lt;br&gt;
+CDNの力なのかルート的な問題ないのか&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ping&#34;&gt;Ping&lt;/a&gt;の応答速度は10倍ほどの差があった。&lt;/p&gt;
+
+&lt;p&gt;カスタム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;を使うと遅くなる！？（まあ全然いいんだけど…）&lt;/p&gt;
+
+&lt;h1&gt;最後に&lt;/h1&gt;
+
+&lt;p&gt;CDNの仕組みとかいまいち忘れてしまったので、アカマイ本を読み返したい。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00MIFE3BC/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/51T4L8K2yLL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;アカマイ　知られざるインターネットの巨人&amp;lt;アカマイ&amp;gt; (角川ＥＰＵＢ選書)&#34; title=&#34;アカマイ　知られざるインターネットの巨人&amp;lt;アカマイ&amp;gt; (角川ＥＰＵＢ選書)&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00MIFE3BC/hatena-blog-22/&#34;&gt;アカマイ　知られざるインターネットの巨人 (角川ＥＰＵＢ選書)&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;作者:&lt;/span&gt; 小川晃通&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/KADOKAWA&#34;&gt;KADOKAWA&lt;/a&gt; / &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%E1%A5%C7%A5%A3%A5%A2%A5%D5%A5%A1%A5%AF%A5%C8%A5%EA%A1%BC&#34;&gt;メディアファクトリー&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2014/08/11&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kindle&#34;&gt;Kindle&lt;/a&gt;版&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/B00MIFE3BC/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログ (5件) を見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>DBのViewの使いどころの検討</title>
+      <link>https://blog.mosuke.tech/entry/2016/03/16/175431/</link>
+      <pubDate>Wed, 16 Mar 2016 17:54:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/03/16/175431/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;ある実装についてどのように実装するか悩んだ。&lt;br&gt;
+その悩んだ過程や実装案をメモする。似たようなケースの実装案として参考になればと思う。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;状況&lt;/h1&gt;
+
+&lt;p&gt;ある申請に対して、検査Aと検査Bを行い、その検査状態・検査日時を管理・閲覧するシステムがあるとする。  &lt;br&gt;
+申請のテーブルは下記とする。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;id: int&lt;/li&gt;
+&lt;li&gt;name: varchar(20)  # どうでもいいので無視していい&lt;/li&gt;
+&lt;li&gt;check_a: datetime  # 検査すると実施した日時がはいる&lt;/li&gt;
+&lt;li&gt;check_b: datetime  # 検査すると実施した日時がはいる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;UIとして下記のように表示したいと考えている。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;番号&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;状態&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;名前&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;検査A&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;検査B&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;1&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;検査完了&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;xxxxxx&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;2016/03/01 10:00 &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;2016/03/01 12:00&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;2&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;検査未完了&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;xxxxxx&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; - &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; - &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;3&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;検査途中&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;xxxxxx&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; 2016/03/01 13:00 &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; - &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;4&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;検査途中&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;xxxxxx&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; - &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; 2016/03/01 15:00 &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4&gt;※&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%F3%A5%C1%A5%D1%A5%BF%A1%BC%A5%F3&#34;&gt;アンチパターン&lt;/a&gt;だろ！？&lt;/h4&gt;
+
+&lt;p&gt;そもそも&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%F3%A5%C1%A5%D1%A5%BF%A1%BC%A5%F3&#34;&gt;アンチパターン&lt;/a&gt;の「マルチカラム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%C8%A5%EA%A5%D3%A5%E5%A1%BC%A5%C8&#34;&gt;アトリビュート&lt;/a&gt;」じゃないの？と思うかもしれない。&lt;br&gt;
+この場合は、この設計が一番という前提でお願いしたい。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fwww.amazon.co.jp%2FSQL%25E3%2582%25A2%25E3%2583%25B3%25E3%2583%2581%25E3%2583%2591%25E3%2582%25BF%25E3%2583%25BC%25E3%2583%25B3-Bill-Karwin%2Fdp%2F4873115892&#34; title=&#34;Amazon.co.jp： SQLアンチパターン: Bill Karwin, 和田 卓人, 和田 省二, 児島 修: 本&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/SQL%E3%82%A2%E3%83%B3%E3%83%81%E3%83%91%E3%82%BF%E3%83%BC%E3%83%B3-Bill-Karwin/dp/4873115892&#34;&gt;www.amazon.co.jp&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;実装の検討&lt;/h1&gt;
+
+&lt;p&gt;いくつかの実装パターンを検討した。&lt;br&gt;
+結果的に今回は実装案４のViewを使うのがいいのではないかと考えた。 &lt;br&gt;
+が、Viewにもデメリットがある。必ずしもViewがいいというものではないことは留意。&lt;/p&gt;
+
+&lt;h2&gt;(実装案１) &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;側で頑張る&lt;/h2&gt;
+
+&lt;p&gt;まず、データを取り出す際に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;で頑張ることを思いつくはずだ。&lt;br&gt;
+例えば以下みたいに。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;select
+  id,
+  name,
+  case
+    when check_a is null and check_b is null  then &#39;検査未完了&#39;
+    when check_a is not null and check_b is not null then &#39;検査完了 &#39;
+    else &#39;検査途中&#39;
+  end as check_status
+from request
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これが悪いとはいわない。&lt;br&gt;
+だが、例えば同じような表示方法で他の条件式で取得したい時があるだろう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;select
+  id,
+  name,
+  case
+    when check_a is null and check_b is null  then &#39;検査未完了&#39;
+    when check_a is not null and check_b is not null then &#39;検査完了 &#39;
+    else &#39;検査途中&#39;
+  end as check_status
+from request
+where name = &#39;xxxxx&#39;
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;もし、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9&#34;&gt;ソースコード&lt;/a&gt;の中に同じ形なのに条件だけがことなる&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;が出てきてしまったら、
+ヤバイと感じてくるはずだ。&lt;/p&gt;
+
+&lt;p&gt;そして、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ActiveRecord&#34;&gt;ActiveRecord&lt;/a&gt;のようなORマッパーを使っている場合、&lt;br&gt;
+case文などを利用し始めた時点で、生&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;を書かなければいけなくなる。&lt;br&gt;
+これも不吉な感じがしてくる。&lt;/p&gt;
+
+&lt;h1&gt;(実装案２) 受け取った側で頑張る&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;が複雑になるのがいやなら、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%B0%A5%E9%A5%DF%A5%F3%A5%B0%B8%C0%B8%EC&#34;&gt;プログラミング言語&lt;/a&gt;側で頑張ることもできる。&lt;br&gt;
+とりあえずデータは全部生でもらっておいて&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;select * from request;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;HTML出力の時に頑張る。(下記は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;のERB想定で記述)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;&amp;lt;% if(request.check_a.nil? and request.check_b.nil?) %&amp;gt;
+  &amp;lt;span&amp;gt;検査完了&amp;lt;/span&amp;gt; 
+&amp;lt;% elsif(!request.check_a.nil? and !request.check_b.nil?) %&amp;gt;
+  &amp;lt;span&amp;gt;検査未実施&amp;lt;/span&amp;gt; 
+&amp;lt;% else %&amp;gt;
+  &amp;lt;span&amp;gt;検査途中&amp;lt;/span&amp;gt; 
+&amp;lt;% end %&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ありといえばありだが、もっと条件が複雑になると条件式の管理が大変になってきそうだ。&lt;/p&gt;
+
+&lt;p&gt;出力部分をhelperなどに書いて関数化も考えた。&lt;br&gt;
+だが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;でERBを利用して出力する場合はいいが、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ajax&#34;&gt;Ajax&lt;/a&gt;でも出力する場合には&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;ヘルパーは利用できない。&lt;br&gt;
+とても嫌な予感がした。&lt;/p&gt;
+
+&lt;h1&gt;(実装案３) DBの設計の変更で頑張る&lt;/h1&gt;
+
+&lt;p&gt;そもそもテーブルの設計を変えてしまう方法も検討した。&lt;br&gt;
+テーブルの中で検査状態を持つのだ。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;id: int&lt;/li&gt;
+&lt;li&gt;name: varchar(20)&lt;/li&gt;
+&lt;li&gt;check_a: datetime&lt;/li&gt;
+&lt;li&gt;check_b: datetime&lt;/li&gt;
+&lt;li&gt;check_status: int&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;サーバサイド側で頑張らなきゃいけなくてとても実装する気になれなかったし、これってどうなの？&lt;/p&gt;
+
+&lt;h1&gt;(実装案４) Viewを利用して頑張る&lt;/h1&gt;
+
+&lt;p&gt;上３つで見てきたように、いろいろ考えたけどどれもイケてなかった。&lt;br&gt;
+そこで思いついたのがデータベースの機能の「View」だ。&lt;/p&gt;
+
+&lt;p&gt;Veiwを使ってよく利用する形を事前に作っておくことでいろいろ解決することがわかった。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;create view view_request as
+select
+  id,
+  name,
+  case
+    when check_a is null and check_b is null  then &#39;検査未完了&#39;
+    when check_a is not null and check_b is not null then &#39;検査完了 &#39;
+    else &#39;検査途中&#39;
+  end as check_status
+from request
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上記で作ったViewを参照することでいくつものメリットが生まれた。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ActiveRecord&#34;&gt;ActiveRecord&lt;/a&gt;が利用できるようになりコードが綺麗になった&lt;/li&gt;
+&lt;li&gt;重複した&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;が減った&lt;/li&gt;
+&lt;li&gt;実現のためのコードをほとんど書かなくて済んだ&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;だが、もちろんView機能が万能でないことは抑えておく必要がある。&lt;br&gt;
+Viewのデメリットは利用する前にしっかり確認してほしい。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fitpro.nikkeibp.co.jp%2Farticle%2FCOLUMN%2F20071126%2F287920%2F%3Frt%3Dnocnt&#34; title=&#34;[データベース編]ビュー、トリガーを多用してはいけない&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://itpro.nikkeibp.co.jp/article/COLUMN/20071126/287920/?rt=nocnt&#34;&gt;itpro.nikkeibp.co.jp&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;もっといい実装があれば教えて下さい。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>【錦織圭も分析】ATP TennisのデータスクレイパーGem作った</title>
+      <link>https://blog.mosuke.tech/entry/2016/03/06/140531/</link>
+      <pubDate>Sun, 06 Mar 2016 14:05:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/03/06/140531/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;h1&gt;背景&lt;/h1&gt;&lt;/p&gt;
+
+&lt;p&gt;このブログは基本的に技術ブログとしてやっているので、&lt;br&gt;
+テニスの話題ははじめてだが、テニスがすごく好きだ。
+特に、プロの試合の観戦はとても好きだ。&lt;/p&gt;
+
+&lt;p&gt;2005年からずーっと見てて、欠かさずすべての試合結果はチェックしている。&lt;/p&gt;
+
+&lt;p&gt;数年前から、テニス選手をある指標から分析したいなと思っていた。
+例えば、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ランキングは高くないけど、爆発するとトップ選手に勝つ力を持っているかどうか&lt;/li&gt;
+&lt;li&gt;自分より格下の選手に負けることが少ないかどうか&lt;/li&gt;
+&lt;li&gt;小さい大会ではあまり勝てないけど、大舞台で勝てる選手かどうか&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;これから伸びそうな選手かどうかなどをデータ的にみたかった。&lt;br&gt;
+ATPの公式サイトにもいくつか統計情報が載っているが、自分が大事と思う指標で分析したいと思っていた。&lt;/p&gt;
+
+&lt;p&gt;まずは、データを取得しなければいけないので、それで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EC%A5%A4%A5%D4%A5%F3%A5%B0&#34;&gt;スクレイピング&lt;/a&gt;のライブラリを作るにいたった。&lt;/p&gt;
+
+&lt;h1&gt;AtpScraper&lt;/h1&gt;
+
+&lt;p&gt;AtpScraperは男子のプロテニスの公式サイトである、&lt;a href=&#34;http://www.atpworldtour.com&#34;&gt;ATPのサイト&lt;/a&gt;から情報を&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EC%A5%A4%A5%D4%A5%F3%A5%B0&#34;&gt;スクレイピング&lt;/a&gt;してくれる&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;ライブラリだ。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fgithub.com%2Fmosuke5%2Fatp_scraper&#34; title=&#34;mosuke5/atp_scraper&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://github.com/mosuke5/atp_scraper&#34;&gt;github.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;現時点では、ぼくが今欲している機能しか実装していないが、下記ができる。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;シングルスのランキングの取得&lt;/li&gt;
+&lt;li&gt;プレイヤーの対戦レコードの取得&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;一例だが、どんなふうに利用できるかのせる。&lt;/p&gt;
+
+&lt;h3&gt;シングルスのランキング取得&lt;/h3&gt;
+
+&lt;p&gt;デフォルトだとトップ100のランキングを取得する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;pry(main)&amp;gt; AtpScraper::Get.singles_ranking
+=&amp;gt; [{:ranking=&amp;gt;&amp;quot;1&amp;quot;,
+  :player_name=&amp;gt;&amp;quot;Novak Djokovic&amp;quot;,
+  :player_url_name=&amp;gt;&amp;quot;novak-djokovic&amp;quot;,
+  :player_id=&amp;gt;&amp;quot;d643&amp;quot;,
+  :points=&amp;gt;&amp;quot;16580&amp;quot;},
+ {:ranking=&amp;gt;&amp;quot;2&amp;quot;,
+  :player_name=&amp;gt;&amp;quot;Andy Murray&amp;quot;,
+  :player_url_name=&amp;gt;&amp;quot;andy-murray&amp;quot;,
+  :player_id=&amp;gt;&amp;quot;mc10&amp;quot;,
+  :points=&amp;gt;&amp;quot;8765&amp;quot;},
+ {:ranking=&amp;gt;&amp;quot;3&amp;quot;,
+  :player_name=&amp;gt;&amp;quot;Roger Federer&amp;quot;,
+  :player_url_name=&amp;gt;&amp;quot;roger-federer&amp;quot;,
+  :player_id=&amp;gt;&amp;quot;f324&amp;quot;,
+  :points=&amp;gt;&amp;quot;8295&amp;quot;},
+
+(略)
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;下記のようにすれば、50位から60位のランキングを取得できる。&lt;br&gt;
+（※引数の指定の仕方がアレなのは突っ込まないこと）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;pry(main)&amp;gt; AtpScraper::Get.singles_ranking(&amp;quot;50-60&amp;quot;)
+=&amp;gt; [{:ranking=&amp;gt;&amp;quot;50&amp;quot;,
+  :player_name=&amp;gt;&amp;quot;Lukas Rosol&amp;quot;,
+  :player_url_name=&amp;gt;&amp;quot;lukas-rosol&amp;quot;,
+  :player_id=&amp;gt;&amp;quot;r685&amp;quot;,
+  :points=&amp;gt;&amp;quot;897&amp;quot;},
+ {:ranking=&amp;gt;&amp;quot;51&amp;quot;,
+  :player_name=&amp;gt;&amp;quot;Federico Delbonis&amp;quot;,
+  :player_url_name=&amp;gt;&amp;quot;federico-delbonis&amp;quot;,
+  :player_id=&amp;gt;&amp;quot;d874&amp;quot;,
+  :points=&amp;gt;&amp;quot;895&amp;quot;},
+
+(略)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B6%D3%BF%A5%B7%BD&#34;&gt;錦織圭&lt;/a&gt;の対戦レコード取得&lt;/h3&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B6%D3%BF%A5%B7%BD&#34;&gt;錦織圭&lt;/a&gt;の2016年の対戦レコードを見たいと思えば下記のように取得できる。&lt;br&gt;
+（第一引数の&lt;code&gt;n552&lt;/code&gt;は選手のIDのようなもので、これは上のランキングの取得時に手に入るのでそこで確認しなければいけない）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;pry(main)&amp;gt; AtpScraper::Get.player_activity(&amp;quot;n552&amp;quot;, 2016)
+=&amp;gt; [{:year=&amp;gt;&amp;quot;2016&amp;quot;,
+  :player_name=&amp;gt;&amp;quot;Kei Nishikori&amp;quot;,
+  :player_rank=&amp;gt;&amp;quot;6&amp;quot;,
+  :opponent_name=&amp;gt;&amp;quot;Sam Querrey&amp;quot;,
+  :opponent_rank=&amp;gt;&amp;quot;43&amp;quot;,
+  :round=&amp;gt;&amp;quot;Round of 16&amp;quot;,
+  :score=&amp;gt;&amp;quot;46 36&amp;quot;,
+  :win_loss=&amp;gt;&amp;quot;L&amp;quot;,
+  :tournament_name=&amp;gt;&amp;quot;Abierto Mexicano Telcel&amp;quot;,
+  :tournament_category=&amp;gt;&amp;quot;500&amp;quot;,
+  :tournament_location=&amp;gt;&amp;quot;Acapulco, Mexico&amp;quot;,
+  :tournament_start_date=&amp;gt;&amp;quot;2016.02.22&amp;quot;,
+  :tournament_end_date=&amp;gt;&amp;quot;2016.02.27&amp;quot;,
+  :tournament_surface=&amp;gt;&amp;quot;Hard&amp;quot;,
+  :tournament_surface_inout=&amp;gt;&amp;quot;Outdoor&amp;quot;},
+ {:year=&amp;gt;&amp;quot;2016&amp;quot;,
+  :player_name=&amp;gt;&amp;quot;Kei Nishikori&amp;quot;,
+  :player_rank=&amp;gt;&amp;quot;6&amp;quot;,
+  :opponent_name=&amp;gt;&amp;quot;Thiemo de Bakker&amp;quot;,
+  :opponent_rank=&amp;gt;&amp;quot;105&amp;quot;,
+  :round=&amp;gt;&amp;quot;Round of 32&amp;quot;,
+  :score=&amp;gt;&amp;quot;60 63&amp;quot;,
+  :win_loss=&amp;gt;&amp;quot;W&amp;quot;,
+  :tournament_name=&amp;gt;&amp;quot;Abierto Mexicano Telcel&amp;quot;,
+  :tournament_category=&amp;gt;&amp;quot;500&amp;quot;,
+  :tournament_location=&amp;gt;&amp;quot;Acapulco, Mexico&amp;quot;,
+  :tournament_start_date=&amp;gt;&amp;quot;2016.02.22&amp;quot;,
+  :tournament_end_date=&amp;gt;&amp;quot;2016.02.27&amp;quot;,
+  :tournament_surface=&amp;gt;&amp;quot;Hard&amp;quot;,
+  :tournament_surface_inout=&amp;gt;&amp;quot;Outdoor&amp;quot;},
+
+(略)
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;もし、過去のすべての&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B6%D3%BF%A5%B7%BD&#34;&gt;錦織圭&lt;/a&gt;の対戦レコードを取得したければ下記で取得できる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;pry(main)&amp;gt; AtpScraper::Get.player_activity(&amp;quot;n552&amp;quot;, &amp;quot;all&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;対戦レコードは１対戦ごとのレコードになっている。&lt;br&gt;
+トーナメントごとにまとめたりはしていない。&lt;/p&gt;
+
+&lt;h1&gt;これから&lt;/h1&gt;
+
+&lt;p&gt;データ取得ライブラリを作ったので、これからこれを使った分析をしていこうと思っている。&lt;br&gt;
+分析結果が見れるサービスを作るかもしれないし作らないかもしれない。&lt;/p&gt;
+
+&lt;p&gt;また、データ取得について要望があれば受け付けるし、プルリクをしてくれてもOKです。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/mosuke5/atp_scraper&#34;&gt;GitHub - mosuke5/atp_scraper: atp_scraper is a tool scraping tennis data from atpworldtour.com.&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>社内マリカー大会やりました！運営の工夫どころとかまとめ</title>
+      <link>https://blog.mosuke.tech/entry/2016/02/07/210300/</link>
+      <pubDate>Sun, 07 Feb 2016 21:03:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/02/07/210300/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;弊社では、年に一度、社内のコミュニケーション促進で、いろんな部署が集まって行う懇親会がある。&lt;br&gt;
+そこでは、恒例行事として何かしらのゲームを行っている。&lt;br&gt;
+そのゲームにて今年マリカー大会を行ったので、その報告と工夫した点などまとめておく。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%EA%A5%AA%A5%AB%A1%BC%A5%C8&#34;&gt;マリオカート&lt;/a&gt;を選んだ理由&lt;/h1&gt;
+
+&lt;p&gt;パーティとか懇親会のゲームイベントというと、&lt;br&gt;
+ビンゴ大会だったりクイズ大会、ジェスチャーゲームだったり行うのが一般的かと思う。&lt;br&gt;
+ですが、今回そういう場で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%EA%A5%AA%A5%AB%A1%BC%A5%C8&#34;&gt;マリオカート&lt;/a&gt;大会を選ぶに至ったのには下記のような理由があった。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;b&gt;準備が楽なものがよかった！&lt;/b&gt;&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;順位が決められるものが良かった（景品の都合上）&lt;/b&gt;&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;楽しさに進行役の力量が影響しないものがよかった…&lt;/b&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;まず、はじめはクイズ大会などを行おうかと検討していましたが、&lt;br&gt;
+そのクイズの問題を考えるのが結構たいへんであることに気づき、準備が楽なものがいいなと思った。&lt;br&gt;
+そして、運営的な理由だが、ゲームの結果を順位を簡単に決められる必要があった。&lt;br&gt;
+最後に、なんといっても自分が進行役だったので、&lt;br&gt;
+自分の笑いを取る力や進行技術で楽しさが左右されたらこまるなーとおもっていた。&lt;/p&gt;
+
+&lt;p&gt;これらを満たすことができると思ったのが&lt;span style=&#34;font-size: 150%&#34;&gt;&lt;span style=&#34;color: #0000cc&#34;&gt;&lt;b&gt;「マリカー」&lt;/b&gt;&lt;/span&gt;&lt;/span&gt;だった！&lt;/p&gt;
+
+&lt;h1&gt;環境&lt;/h1&gt;
+
+&lt;h3&gt;参加者&lt;/h3&gt;
+
+&lt;p&gt;８つのチームから合計200人程度参加。&lt;br&gt;
+年齢層も結構バラバラ。若手からお偉いさんまでいる。&lt;/p&gt;
+
+&lt;h3&gt;映像&lt;/h3&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WiiU&#34;&gt;WiiU&lt;/a&gt;の画像は、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/HDMI&#34;&gt;HDMI&lt;/a&gt;を使ってプロジェクターで大型スクリーンに投影した。&lt;/p&gt;
+
+&lt;h1&gt;ルール&lt;/h1&gt;
+
+&lt;p&gt;200人全員に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%EA%A5%AA%A5%AB%A1%BC%A5%C8&#34;&gt;マリオカート&lt;/a&gt;に参加してもらうことは難しかったので、&lt;br&gt;
+各チームで６人のゲーム参加者を事前に選んで頂いて、チームを代表として参加してもらうこととした。&lt;br&gt;
+（マリカー大会をやることは事前には言いませんでした。）&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WiiU&#34;&gt;WiiU&lt;/a&gt;では４人対戦までしかできないので、下記のような形式で対戦を進めた。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;8チームを4チーム×２分けて予選&lt;/li&gt;
+&lt;li&gt;下位２チームが下位決定戦&lt;/li&gt;
+&lt;li&gt;上位２チームが決勝戦&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;またなるべく多くの人がゲームに参加して欲しかったので、&lt;br&gt;
+特別ルールとして、&lt;span style=&#34;color: #ff0000&#34;&gt;&lt;b&gt;コースを１周したらチームのほかの人に交代するというリレー形式&lt;/b&gt;&lt;/span&gt;とした。&lt;/p&gt;
+
+&lt;h1&gt;準備したもの&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WiiU&#34;&gt;WiiU&lt;/a&gt;本体(&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B2%A1%BC%A5%E0%A5%D1%A5%C3%A5%C9&#34;&gt;ゲームパッド&lt;/a&gt;含む)&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%EA%A5%AA%A5%AB%A1%BC%A5%C88&#34;&gt;マリオカート8&lt;/a&gt;のソフト&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Wii%A5%EA%A5%E2%A5%B3%A5%F3&#34;&gt;Wiiリモコン&lt;/a&gt; 4つ
+&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fwww.amazon.co.jp%2Fdp%2FB0046EC9ZU%2Fref%3Dpd_lpo_sbs_dp_ss_1%3Fpf_rd_p%3D187205609%26pf_rd_s%3Dlpo-top-stripe%26pf_rd_t%3D201%26pf_rd_i%3DB000KF7QU2%26pf_rd_m%3DAN1VRQENFRJN5%26pf_rd_r%3D1XCVFCEE0Y8AP4TMB5C3&#34; title=&#34;Amazon.co.jp： Wiiリモコン プラス (シロ) (「Wiiリモコンジャケット」同梱): ゲーム&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/dp/B0046EC9ZU/ref=pd_lpo_sbs_dp_ss_1?pf_rd_p=187205609&amp;amp;pf_rd_s=lpo-top-stripe&amp;amp;pf_rd_t=201&amp;amp;pf_rd_i=B000KF7QU2&amp;amp;pf_rd_m=AN1VRQENFRJN5&amp;amp;pf_rd_r=1XCVFCEE0Y8AP4TMB5C3&#34;&gt;www.amazon.co.jp&lt;/a&gt;&lt;/cite&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;運営上の工夫&lt;/h1&gt;
+
+&lt;p&gt;運営上幾つかの工夫を行ったので紹介する。&lt;/p&gt;
+
+&lt;h3&gt;キャラクターについて&lt;/h3&gt;
+
+&lt;p&gt;利用するキャラクターや乗り物は、予めこちらでチームごとにランダムで割り振った。&lt;br&gt;
+そうすることで、当日にキャラを選ぶ時間を短縮できるし、マリカーの知識の差がなくなる。&lt;br&gt;
+キャラクターは運ということにした。&lt;/p&gt;
+
+&lt;h3&gt;コントローラについて&lt;/h3&gt;
+
+&lt;p&gt;４人対戦だと画面が４つに分割される。&lt;br&gt;
+自分がどの画面を操作すべきかわからなくなるので、画面位置がわかるようにコントローラにシールを貼った。&lt;br&gt;
+この対応は必須です。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160207/20160207182051.png&#34; alt=&#34;f:id:mosuke5:20160207182051p:plain&#34; title=&#34;f:id:mosuke5:20160207182051p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h3&gt;アイテムや操作など&lt;/h3&gt;
+
+&lt;p&gt;CPUなしで４人対戦で行った。
+４人対戦で普通のアイテム設定だと、「コイン」とか「バナナ」とか良いアイテムが出づらくつまらない。&lt;br&gt;
+アイテムの設定は「ダイナミック」にすることで、４人でも強力アイテムがでてバトルが白熱する。&lt;/p&gt;
+
+&lt;p&gt;カートの操作方法（曲がり方）は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BD%BD%BB%FA%A5%AD%A1%BC&#34;&gt;十字キー&lt;/a&gt;ではなくハンドル操作とした。&lt;br&gt;
+普段ゲームに慣れている人でも、ハンドル操作だと不慣れなことも多くみんなうまい具合に下手になって白熱した。&lt;/p&gt;
+
+&lt;h3&gt;初心者への対応&lt;/h3&gt;
+
+&lt;p&gt;アイテムの細かい使い方などいちいち説明できないので、&lt;br&gt;
+初心者へは「アクセル」と「曲がること」のみ教えた。&lt;br&gt;
+一見、経験者と不公平のようにみえるが、今回のルールだと１週しか同じ人が回らないので、&lt;br&gt;
+心配するほどのことにはならなかったです。&lt;/p&gt;
+
+&lt;h3&gt;トラブル時への備え&lt;/h3&gt;
+
+&lt;p&gt;こういう企画ではトラブルはつきもの。
+トラブルに対しての対応を用意した。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;コントローラの電池切れ対策で電池は買っておきました&lt;/li&gt;
+&lt;li&gt;コントローラが故障した場合は、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WiiU&#34;&gt;WiiU&lt;/a&gt;の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B2%A1%BC%A5%E0%A5%D1%A5%C3%A5%C9&#34;&gt;ゲームパッド&lt;/a&gt;で代用できるようにした&lt;/li&gt;
+&lt;li&gt;一応プロジェクターも２つ用意しておいた&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;進行役&lt;/h3&gt;
+
+&lt;p&gt;進行役は２人でやったのだが、雰囲気をだすために赤と緑のマントをまといました。&lt;br&gt;
+こういうのもいいっすね。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fwww.amazon.co.jp%2F%25E3%2582%25B9%25E3%2583%25BC%25E3%2583%2591%25E3%2583%25BC%25E3%2583%259E%25E3%2583%25AA%25E3%2582%25AA-%25E3%2583%25AB%25E3%2582%25A4%25E3%2583%25BC%25E3%2582%25B8-%25E5%25B8%25BD%25E5%25AD%2590%25E3%2582%25BB%25E3%2583%2583%25E3%2583%2588-%25E3%2582%25B3%25E3%2582%25B9%25E3%2583%2581%25E3%2583%25A5%25E3%2583%25BC%25E3%2583%25A0%25E7%2594%25A8%25E5%25B0%258F%25E7%2589%25A9-%25E3%2583%2595%25E3%2583%25AA%25E3%2583%25BC%25E3%2582%25B5%25E3%2582%25A4%25E3%2582%25BA%2Fdp%2FB00AGSQ5XW%2Fref%3Dsr_1_cc_3%3Fs%3Daps%26ie%3DUTF8%26qid%3D1454838114%26sr%3D1-3-catcorr%26keywords%3D%25E3%2583%259E%25E3%2583%25AA%25E3%2582%25AA%2B%25E5%25B8%25BD%25E5%25AD%2590&#34; title=&#34;Amazon.co.jp | スーパーマリオ&amp;amp;ルイージ 風 帽子セット コスチューム用小物 フリーサイズ | おもちゃ 通販&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/%E3%82%B9%E3%83%BC%E3%83%91%E3%83%BC%E3%83%9E%E3%83%AA%E3%82%AA-%E3%83%AB%E3%82%A4%E3%83%BC%E3%82%B8-%E5%B8%BD%E5%AD%90%E3%82%BB%E3%83%83%E3%83%88-%E3%82%B3%E3%82%B9%E3%83%81%E3%83%A5%E3%83%BC%E3%83%A0%E7%94%A8%E5%B0%8F%E7%89%A9-%E3%83%95%E3%83%AA%E3%83%BC%E3%82%B5%E3%82%A4%E3%82%BA/dp/B00AGSQ5XW/ref=sr_1_cc_3?s=aps&amp;amp;ie=UTF8&amp;amp;qid=1454838114&amp;amp;sr=1-3-catcorr&amp;amp;keywords=%E3%83%9E%E3%83%AA%E3%82%AA+%E5%B8%BD%E5%AD%90&#34;&gt;www.amazon.co.jp&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;実況について&lt;/h1&gt;
+
+&lt;p&gt;冒頭で「楽しさに進行役の力量が影響しないものがよかった」と書いたが、&lt;br&gt;
+「実況」が楽しさを左右するだろうといくぶんか練習した。。。&lt;/p&gt;
+
+&lt;p&gt;&lt;span style=&#34;font-size: 150%&#34;&gt;&lt;span style=&#34;color: #0000cc&#34;&gt;だが、盛り上がりすぎて、うるさすぎて、&lt;br&gt;
+実況の声なんて通りませんでした！！！！&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;実況の練習とかいらないでしょう…&lt;/p&gt;
+
+&lt;h1&gt;大変だったこと&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WiiU&#34;&gt;WiiU&lt;/a&gt;を会社に何度ももっていくこと
+
+&lt;ul&gt;
+&lt;li&gt;リハーサルや事前の動作試験や段取り決めのため、何度も会社に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WiiU&#34;&gt;WiiU&lt;/a&gt;持って行った。&lt;/li&gt;
+&lt;li&gt;家でスプラトゥーンやりたいので、毎度持って帰っていたので更に大変でした。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;当日の酒事情
+
+&lt;ul&gt;
+&lt;li&gt;ゲームのセッティングはミスできないので、懇親会で酒をあんまり飲めない&lt;/li&gt;
+&lt;li&gt;けれど、盛り上げるためにある程度酒を入れないとやっていられないジレンマ…&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;声を張ること
+
+&lt;ul&gt;
+&lt;li&gt;当日会場でルール説明などをしたが、マリカー大会をやるってだけで大盛り上がりで、相当な大声が必要だった…&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;最後に&lt;/h1&gt;
+
+&lt;ol&gt;
+&lt;li&gt;初心者でも十分たのしめるのでマリカー最高でした！&lt;/li&gt;
+&lt;li&gt;家ではスプラトゥーンをやりたいので、できれば&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WiiU&#34;&gt;WiiU&lt;/a&gt;は自分のではなくだれかに借りましょう！&lt;/li&gt;
+&lt;li&gt;喉が枯れます！&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Vagrant×Ansible環境の３つのスタイルとそのメリット・デメリットについて</title>
+      <link>https://blog.mosuke.tech/entry/2016/01/25/222150/</link>
+      <pubDate>Mon, 25 Jan 2016 22:21:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/01/25/222150/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;×Ansibleで開発環境を作っているみなさんは、
+どんなふうにそれを実現していますか？&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;きっといくつかのやり方、考え方があると思います。&lt;br&gt;
+例えば、ご自身のPCにAnsibleをインストールして&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;の仮想環境にプロビジョニングしているとか。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;で立てた仮想環境にAnsibleを入れて実行するとか。&lt;/p&gt;
+
+&lt;p&gt;本ブログでは下記３つの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;×Ansibleのやり方に注目し、&lt;br&gt;
+そのメリット・デメリットについて自分なりにまとめます。&lt;/p&gt; 
+&lt;ol&gt;
+&lt;li&gt;&lt;b&gt;ホストにAnsibleをインストールして利用する&lt;/b&gt;&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;ゲストにAnsibleをインストールして利用する&lt;/b&gt;&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;Ansible実行用のゲストを作って利用する&lt;/b&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;h1&gt;1. ホストにAnsibleをインストールして利用する&lt;/h1&gt;
+
+&lt;h2&gt;概要&lt;/h2&gt;
+
+&lt;p&gt;1番よくあるやり方だと思う。&lt;br&gt;
+ご自身のPCにAnsibleを入れて&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;で立ち上げたゲストにプロビジョニングを行う。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160125/20160125214934.png&#34; alt=&#34;f:id:mosuke5:20160125214934p:plain:w300&#34; title=&#34;f:id:mosuke5:20160125214934p:plain:w300&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:300px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;メリット&lt;/h2&gt;
+
+&lt;p&gt;なんといっても直感的でシンプル。&lt;br&gt;
+3.との比較になるが、Ansibleを実行する環境を別途用意する必要がないのでホストのリソースにも優しい。&lt;br&gt;
+また、2.との比較でゲストに無駄なものが入らない点でよい。&lt;/p&gt;
+
+&lt;h2&gt;デメリット&lt;/h2&gt;
+
+&lt;p&gt;ただ、そもそもwimdowsユーザはホストにAnsibleをインストールすることはできない。&lt;br&gt;
+つまり、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4%BF%CD&#34;&gt;複数人&lt;/a&gt;での開発をしていて、人によって端末が異なる場合には向いていない。&lt;br&gt;
+個人の端末の設定などにも大きく依存するため、チーム開発向きでないといえる。&lt;/p&gt;
+
+&lt;h1&gt;2. ゲストにAnsibleをインストールして利用する&lt;/h1&gt;
+
+&lt;h2&gt;概要&lt;/h2&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;で立ち上げたゲストの中にAnsibleをインストールし、自身へプロビジョニングするやりかた。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160125/20160125215405.png&#34; alt=&#34;f:id:mosuke5:20160125215405p:plain:w300&#34; title=&#34;f:id:mosuke5:20160125215405p:plain:w300&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:300px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;この方式はshin1x1さんもおすすめしている。&lt;/p&gt;
+&lt;a href=&#34;http://shin1x1.hatenablog.com/embed/ansible_local-provisioner-in-vagrant&#34; target=&#34;_blank&#34;&gt;Vagrant + Ansible で開発環境を作るなら ansible_local プロビジョナがいい！ - Shin x Hatena Blog&lt;/a&gt;
+
+&lt;h2&gt;メリット&lt;/h2&gt;
+
+&lt;p&gt;（詳しくは上のブログを読むといいと思う。）&lt;br&gt;
+1.のデメリットで述べた、端末への依存度をなくすことができる。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/vagrant&#34;&gt;vagrant&lt;/a&gt;の新機能であるansible_localも利用できるのでプロビジョニングが楽だ。&lt;br&gt;
+3.と比べてAnsible実行環境を用意しなくて済む。&lt;/p&gt;
+
+&lt;h2&gt;デメリット&lt;/h2&gt;
+
+&lt;p&gt;メリットだけみると1.の問題点を解決していて最高のようにみえる。&lt;br&gt;
+しかし、ゲストに&lt;b&gt;本来インストールされるべきものでないものがはいる&lt;/b&gt;点は忘れてはいけない。&lt;br&gt;
+Ansibleを使ってプロダクション環境にデプロイするユーザにとっては大きな問題だと思う。&lt;br&gt;
+開発環境とプロダクション環境での差分が広がってしまう。&lt;br&gt;
+また、Ansibleと並行してserverspecを使ってる人も多いと思うが、&lt;br&gt;
+そうなると今度はゲスト側に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;もいれるのか？など様々な疑問が湧いてくる。&lt;/p&gt;
+
+&lt;h1&gt;3. Ansible実行用のゲストを作って利用する&lt;/h1&gt;
+
+&lt;h2&gt;概要&lt;/h2&gt;
+
+&lt;p&gt;Ansible実行用のゲストを&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;で立ち上げて、開発用のゲストへプロビジョニングにする。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160125/20160125215618.png&#34; alt=&#34;f:id:mosuke5:20160125215618p:plain:w300&#34; title=&#34;f:id:mosuke5:20160125215618p:plain:w300&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:300px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;メリット&lt;/h2&gt;
+
+&lt;p&gt;2.のデメリットで述べた、ゲストへの不要なもののインストールを防ぐことが可能。&lt;br&gt;
+例えばserverspecで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;が必要な場合もAnsible実行用のゲストに入れればいい。&lt;br&gt;
+必要なものをインストールしたAnsible実行用のイメージファイルをチーム内で共有すれば端末依存もセットアップの手間も省ける。&lt;/p&gt;
+
+&lt;h2&gt;デメリット&lt;/h2&gt;
+
+&lt;p&gt;なんといっても、ゲストを二つは立ちあげる必要があること。&lt;br&gt;
+これは少し面倒だ。&lt;/p&gt;
+
+&lt;h1&gt;まとめ&lt;/h1&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160125/20160125220823.png&#34; alt=&#34;f:id:mosuke5:20160125220823p:plain:w500&#34; title=&#34;f:id:mosuke5:20160125220823p:plain:w500&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:500px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;この見解は正直&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;やAnsibleの使いみち、用途によってだいぶ変わると思う。&lt;br&gt;
+なので絶対な評価ではないと思うが、私のいままでの経験上はこのような評価となったので参考にしてもらえればと思う。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

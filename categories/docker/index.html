@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Docker &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Docker &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">03 Jul 2016, 22:45</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/07/03/224531/" class="post-title">Vim::Factory、LTではなす</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-vimfactory" href="https://blog.mosuke.tech/categories/vimfactory">vimfactory</a><a class="post-category post-category-vim::factory" href="https://blog.mosuke.tech/categories/vimfactory">vim::factory</a><a class="post-category post-category-docker" href="https://blog.mosuke.tech/categories/docker">docker</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        7月6日の会社のエンジニアイベントでLTするやつ、先にあげておく。 自分の中でのネタとしては古いけど、話すのはなんだかんだ初。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">19 Jul 2015, 13:58</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/07/19/135844/" class="post-title">DockerとWebSocketを使って、vimの設定をブラウザで即体感できるサービスを作った</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-vim" href="https://blog.mosuke.tech/categories/vim">vim</a><a class="post-category post-category-vim::factory" href="https://blog.mosuke.tech/categories/vimfactory">vim::factory</a><a class="post-category post-category-vimfactory" href="https://blog.mosuke.tech/categories/vimfactory">vimfactory</a><a class="post-category post-category-docker" href="https://blog.mosuke.tech/categories/docker">docker</a><a class="post-category post-category-websocket" href="https://blog.mosuke.tech/categories/websocket">websocket</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        2014年の秋から@mogulla3と定期的にインフラ関連技術の勉強会をやってきましたが、 インプットの勉強会だけでは飽き足らず、いつしかサービスを作る中でインフラ関連技術を駆使し勉強したいと思うように… そして、普段使っているVimを題材に、 vimの設定をブラウザ上で即体感できるサービス Vim::Factory を開発しました。 本記事はVim::Factoryの簡単な紹介と技術的な仕組みについて記述しています。 Vim::Factoryはこちら。 http://vimfactory.com/ 1. Vim::Factoryについて 1-1. Vim::Factoryってなに？？ Vim::Factoryは、選択したVimの設定を、ブラウザ上で「即体感」できるサービスです。 数多くあり複雑なVimの設定を容易にし、お気に入りのVim探しをサポートすることを目指しています。 1-2. なんで作ったの？ Vimの設定ってたくさんあってどれを選んでいいかわからなかったり、 設定したもののどう変わったかイマイチわからなかったりしませんか？ Vimの設定がどのように反映されるか、もっと簡単に体験したいと考えたからです。 あと、例えばGithubで100star以上をつける人のVimをブラウザ上で体験できたらいいなと思っていて、 それを実現のための第一歩としてこのサービスを作りました。 1-3. このサービスの最大の特徴は？ このサービスの最大の特徴はなんといっても「ブラウザ上でVimが体感できること」です。 今まではVimの設定を試そうと思ったら、ネットで調べて自分のVimに反映させて…という作業が必要でしたが、 ブラウザ上で設定を即体感するという新しい体験を提供するために力を注いできました。 その実現方法については、後述しています。 1-4. 紹介動画 詳しくは、実際に試してもらうのが早いと思いますが、簡単な操作動画を用意してみました。 モバイルからこのサービスはちょっと使えないので、モバイルで読んでいる方は動画でお楽しみください(笑) www.youtube.com 2. Vim::Factoryの技術について ここからVim::Factoryの技術について一部ではありますがご紹介します。 2-1. ブラウザ上でのVimを実現した技術 ブラウザ上でVimを実現しようと思うと、ぱっと思いつくのはJavaScriptでVimそのものを実装してしまおうというものかもしれません。 ですが、JSでVimを実装することってどれくらい難しいでしょうか？ 少なくともぼくにはそんなことはできませんし、できたとして質の悪いものになってしまうと思います。 そこで思いついたのが、一般的なターミナルソフトと同様にサーバ上でvimを起動し、 そのターミナル情報をブラウザ上で表示するという方法です。 この方法であれば自らVimを実装せずともVimを再現できます。イメージは下記のとおりです。 また、サービスとして上記を行うには、接続してきたユーザごとにVimを用意する必要があります。 これらを実現するために利用したのがDockerとWebSocketです。 dockerコンテナ上でVimを起動し、そのターミナル情報をWebSocketでブラウザに送信するようにしました。 dockerはコンテナ型の仮想化なので起動がとてもはやく、 httpのリクエストが来てからdockerコンテナを立ち上げても十分なほどのはやさをもっています。 2-2. 全体構成 システムの全体構成は以下のような感じです。 ※実際の役割は図のとおりですが、サーバはこんなに多くありません。 2-3. 利用した技術とかツールのまとめ 振り返りも兼ねて利用した技術・ツールを一覧にまとめておきます。 Ruby Sinatra thin node.js Websocket memcached docker nginx centos7 Ansible Vagrant gitlab mackerel slack esa.io(ドキュメント管理) 3.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">07 Feb 2015, 14:42</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/02/07/144208/" class="post-title">リモートのサーバでdockerを起動させるときの端末割り当て</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-docker" href="https://blog.mosuke.tech/categories/docker">docker</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        自分がハマったのでメモ。 リモートのサーバでdocker runを実行し(/bin/bash)、ローカル側でシェルを操作したかった。 sshでリモートサーバに接続し、docker runすればいいや、と思い以下を実行してみた。 ssh user@host 'docker run -t -i image_name /bin/bash' そうすると [root@0c6742f02bd9 ~]# [root@0c6742f02bd9 ~]# ^[[A^[[A^[[C エンターを押すと2行されるし、矢印キーはキーコードがでてしまう。 これを解消するのには以下のようにすればいい。 ssh -t user@host 'docker run -t -i image_name /bin/bash' -tとはなんなのか、なぜこのような事象が起きたのか、これからしっかり調べる。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">24 Jan 2015, 21:32</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/01/24/213255/" class="post-title">dockerで特定ユーザでログインした状態のシェル環境を提供する</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-docker" href="https://blog.mosuke.tech/categories/docker">docker</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        dockerの一般的な利用の仕方ではあまり想定されないケースかもしれないが、 特定のユーザでログインした状態のコンテナを作りたいという場面に遭遇した。 &lt;やりたいこと&gt; 特定のユーザでログインした状態のシェルを提供すること その際、ユーザの.bash_profile（あるいあは.bashrc）を読み込んだ状態であること .bash_profileに記載したPATHやaliasを使いたい ユーザのログインシェルを利用したい（カスタマイズされたシェルとか） docker runに-uオプションがあるし、これで余裕！と思った。 [host] $ sudo docker run -u=user_name -i -t image_name /bin/bash しかし…以下を確認してみると… [docker] $ pwd [docker] $ echo $PATH [docker] $ alias ディレクトリは "/" だし、PATHも通ってない。 どうやら.bash_profileなどは読んでいないようだ。普通にログインした状態とは違う。 dockerで-uでユーザを指定し場合、指定したuserでコマンドを実行するが、 サーバにユーザでログインしてからコマンドを実行するわけではないらしい。 ディレクトリはどうやら-wオプションで解決できるようだが… [host] $ sudo docker run -u=user_name -w /home/user_name -i -t image_name /bin/bash [docker] $ pwd /home/user_name ディレクトリはおっけーだが、 当然ながら依然として.bash_profileはダメ。 そこでふと思いついた。-uも-wもいらない。 あの手があるではないか…！！ [host] $ sudo docker run -i -t image_name su - username suでスイッチユーザすれば.bash_profileもホームディレクトリも全部解決だ！！
+                    </div>
+                </section>
+                
+            </div>
+            
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sql on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/sql/</link>
+    <description>Recent content in Sql on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Fri, 28 Feb 2014 23:30:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/sql/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>【SQLテーブル結合】INNER JOIN とWHERE結合の違いについて その２</title>
+      <link>https://blog.mosuke.tech/entry/2014/02/28/233025/</link>
+      <pubDate>Fri, 28 Feb 2014 23:30:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/02/28/233025/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;前回の「【&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;テーブル結合】INNER JOIN とWHERE結合の違いについて」の続き。&lt;br&gt;
+やはりFROM句の後にテーブルを複数書いてWHEREで結合させるのはナンセンスだと思う。&lt;/p&gt;
+&lt;p&gt;例えば、内部結合に加え、外部結合もある場合を考える。&lt;/p&gt;
+&lt;p&gt;WHERE型&lt;/p&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-mysql&#34;&gt;SELECT * 
+FROM table1, table2 #←結合させたいもの
+LEFT OUTER JOIN (
+　・
+　・
+&amp;lt;副問い合わせとか長いSQLが入ると想定&amp;gt;
+　・
+　・
+) AS sub
+ON table1.id=sub.id AND table2.id=sub.id
+WHERE table1.id=table2.id #←結合条件
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;table1とtable2を内部結合させたいのに、&lt;br&gt;
+肝心の何と何を結合させるかの部分の&#34;WHERE table1.id=table2.id&#34;が離れてしまい、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;文全体として何をしたいかわかりずらい。&lt;/p&gt;
+&lt;p&gt;一方、INNER JOINなら&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-mysql&#34;&gt;SELECT * 
+FROM table1
+INNER JOIN table2 ON table1.id=table2.id #←結合させたいものと結合条件が一緒
+LEFT OUTER JOIN (
+　・
+　・
+&amp;lt;副問い合わせとか長いSQLが入ると想定&amp;gt;
+　・
+　・
+) AS sub
+ON table1.id=sub.id
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;p&gt;上記のように、結合させたいテーブルと結合させる条件がくっつくため、&lt;br&gt;
+全体としてなにをしたいかわかりやすい気がする。&lt;/p&gt;
+&lt;p&gt;慣れの問題なのかもしれんが、圧倒的にINNER JOINだろ…&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

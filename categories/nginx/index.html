@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nginx &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Nginx &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Nginx &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">26 Jul 2016, 21:59</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/07/26/215939/" class="post-title">【めも】httpヘッダー、x-forwarded-forとか任意のヘッダーとか</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-httpヘッダー" href="https://blog.mosuke.tech/categories/http%E3%83%98%E3%83%83%E3%83%80%E3%83%BC">httpヘッダー</a><a class="post-category post-category-Nginx" href="https://blog.mosuke.tech/categories/nginx">Nginx</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        ただのめも。 もともとApache+PHPで動作していたシステムに、リバースプロキシ（Nginx）を前段に挟むことになった。（理由はここではどうでもいいので書かない） つまり、Nginx-&gt;Apache-&gt;PHPという構成になった。 よくあることだが、Apacheからみるとすべてリバースプロキシから通信がきているので、 接続元のIPアドレスがすべてリバースプロキシのものになる。 HTTPヘッダーに接続元のIPアドレスを追加しアプリ側（PHP）で受け取ろうとしたときのめも。 リバースプロキシ側でHTTPヘッダー追加 まず、そもそもデフォルトのNginxの設定では接続元のIPアドレスをHTTPヘッダーに含まれない。 ググればすぐに設定方法自体はでてくる。 X-Forwarded-Forというヘッダー名にNginxでもっている変数$proxy_add_x_forwarded_forをつっこむ。 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; 設定は簡単なんだけど、そもそもX-Forwarded-Forなんていうヘッダーあったっけ。。。？ Wikipediaでみる。 X-Forwarded-For (XFF) とは、HTTPヘッダフィールドの一つ。HTTPプロキシサーバまたは負荷分散装置（ロードバランサ）を経由してウェブサーバに接続するクライアントの送信元IPアドレスを特定する際のデファクトスタンダードである。 （略）RFCの標準的なヘッダフィールドではないが、IETFのネットワーク作業部会 (Network Working Group) は2011年10月より同種のHTTPヘッダForwardedの標準化作業を開始した[1]。 なるほど、RFCの標準ではないけど、一般的なものなんですね。 phpでX-Forwarded-Forを受け取る というわけで、おりゃ！ echo $_SERVER['X-Forwarded-For']; エラー... ※普段PHP使ってないのがバレますね。 サーバ変数とりあえず、全部はきだす。 &lt;?php var_dump($_SERVER); # array(x) { [&quot;HTTP_X_FORWARDED_FOR&quot;] =&gt; string(12) &quot;192.168.33.1&quot; ...... } HTTP先頭についてて、大文字になってて、ハイフンがアンスコに変わっている。 あたりまえだけどこれはPHPの仕様でいいんだよな...？ &lt;?php var_dump(getallheaders()); # array(x) { [&quot;X-Forwarded-For&quot;] =&gt; string(12) &quot;192.168.33.1&quot; ...... } サーバ変数にいれるときに、変わるんだわ。 念のためtcpdumpで軽く確認してみる $ sudo yum install tcpdump $ tcpdump dst port 80 -X # ながいんで適当に端折りました 11:04:01.883209 IP 10.0.2.15.43038 &gt; 192.168.0.10.54655: Flags [.], seq 802:1603, ack 1, win 14600, length 1460 (略) 0x0000: 4500 0355 c705 0000 3706 24ca adc2 265f 1.0..X-Forwarded 0x0010: c0a8 000a 0050 d57f 51ad 1e62 e596 78a4 -For:.192.168.33 0x0020: 8018 0137 8dbe 0000 0101 080a d1dc c19e .1..Host:.xxxxxx いたいた。 Nginxからプロキシされるときはちゃんとヘッダー名は"X-Forwarded-For "になっていること確認。 任意の適当なHTTPヘッダーつけてみた proxy_set_header my-header 'hogefugafoobar'; var_dump($_SERVER); # array(35) { [&quot;HTTP_MY_HEADER&quot;] =&gt; string(14) &quot;hogefugafoobar&quot; ......
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">04 Jun 2016, 18:01</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/06/04/180122/" class="post-title">Nginxの仕組みについて入門</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Nginx" href="https://blog.mosuke.tech/categories/nginx">Nginx</a><a class="post-category post-category-webサーバ" href="https://blog.mosuke.tech/categories/web%E3%82%B5%E3%83%BC%E3%83%90">webサーバ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        普段Nginxを使ってはいるものの、その仕組やなぜNignxを使うべきなのかというところがあまりわかっていなかったので、 改めてNginxを入門しその仕組などについて調べてみた。 勉強不足もあって、間違ってることもあるかもしれないがその際は教えて下さい。 1. C10K問題 まず、Nginxを理解する上でC10K問題について知る必要がある。 C10K問題とは下記の問題のことだ。 ハードウェアの性能上は問題がなくても、クライアント数があまりにも多くなるとサーバがパンクする問題のこと。 C は「Client（クライアント）」の頭文字、10K は「1 万台」を意味する。「クライアント 1 万台問題」ともいわれる。 （C10K 問題とは - はてなキーワード より引用） 2. 従来のWebサーバのアーキテクチャ prefork Apacheのデフォルトのアーキテクチャなどで採用されている。 特徴としては、１リクエストに対して１プロセスが処理する。 すなわち同時接続が 1000であれば 1000個のプロセスが必要となる。 worker リクエストはスレッドが処理する。 スレッドは１プロセスのなかで複数立ち上げることができる。 プロセス数は少なくて済むが、同時接続が1000であれば1000個のスレッドが必要となる。 Apacheで指定可能なアーキテクチャの１つ。 いずれにしても、1000の同時接続があれば、1000のプロセスやスレッドが必要ということだ。 プロセス/スレッド数が多くなってくると「コンテキストスイッチ」が多く発生し、処理が遅くなってしまう。 コンテキストスイッチとは コンテキストスイッチとは、コンピュータの処理装置（CPU）が現在実行している処理の流れ（プロセス、スレッド）を一時停止し、別のものに切り替えて実行を再開すること。 （コンテキストスイッチとは｜コンテキストスイッチング｜context switch - 意味/定義 ： IT用語辞典 より引用） 3. Nginxのアーキテクチャ NginxがC10K 問題を解決するために開発されたともいわれている。 上記のような課題を解決するようなアーキテクチャを採用している。 ワーカプロセスがリクエストを処理する。 前述のpreforkやworkerと決定的に違うところは、１つのワーカプロセスが複数のリクエストを処理するということだ。 また、マスタープロセスはワーカプロセスの立ち上げや、制御、管理などが主な仕事。 Nginxを終了あるいは再起動、設定ファイルを再読み込みして変更を反映するなど。 下記のような仕組みがNginxの高速化（C10K問題対応）を可能としている。 シングルスレッド 接続ごとにプロセスやスレッドを立ち上げていては、C10K問題に対応できない。 そこで、Nginxは１つのスレッドで処理を行うようにしている。 それにより、コンテキストスイッチと呼ばれるCPUの切り替え処理が発生しない。 正確に言うと、完全に１スレッドで処理するわけではなく図にあるようにワーカプロセス自体はマルチプロセス化できる。 イベント駆動 通常のプログラムは上から書かれた順に実行されますよね。 イベ ント駆動で動作するプログラムは何かしらのイベントが発生するまで待機し、発生したイベントの種類に応じて実行される。 ブラウザ上のJavaScriptの動きをイメージするとわかりやすいと思う。 非同期処理 一般的なwebサーバでは同期処理を行う。 つまり、複数のリクエストがあったときに順番に処理していく。 そのため、１つのリクエストが遅いとそれに引きづられてあとのリクエストも遅くなる。 非同期処理では、リクエストがきたら他のリクエストの状況に関わらず処理を行う。 同期処理 非同期処理 向いていること / 向いていないこと Nginxではイベント駆動で非同期的なIO処理によって、リクエストを完全に処理することを待たずに次から次へと処理を受け付けていきます。 そのため、１処理に時間のかかるものをNginx自身で行おうとするとキューがどんどん溜まってしまいます。 そのため、一般にアプリケーションの実行やデータベース処理などは向いていません。 一方で、軽量な静的データの配信やリバースプロキシなどに向いています。 Nginxは、静的データの配信や、プロキシなどに特化させ、アプリケーションの実行などは別途アプリケーションサーバ等で行わせることで有効活用できます。 向いていること 軽量データの大量配信 ディスクI/Oの発生しないキャッシュ リバースプロキシ ロードバランサ 向いていないこと アプリケーション実行 データベース処理 動画などの重たいデータの配信 4.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">09 Oct 2014, 23:05</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/10/09/230555/" class="post-title">【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-CentOS7" href="https://blog.mosuke.tech/categories/centos7">CentOS7</a><a class="post-category post-category-Nginx" href="https://blog.mosuke.tech/categories/nginx">Nginx</a><a class="post-category post-category-Vagrant" href="https://blog.mosuke.tech/categories/vagrant">Vagrant</a><a class="post-category post-category-リバースプロキシ" href="https://blog.mosuke.tech/categories/%E3%83%AA%E3%83%90%E3%83%BC%E3%82%B9%E3%83%97%E3%83%AD%E3%82%AD%E3%82%B7">リバースプロキシ</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-VPS" href="https://blog.mosuke.tech/categories/vps">VPS</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        ロードバランシングとかクラスタリングとかリバースプロキシとか、 業務でも使っているし、概念とかはわかってるけど、自分で構築したことはやっぱりない。 自分で構築してみたいなーと思いつつもあたりまえだけど、サーバやネットワーク機器をそう簡単に調達もできない。 お金も当然ない。 というわけで、さくらVPSで仮想化つかってロードバランシングとかクラスタリングとかリバースプロキシとか勉強しましょうという「サーバインフラ会」を友人と始めた。 その第１回目のメモ。 第1回 サーバ複数台構成、Nginxでリバースプロキシ構築 第2回 HAProxyでロードバランサ構築 1. 使用した環境 まず今回利用した環境は以下のとおり。 さくらVPSの1GBのプラン。 ・メモリ：１GB ・CPU：仮想２コア ・HDD：100GB ・OS：CentOS7 ・仮想化：Vagrant →dockerなどもはじめ検討していたが、コンテナ型仮想化だとサーバ感がでないので、よりサーバとして意識できるVagrantを採用 【参考】 料金・サービス仕様 | VPS（仮想専用サーバ）は「さくらのVPS」 2. 完成イメージ・物理イメージ 3. VagrantでWebサーバ２台分を構築する Vagrantの詳細な利用方法は公式ドキュメントをみてもらうとするが、セットアップまでのひととおりの流れと注意点のみ記載する。 Vagrant Documentation 今回はWebサーバ２台を仮想で実現するので、それぞれweb1, web2とする。 それぞれのディレクトリを作成。 ``` web1, web2のディレクトリ作成 $ pwd /home/vagrant $ mkdir web1 $ mkdir web2 仮想化で利用するOSイメージをダウンロード $ vagrant box add ubuntu1310 ¥ http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box web1サーバ構築 $ cd web1 $ vagrant init ubuntu1310 ほぼほぼデフォルトの設定だが以下２つだけは設定を行った。 $ vim Vagrantfile (1)プライベートアドレスの割り当て。 config.vm.network &ldquo;private_network&rdquo;, ip:
+                    </div>
+                </section>
+                
+            </div>
+            
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

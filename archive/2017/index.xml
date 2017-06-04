@@ -1,0 +1,1451 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>2017 on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/archive/2017/</link>
+    <description>Recent content in 2017 on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 31 May 2017 19:25:20 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/archive/2017/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>AWS Summit2017 Day2のぞいてきた。 ネットワーク設計入門メモ</title>
+      <link>https://blog.mosuke.tech/entry/2017/05/31/aws_summit_network/</link>
+      <pubDate>Wed, 31 May 2017 19:25:20 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2017/05/31/aws_summit_network/</guid>
+      <description>
+
+&lt;h1 id=&#34;はじめに:eabb2dedb01933710faf4225c45744d2&#34;&gt;はじめに&lt;/h1&gt;
+
+&lt;p&gt;弊社はプレミアムフライデー導入企業なのだが、最終金曜日に早く帰る必要はなく、月内でどこか1日15時に帰りましょうという制度になっている。&lt;br /&gt;
+金曜日が仕事の都合上取れなかったので、今月は5/31にプレミアムフライデー（プレミアムウェンズデー）を使った。&lt;br /&gt;
+ちょうどAWS Summit開催中だったのでのぞきにいった。&lt;/p&gt;
+
+&lt;h1 id=&#34;雰囲気:eabb2dedb01933710faf4225c45744d2&#34;&gt;雰囲気&lt;/h1&gt;
+
+&lt;p&gt;想像していた雰囲気とはだいぶ異なっていたというのが第一印象。&lt;br /&gt;
+想像以上にスーツの年齢層の高い人が多かった。それだけ、AWSもエンタープライズでも注目されるようになったということだろう。&lt;br /&gt;
+以前に、JAWS2015に参加したことある。もちろんJAWSとAWS Summitでは参加者の層が違う。&lt;br /&gt;
+が、あれから2年たちAWSに興味を持つ層も大きく変わってきたのを感じた。&lt;/p&gt;
+
+&lt;p&gt;セッションも非IT企業への導入事例や、思ったより入門セッションも多かった。&lt;br /&gt;
+登壇者の話しぶりも「オンプレからの移行」を意識したように感じた。&lt;/p&gt;
+
+&lt;h1 id=&#34;ブース:eabb2dedb01933710faf4225c45744d2&#34;&gt;ブース&lt;/h1&gt;
+
+&lt;p&gt;セッションだけではなく、AWSに関連するサービスを提供している企業がたくさんブースをだしている。&lt;br /&gt;
+ここでのコミュニケーションが案外一番楽しい。お酒も用意されていて楽しくおしゃべりできた。&lt;/p&gt;
+
+&lt;p&gt;Heroku+AWSの組み合わせで利用するケースの話を聞いて、あーなるほどねって感じだった。&lt;br /&gt;
+HerokuはAWS上で動作しているし、インターネット経由してもそこまで遅くはならない。&lt;br /&gt;
+そんな利点を使って組み合わせて使う事例なんかきいた。&lt;/p&gt;
+
+&lt;p&gt;そのほかは、やっぱりどこもかしこもコンテナ。&lt;br /&gt;
+コンテナをどう扱うか、どう監視するか、そんなところの話が多かった。&lt;/p&gt;
+
+&lt;h1 id=&#34;セッション-ネットワーク設計入門:eabb2dedb01933710faf4225c45744d2&#34;&gt;セッション「ネットワーク設計入門」&lt;/h1&gt;
+
+&lt;p&gt;セッションは１つだけ「&lt;a href=&#34;http://www.awssummit.tokyo/summit/index.html#D2T3-5&#34;&gt;ネットワーク設計入門&lt;/a&gt;」を聞いた。&lt;br /&gt;
+普段ならネットワーク設計入門のセッションは聞かないと思っているのだが、&lt;br /&gt;
+どんなことを話すのか興味あって聞いてみた。&lt;/p&gt;
+
+&lt;h2 id=&#34;1-クラウド上のnwの特徴:eabb2dedb01933710faf4225c45744d2&#34;&gt;(1)クラウド上のNWの特徴&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;物理設計はいらない&lt;/li&gt;
+&lt;li&gt;可用性はすでにセット(VRRPなど気にしなくてよい）&lt;/li&gt;
+&lt;li&gt;プロフラマブルに操作可能&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;2-nwサービス:eabb2dedb01933710faf4225c45744d2&#34;&gt;(2)NWサービス&lt;/h2&gt;
+
+&lt;p&gt;NWサービスは意外とすくない。VPCがほぼすべて。&lt;br /&gt;
+VPCが本質であり、ここが理解できればほぼ問題ない。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;VPC&lt;/li&gt;
+&lt;li&gt;Direct Connect&lt;/li&gt;
+&lt;li&gt;Route53&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;3-前提知識:eabb2dedb01933710faf4225c45744d2&#34;&gt;(3)前提知識&lt;/h2&gt;
+
+&lt;h3 id=&#34;vpc:eabb2dedb01933710faf4225c45744d2&#34;&gt;VPC&lt;/h3&gt;
+
+&lt;p&gt;物理設計はいらないんだけど、&lt;br /&gt;
+やっぱり物理知っていることがアドバンテージになる。
+VPCはリージョンの中のみ。ゾーンはまたぐことができる。&lt;/p&gt;
+
+&lt;h3 id=&#34;専用線:eabb2dedb01933710faf4225c45744d2&#34;&gt;専用線&lt;/h3&gt;
+
+&lt;p&gt;当たり前だがDCの場所は公開していない。&lt;br /&gt;
+じゃどうやって接続するか？&lt;br /&gt;
+相互接続接続ポイントを用意しているからそこにつなぎに来てね、という考え方。&lt;/p&gt;
+
+&lt;h3 id=&#34;エッジロケーション:eabb2dedb01933710faf4225c45744d2&#34;&gt;エッジロケーション&lt;/h3&gt;
+
+&lt;p&gt;CDNノードやRoute53が動作しているところ。&lt;br /&gt;
+リージョンとはまた別にある。&lt;/p&gt;
+
+&lt;h2 id=&#34;4-設計をはじめよう:eabb2dedb01933710faf4225c45744d2&#34;&gt;(4)設計をはじめよう&lt;/h2&gt;
+
+&lt;p&gt;AWSのどのサービスを使いたいかでNWの設計方針はかわる。&lt;br /&gt;
+まずはVPCの中で利用するサービスとVPCの外で使うものがあるのでその区別。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;VPCの中で使うもの
+
+&lt;ul&gt;
+&lt;li&gt;EC2とかRDSとかRedshift、EMR&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;VPCの外で使うもの
+
+&lt;ul&gt;
+&lt;li&gt;S3、LamdaとかDynamoDB、CloudWatch&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;次に、外部通信の設計&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;VPCと外部を接続する場合
+
+&lt;ul&gt;
+&lt;li&gt;専用線orインターネットVPNorパブリック(ssh/https)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;VPCがないけど外部から利用したい場合
+
+&lt;ul&gt;
+&lt;li&gt;httpsでまかなう場合が多い。&lt;/li&gt;
+&lt;li&gt;実は、VPCがなくてもDicrectConnectは使えるよ。
+
+&lt;ul&gt;
+&lt;li&gt;DirectConnectのパブリック接続&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;5-プライベートnw設計のステップ:eabb2dedb01933710faf4225c45744d2&#34;&gt;(5)プライベートNW設計のステップ&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;VPCの作成
+
+&lt;ol&gt;
+&lt;li&gt;VPCのCIDRレンジは変えられないから大きくとっておこう&lt;/li&gt;
+&lt;li&gt;オンプレミスとのレンジも被らないように&lt;/li&gt;
+&lt;li&gt;/16がおすすめ&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;サブネット作成
+
+&lt;ol&gt;
+&lt;li&gt;インターネットに接続するものとしないもの。ここでサブネット分けよう&lt;/li&gt;
+&lt;li&gt;AZが落ちてもいいように設計しよう。サブネットは２つずつ&lt;/li&gt;
+&lt;li&gt;サブネットサイズは24がおすすめ&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;VPCコンポーネントの作成
+
+&lt;ol&gt;
+&lt;li&gt;カスタマーGW&lt;/li&gt;
+&lt;li&gt;インターネットGW&lt;/li&gt;
+&lt;li&gt;VPC単位、サブネット単位、インスタンス単位で配置できるコンポーネントがあるよ&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;インスタンスの配置
+
+&lt;ol&gt;
+&lt;li&gt;セキュリティポリシーを考えよう&lt;/li&gt;
+&lt;li&gt;セキュリティグループとネットワークACLがあるよ&lt;/li&gt;
+&lt;li&gt;セキュリティグループのほうが柔軟&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;名前解決の検討&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;6-ユースケースごとのnw設計:eabb2dedb01933710faf4225c45744d2&#34;&gt;(6)ユースケースごとのNW設計&lt;/h2&gt;
+
+&lt;h3 id=&#34;公開サービスの場合:eabb2dedb01933710faf4225c45744d2&#34;&gt;公開サービスの場合&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;インターネットから接続でいるのはロードバランサーだけにしよう
+
+&lt;ul&gt;
+&lt;li&gt;あるいはあとはメンテナンス用の踏み台サーバだけ&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;S3を活用するときは、VPCエンドポイントつかえばVPC内部から接続できるよ&lt;/li&gt;
+&lt;li&gt;管理拠点とはVPNでつなぐことをおすすめするよ&lt;/li&gt;
+&lt;li&gt;管理拠点とのルーティングはルートテーブル&lt;/li&gt;
+&lt;li&gt;DNSはRoute53使うと便利だよ
+
+&lt;ul&gt;
+&lt;li&gt;ALIASレコードという独自機能&lt;/li&gt;
+&lt;li&gt;DNSのフェイルオーバー機能
+
+&lt;ul&gt;
+&lt;li&gt;ソーリーページへの転送が可能&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;社内システム基盤の場合:eabb2dedb01933710faf4225c45744d2&#34;&gt;社内システム基盤の場合&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;DirectConnectを使おう
+
+&lt;ul&gt;
+&lt;li&gt;パートナーがたくさんいるので連絡してみよう&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Route53はプライベートゾーン、オンプレからVPC内の名前解決にも使えるよ&lt;/li&gt;
+&lt;li&gt;DirectConnect体験ラボあるからつかってみて
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://aws.amazon.com/jp/dx_labo/&#34;&gt;https://aws.amazon.com/jp/dx_labo/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;7-vpc間のピア接続:eabb2dedb01933710faf4225c45744d2&#34;&gt;(7)VPC間のピア接続&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;異なるVPC間をピア接続することもできるよ&lt;/li&gt;
+&lt;li&gt;VPC間でルーティングの設定が必要&lt;/li&gt;
+&lt;li&gt;マルチホップルーティングはできないので注意&lt;/li&gt;
+&lt;li&gt;サブネットは重複しないように注意&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CloudFlare APIを使ってキャッシュを削除する</title>
+      <link>https://blog.mosuke.tech/entry/2017/05/29/how_to_use_cloudflare_api/</link>
+      <pubDate>Mon, 29 May 2017 20:06:31 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2017/05/29/how_to_use_cloudflare_api/</guid>
+      <description>
+
+&lt;h1 id=&#34;はじめに:e4a3dd16fa46b2d60f7389ce23065fde&#34;&gt;はじめに&lt;/h1&gt;
+
+&lt;p&gt;最近ブログをはてなブログからHugoへ移行した。&lt;br /&gt;
+HugoのフロントにCloudFlareを利用している。&lt;br /&gt;
+ブログ移行についてはこちらを参照。&lt;br /&gt;
+「&lt;a href=&#34;https://blog.mosuke.tech/entry/2017/05/28/blog_migration/&#34;&gt;はてなブログからHugoに移行。その際に行ったあれこれ。&lt;/a&gt;」&lt;/p&gt;
+
+&lt;p&gt;コンテンツをアップロードした場合などにCloudFlareのキャッシュを削除したく、&lt;br /&gt;
+APIを利用して効率よく作業できる環境を整えた。&lt;/p&gt;
+
+&lt;h1 id=&#34;使い方:e4a3dd16fa46b2d60f7389ce23065fde&#34;&gt;使い方&lt;/h1&gt;
+
+&lt;p&gt;CloudFlareのAPIドキュメントはかなり充実している。&lt;br /&gt;
+キャッシュの全削除については下記に記載がある。&lt;br /&gt;
+&lt;a href=&#34;https://api.cloudflare.com/#zone-purge-all-files&#34;&gt;https://api.cloudflare.com/#zone-purge-all-files&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;利用方法をみると、&lt;code&gt;DELETE /zones/:identifier/purge_cache&lt;/code&gt;とあるが、&lt;br /&gt;
+&lt;code&gt;:identifier&lt;/code&gt;がなんのことかはじめわからずはじめ苦戦した。&lt;/p&gt;
+
+&lt;h2 id=&#34;identifierの確認:e4a3dd16fa46b2d60f7389ce23065fde&#34;&gt;identifierの確認&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;identifier&lt;/code&gt;は下記APIで確認できる。&lt;br /&gt;
+このAPIで返ってくるはじめの&lt;code&gt;id&lt;/code&gt;が&lt;code&gt;idenitifer&lt;/code&gt;だ。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;curl -X GET &amp;quot;https://api.cloudflare.com/client/v4/zones \
+    ?name=&amp;lt;your site&amp;gt; \
+    &amp;amp;status=active \
+    &amp;amp;page=1 \
+    &amp;amp;per_page=20 \
+    &amp;amp;order=status \
+    &amp;amp;direction=desc \
+    &amp;amp;match=all&amp;quot; \
+    -H &amp;quot;X-Auth-Email: &amp;lt;your email&amp;gt;&amp;quot; \
+    -H &amp;quot;X-Auth-Key: &amp;lt;your api key&amp;gt;&amp;quot; \
+    -H &amp;quot;Content-Type: application/json&amp;quot; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;result&amp;quot;: [
+    {
+      &amp;quot;id&amp;quot;: &amp;quot;xxxxxxxxxxxxxxxxxxxxxxx&amp;quot;,
+      &amp;quot;name&amp;quot;: &amp;quot;mosuke.tech&amp;quot;,
+      &amp;quot;status&amp;quot;: &amp;quot;active&amp;quot;,
+      &amp;quot;paused&amp;quot;: false,
+      &amp;quot;type&amp;quot;: &amp;quot;full&amp;quot;,
+      &amp;quot;development_mode&amp;quot;: 0,
+      &amp;quot;name_servers&amp;quot;: [
+        &amp;quot;rudy.ns.cloudflare.com&amp;quot;,
+        &amp;quot;sofia.ns.cloudflare.com&amp;quot;
+      ],
+      ...
+      (中略)
+      ...
+    }
+  ]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;キャッシュの削除:e4a3dd16fa46b2d60f7389ce23065fde&#34;&gt;キャッシュの削除&lt;/h2&gt;
+
+&lt;p&gt;うえで手に入れた&lt;code&gt;identifier&lt;/code&gt;を使って、ドキュメント通り&lt;code&gt;purge_cache&lt;/code&gt;を実行するだけだ。&lt;br /&gt;
+このAPIをデプロイの過程に組み込み効率よく運用できている。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;curl -X DELETE &amp;quot;https://api.cloudflare.com/client/v4/zones/&amp;lt;identifier&amp;gt;/purge_cache&amp;quot; \
+     -H &amp;quot;X-Auth-Email: &amp;lt;your email&amp;gt;&amp;quot; \
+     -H &amp;quot;X-Auth-Key: &amp;lt;your api key&amp;gt;&amp;quot; \
+     -H &amp;quot;Content-Type: application/json&amp;quot; \
+     --data &#39;{&amp;quot;purge_everything&amp;quot;:true}&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;さいごに:e4a3dd16fa46b2d60f7389ce23065fde&#34;&gt;さいごに&lt;/h2&gt;
+
+&lt;p&gt;最近のサービスではめずらしくないが、APIに対応しているのはやはりいい。&lt;br /&gt;
+毎度全キャッシュを消してしまっているのはどうかとは思うがそこは今後の改善点だ。&lt;br /&gt;
+本件とは関係ないがCloudFlareはterraformにも対応しているし、かなり運用には便利そう。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>はてなブログからHugoに移行。その際に行ったあれこれ。</title>
+      <link>https://blog.mosuke.tech/entry/2017/05/28/blog_migration/</link>
+      <pubDate>Sun, 28 May 2017 13:02:14 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2017/05/28/blog_migration/</guid>
+      <description>
+
+&lt;h1 id=&#34;1-はじめに:a42d734d96400169bf761303cfe99adf&#34;&gt;1.はじめに&lt;/h1&gt;
+
+&lt;p&gt;2017年5月27日に2014年2月から約3年3ヶ月程度使ってきたはてなブログからHugoを使ったブログへ移行をした。&lt;br /&gt;
+長らく使いやすいブログを提供してきたはてなさんにはとても感謝している。&lt;br /&gt;
+はてなブログはとても魅力なブログプラットフォームであると感じているし、いまでもそう思うのだけれどいくつかの判断をした結果Hugoへの移行を決めた。&lt;br /&gt;
+本記事では、移行を決めた理由や移行する際に行ったこと、Hugoの実行環境などを紹介する。&lt;/p&gt;
+
+&lt;h1 id=&#34;2-hugoに移行した理由:a42d734d96400169bf761303cfe99adf&#34;&gt;2.Hugoに移行した理由&lt;/h1&gt;
+
+&lt;p&gt;Hugoに移行した理由というか、はてなブログから別のところに移行しようとした理由になるのだが、&lt;br /&gt;
+端的に言うと以下のとおりだ。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;常時SSL化したかった&lt;/li&gt;
+&lt;li&gt;HTTP/2に対応したかった&lt;/li&gt;
+&lt;li&gt;独自ドメイン(mosuke.tech)を利用したかった&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Hugo以外にももちろん他のツールやサイトも検討を行った。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;はてなブログPro&lt;/li&gt;
+&lt;li&gt;jekyll&lt;/li&gt;
+&lt;li&gt;medium&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;まず、はてなブログProだが、もっとも手間がかからず独自ドメイン利用もできてよかったのだが、&lt;br /&gt;
+SSL化とHTTP/2化はやはり難しかったので外部を検討した。&lt;/p&gt;
+
+&lt;p&gt;次にGithub製のJelyllだが、Github Pagesとの相性もよくはじめに検討はじめたものだった。&lt;br /&gt;
+Ruby製ということもあり、自分に馴染みのあるツールで最有力候補だった。&lt;br /&gt;
+しかし、後発のHugoの完成度の高さ、コンパイルの速さ、気に入ったテンプレートがあった、という理由でHugoに劣った。&lt;/p&gt;
+
+&lt;p&gt;最後にmediumだが、自前で構築することなくやりたいことのすべてを実現していた。&lt;br /&gt;
+正直一番いいのではないかとも思う（笑）&lt;br /&gt;
+最終的には、よりカスタマイズ度の高いHugoを選んだ。特にこれといった理由はない。&lt;br /&gt;
+ちょうどGo言語をやってみたいモチベーションがあったので、これをきっかけに勉強がはかどればいいなぁくらいの気持ちはあった。&lt;/p&gt;
+
+&lt;h1 id=&#34;3-移行に際して行ったこと:a42d734d96400169bf761303cfe99adf&#34;&gt;3.移行に際して行ったこと&lt;/h1&gt;
+
+&lt;h2 id=&#34;3-1-hugoでのサイト構築-アーキテクチャ:a42d734d96400169bf761303cfe99adf&#34;&gt;3-1.Hugoでのサイト構築、アーキテクチャ&lt;/h2&gt;
+
+&lt;p&gt;Github上でHugoを管理し、コンパイルしてできたPublicファイルを、Github Pages対応の別のレポジトリで管理。&lt;br /&gt;
+独自ドメイン利用、SSL対応、HTTP/2対応するためにフロントにCloudFlareを利用した。&lt;br /&gt;
+後述するが、CloudFlareはとても便利なツールだが、キャッシュの扱いは気をつけてなければいけない。&lt;br /&gt;
+図にすると以下のとおりだ。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.mosuke.tech/image/hugo-architecture.png&#34; alt=&#34;hugo-architecture&#34; /&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&#34;3-2-記事の移行:a42d734d96400169bf761303cfe99adf&#34;&gt;3-2.記事の移行&lt;/h2&gt;
+
+&lt;p&gt;はてなブログはそのままのこし、新規に書くブログからHugoへ移行することも検討したが、&lt;br /&gt;
+せっかくなのではてなブログ時代に書いた記事もすべて移行することを決めた。&lt;/p&gt;
+
+&lt;p&gt;はてなブログからデータのエクスポートができる。&lt;br /&gt;
+&lt;img src=&#34;https://blog.mosuke.tech/image/hatena-blog-entry-export.png&#34; alt=&#34;hatena-blog-entry-export&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;エクスポートしたファイルを簡単なスクリプトを作ってHugoファイルへの変換を行った。（&lt;a href=&#34;https://github.com/mosuke5/hatena-blog-parser&#34;&gt;Github mosuke5/hatena-blog-parser&lt;/a&gt;）&lt;br /&gt;
+正直このツールは汎用的なものではない。このスクリプトだけではうまく行かない部分も多数ある。&lt;br /&gt;
+いくぶんかsedなど使って（たまに手動編集・・・）して整えた。。&lt;/p&gt;
+
+&lt;h3 id=&#34;はてなブログのエクスポートファイルのフォーマット:a42d734d96400169bf761303cfe99adf&#34;&gt;はてなブログのエクスポートファイルのフォーマット&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;--------
+AUTHOR: mosuke5
+TITLE: 万能じゃない。オブジェクトストレージの仕組みと利用を正しく理解する
+BASENAME: 2017/03/18/182252
+STATUS: Publish
+ALLOW COMMENTS: 1
+CONVERT BREAKS: 0
+DATE: 03/18/2017 18:22:52
+CATEGORY: オブジェクトストレージ
+CATEGORY: ObjectStorage
+CATEGORY: クラウド
+CATEGORY: S3
+IMAGE: https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170318/20170318164020.jpg
+-----
+BODY:
+&amp;lt;h2&amp;gt;1.はじめに&amp;lt;/h2&amp;gt;
+
+&amp;lt;p&amp;gt;&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/Amazon%20S3&amp;quot;&amp;gt;Amazon S3&amp;lt;/a&amp;gt;をはじめとして、オブジェクトストレージが身近になってきています。&amp;lt;br/&amp;gt;
+各&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&amp;quot;&amp;gt;クラウド&amp;lt;/a&amp;gt;ベンダーはオブジェクトストレージサービスを提供しています。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;変換後のhugoファイルフォーマット:a42d734d96400169bf761303cfe99adf&#34;&gt;変換後のHugoファイルフォーマット&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;+++
+Categories = [&amp;quot;オブジェクトストレージ&amp;quot;, &amp;quot;ObjectStorage&amp;quot;, &amp;quot;クラウド&amp;quot;, &amp;quot;S3&amp;quot;]
+Description = &amp;quot; 1.はじめに  Amazon S3をはじめとして、オブジェクトストレージが身近になってきています。 各クラウドベンダーはオブジェクトストレージサービスを提供しています。   Amazon S3  Azure Blob Storage  G&amp;quot;
+Tags = [&amp;quot;オブジェクトストレージ&amp;quot;, &amp;quot;ObjectStorage&amp;quot;, &amp;quot;クラウド&amp;quot;, &amp;quot;S3&amp;quot;]
+date = &amp;quot;2017-03-18T18:22:00+9:00&amp;quot;
+title = &amp;quot;万能じゃない。オブジェクトストレージの仕組みと利用を正しく理解する&amp;quot;
+author = &amp;quot;m通知osuke5&amp;quot;
+archive = [&amp;quot;2017&amp;quot;]
++++
+
+&amp;lt;h2&amp;gt;1.はじめに&amp;lt;/h2&amp;gt;
+
+&amp;lt;p&amp;gt;&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/Amazon%20S3&amp;quot;&amp;gt;Amazon S3&amp;lt;/a&amp;gt;をはじめとして、オブジェクトストレージが身近になってきています。&amp;lt;br/&amp;gt;
+各&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&amp;quot;&amp;gt;クラウド&amp;lt;/a&amp;gt;ベンダーはオブジェクトストレージサービスを提供しています。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;3-3-リダイレクト関連:a42d734d96400169bf761303cfe99adf&#34;&gt;3-3.リダイレクト関連&lt;/h2&gt;
+
+&lt;h3 id=&#34;1-リダイレクト処理:a42d734d96400169bf761303cfe99adf&#34;&gt;(1)リダイレクト処理&lt;/h3&gt;
+
+&lt;p&gt;はてなブログのデザイン設定から「ヘッダー」→「タイトル下」に、ブログ移転をお知らせする文言とリダイレクト処理を書いた。&lt;br /&gt;
+これですべてのページのタイトル下に「ブログ移転しました。5秒後にリダイレクトします。（リンク先URL）」が表示し、5秒後にリダイレクトするようにした。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;&amp;lt;p&amp;gt;&amp;lt;span style=&amp;quot;font-size: 150%; color: blue;&amp;quot;&amp;gt;ブログ移転しました。5秒後にリダイレクトします。&amp;lt;/span&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;script type=&amp;quot;text/javascript&amp;quot; language=&amp;quot;javascript&amp;quot;&amp;gt;
+// 新urlの作成
+var domain = &amp;quot;https://blog.mosuke.tech&amp;quot;;
+var path = location.pathname; // パスの整形
+var url = domain + path; 
+
+// リンクhtmlの出力
+document.write(&amp;quot;&amp;lt;a href=\&amp;quot;&amp;quot; + url + &amp;quot;\&amp;quot;&amp;gt;&amp;quot; + url + &amp;quot;&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;&amp;quot;);
+
+// リダイレクト
+setTimeout(&amp;quot;redirect()&amp;quot;, 5000);  // 5 sec
+function redirect(){
+   location.href = url; 
+}
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;2-スマホサイトでのリダイレクト:a42d734d96400169bf761303cfe99adf&#34;&gt;(2)スマホサイトでのリダイレクト&lt;/h3&gt;
+
+&lt;p&gt;スマホで開いた時にも同様の動作をして欲しかったのだが、私の設定ではもともと、&lt;br /&gt;
+スマホは別デザインとなっていて、うえで設定したJSが実行されない。&lt;br /&gt;
+スマホ用でHTML/JSを埋め込むのは有料プランでしかできず、&lt;br /&gt;
+「詳細設定」の「レスポンシブデザイン」にチェックを入れることで、スマホで表示した場合もPCと同じ画面を出すようにして対応した。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[x] レスポンシブデザイン
+スマートフォンでもPCと同じデザイン設定でブログを表示します。レスポンシブデザインのテーマを設定しているときのみ使用してください。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;3-googleへのアドレス変更通知:a42d734d96400169bf761303cfe99adf&#34;&gt;(3)Googleへのアドレス変更通知&lt;/h3&gt;
+
+&lt;p&gt;一般的にブログのドメイン変更を行った場合は、&lt;br /&gt;
+変更元のサイトで301リダイレクトを行ってGoogleに恒久的にサイトが移動したことを伝える。&lt;br /&gt;
+しかし、はてなブログを利用しているとWebサーバレベルでの変更はできず、301リダイレクトができない。&lt;br /&gt;
+Canonicalを変更したりしたが、うまくGoogle Search Consoleに変更を読み取らせることができなかった。&lt;br /&gt;
+（いい方法あったら教えてください…）&lt;/p&gt;
+
+&lt;p&gt;なので結局、移行時の手順は以下で進めた。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;新サイト(blog.mosuke.tech)を公開&lt;/li&gt;
+&lt;li&gt;はてなブログにJavaScriptによるリダイレクト処理追加&lt;/li&gt;
+&lt;li&gt;はてなブログへのクローリングを拒否&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;3-4-cloudflareのキャッシュ削除:a42d734d96400169bf761303cfe99adf&#34;&gt;3-4.CloudFlareのキャッシュ削除&lt;/h2&gt;
+
+&lt;p&gt;フロントにCloudFlareを利用していると書いた。&lt;br /&gt;
+Hugoは静的ブログサイトなので、基本的にCloudFlare側で全てキャッシュする。&lt;br /&gt;
+そのため、ブログ記事の更新やデザインの本番への反映が時間かかる。&lt;/p&gt;
+
+&lt;p&gt;CloudFlareは便利なものでapiを用意している。&lt;br /&gt;
+簡単だが、以下のようなキャッシュ全削除スクリプトを用意した。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#!/bin/sh
+curl -X DELETE &amp;quot;https://api.cloudflare.com/client/v4/zones/$1/purge_cache&amp;quot; \
+     -H &amp;quot;X-Auth-Email: $2&amp;quot; \
+     -H &amp;quot;X-Auth-Key: $3&amp;quot; \
+     -H &amp;quot;Content-Type: application/json&amp;quot; \
+     --data &#39;{&amp;quot;purge_everything&amp;quot;:true}&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;4-今後の課題:a42d734d96400169bf761303cfe99adf&#34;&gt;4.今後の課題&lt;/h1&gt;
+
+&lt;p&gt;まずは新しいHugoの環境でブログを書いて、課題点など洗いだしていく必要がある。&lt;br /&gt;
+あとは、はてなブログからの移行でだいぶSEOあたり下がったと思う。&lt;br /&gt;
+そのあたりの挽回をどうするかはこれからの検討課題。&lt;br /&gt;
+あとは、デプロイからCloudFlareのキャッシュ削除の流れはぜひ自動化していきたい。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>新ブログ検討。テスト投稿</title>
+      <link>https://blog.mosuke.tech/entry/first-blog/</link>
+      <pubDate>Sun, 07 May 2017 20:58:01 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/first-blog/</guid>
+      <description>
+
+&lt;p&gt;Goldstine研究所移行の検討。
+フォーマット確認する&lt;/p&gt;
+
+&lt;p&gt;あいうえお(スペース2つで改行)&lt;br /&gt;
+かきくけこ&lt;/p&gt;
+
+&lt;h1 id=&#34;h1タイトル:71bff0de63c5140bca369a9943a83779&#34;&gt;h1タイトル&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;# hogege
+def hoge
+  puts &amp;quot;hello hugo&amp;quot;
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
+
+import &amp;quot;fmt&amp;quot;
+
+func main() {
+    fmt.Println(&amp;quot;hello, world&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;h2タイトル:71bff0de63c5140bca369a9943a83779&#34;&gt;h2タイトル&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;list1
+
+&lt;ul&gt;
+&lt;li&gt;list1-1&lt;/li&gt;
+&lt;li&gt;list1-1-1&lt;/li&gt;
+&lt;li&gt;list1-1-2&lt;/li&gt;
+&lt;li&gt;list1-2&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;list2&lt;/li&gt;
+&lt;li&gt;list3&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;h3タイトル:71bff0de63c5140bca369a9943a83779&#34;&gt;h3タイトル&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;list-number1&lt;/li&gt;
+&lt;li&gt;list-number2&lt;/li&gt;
+&lt;li&gt;list-number3&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;Left align&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;Right align&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;Center align&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;This&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;This&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;This&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;column&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;column&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;column&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;will&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;will&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;will&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;be&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;be&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;be&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;left&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;right&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;center&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;aligned&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;aligned&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;aligned&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&#34;image:71bff0de63c5140bca369a9943a83779&#34;&gt;Image&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.mosuke.tech/image/apple-touch-icon.png&#34; alt=&#34;image&#34; /&gt;
+&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>(備忘録) 運用サイトのドメインとサーバ</title>
+      <link>https://blog.mosuke.tech/entry/2017/04/23/154957/</link>
+      <pubDate>Sun, 23 Apr 2017 15:49:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2017/04/23/154957/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;完全備忘録。自分でもわからなくなってきたので。
+公開すればきっと更新もする。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fdocs.google.com%2Fpresentation%2Fd%2F1MJ8c7QkdYl5BIp9eS3Li2viq-V-CgdpnJKWylYa_dW0%2Fedit%3Fusp%3Dsharing&#34; title=&#34;ドメインとサーバ関連図&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://docs.google.com/presentation/d/1MJ8c7QkdYl5BIp9eS3Li2viq-V-CgdpnJKWylYa_dW0/edit?usp=sharing&#34;&gt;docs.google.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>万能じゃない。オブジェクトストレージの仕組みと利用を正しく理解する</title>
+      <link>https://blog.mosuke.tech/entry/2017/03/18/182252/</link>
+      <pubDate>Sat, 18 Mar 2017 18:22:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2017/03/18/182252/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;h1&gt;1.はじめに&lt;/h1&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Amazon%20S3&#34;&gt;Amazon S3&lt;/a&gt;をはじめとして、オブジェクトストレージが身近になってきています。&lt;br&gt;
+各&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;ベンダーはオブジェクトストレージサービスを提供しています。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.aws.amazon.com/ja_jp/AmazonS3/latest/dev/Welcome.html&#34; target=&#34;_blank&#34;&gt;Amazon S3&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.microsoft.com/ja-jp/azure/storage/storage-introduction&#34; target=&#34;_blank&#34;&gt;Azure Blob Storage&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cloud.google.com/storage/&#34; target=&#34;_blank&#34;&gt;Google Cloud Storage&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://jp.aliyun.com/product/oss&#34; target=&#34;_blank&#34;&gt;Alibaba Cloud OSS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.ntt.com/business/services/cloud/iaas/cloudn/storage.html&#34; target=&#34;_blank&#34;&gt;Cloud n ObjectStorage&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.idcf.jp/cloud/storage/&#34; target=&#34;_blank&#34;&gt;IDCF オブジェクトストレージ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ですが、オブジェクトストレージをストレージの魔法として理解されているケースも多いように感じます。&lt;br&gt;
+原点に振り返ってそもそもオブジェクトストレージとはなんなのか。&lt;br&gt;
+どんな特徴を持っているストレージなのか。&lt;br&gt;
+気になってまとめました。&lt;/p&gt;
+
+&lt;h1&gt;2.オブジェクトストレージとは&lt;/h1&gt;
+
+&lt;p&gt;オブジェクトストレージとは一言で言うと、&lt;br&gt;
+&lt;b&gt;「オブジェクト単位（ファイル単位）で出し入れのできる、ネットワークストレージ」&lt;/b&gt;です。&lt;/p&gt;
+
+&lt;p&gt;オブジェクトストレージでは直接にストレージ上のファイルをRead/Writeすることはできません。&lt;br&gt;
+いうなれば、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;サーバに近い存在と言えます。&lt;/p&gt;
+
+&lt;p&gt;今や&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;上のストレージの代名詞として扱われるオブジェクトストレージですが、&lt;br&gt;
+実はファイルの出し入れしかできないストレージなのです！？！？&lt;/p&gt;
+
+&lt;h1&gt;3.特徴&lt;/h1&gt;
+
+&lt;p&gt;では、そんな出し入れしかできない&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;サーバに似たオブジェクトストレージですが、&lt;br&gt;
+その本当の特徴はどこにあるのでしょうか。&lt;/p&gt;
+
+&lt;h2&gt;特徴1: ディレクリ構造の排除&lt;/h2&gt;
+
+&lt;p&gt;1つ目の特徴としては、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8&#34;&gt;ディレクト&lt;/a&gt;リ構造でファイルを管理しないことです。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8&#34;&gt;ディレクト&lt;/a&gt;リ構造は、もしストレージサーバのハードディスク容量がいっぱいになり、&lt;br&gt;
+ファイルを別のディスクに移動する場合、その&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8&#34;&gt;ディレクト&lt;/a&gt;リパスも変更しなければいけません。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;サービスのようなたくさんのユーザが利用し拡張性の求められる場面では、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8&#34;&gt;ディレクト&lt;/a&gt;リ構造は適さないのです。&lt;/p&gt;
+
+&lt;p&gt;そこで、オブジェクトストレージでは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8&#34;&gt;ディレクト&lt;/a&gt;リ構造ではなく、階層のないフラットな関係でファイルが保存されます。&lt;br&gt;
+すべてのファイルにIDが付与され、そのIDがどこに保管されているか別で管理する仕組みとなっています。&lt;/p&gt;
+
+&lt;h2&gt;特徴2: 分散保存&lt;/h2&gt;
+
+&lt;p&gt;2つ目の特徴は「分散保存」です。&lt;br&gt;
+オブジェクトストレージでは、ファイルを分散保存する&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;によって、&lt;br&gt;
+ファイルの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;と大量のファイルへのアクセスさばくことを可能にしています。&lt;br&gt;
+詳しくは次の「オブジェクトストレージの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;」の項目でご紹介します。&lt;/p&gt;
+
+&lt;h2&gt;特徴3: アプリケーションからの利用を意識&lt;/h2&gt;
+
+&lt;p&gt;3つ目の特徴はアプリケーションでの利用を強く意識していることです。&lt;br&gt;
+この項目は製品によって異なる部分もありますが、主な点を３つあげます。&lt;/p&gt;
+
+&lt;h3&gt;(1)メタ情報管理&lt;/h3&gt;
+
+&lt;p&gt;従来の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D5%A5%A1%A5%A4%A5%EB%A5%B7%A5%B9%A5%C6%A5%E0&#34;&gt;ファイルシステム&lt;/a&gt;でのファイルへのメタ情報は、ファイルのサイズや更新日付などが一般的でした。&lt;br&gt;
+オブジェクトストレージでは更にファイルの有効期限などを設定することができ、インフラ管理を容易にします。&lt;/p&gt;
+
+&lt;h3&gt;(2)HTTP&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%C8%A5%B3%A5%EB&#34;&gt;プロトコル&lt;/a&gt;を使った&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%BF%A1%BC%A5%D5%A5%A7%A5%A4%A5%B9&#34;&gt;インターフェイス&lt;/a&gt;
+&lt;/h3&gt;
+
+&lt;p&gt;オブジェクトストレージでは、ファイルのアップロード、ダウンロードなどすべての操作はHTTP&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%C8%A5%B3%A5%EB&#34;&gt;プロトコル&lt;/a&gt;を利用します。&lt;br&gt;
+HTTPのような汎用的な&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%C8%A5%B3%A5%EB&#34;&gt;プロトコル&lt;/a&gt;を採用することにより、サーバからはもちろん、モバイル端末など幅広いデ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%A4%A5%B9&#34;&gt;バイス&lt;/a&gt;から利用が可能です。&lt;/p&gt;
+
+&lt;h3&gt;(3)Web公開機能&lt;/h3&gt;
+
+&lt;p&gt;更には、保存したオブジェクトに対してURLを割り当てて公開することもできます。&lt;br&gt;
+静的なWebサイトの公開や、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/css&#34;&gt;css&lt;/a&gt;や&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/JavaScript&#34;&gt;JavaScript&lt;/a&gt;、画像ファイルなどを直接オブジェクトストレージへ取得しにいくこともできます。&lt;/p&gt;
+
+&lt;h1&gt;4.オブジェクトストレージの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;
+&lt;/h1&gt;
+
+&lt;p&gt;オブジェクトストレージとひとまとめにいっても、製品によってその実現方法は様々で異なります。&lt;br&gt;
+しかし、ここでは一例として利用される&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;について紹介します。&lt;/p&gt;
+
+&lt;p&gt;&lt;span style=&#34;color: #999999&#34;&gt;&lt;span style=&#34;font-size: 80%&#34;&gt;※ここで紹介する&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;がオブジェクトストレージのすべての&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;を表すものではありません。また、わかりやすくするためかなり簡略化して記載しています。&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;大きく分けて、プロキシノードとストレージノードの２つによって構成されています。&lt;br&gt;
+ファイルをアップロードする時（保存する時）、プロキシノードは受け取ったファイルを、&lt;br&gt;
+バックエンドにあるストレージノードに保存するのですが、この際に複数のストレージノードに対してファイルを保存します。&lt;br&gt;
+これによって、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;を実現しています。&lt;br&gt;
+実は、各ストレージノードでは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/RAID&#34;&gt;RAID&lt;/a&gt;は行わず、複数のノードに対して保存することで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;をはかっています。&lt;/p&gt;
+
+&lt;p&gt;一方、ファイルをダウンロードときは、複数のノードに保存されているファイルのうちどれか1つを選びます。&lt;br&gt;
+これによって大量のファイルへのアクセスの負荷分散も実現しています。&lt;/p&gt;
+
+&lt;h4&gt;ファイルアップロード&lt;/h4&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170318/20170318164020.jpg&#34; alt=&#34;f:id:mosuke5:20170318164020j:plain:w600&#34; title=&#34;f:id:mosuke5:20170318164020j:plain:w600&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:600px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h4&gt;ファイルダウンロード&lt;/h4&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170318/20170318164028.jpg&#34; alt=&#34;f:id:mosuke5:20170318164028j:plain:w600&#34; title=&#34;f:id:mosuke5:20170318164028j:plain:w600&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:600px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;オブジェクトの配置情報の管理&lt;/h2&gt;
+
+&lt;p&gt;ファイルをアップロードする際に、プロキシノードは複数のノードに保存すると説明しました。&lt;br&gt;
+例えば10台のストレージノードがあり、そのうち3台に保存したとしたとします。&lt;br&gt;
+取り出す際にどのノードに対象のファイルがあるかわからなくなってしまうので管理が必要です。&lt;/p&gt;
+
+&lt;p&gt;そのため、すごく簡略化すると下記のような対応表を作って管理します。&lt;br&gt;
+あるファイルがどこに保存されているのか記述された対応表です。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;ファイル名1&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;ファイル名2&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;ファイル名3&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;保存場所1&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;1&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;2&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;保存場所2&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;5&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;3&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;8&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;保存場所3&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;9&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;10&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;10&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;また、オブジェクトストレージは拡張が優れている点が特徴と述べました。&lt;br&gt;
+ストレージノードが追加されることは頻繁に行われます。&lt;br&gt;
+その際には、リバランスと呼ばれる処理が行われ、追加されたノードを含めてオブジェクトの再配置が行われるようです。&lt;/p&gt;
+
+&lt;h2&gt;Eventual Consistency&lt;/h2&gt;
+
+&lt;p&gt;複数のストレージノードに対してファイルを保存しているわけですが、&lt;br&gt;
+例えばあるストレージノードが障害中に、ファイルの更新があった場合はどうなるのでしょうか。&lt;/p&gt;
+
+&lt;p&gt;障害があったストレージノードが復旧すると、そのノードだけファイルが古い状態となります。&lt;br&gt;
+この状態でファイルの取得を行うと、古いファイルを取得してしまう可能性があります。&lt;/p&gt;
+
+&lt;p&gt;そのため、オブジェクトストレージでは定期的に同期の処理が行われ、正しい状態へもどす機能があります。&lt;br&gt;
+この機能によりしばらく時間が立つと全体の整合性がとれた状態となります。&lt;br&gt;
+このことを「Eventual Consistency」と呼びます。&lt;br&gt;
+直訳で考えると「最終的には整合性があるよ」といったことろでしょうか。&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Amazon%20S3&#34;&gt;Amazon S3&lt;/a&gt;でもデータの整合性について記述されています。&lt;br&gt;
+&lt;a href=&#34;http://docs.aws.amazon.com/ja_jp/AmazonS3/latest/dev/Introduction.html#ConsistencyModel&#34; target=&#34;_blank&#34;&gt;Amazon S3 のデータ整合性モデル&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;Erasure Coding&lt;/h2&gt;
+
+&lt;p&gt;Erasure Codingとはデータの保存方法のことだ。&lt;br&gt;
+上の例では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EC%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;レプリケーション&lt;/a&gt;的なデータの複製保存をしている。&lt;br&gt;
+3箇所に分散して保存すると、単純にストレージの利用効率は1/3です。&lt;br&gt;
+その効率をあげるためにErasure Codingを採用することがある。&lt;/p&gt;
+
+&lt;p&gt;ここで詳細を説明するには重たすぎるので、ぐぐってほしい。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fwww.jdsf.gr.jp%2Fbackup%2FJEITA%2F2015%2Fjeita07.html&#34; title=&#34;RAIDを絶滅に追い込むイレ―ジャーコーディング
+テープには15年以上前から使われていた！&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://www.jdsf.gr.jp/backup/JEITA/2015/jeita07.html&#34;&gt;www.jdsf.gr.jp&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;5.オブジェクトストレージの向き不向き&lt;/h1&gt;
+
+&lt;p&gt;上記にみてきた特徴を持つオブジェクトストレージですが、その最適な利用用途はなんだろうか。&lt;br&gt;
+IDCFのサイトにいい感じにまとまった用途が図式されていたので、スキップしちゃいます笑&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fwww.idcf.jp%2Fcloud%2Fstorage%2F&#34; title=&#34;オブジェクトストレージ｜IDCFクラウド&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://www.idcf.jp/cloud/storage/&#34;&gt;www.idcf.jp&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;6.オブジェクトストレージの勘違いしがちな&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%E6%A1%BC%A5%B9%A5%B1%A1%BC%A5%B9&#34;&gt;ユースケース&lt;/a&gt;
+&lt;/h1&gt;
+
+&lt;h4&gt;(1)ログのオブジェクトストレージへの保存するケース&lt;/h4&gt;
+
+&lt;p&gt;よくFluentdを使ってS3へのログの保存が紹介されます。&lt;br&gt;
+この利用方法はとてもまっとうであり、正しい使い方といえます。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fblog.serverworks.co.jp%2Ftech%2F2013%2F06%2F27%2Ffluentdtos3%2F&#34; title=&#34;fluentdを使ってS3へログを送る&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://blog.serverworks.co.jp/tech/2013/06/27/fluentdtos3/&#34;&gt;blog.serverworks.co.jp&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;ですが、たまにリアルタイムでのログ保存と勘違いしている話をききます。&lt;br&gt;
+上で紹介してきたように、オブジェクトストレージはファイルの出し入れしかできません。&lt;br&gt;
+リアルタイムのログを1行ずつオブジェクトストレージに書き込むには、その都度ファイルを入れ替えるしかありません。&lt;/p&gt;
+
+&lt;p&gt;そのため、オブジェクトストレージを利用したログ管理はリアルタイムなものではなく、&lt;br&gt;
+例えばログファイルがローテーションされるたびにアップロードするなどの利用になる点は抑えておきましょう。&lt;/p&gt;
+
+&lt;p&gt;また、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;環境ではサーバは負荷に応じて増えたり減ったりすることが日常的です。&lt;br&gt;
+Fluentdではサーバのシャットダウンシグナルを受け取った時に、ログを出力する機能があるので、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;環境でもオブジェクトストレージを使ってログ管理を行うことは可能です。&lt;/p&gt;
+
+&lt;h4&gt;(2)サーバにオブジェクトストレージをマウントするケース&lt;/h4&gt;
+
+&lt;p&gt;オブジェクトストレージをサーバにマウントして利用するケースも多く見受けられます。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fqiita.com%2FYuki_BB3%2Fitems%2F9f5eb233b152be1c4bc9&#34; title=&#34;EC2インスタンスにS3をマウントして使用する（IAM Role ver) - Qiita&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://qiita.com/Yuki_BB3/items/9f5eb233b152be1c4bc9&#34;&gt;qiita.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;オブジェクトストレージでは階層構造はなく、フラットなファイル管理を行います。&lt;br&gt;
+またファイルの操作はすべてHTTPで行います。&lt;br&gt;
+サーバにマウントすると、一見通常の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D5%A5%A1%A5%A4%A5%EB%A5%B7%A5%B9%A5%C6%A5%E0&#34;&gt;ファイルシステム&lt;/a&gt;のように見えてしまいますが、見せかけだけです。&lt;br&gt;
+その点を理解して利用するようにしましょう。&lt;/p&gt;
+
+&lt;h2&gt;追記メモ (2017/03/28)&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;にも近いが、今は忘れられつつある&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WebDav&#34;&gt;WebDav&lt;/a&gt;が似たような実装&lt;/li&gt;
+&lt;li&gt;突き詰めれば、従来&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D5%A5%A1%A5%A4%A5%EB%A5%B7%A5%B9%A5%C6%A5%E0&#34;&gt;ファイルシステム&lt;/a&gt;もR/Wしかできないのは同じ。ブロックサイズの違い。&lt;/li&gt;
+&lt;li&gt;いつになってもR/Wしかできないのです。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>参加してきた、MSPJマイグレーションコンペ2017winter</title>
+      <link>https://blog.mosuke.tech/entry/2017/02/20/184220/</link>
+      <pubDate>Mon, 20 Feb 2017 18:42:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2017/02/20/184220/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;先日、2017年2月18日に「MSPJ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%A4%A5%B0%A5%EC%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;マイグレーション&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%DA%A5%C6%A5%A3%A5%B7%A5%E7%A5%F3&#34;&gt;コンペティション&lt;/a&gt;2017winter」に参加してきた。&lt;br&gt;
+MSPJ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%A4%A5%B0%A5%EC%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;マイグレーション&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%DA%A5%C6%A5%A3%A5%B7%A5%E7%A5%F3&#34;&gt;コンペティション&lt;/a&gt;2017winterとは、&lt;br&gt;
+日本MSP協会&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%DA%A5%C6%A5%A3%A5%B7%A5%E7%A5%F3&#34;&gt;コンペティション&lt;/a&gt;グループが主催する、
+次代を担う若手運用技術者同士の交流・競争を通して日本のMSP事業者における運用技術の向上を目指した&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%DA%A5%C6%A5%A3%A5%B7%A5%E7%A5%F3&#34;&gt;コンペティション&lt;/a&gt;。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;もう少し平たく言うと、MSP事業者の本当の業務に近い形でのコンペを通じて、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AD%A5%EB%A5%A2%A5%C3%A5%D7&#34;&gt;スキルアップ&lt;/a&gt;を図りましょうというものだ。&lt;br&gt;
+自分はMSPの人じゃないけど参加は全然できた。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fconnpass.com%2Fevent%2F47825%2F&#34; title=&#34;MSPJマイグレーションコンペティション2017winter (2017/02/18 09:30〜)&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://connpass.com/event/47825/&#34;&gt;connpass.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;競技ルール&lt;/h1&gt;
+
+&lt;p&gt;今回の競技のお題は、&lt;br&gt;
+&lt;b&gt;「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;上で動作しているレガシーな&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Redmine&#34;&gt;Redmine&lt;/a&gt;をAzure上に移行する」&lt;/b&gt;というものだ。&lt;/p&gt;
+
+&lt;p&gt;このコンペの特徴としては、実際にMSPでの業務に則し、お客さんから曖昧な要望を受けている部分や、&lt;br&gt;
+お客さん側にしかない権限については、お客さんと調整する必要があること。&lt;br&gt;
+例えば、環境の移行する際には&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/DNS&#34;&gt;DNS&lt;/a&gt;の切り替えが必要だったのですが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/DNS&#34;&gt;DNS&lt;/a&gt;の設定権限は我々にはなくて、&lt;br&gt;
+Slackを利用して、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/DNS&#34;&gt;DNS&lt;/a&gt;設定変更依頼や作業周知を出さなければいけなかった。&lt;br&gt;
+このあたりはとてもユニークなポイント。&lt;/p&gt;
+
+&lt;p&gt;お客さんからは移行について以下のような曖昧な要望をもらっていた。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;要望&amp;gt;
+- 今の環境を新しい環境に完全移行して欲しいです。
+- 実施した内容と結果については報告が欲しいです。
+- システムを止めるときは利用者に告知が必要なので連絡が欲しいです。
+- 昔から使っている古い環境なので、バージョンアップして欲しいです。
+- できれば利用者に影響を出さないように切り替えたいです。
+- できればサーバに関する資料があるとありがたいです。
+- できれば今はまったくバックアップを取っていないのでバックアップを取れるようにしたいです
+- できれば今後は利用者が増えるのでシステムを冗長化したいです。
+- できれば新しいインフラエンジニアに引継ぎするために必要な情報がまとまっていると嬉しいです。
+
+&amp;lt;担当者のコメント&amp;gt;
+- 前任のインフラエンジニアが辞めちゃったのでこのシステムもう分かる人がいなくって。
+- 結構前から使っているので環境も古くなっているみたいで、OSのサポートがもうすぐ切れるって話を聞いたものですから、セキュリティとか色々心配で何とかしたいんです。
+- みんなこのシステムを結構便利に使っていてくれているようだから、システムを切り替えるときは連絡しないとなぁ。
+- そうそう、近々新しいインフラエンジニアが入社予定だから、その方に引き継げるようになっていると嬉しいですね。 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ちなみにチームについては、当日の参加者で適当に3人チームを作って行った。&lt;br&gt;
+一緒の参加者が同じチームにならないように調整された。&lt;/p&gt;
+
+&lt;h1&gt;構成把握&lt;/h1&gt;
+
+&lt;p&gt;開始後、まずやったことが環境・構成の把握。&lt;br&gt;
+ざっと下記のような感じ。ログインしてすぐに、&lt;code&gt;pstree&lt;/code&gt; みて大体の構成を把握した。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;インフラ: &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;(EC2)&lt;/li&gt;
+&lt;li&gt;OS: CentOS5.2&lt;/li&gt;
+&lt;li&gt;Webサーバ: Apache2.0 + Passenger&lt;/li&gt;
+&lt;li&gt;DB: MySQL5.1&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;: 1.9&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Redmine&#34;&gt;Redmine&lt;/a&gt;: 2.3&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/DNS&#34;&gt;DNS&lt;/a&gt;; Route53で管理。権限はお客さんのみ&lt;/li&gt;
+&lt;li&gt;サーバ構成: サーバ1台のシングル構成&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;移行作戦&lt;/h1&gt;
+
+&lt;p&gt;細かなバージョンはおいておいて、最終的に目指す構成は下記のようにした。&lt;br&gt;
+これに至った考え方とかは下に書く。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170220/20170220165739.jpg&#34; alt=&#34;f:id:mosuke5:20170220165739j:plain&#34; title=&#34;f:id:mosuke5:20170220165739j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;の観点&lt;/h2&gt;
+
+&lt;p&gt;まず、Webサーバをロードバランサを利用して負荷分散と冗長性を確保した。&lt;br&gt;
+Azureでは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC&#34;&gt;ロードバランサー&lt;/a&gt;のフルマネージドサービスがあるので、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC&#34;&gt;ロードバランサー&lt;/a&gt;自体の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;については考える必要がなかった。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://docs.microsoft.com/ja-jp/azure/load-balancer/load-balancer-overview&#34;&gt;Azure Load Balancer の概要 | Microsoft Docs&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;次にデータベースだが、当初ロードバランサと同様にマネージドサービスがあればそちらで対応しようと検討していた。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt; Databaseというサービスがあるのだが、「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Microsoft&#34;&gt;Microsoft&lt;/a&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL%20Server&#34;&gt;SQL Server&lt;/a&gt; エンジン」のみの対応とのことで、&lt;br&gt;
+今回の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Redmine&#34;&gt;Redmine&lt;/a&gt;移行には適切ではなかった。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://docs.microsoft.com/ja-jp/azure/sql-database/sql-database-technical-overview&#34;&gt;SQL Database とは SQL Database の概要 | Microsoft Docs&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ということで、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EC%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;レプリケーション&lt;/a&gt;を使ったデータベースを作ることにしたのだが、&lt;br&gt;
+自前で作っている余裕はとてもなかったので、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A1%BC%A5%B1%A5%C3%A5%C8%A5%D7%A5%EC%A5%A4%A5%B9&#34;&gt;マーケットプレイス&lt;/a&gt;から&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt; with replicationというイメージを見つけて対応することとした。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://azuremarketplace.microsoft.com/ja-jp/marketplace/apps/bitnami.mysql-cluster?tab=Overview&#34;&gt;Microsoft Azure Marketplace&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;最後に、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Redmine&#34;&gt;Redmine&lt;/a&gt;では添付ファイルのアップロードなどをすることがある。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC&#34;&gt;ロードバランサー&lt;/a&gt;で負荷分散環境においては、添付ファイルを共有する必要がある。&lt;br&gt;
+手っ取り早く&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rsync&#34;&gt;Rsync&lt;/a&gt;での同期をする方向にした。&lt;/p&gt;
+
+&lt;h2&gt;バージョン関連&lt;/h2&gt;
+
+&lt;p&gt;移行先の各種バージョンは下記とした。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OS: CentOS7.2&lt;/li&gt;
+&lt;li&gt;Webサーバ: Nginx&lt;/li&gt;
+&lt;li&gt;DB: MySQL5.7&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;: 2.2(アプリケーション実行はthin)&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Redmine&#34;&gt;Redmine&lt;/a&gt;: 2.6&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;はじめRuby2.4で検証していたのだが、&lt;br&gt;
+さすがにRails3はRuby2.4では動かずRuby2.2まで下げた。&lt;/p&gt;
+
+&lt;h2&gt;Webサーバ、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%B5%A1%BC%A5%D0&#34;&gt;アプリケーションサーバ&lt;/a&gt;関連&lt;/h2&gt;
+
+&lt;p&gt;移行元の環境では、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Redmine&#34;&gt;Redmine&lt;/a&gt;が&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;+Passengerで動作していた。&lt;br&gt;
+余談になるが、Passengerはmod_&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/rails&#34;&gt;rails&lt;/a&gt;なんて呼ばれることもあって、いわゆるmod_&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/php&#34;&gt;php&lt;/a&gt;, &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mod_perl&#34;&gt;mod_perl&lt;/a&gt;と同じ方式での動作方法。&lt;/p&gt;
+
+&lt;p&gt;昔にPassengerインス&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C8%A1%BC%A5%EB&#34;&gt;トール&lt;/a&gt;でハマった記憶もあるし、特にPassengerである必要性はなかったので、&lt;br&gt;
+馴染みのあるNginx+Thinの構成で動かすこととした。&lt;br&gt;
+&lt;span style=&#34;font-size: 80%&#34;&gt;※Thin部分はpumaでも&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/unicorn&#34;&gt;unicorn&lt;/a&gt;でもお好きなものをどうぞ。&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;この構成はWebサーバと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%B5%A1%BC%A5%D0&#34;&gt;アプリケーションサーバ&lt;/a&gt;を分離する&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;。&lt;br&gt;
+Thin単体でも動作させることが可能。Nginxはリバースプロキシや静的ファイルの配信に特化し、&lt;br&gt;
+アプリケーションの実行はThin側に任せる。&lt;/p&gt;
+
+&lt;p&gt;正直どちらでもかまわないのだが、Passengerを利用する場合、&lt;br&gt;
+アプリケーションとインフラ(&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;部分)が密な関係になってしまうのが煩わしいと個人的に思う。&lt;br&gt;
+まあケースバイケースでしょうが。&lt;/p&gt;
+
+&lt;p&gt;※あと最近&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;触ってなさすぎて忘れた…&lt;/p&gt;
+
+&lt;h1&gt;移行作業&lt;/h1&gt;
+
+&lt;p&gt;作戦が決まったところで、さっそく移行作業なのだが、&lt;br&gt;
+いきなり完成形に持っていくことは難しいと考えいくつかのステップに分けて移行作業を進めた。&lt;/p&gt;
+
+&lt;h4&gt;Step1：まずはAzure環境へ&lt;/h4&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170220/20170220173855.jpg&#34; alt=&#34;f:id:mosuke5:20170220173855j:plain&#34; title=&#34;f:id:mosuke5:20170220173855j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h4&gt;Step2：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;とか&lt;/h4&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170220/20170220173905.jpg&#34; alt=&#34;f:id:mosuke5:20170220173905j:plain&#34; title=&#34;f:id:mosuke5:20170220173905j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h4&gt;Step3：最後の仕上げ&lt;/h4&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170220/20170220173915.jpg&#34; alt=&#34;f:id:mosuke5:20170220173915j:plain&#34; title=&#34;f:id:mosuke5:20170220173915j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;Azureのここがよくわからなかった&lt;/h2&gt;
+
+&lt;p&gt;限られた時間内で、ほぼ初めてAzureをまともに使ったわけだが、&lt;br&gt;
+いくつか概念の理解や操作方法がわかりづらいなと感じた。&lt;br&gt;
+（IsuconでもAzure触ったが、あれは本当にサーバ起動するだけなので…）&lt;/p&gt;
+
+&lt;h4&gt;ネットワーク概念&lt;/h4&gt;
+
+&lt;p&gt;Virtual Private Networkの概念がとてもわかりづらかった印象。&lt;br&gt;
+買ったリソースをどうやって、指定のネットワークにデプロイするのかなど。&lt;br&gt;
+慣れの問題も大きいとは思うが、当日はほんとにわからなかった。&lt;/p&gt;
+
+&lt;h4&gt;サーバのイメージ作成&lt;/h4&gt;
+
+&lt;p&gt;すごい初歩的なことだが、構築したサーバのイメージを作成して、複製することがとても難しかった。 &lt;br&gt;
+メンバーがいろいろ躓いていたので、最終的に普通にもう1台構築するという強行手段を取った。&lt;br&gt;
+この点は、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;に携わるものとして仕様確認しておきたい。&lt;/p&gt;
+
+&lt;p&gt;仕事で使っている&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;が&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;的なため、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;の考え方にFitするものはすぐに理解できたが、Azureはまた独特の概念が多い印象。&lt;br&gt;
+これだけ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;が使われている現代に、「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;的」であることは価値がある！？？&lt;/p&gt;
+
+&lt;h1&gt;結果、懇親会とか&lt;/h1&gt;
+
+&lt;p&gt;んー。結果は優勝・準優勝ではなかったんですが、&lt;br&gt;
+きっとテストをちゃんとしないで移行したので、きっと触るとなにか抜け漏れがあったのでしょう(笑)&lt;br&gt;
+また来年あれば参加したいなと思える楽しいコンテストだったことは間違いない。&lt;br&gt;
+ISUCONに続き悔しい結果。&lt;/p&gt;
+
+&lt;p&gt;参加者の中には、MSP業界の方がもちろんたくさんいた。&lt;br&gt;
+懇親会でいろいろ話をしたけどざっくりこんな課題を抱えている人が多かった。&lt;/p&gt;
+
+&lt;h4&gt;アプリが悪い問題&lt;/h4&gt;
+
+&lt;p&gt;MSPなのでお客さんのシステムの運用を請け負います。&lt;br&gt;
+その業務の中には障害対応や監視設定、デプロイとか様々あるわけですが、&lt;br&gt;
+アプリの作りにより、監視設定できないことや自動化できないことが多数あるそうです。&lt;br&gt;
+お客さんのせいにしてはいけないのだけど、その点が一番しんどそうだった。&lt;/p&gt;
+
+&lt;h4&gt;自動化・コード化&lt;/h4&gt;
+
+&lt;p&gt;MSPの方々も本当は監視やデプロイなどの自動化するコードやツールを作ることに力を入れたいけど、&lt;br&gt;
+単純な手順書作業や日々の障害対応に追われてなかなかできないとか。&lt;br&gt;
+そもそも普段コードを書く仕事ではないので、そのメンテするチーム体制が取れないという問題も。&lt;br&gt;
+（それは前の仕事でもよく聞いた話だなぁ～）&lt;/p&gt;
+
+&lt;h4&gt;オンプレ&lt;/h4&gt;
+
+&lt;p&gt;まだまだオンプレ環境の運用も多く、&lt;br&gt;
+ハードウェア交換やハードウェアによる障害には悩まされているとのこと。&lt;br&gt;
+聞いてる話だと、あえてオンプレにしているというよりはレガシーで残っているのが多いっぽい。&lt;/p&gt;
+
+&lt;h4&gt;夜勤&lt;/h4&gt;
+
+&lt;p&gt;夜勤の週は、5日間夜勤をする。そういう運用らしいです。&lt;br&gt;
+前の仕事では身近にネットワークの運用部隊がいたので夜勤事情はよく聞いていますが、
+まったく考え方が違くてびっくり。&lt;br&gt;
+でも意外と、週ごとに別れている方が辛くないらしいよ？&lt;/p&gt;
+
+&lt;h1&gt;最後に&lt;/h1&gt;
+
+&lt;p&gt;一緒に戦ってくれたチームメンバーありがとうございました。&lt;/p&gt;
+
+&lt;p&gt;去年のお題は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;から&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;への移行だったらしいですが、今回は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;から&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;への移行。&lt;br&gt;
+このあたり、そういう時代のフェーズに入ってきているということなんでしょうか。&lt;br&gt;
+きっとそういうことでしょう。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;特定の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;独自の機能を使っていなければ、移行自体は簡単で、&lt;br&gt;
+それよりももともとの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EC%A5%AC%A5%B7%A1%BC%A5%B7%A5%B9%A5%C6%A5%E0&#34;&gt;レガシーシステム&lt;/a&gt;をバージョンアップするほうがしんどい印象。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;ロックインとどう向き合っていくか、考えなければ。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Cookpad TechConf2017にいってきたメモ</title>
+      <link>https://blog.mosuke.tech/entry/2017/01/23/233756/</link>
+      <pubDate>Mon, 23 Jan 2017 23:37:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2017/01/23/233756/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;h1&gt;はじめに&lt;/h1&gt;&lt;/p&gt;
+
+&lt;p&gt;CookpadTechConf2017に参加してきた。&lt;br&gt;
+昨年は抽選に外れていけなかったのでよかった。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Ftechconf.cookpad.com%2F2017%2F&#34; title=&#34;Cookpad TechConf 2017&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://techconf.cookpad.com/2017/&#34;&gt;techconf.cookpad.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;おなじみ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Cookpad&#34;&gt;Cookpad&lt;/a&gt;が年に一回行っているテクノロジーカンファレンス。&lt;br&gt;
+１年間の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%C3%A5%AF%A5%D1%A5%C3%A5%C9&#34;&gt;クックパッド&lt;/a&gt;での取り組みを発表する場。&lt;/p&gt;
+
+&lt;p&gt;完全メモ書きではあるが、ご活用ください。&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%C3%A5%AF%A5%D1%A5%C3%A5%C9&#34;&gt;クックパッド&lt;/a&gt;の取り組み&lt;/h1&gt;
+
+&lt;p&gt;セッションはたくさんあったが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%C3%A5%AF%A5%D1%A5%C3%A5%C9&#34;&gt;クックパッド&lt;/a&gt;が今年１年間で取り組んできた大きな内容は以下３つと感じた。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;海外進出&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B5%A1%B3%A3%B3%D8%BD%AC&#34;&gt;機械学習&lt;/a&gt;への取り組み&lt;/li&gt;
+&lt;li&gt;スケールへの対応&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;海外進出の話は今まではほとんど聞いたことなかったので、本格的に力を入れ始めたというところだろう。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B5%A1%B3%A3%B3%D8%BD%AC&#34;&gt;機械学習&lt;/a&gt;への取り組みは去年からと明確にいっていたのでこちらもそう。&lt;br&gt;
+最後のスケールへの対応は今までもたくさん発表してきたが、そこに大きな波がもう１つやってきた。後ほど。&lt;/p&gt;
+
+&lt;h1&gt;海外進出&lt;/h1&gt;
+
+&lt;h3&gt;Go Global&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;宗教、言語、気候によってサービスを変える
+
+&lt;ul&gt;
+&lt;li&gt;同じ言語圏であっても気候が違えば違う食文化がある&lt;/li&gt;
+&lt;li&gt;例えば&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%DA%A5%A4%A5%F3%B8%EC&#34;&gt;スペイン語&lt;/a&gt;圏でも、スペインと南米では全く食文化が異なる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;どうやってサービスを作っていくか
+
+&lt;ul&gt;
+&lt;li&gt;あたりまえ品質&lt;/li&gt;
+&lt;li&gt;グローバリゼーションとローカライゼーション&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;検索の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%AB%A5%E9%A5%A4%A5%BA&#34;&gt;ローカライズ&lt;/a&gt;ははてしなくどろくさい&lt;/li&gt;
+&lt;li&gt;翻訳もとんでもなく大変
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Amazon&#34;&gt;Amazon&lt;/a&gt;の例だが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kindle&#34;&gt;Kindle&lt;/a&gt;で&#34;OR&#34;で誤訳があった
+
+&lt;ul&gt;
+&lt;li&gt;「あるいは」のorなのか、「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AA%A5%EC%A5%B4%A5%F3%BD%A3&#34;&gt;オレゴン州&lt;/a&gt;」のorなのか&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;プレミアムという言葉も実は難しい
+
+&lt;ul&gt;
+&lt;li&gt;プレミアムというのは地方によってはプレミアムでないものを差別する用語として使われることもある&lt;/li&gt;
+&lt;li&gt;プライムやプレミアム、エクストリームなど使い分ける&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;国際チームは国籍がみんなばらばら
+
+&lt;ul&gt;
+&lt;li&gt;それぞれの考え方も文化も異なる&lt;/li&gt;
+&lt;li&gt;最終的なアウトプットだけ共有しあとはまかせるというスタイルをとっている&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;Global Infrastracture&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;多くのリージョンへ展開している
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://cookpad.com/us/regions&#34;&gt;Choose your Country - Cookpad&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;でも中国は進出してない
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%C3%A5%AF%A5%D1%A5%C3%A5%C9&#34;&gt;クックパッド&lt;/a&gt;は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;絶対&lt;/li&gt;
+&lt;li&gt;中国市場ではやっぱり厳しさがあるようにみえる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;グローバルアプリはス&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%C3%A5%C1&#34;&gt;クラッチ&lt;/a&gt;で新規開発
+
+&lt;ul&gt;
+&lt;li&gt;いまは普通の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rails&#34;&gt;Rails&lt;/a&gt;アプリ&lt;/li&gt;
+&lt;li&gt;日本の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Cookpad&#34;&gt;Cookpad&lt;/a&gt;とはUIも全く異なる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;グローバルのインフラについて
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;code&gt;us-east-1&lt;/code&gt;のサーバを利用&lt;/li&gt;
+&lt;li&gt;データベースはAurora for &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;Elasticache利用&lt;/li&gt;
+&lt;li&gt;nginx, &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/unicorn&#34;&gt;unicorn&lt;/a&gt;の構成&lt;/li&gt;
+&lt;li&gt;CDNはFastly&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;地域によって&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%D5%A5%A3%A5%C3%A5%AF&#34;&gt;トラフィック&lt;/a&gt;ピークが全く異なる
+
+&lt;ul&gt;
+&lt;li&gt;日本だとバレンタインシーズン&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A4%A5%B9%A5%E9%A5%E0&#34;&gt;イスラム&lt;/a&gt;では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%E9%A5%DE%A5%C0&#34;&gt;ラマダ&lt;/a&gt;ンと呼ばれるシーズンがある
+
+&lt;ul&gt;
+&lt;li&gt;しばらく断食していたその後に食事を楽しむ時期&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://speakerdeck.com/rejasupotaro/go-global-number-cookpadtechconf-2017&#34;&gt;Go Global - #CookpadTechconf 2017 // Speaker Deck&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://speakerdeck.com/sorah/building-infrastructure-for-our-global-service&#34;&gt;Building infrastructure for our global service // Speaker Deck&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B5%A1%B3%A3%B3%D8%BD%AC&#34;&gt;機械学習&lt;/a&gt;へのとりくみ&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;2016/07/01 &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%C3%A5%AF%A5%D1%A5%C3%A5%C9&#34;&gt;クックパッド&lt;/a&gt;研究開発部設立&lt;/li&gt;
+&lt;li&gt;2016/10/05 アプリ「料理きろく」公開
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://itunes.apple.com/jp/app/wu-liaode-yin-le-dong-hua/id931374280?mt=8&amp;amp;ign-mpt=uo%3D4&#34;&gt;お料理アルバム byクックパッド ~料理写真とレシピをプライベート記録~を App Store で&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/GPU&#34;&gt;GPU&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%B9%A5%BF%A5%F3%A5%B9&#34;&gt;インスタンス&lt;/a&gt;を使って研究環境を構築
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Nvidia&#34;&gt;Nvidia&lt;/a&gt;ドライバーのインストールからそのセットアップまでハマるポイント多すぎる&lt;/li&gt;
+&lt;li&gt;packerを使って研究用AMIを用意するなどしている&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;正直まだまだこれからの状態&lt;/li&gt;
+&lt;li&gt;現状は、料理か否かの判定のみに注力&lt;/li&gt;
+&lt;li&gt;料理の種類の判定などはこれから頑張りたい&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://speakerdeck.com/ayemos/real-world-machine-learning&#34;&gt;Real World Machine Learning // Speaker Deck&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;スケーラビリティへの対応&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rails&#34;&gt;Rails&lt;/a&gt;アプリでは世界最大規模
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%E2%A5%CE%A5%EA%A5%B9&#34;&gt;モノリス&lt;/a&gt;ティックに構築して巨大化しすぎた。。。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;サービスの分割化、マイクロサービス化を促進&lt;/li&gt;
+&lt;li&gt;マイクロサービス化、それゆえにおこる問題が起きてくる
+
+&lt;ul&gt;
+&lt;li&gt;サービス間の連携がとても重要に&lt;/li&gt;
+&lt;li&gt;次の仕組みを使って連携を強化
+
+&lt;ul&gt;
+&lt;li&gt;障害を制御する =&amp;gt; Expeditor&lt;/li&gt;
+&lt;li&gt;障害を予防する =&amp;gt; Pact&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Expeditor（内製ソフトウェア）
+
+&lt;ul&gt;
+&lt;li&gt;1)サーキットブレイカー&lt;/li&gt;
+&lt;li&gt;2)並列処理&lt;/li&gt;
+&lt;li&gt;3)リトライ処理&lt;/li&gt;
+&lt;li&gt;もともとは並列処理のために作ったがサーキットブレイカーの機能が重宝&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/netflix&#34;&gt;netflix&lt;/a&gt;の&lt;code&gt;Netflix/Hystrix&lt;/code&gt;にインスパイア&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Pact (&lt;a href=&#34;https://docs.pact.io/&#34;&gt;https://docs.pact.io/&lt;/a&gt;)
+
+&lt;ul&gt;
+&lt;li&gt;サービス間の連携テストを行うソフトウェア&lt;/li&gt;
+&lt;li&gt;これは外部開発のソフトウェアだが周辺ツールは内製&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;マイクロサービス化したのでDockerでサービスのポータビリティも上げた
+
+&lt;ul&gt;
+&lt;li&gt;Dockerをより良く使うためにHakoというDockerデプロイツールも開発&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;その他、スケールに対応するために幾つかのソフトウェアを内製
+
+&lt;ul&gt;
+&lt;li&gt;Kuroko2&lt;/li&gt;
+&lt;li&gt;barbeque&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;これらの内製ソフトウェアはすべて&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;で書いている
+
+&lt;ul&gt;
+&lt;li&gt;なぜ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;か？&lt;/li&gt;
+&lt;li&gt;好きというのもあるが、統一することで品質やスキルの担保ができる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;でも&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;には速度の問題などあることは承知。。。
+
+&lt;ul&gt;
+&lt;li&gt;そこで、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;自体の速度改善に貢献しようとした&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://info.cookpad.com/pr/news/press_2017_0123&#34;&gt;クックパッド、フルタイムRubyコミッター・笹田耕一氏を採用 Rubyの改善・開発とサービスのユーザー体験向上を加速 | クックパッド株式会社&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AA%A1%BC%A5%D7%A5%F3%A5%BD%A1%BC%A5%B9&#34;&gt;オープンソース&lt;/a&gt;へのタダ乗りはしない。コミュニティへの貢献がビジネスも成長させる」&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;すべてのデータをRedshiftに移行
+
+&lt;ul&gt;
+&lt;li&gt;今まで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B5%A1%BC%A5%C9%A5%D1%A1%BC%A5%C6%A5%A3&#34;&gt;サードパーティ&lt;/a&gt;のDWHも利用していたがRedshiftに移行&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%AF%A5%BB%A5%B9%A5%ED%A5%B0&#34;&gt;アクセスログ&lt;/a&gt;もユーザデータもすべて&lt;/li&gt;
+&lt;li&gt;ログとDBデータがJoinできる素晴らしさ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;スポット&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%B9%A5%BF%A5%F3%A5%B9&#34;&gt;インスタンス&lt;/a&gt;の利用で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/API&#34;&gt;API&lt;/a&gt;サーバのコストを60％下げた&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;a href=&#34;https://speakerdeck.com/mirakui/cookpad-under-a-microscope&#34;&gt;Cookpad Under a Microscope // Speaker Deck&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://speakerdeck.com/yoshiori/cookpad-awakens&#34;&gt;Cookpad awakens // Speaker Deck&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://speakerdeck.com/ryotarai/spot-instances-in-cookpad-number-cookpadtechconf-2017&#34;&gt;Spot Instances in Cookpad #CookpadTechConf 2017 // Speaker Deck&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>クラウド上でのWordPressのスケールアウトを考える</title>
+      <link>https://blog.mosuke.tech/entry/2017/01/04/223544/</link>
+      <pubDate>Wed, 04 Jan 2017 22:35:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2017/01/04/223544/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;複数台サーバでの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WordPress&#34;&gt;WordPress&lt;/a&gt;の構築・運用について考える。&lt;br&gt;
+実際に、とある&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;で分散環境の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WordPress&#34;&gt;WordPress&lt;/a&gt;を構築したのでその知見をまとめる。&lt;br&gt;
+なるべく特定の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;に特価しないものとして記載したい。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;やりたいこと&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;スケールアウトできる&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WordPress&#34;&gt;WordPress&lt;/a&gt;環境を作る&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSL&#34;&gt;SSL&lt;/a&gt;に対応する&lt;/li&gt;
+&lt;li&gt;HTTP/2に対応する&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;などの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;環境で構築する&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;まず先に全体の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;図から示す。&lt;br&gt;
+これから各項目について解説していく。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170104/20170104185455.png&#34; alt=&#34;f:id:mosuke5:20170104185455p:plain&#34; title=&#34;f:id:mosuke5:20170104185455p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSL&#34;&gt;SSL&lt;/a&gt;・HTTP/2への対応&lt;/h1&gt;
+
+&lt;p&gt;まず&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSL&#34;&gt;SSL&lt;/a&gt;への対応だが、通常ならばロードバランサを&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSL&#34;&gt;SSL&lt;/a&gt;の終端とし下記のような構成にすることが多いだろう。&lt;br&gt;
+この場合はロードバランサをL7のものとして稼働させる。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170104/20170104190001.png&#34; alt=&#34;f:id:mosuke5:20170104190001p:plain&#34; title=&#34;f:id:mosuke5:20170104190001p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;しかし、HTTP/2に対応しようと思うと事情は異なってくる。&lt;br&gt;
+（もちろん、最近では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;のALBのようにHTTP/2に対応する製品がでてきているのは承知だが。）&lt;br&gt;
+現在の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;で利用できるロードバランサの多くはまだHTTP/2に対応していない。&lt;br&gt;
+そのため、ロードバランサをL4として稼働させ、配下のWebサーバにてHTTP/2を処理する必要がでてくる。&lt;br&gt;
+この場合、ロードバランサは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/TCP&#34;&gt;TCP&lt;/a&gt;でポート443を待ち受けるようにし、配下のWebサーバへポート443のままでフォワードすればいい。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170104/20170104185953.png&#34; alt=&#34;f:id:mosuke5:20170104185953p:plain&#34; title=&#34;f:id:mosuke5:20170104185953p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;環境ではWebサーバがスケールすることは前提にいれることがおおい。&lt;br&gt;
+そのため、この場合の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSL%BE%DA%CC%C0%BD%F1&#34;&gt;SSL証明書&lt;/a&gt;はN台に対応した製品を買う必要がある。&lt;br&gt;
+例えば以下のような製品など。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.cybertrust.ne.jp/sureserver/productinfo/cloud.html&#34;&gt;SureServer for クラウド｜Cybertrust.ne.jp&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;データベースの分離&lt;/h1&gt;
+
+&lt;p&gt;分散環境での&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Wordpress&#34;&gt;Wordpress&lt;/a&gt;では共通したコンテンツを配信するため、データベースはもちろんWebサーバとは分離したほうがいい。&lt;br&gt;
+それぞれのWebサーバは共通のデータベースを見に行くべきだ。&lt;br&gt;
+データベースを自前で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;しても構わないが、それなりの運用コストがかかることは容易に想像がつくので、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;のマネージドデータベースサービスを利用した。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://aws.amazon.com/jp/rds/&#34;&gt;Amazon RDS（クラウドでのリレーショナルデータベースサービス） | AWS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://jp.aliyun.com/product/apsaradb-for-rds&#34;&gt;ApsaraDB for RDS - データベースホスティング | Alibaba Cloud&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;管理画面&lt;/h1&gt;
+
+&lt;p&gt;管理画面のみを分離する&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;も考えられるが、ここではそうしないこととする。&lt;br&gt;
+管理画面へのログインセッションの保持は、別途KVS(Redisや&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Memcached&#34;&gt;Memcached&lt;/a&gt;)に保存してもいいと思う。&lt;br&gt;
+ですが、WordPress4.0以降ではデフォルトでは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;へセッションを保存するので必須の対応ではないといえる。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fgithub.com%2FWordPress%2FWordPress%2Fblob%2Fdd6da701b286579819cd6aa518aa2d7018efd759%2Fwp-includes%2Fclass-wp-user-meta-session-tokens.php&#34; title=&#34;WordPress/WordPress&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://github.com/WordPress/WordPress/blob/dd6da701b286579819cd6aa518aa2d7018efd759/wp-includes/class-wp-user-meta-session-tokens.php&#34;&gt;github.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;記事で使うアップロード画像などの対応&lt;/h1&gt;
+
+&lt;p&gt;管理画面から記事を投稿するとする。&lt;br&gt;
+記事のデータはデータベースに保存されるためどのWebサーバからも記事を参照できる。&lt;br&gt;
+しかし、記事に含まれる画像データはどうだろうか。&lt;/p&gt;
+
+&lt;p&gt;通常の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Wordpress&#34;&gt;Wordpress&lt;/a&gt;では管理画面サーバの&lt;code&gt;/wp-content/uploads&lt;/code&gt;以下に画像を保存する。&lt;br&gt;
+複数台Webサーバがある状態で、たまたまアクセスしているサーバに画像を保存しても、他のサーバからは参照することができない。&lt;/p&gt;
+
+&lt;p&gt;これに対するソリューションはいくつかあるだろう。&lt;br&gt;
+例えば、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/rsync&#34;&gt;rsync&lt;/a&gt;などを使って他のサーバと画像ファイルを同期するとか、画像用のストレージを用意し&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/NFS&#34;&gt;NFS&lt;/a&gt;で参照するとか。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;の観点からもここはオブジェクトストレージのサービスを利用するのがいいだろう。&lt;/p&gt;
+
+&lt;p&gt;例えば、下記のような製品だ。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://aws.amazon.com/jp/s3/&#34;&gt;Amazon S3 (スケーラブルなクラウドストレージサービス ) | AWS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://jp.aliyun.com/product/oss&#34;&gt;Object Storage Service (OSS) - Alibaba Cloud の拡張性に優れた安全なクラウドストレージ | Alibaba Cloud&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;のオブジェクトストレージと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WordPress&#34;&gt;WordPress&lt;/a&gt;を連携する&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%B0%A5%A4%A5%F3&#34;&gt;プラグイン&lt;/a&gt;は多く出ている。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://wordpress.org/plugins/nephila-clavata/&#34;&gt;Nephila clavata — WordPress Plugins&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;デプロイへの対応&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Wordpress&#34;&gt;Wordpress&lt;/a&gt;のコードのデプロイ、Webサーバの設定変更などにどう対応するか。&lt;br&gt;
+ツールはなんでもいいが（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%A7%A5%EB%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;シェルスクリプト&lt;/a&gt;でもいいし、Ansible,Chefなどでも）、&lt;br&gt;
+デプロイツールなど用いて全台サーバにデプロイできるようにしておくといいだろう。あたりまえ。&lt;br&gt;
+影響の大きいデプロイをするときは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC&#34;&gt;ロードバランサー&lt;/a&gt;から切り離してデプロイ、テストとやるといいと思う。&lt;br&gt;
+あるいは、新しく構築（デプロイ）した別のWebサー&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%A4&#34;&gt;バイ&lt;/a&gt;ンスタンスを用意し、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC&#34;&gt;ロードバランサー&lt;/a&gt;で向き先を変更してもいい。&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC&#34;&gt;ロードバランサー&lt;/a&gt;配下のWebサーバはプライベートネットワークに配置しておりインターネットから直接アクセスできない。&lt;br&gt;
+そのため、デプロイサーバを用意することでデプロイできるようにした。&lt;br&gt;
+あるいは、踏み台サーバを用意して、多段&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;を使ってもいいかもしれない。&lt;/p&gt;
+
+&lt;h1&gt;さいごに&lt;/h1&gt;
+
+&lt;p&gt;&lt;p&gt;他にも、工夫した点などはあるが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WordPress&#34;&gt;WordPress&lt;/a&gt;のスケールアウトという点に絞って簡単にまとめた。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/OSS&#34;&gt;OSS&lt;/a&gt;の利用は簡単だが、そのスケールや&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;は毎度悩まさせると感じる。&lt;br&gt;
+以前もGitlabを運用してた時に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;をどうするか考えていたのを思い出す。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

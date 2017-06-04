@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【これだけは抑えておきたい】Arduino入門まとめ &middot; Goldstine研究所</title>
+
+    <meta name="description" content=" 前々からArduino自体はもっていたし、ちょろっと触ったことはあったのだが、 大学時代の研究室の仲間とArduino勉強会をやることになり、それに向けて友人と再入門したのでそのときのメモ。 Arduino入門にこれだけは知っておきたい事">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="【これだけは抑えておきたい】Arduino入門まとめ &middot; Goldstine研究所">
+    <meta name="twitter:description" content=" 前々からArduino自体はもっていたし、ちょろっと触ったことはあったのだが、 大学時代の研究室の仲間とArduino勉強会をやることになり、それに向けて友人と再入門したのでそのときのメモ。 Arduino入門にこれだけは知っておきたい事">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="【これだけは抑えておきたい】Arduino入門まとめ &middot; Goldstine研究所">
+    <meta property="og:description" content=" 前々からArduino自体はもっていたし、ちょろっと触ったことはあったのだが、 大学時代の研究室の仲間とArduino勉強会をやることになり、それに向けて友人と再入門したのでそのときのメモ。 Arduino入門にこれだけは知っておきたい事">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">21 Jul 2014, 23:19</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/07/21/231946/" class="post-title">【これだけは抑えておきたい】Arduino入門まとめ</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Arduino" href="https://blog.mosuke.tech/categories/arduino">Arduino</a>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p><body>
+<p>前々から<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>自体はもっていたし、ちょろっと触ったことはあったのだが、<br>
+大学時代の研究室の仲間と<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>勉強会をやることになり、それに向けて友人と再入門したのでそのときのメモ。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>入門にこれだけは知っておきたい事項をプログラム形式にまとめた。</p>
+<p>もちろん、不足部分もたくさんあるが、これだけわかれば楽しめるようになるかも。</p>
+<p>以下が入門プログラム。</p></p>
+
+<p><ol>
+<li><a href="#program1">LEDの点灯</a></li>
+<li><a href="#program2">PCとArduino間のシリアル通信</a></li>
+<li><a href="#program3">超音波距離センサの利用</a></li>
+<li><a href="#program4">超音波距離センサとLEDの組み合わせ</a></li>
+<li><a href="#program5">Processingとの連携</a></li>
+<li><a href="#program6">電池でArduinoを動作させる</a></li>
+</ol>
+<p>【用意したもの】<br>
+基本は以下の２つ</p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/B0025Y6C5G/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/518mUs-GudL._SL160_.jpg" class="hatena-asin-detail-image" alt="Arduinoをはじめようキット" title="Arduinoをはじめようキット"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B0025Y6C5G/hatena-blog-22/">Arduinoをはじめようキット</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> スイッチサイエンス</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> エレクトロニクス</li>
+<li>
+<span class="hatena-asin-detail-label">購入</span>: 64人 <span class="hatena-asin-detail-label">クリック</span>: 1,164回</li>
+<li><a href="http://d.hatena.ne.jp/asin/B0025Y6C5G/hatena-blog-22" target="_blank">この商品を含むブログ (51件) を見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00IJ02A7O/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/51s%2BQnZbv0L._SL160_.jpg" class="hatena-asin-detail-image" alt="みんなのArduino入門：拡張キット" title="みんなのArduino入門：拡張キット"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00IJ02A7O/hatena-blog-22/">みんなのArduino入門：拡張キット</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> スイッチサイエンス</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> エレクトロニクス</li>
+<li><a href="http://d.hatena.ne.jp/asin/B00IJ02A7O/hatena-blog-22" target="_blank">この商品を含むブログを見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+<p>【参考にした書籍】</p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/487311537X/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/51zFePM-naL._SL160_.jpg" class="hatena-asin-detail-image" alt="Arduinoをはじめよう 第2版 (Make:PROJECTS)" title="Arduinoをはじめよう 第2版 (Make:PROJECTS)"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/487311537X/hatena-blog-22/">Arduinoをはじめよう 第2版 (Make:PROJECTS)</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">作者:</span> Massimo Banzi,船田巧</li>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AA%A5%E9%A5%A4%A5%EA%A1%BC%A5%B8%A5%E3%A5%D1%A5%F3">オライリージャパン</a>
+</li>
+<li>
+<span class="hatena-asin-detail-label">発売日:</span> 2012/03/16</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> 単行本（ソフトカバー）</li>
+<li>
+<span class="hatena-asin-detail-label">購入</span>: 9人 <span class="hatena-asin-detail-label">クリック</span>: 27回</li>
+<li><a href="http://d.hatena.ne.jp/asin/487311537X/hatena-blog-22" target="_blank">この商品を含むブログ (10件) を見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/489797948X/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/517KqAKiwvL._SL160_.jpg" class="hatena-asin-detail-image" alt="みんなのArduino入門" title="みんなのArduino入門"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/489797948X/hatena-blog-22/">みんなのArduino入門</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">作者:</span> 高本孝頼</li>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%C3%A5%AF%A5%C6%A5%EC%A5%B3%A5%E0">リックテレコム</a>
+</li>
+<li>
+<span class="hatena-asin-detail-label">発売日:</span> 2014/02/17</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> 単行本（ソフトカバー）</li>
+<li><a href="http://d.hatena.ne.jp/asin/489797948X/hatena-blog-22" target="_blank">この商品を含むブログを見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+<p></p>
+<h2 id="program1">1. LEDの点灯</h2>まずはじめの第一歩はLEDの点灯。<br>
+これは<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>標準搭載の「スケッチの例」を利用。<br>
+　利用したスケッチ：スケッチの例⇒01.<a class="keyword" href="http://d.hatena.ne.jp/keyword/Basic">Basic</a>⇒Blink<p>LEDのプラス側を13番に、マイナス側を<a class="keyword" href="http://d.hatena.ne.jp/keyword/GND">GND</a>に挿せば完成。<br>
+<span itemscope itemtype="http://schema.org/Photograph"><a href="http://f.hatena.ne.jp/mosuke5/20140721211703" class="hatena-fotolife" itemprop="url"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140721/20140721211703.jpg" alt="f:id:mosuke5:20140721211703j:image:h200" title="f:id:mosuke5:20140721211703j:image:h200" class="hatena-fotolife" style="height:200px" itemprop="image"></a></span></p>
+<p></p>
+<h2>2. PCと<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>間のシリアル通信</h2>センサーで取得したデータ等をPC側に渡すシリアル通信。<br>
+まずは最初なので、<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>本体側で文字列を適当に出力させてそれを表示する。<p>はじめは&rdquo;<a class="keyword" href="http://d.hatena.ne.jp/keyword/hoge">hoge</a>&ldquo;だけを出力させたのだが、ひたすら<a class="keyword" href="http://d.hatena.ne.jp/keyword/hoge">hoge</a>が並ぶだけなので<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>側の処理がよく見えなかったので、<br>
+以下のサンプルのようにした。また、回路側はなにもいじっていない。</p></p>
+
+<pre><code class="language-c">int i = 0;
+
+void setup(){
+
+  //シリアル通信の宣言
+  Serial.begin(9600);
+
+}
+
+void loop(){
+
+  Serial.print(&quot;hoge&quot;);
+  Serial.println(i);
+  i++;
+  
+  delay(300);
+
+}
+</code></pre>
+
+<p>出力結果</p>
+
+<pre><code>hoge1
+hoge2
+hoge3
+ .... 
+</code></pre>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140721/20140721103544.png" alt="f:id:mosuke5:20140721103544p:plain" title="f:id:mosuke5:20140721103544p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+<p></p>
+<h2>3. 超音波距離センサの利用</h2>次のステップとしてセンサーの利用を行った。<br>
+はじめ温度センサーを利用したのだが、温度の変化は室内ではわかりづらかったので「超音波距離センサ」を利用した。<br>
+ここでは超音波距離センサを利用するが、大事なことはセンサーの種類ではなく、センサーを利用した入力である。<p>【作ったもの】<br>
+超音波距離センサにて測定した物体との距離をシリアルモニターで表示するもの。</p>
+<p>【<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9">ソースコード</a>】</p>
+
+<pre><code class="language-c">// 送信側のピン番号
+const int TRIGPIN = 8; 
+
+// 受信側のピン番号
+const int ECHOPIN = 9;
+
+// HIGHの時間（μ秒）
+const int CTM = 10;
+
+// 時間差（μ秒）
+int dur;
+
+// 距離（ｃｍ）
+float dis;
+
+void setup() {
+
+  //シリアル通信の宣言
+  Serial.begin (9600);
+  
+  pinMode(TRIGPIN, OUTPUT);
+  pinMode(ECHOPIN, INPUT); 
+
+}
+
+void loop() {
+  
+  digitalWrite(TRIGPIN, HIGH);
+  delayMicroseconds(CTM);
+  digitalWrite(TRIGPIN, LOW);
+  
+  // 超音波が物体にあたり跳ね返ってくるまでの時間を測定
+  dur = pulseIn(ECHOPIN, HIGH);
+  
+  //物体までの距離に変換
+  dis  = (float) dur*0.017;
+  
+  //シリアルモニタへ出力
+  Serial.print(dis);
+  Serial.println(&quot; cm&quot;);
+  
+  delay(500);
+  
+}
+</code></pre>
+
+<p>【回路】<br>
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140721/20140721220559.png" alt="f:id:mosuke5:20140721220559p:plain" title="f:id:mosuke5:20140721220559p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+<p></p>
+<h2>4. 超音波距離センサとLEDの組み合わせ</h2>センサーを用いいた入力方法・LEDを使った出力方法について学んだので、それらを組み合わせて以下のものを作成。<p>【作ったもの】<br>
+超音波距離センサを用いて、物体がある一定以上近づいた場合には赤LED の点灯を、<br>
+物体がある一定以上離れている場合（あるいは物体がない場合）には青LEDの点灯をするもの。</p>
+<p>【<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9">ソースコード</a>】</p>
+
+<pre><code class="language-c">// 送信側のピン番号
+const int TRIGPIN = 8; 
+
+// 受信側のピン番号
+const int ECHOPIN = 9;
+
+// HIGHの時間（μ秒）
+const int CTM = 10;
+
+// 青LED
+const int LED_BLUE = 12;
+
+// 赤LED
+const int LED_RED = 13;
+
+// 時間差（μ秒）
+int dur;
+
+// 距離（ｃｍ）
+float dis;
+
+void setup() {
+
+  // シリアル通信の宣言
+  Serial.begin (9600);
+  
+  // 超音波距離センサ
+  pinMode(TRIGPIN, OUTPUT);
+  pinMode(ECHOPIN, INPUT); 
+  
+  // LED
+  pinMode(LED_BLUE, OUTPUT);
+  pinMode(LED_RED, OUTPUT); 
+
+}
+
+void loop() {
+  
+  digitalWrite(TRIGPIN, HIGH);
+  delayMicroseconds(CTM);
+  digitalWrite(TRIGPIN, LOW);
+  
+  // 超音波が物体にあたり跳ね返ってくるまでの時間を測定
+  dur = pulseIn(ECHOPIN, HIGH);
+  
+  // 物体までの距離に変換
+  dis = (float) dur * 0.017;
+  
+  // シリアルモニタへ出力
+  Serial.print(dis);
+  Serial.println(&quot; cm&quot;);
+  
+  // 距離が50cm以上なら青LEDを光らせる
+  if(dis &lt; 50) {
+    digitalWrite(LED_BLUE,HIGH);
+    digitalWrite(LED_RED,LOW);
+  
+  // 50cm未満なら赤LEDを光らせる
+  }else{
+    digitalWrite(LED_BLUE,LOW);
+    digitalWrite(LED_RED,HIGH);
+    
+  }
+  
+  delay(500);
+  
+}
+</code></pre>
+
+<p><br>
+【回路】<br>
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140721/20140721222730.png" alt="f:id:mosuke5:20140721222730p:plain" title="f:id:mosuke5:20140721222730p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+<p></p>
+<h2>5. Processingとの連携</h2>シリアル通信で受け取ったデータをシリアルモニターで表示するだけでなく、Processingで受け取ることもできる。<br>
+Processingで受け取ったデータをとりあえず、出力するところまで実施した。<p>【<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>側】</p>
+
+<pre><code class="language-c">// 送信側のピン番号
+const int TRIGPIN = 8; 
+
+// 受信側のピン番号
+const int ECHOPIN = 9;
+
+// HIGHの時間（μ秒）
+const int CTM = 10;
+
+// 時間差（μ秒）
+int dur;
+
+// 距離（ｃｍ）
+float dis;
+
+void setup() {
+
+  //シリアル通信の宣言
+  Serial.begin (9600);
+  
+  pinMode(TRIGPIN, OUTPUT);
+  pinMode(ECHOPIN, INPUT); 
+
+}
+
+void loop() {
+  
+  digitalWrite(TRIGPIN, HIGH);
+  delayMicroseconds(CTM);
+  digitalWrite(TRIGPIN, LOW);
+  
+  // 超音波が物体にあたり跳ね返ってくるまでの時間を測定
+  dur = pulseIn(ECHOPIN, HIGH);
+  
+  //物体までの距離に変換
+  dis  = (float) dur * 0.017;
+  
+  //シリアルモニタへ出力
+  Serial.println(dis);
+  
+  delay(500);
+  
+}
+</code></pre>
+
+<p>【Processing側】</p>
+
+<pre><code class="language-c">import processing.serial.*;
+
+int val;
+Serial myPort;
+
+void setup() {
+  String arduinoPort = Serial.list()[3]; 
+  myPort = new Serial(this, arduinoPort, 9600); 
+}
+
+void draw() {
+  println(val);
+}
+
+void serialEvent(Serial p){
+
+  val=myPort.read();
+  delay(1000);
+
+}
+</code></pre>
+
+<p><p>なんか受け取れているけど、これであっているか検討します…</p>
+<p></p>
+<h2>6. 電池で<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>を動作させる</h2>通常、<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>はPCから電源をとっているため、PCと切り離してしまうと動かなくなる。<br>
+しかし、PCと繋いでいないと動作できない<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>なんて必要ない…とも思う。<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>を電池で動かす方法はいたって簡単で以下の２つを用意して接続するだけ。</p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/B000FHVRLE/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/41IakcNEXoL._SL160_.jpg" class="hatena-asin-detail-image" alt="Panasonic 9V型アルカリ乾電池 1本 6LR61YXJ/1S" title="Panasonic 9V型アルカリ乾電池 1本 6LR61YXJ/1S"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B000FHVRLE/hatena-blog-22/">Panasonic 9V型アルカリ乾電池 1本 6LR61YXJ/1S</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D1%A5%CA%A5%BD%A5%CB%A5%C3%A5%AF">パナソニック</a>
+</li>
+<li>
+<span class="hatena-asin-detail-label">発売日:</span> 2006/04/10</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> エレクトロニクス</li>
+<li> <span class="hatena-asin-detail-label">クリック</span>: 2回</li>
+<li><a href="http://d.hatena.ne.jp/asin/B000FHVRLE/hatena-blog-22" target="_blank">この商品を含むブログを見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/0101625138/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/311H0nRslqL._SL160_.jpg" class="hatena-asin-detail-image" alt="DC 9V電池スナップ＋2.1mm DCプラグ  並行輸入品" title="DC 9V電池スナップ＋2.1mm DCプラグ  並行輸入品"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/0101625138/hatena-blog-22/">DC 9V電池スナップ＋2.1mm DCプラグ  並行輸入品</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> Gadgettown</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> </li>
+<li><a href="http://d.hatena.ne.jp/asin/0101625138/hatena-blog-22" target="_blank">この商品を含むブログを見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+<p>これらを以下のように接続する。<br>
+<span itemscope itemtype="http://schema.org/Photograph"><a href="http://f.hatena.ne.jp/mosuke5/20140721222037" class="hatena-fotolife" itemprop="url"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140721/20140721222037.jpg" alt="f:id:mosuke5:20140721222037j:image:w500" title="f:id:mosuke5:20140721222037j:image:w500" class="hatena-fotolife" style="width:500px" itemprop="image"></a></span></p>
+<br>
+<p>以上で入門まとめは終わりだが、<br>
+その他にも以下を購入しているので次はもっと高度なことを実践したい。<br>
+・<a href="http://www.switch-science.com/catalog/224/">XBee ZB / ワイヤアンテナ型 - スイッチサイエンス</a><br>
+・<a href="http://www.switch-science.com/catalog/786/">Arduino ワイヤレスプロトシールド - スイッチサイエンス</a><br>
+・<a href="http://www.switch-science.com/catalog/1031/">XBee USB アダプター(リセットスイッチ付き) - スイッチサイエンス</a><br>
+・<a href="http://www.switch-science.com/catalog/838/">Arduino イーサネットシールド R3 - スイッチサイエンス</a></p>
+</body></p>
+
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label-counter" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+                            <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3a%2f%2fblog.mosuke.tech%2fentry%2f2014%2f07%2f21%2f231946%2f&layout=button_count&size=small&mobile_iframe=true&appId=1383467145023614&width=90&height=20" width="90" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

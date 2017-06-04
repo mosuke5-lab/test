@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ER図作成ツール-MySQL Workbench- を使ってみた &middot; Goldstine研究所</title>
+
+    <meta name="description" content=" 表題の通りER図作成ツールというものを使ってみた。 開発をやる現場では当たり前のように使われているのかもしれないけど、ぼくは使ったことなかったです。 ER図とかテーブル構造はExcelでまとめて管理していました。  きっかけは、ソフトウエ">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="ER図作成ツール-MySQL Workbench- を使ってみた &middot; Goldstine研究所">
+    <meta name="twitter:description" content=" 表題の通りER図作成ツールというものを使ってみた。 開発をやる現場では当たり前のように使われているのかもしれないけど、ぼくは使ったことなかったです。 ER図とかテーブル構造はExcelでまとめて管理していました。  きっかけは、ソフトウエ">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ER図作成ツール-MySQL Workbench- を使ってみた &middot; Goldstine研究所">
+    <meta property="og:description" content=" 表題の通りER図作成ツールというものを使ってみた。 開発をやる現場では当たり前のように使われているのかもしれないけど、ぼくは使ったことなかったです。 ER図とかテーブル構造はExcelでまとめて管理していました。  きっかけは、ソフトウエ">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">06 May 2014, 19:24</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/05/06/192424/" class="post-title">ER図作成ツール-MySQL Workbench- を使ってみた</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p><body>
+<p>表題の通りER図作成ツールというものを使ってみた。<br>
+開発をやる現場では当たり前のように使われているのかもしれないけど、ぼくは使ったことなかったです。<br>
+ER図とかテーブル構造は<a class="keyword" href="http://d.hatena.ne.jp/keyword/Excel">Excel</a>でまとめて管理していました。</p>
+<p>きっかけは、ソフトウエアデザインを読んでいてER図作成ツールなるものがでてきたので、便利そうと思ってぐぐってみた。<br>
+調べると主なフリーのER図作成ツールは以下があるっぽい。</p></p>
+
+<p><ol>
+<li>DBDesigner</li>
+<li>A5-SQLmk-2</li>
+<li>AmaterasERD</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a> Workbench</li>
+<li>ERMaster</li>
+</ol>
+<p>(参考)<a href="http://treeapps.hatenablog.com/entry/20110505/p1">http://treeapps.hatenablog.com/entry/20110505/p1</a></p>
+<p>この中で<a class="keyword" href="http://d.hatena.ne.jp/keyword/Mac">Mac</a>で使えそうなのが<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a> Workbenchしかなかったのでこちらを利用。<br>
+本当は<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>以外の<a class="keyword" href="http://d.hatena.ne.jp/keyword/DBMS">DBMS</a>にも対応しているものがよかったのだけど…</p>
+<p>ざっと使ってみた感じ以下３つがよいと感じた点。</p>
+<h4>1.ER図作成が容易</h4>ER図作成ツールなのであたりまえなのだが、今まで<a class="keyword" href="http://d.hatena.ne.jp/keyword/Excel">Excel</a>の図形など使っていて書いていたので簡単さに驚き。<br>
+属性についてもそれぞれ型やキー・制約などの設定も記述できる。<p></p>
+<h4>2.<a class="keyword" href="http://d.hatena.ne.jp/keyword/DDL">DDL</a>にすぐにエクスポート可能</h4>作成したER図については<a class="keyword" href="http://d.hatena.ne.jp/keyword/DDL">DDL</a>にすぐにエクスポートできる。<br>
+なので、ツールでER図さえきちんと書けば実際のDB、テーブル構築は一瞬で可能。<p></p>
+<h4>3.イメージ図としてエクスポート可能</h4>作成したER図を<a class="keyword" href="http://d.hatena.ne.jp/keyword/PNG">PNG</a>形式にエクスポートできるので、メンバー等との共有が容易。<br>
+また、ドキュメントとして残す際にもとても使えると思う。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/Excel">Excel</a>のシート形式にエクスポートできたらなぁとも思う…<br>
+<p>実際に<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a> Workbenchを使って簡単にER図を作成してみた。<br>
+・ユーザが飲んだお酒を記録していくWebシステムです。<br>
+・利用するにはシステムへのユーザ登録が必要。<br>
+・ユーザはお酒マスターから飲んだお酒を登録する。<br>
+　→同じお酒を何度登録（飲んでも）よい<br>
+・お酒には産地（<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C5%D4%C6%BB">都道</a>府県）を記入する。<br>
+・ユーザは本システムへログイン後の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%AF%A5%BB%A5%B9%A5%ED%A5%B0">アクセスログ</a>が取得される。</p>
+<p>こんなざっくりとした感じ。</p>
+<p>作成したER図はこんな感じに出来上がります（<a class="keyword" href="http://d.hatena.ne.jp/keyword/PNG">PNG</a>）。<br>
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140506/20140506191125.png" alt="f:id:mosuke5:20140506191125p:plain" title="f:id:mosuke5:20140506191125p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/DDL">DDL</a>はこんな感じに。</p></p>
+
+<pre><code class="language-mysql">-- MySQL Script generated by MySQL Workbench
+-- Tue May  6 19:16:11 2014
+-- Model: New Model    Version: 1.0
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`User`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`User` (
+  `user_id` INT NOT NULL AUTO_INCREMENT,
+  `account` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `team_id` INT NOT NULL,
+  `last_login` DATETIME NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE INDEX `account_UNIQUE` (`account` ASC))
+ENGINE = InnoDB;
+
+(以下省略)
+ 
+</code></pre>
+
+<p></body></p>
+
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label-counter" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+                            <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3a%2f%2fblog.mosuke.tech%2fentry%2f2014%2f05%2f06%2f192424%2f&layout=button_count&size=small&mobile_iframe=true&appId=1383467145023614&width=90&height=20" width="90" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

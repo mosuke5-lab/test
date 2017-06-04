@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ansibleで最新のMySQLをインストールする際にハマったこと。MySQL-shared-compatのこと。 &middot; Goldstine研究所</title>
+
+    <meta name="description" content=" CentOS 6.5環境でAnsibleを使って最新のMySQLのセットアップをしようと思った際にハマったことをまとめた。 本質的にはAnsibleというよりLinux RPMパッケージのはなし。 ついでに、しょっぼいgithubを公開し">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Ansibleで最新のMySQLをインストールする際にハマったこと。MySQL-shared-compatのこと。 &middot; Goldstine研究所">
+    <meta name="twitter:description" content=" CentOS 6.5環境でAnsibleを使って最新のMySQLのセットアップをしようと思った際にハマったことをまとめた。 本質的にはAnsibleというよりLinux RPMパッケージのはなし。 ついでに、しょっぼいgithubを公開し">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Ansibleで最新のMySQLをインストールする際にハマったこと。MySQL-shared-compatのこと。 &middot; Goldstine研究所">
+    <meta property="og:description" content=" CentOS 6.5環境でAnsibleを使って最新のMySQLのセットアップをしようと思った際にハマったことをまとめた。 本質的にはAnsibleというよりLinux RPMパッケージのはなし。 ついでに、しょっぼいgithubを公開し">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">15 Apr 2015, 17:11</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/04/15/171127/" class="post-title">Ansibleで最新のMySQLをインストールする際にハマったこと。MySQL-shared-compatのこと。</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a><a class="post-category post-category-MySQL" href="https://blog.mosuke.tech/categories/mysql">MySQL</a>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p><body>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/CentOS">CentOS</a> 6.5環境でAnsibleを使って最新の<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>のセットアップをしようと思った際にハマったことをまとめた。<br>
+本質的にはAnsibleというより<a class="keyword" href="http://d.hatena.ne.jp/keyword/Linux">Linux</a> <a class="keyword" href="http://d.hatena.ne.jp/keyword/RPM">RPM</a>パッケージのはなし。<br>
+ついでに、しょっぼい<a class="keyword" href="http://d.hatena.ne.jp/keyword/github">github</a>を公開しました。</p></p>
+
+<h1>(1) 本記事を書くに至った経緯</h1>
+
+<ol>
+<li>Ansibleで<a class="keyword" href="http://d.hatena.ne.jp/keyword/mysql">mysql</a>を使ったサーバを構築(CentOS6.5)することになった。
+
+<ul>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>のバージョンは5.6を採用した。</li>
+</ul>
+</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>の公式<a class="keyword" href="http://d.hatena.ne.jp/keyword/rpm">rpm</a>をダウンロードしインストールした。
+
+<ul>
+<li>インストールしたもの：<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>-client, <a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>-devel, <a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>-server, <a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>-shared</li>
+</ul>
+</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>-sharedをインストールする際にデフォルトの<a class="keyword" href="http://d.hatena.ne.jp/keyword/mysql">mysql</a>-libsと競合</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/mysql">mysql</a>-libsをアンインストールし再インストール</li>
+<li>Ansibleで<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>の操作をするには<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL-python">MySQL-python</a>が必要なのでインストール</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL-python">MySQL-python</a>をインストールするにはさっきアンインストールした<a class="keyword" href="http://d.hatena.ne.jp/keyword/mysql">mysql</a>-libsが必要…(困った)</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>-shared-compatの存在に気づく</li>
+<li>備忘録に書いておくか…</li>
+</ol>
+
+<h1>(2) <a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>-shared-compatの存在</h1>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/mysql">mysql</a>-libsは多くのパッケージの依存となっており、公式のMySQL5.6をインストールすることで、<br>
+他のパッケージがいれられない状況となっていた。<br>
+そんな状況を解決するために<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>-shared-compatというパッケージが用意されていた。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>-shared-compatは「過去の<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>バージョン向けの共有クライアントライブラリが納められているもの」だ。</p>
+
+<p>詳細は下記参照をおすすめ。<br>
+<a href="http://y-ken.hatenablog.com/entry/inside-of-libmysqlclient-with-mysql-shared-compat">MySQL-5.5.6から仕様が変わった「MySQL-shared-compat」の中身を徹底解剖 - Y-Ken Studio</a></p>
+
+<p>ちなみに"compat"という単語がよく使われるが"compatibility"の略で「互換性」とかそういう意味。</p>
+
+<h1>(3) <a class="keyword" href="http://d.hatena.ne.jp/keyword/Github">Github</a>で公開しました</h1>
+
+<p>内容は今のところ死ぬほど薄いのだが、<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>をインストールするansibleを公開しました。
+<a href="https://github.com/mosuke5/mysql-ansible">mosuke5/mysql-ansible · GitHub</a></p>
+
+<p>内容はあれだが、特徴としては、インターネット上から<a class="keyword" href="http://d.hatena.ne.jp/keyword/RPM">RPM</a>をダウンロードしてインストールする際に、<br>
+Ansibleでも「ダウンロード」→「インストール」の流れを踏む人が多いが、以下のようにするとシンプルになる。<br>
+varsでインストールしたい<a class="keyword" href="http://d.hatena.ne.jp/keyword/rpm">rpm</a>やその取得先を記述しておいて、task側では<a class="keyword" href="http://d.hatena.ne.jp/keyword/yum">yum</a>でnameにvarsで定義した変数を読むだけでできる。</p>
+
+<p>role/<a class="keyword" href="http://d.hatena.ne.jp/keyword/mysql">mysql</a>/vars/main.yml</p>
+
+<pre><code class="language-yaml">mysql_url: http://ftp.jaist.ac.jp/pub/mysql/Downloads/MySQL-5.6
+mysql_ver: &quot;5.6.24-1&quot;
+mysql_rpms:
+  - MySQL-client-{{ mysql_ver }}.el6.x86_64.rpm
+  - MySQL-shared-compat-{{ mysql_ver }}.el6.x86_64.rpm
+  - MySQL-shared-{{ mysql_ver }}.el6.x86_64.rpm
+  - MySQL-devel-{{ mysql_ver }}.el6.x86_64.rpm
+  - MySQL-server-{{ mysql_ver }}.el6.x86_64.rpm
+ 
+</code></pre>
+
+<p>role/<a class="keyword" href="http://d.hatena.ne.jp/keyword/mysql">mysql</a>/tasks/main.yml</p>
+
+<pre><code class="language-yaml">- name: Install MySQL without MySQL-shared
+  yum: name={{ mysql_url}}/{{ item }}
+  with_items: mysql_rpms
+ 
+</code></pre>
+
+<p></body></p>
+
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label-counter" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+                            <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3a%2f%2fblog.mosuke.tech%2fentry%2f2015%2f04%2f15%2f171127%2f&layout=button_count&size=small&mobile_iframe=true&appId=1383467145023614&width=90&height=20" width="90" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

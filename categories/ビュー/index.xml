@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ビュー on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/%E3%83%93%E3%83%A5%E3%83%BC/</link>
+    <description>Recent content in ビュー on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 16 Mar 2016 17:54:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/%E3%83%93%E3%83%A5%E3%83%BC/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>DBのViewの使いどころの検討</title>
+      <link>https://blog.mosuke.tech/entry/2016/03/16/175431/</link>
+      <pubDate>Wed, 16 Mar 2016 17:54:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/03/16/175431/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;ある実装についてどのように実装するか悩んだ。&lt;br&gt;
+その悩んだ過程や実装案をメモする。似たようなケースの実装案として参考になればと思う。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;状況&lt;/h1&gt;
+
+&lt;p&gt;ある申請に対して、検査Aと検査Bを行い、その検査状態・検査日時を管理・閲覧するシステムがあるとする。  &lt;br&gt;
+申請のテーブルは下記とする。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;id: int&lt;/li&gt;
+&lt;li&gt;name: varchar(20)  # どうでもいいので無視していい&lt;/li&gt;
+&lt;li&gt;check_a: datetime  # 検査すると実施した日時がはいる&lt;/li&gt;
+&lt;li&gt;check_b: datetime  # 検査すると実施した日時がはいる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;UIとして下記のように表示したいと考えている。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;番号&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;状態&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;名前&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;検査A&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;検査B&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;1&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;検査完了&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;xxxxxx&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;2016/03/01 10:00 &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;2016/03/01 12:00&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;2&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;検査未完了&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;xxxxxx&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; - &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; - &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;3&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;検査途中&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;xxxxxx&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; 2016/03/01 13:00 &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; - &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;4&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;検査途中&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;xxxxxx&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; - &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; 2016/03/01 15:00 &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4&gt;※&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%F3%A5%C1%A5%D1%A5%BF%A1%BC%A5%F3&#34;&gt;アンチパターン&lt;/a&gt;だろ！？&lt;/h4&gt;
+
+&lt;p&gt;そもそも&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%F3%A5%C1%A5%D1%A5%BF%A1%BC%A5%F3&#34;&gt;アンチパターン&lt;/a&gt;の「マルチカラム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%C8%A5%EA%A5%D3%A5%E5%A1%BC%A5%C8&#34;&gt;アトリビュート&lt;/a&gt;」じゃないの？と思うかもしれない。&lt;br&gt;
+この場合は、この設計が一番という前提でお願いしたい。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fwww.amazon.co.jp%2FSQL%25E3%2582%25A2%25E3%2583%25B3%25E3%2583%2581%25E3%2583%2591%25E3%2582%25BF%25E3%2583%25BC%25E3%2583%25B3-Bill-Karwin%2Fdp%2F4873115892&#34; title=&#34;Amazon.co.jp： SQLアンチパターン: Bill Karwin, 和田 卓人, 和田 省二, 児島 修: 本&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/SQL%E3%82%A2%E3%83%B3%E3%83%81%E3%83%91%E3%82%BF%E3%83%BC%E3%83%B3-Bill-Karwin/dp/4873115892&#34;&gt;www.amazon.co.jp&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;実装の検討&lt;/h1&gt;
+
+&lt;p&gt;いくつかの実装パターンを検討した。&lt;br&gt;
+結果的に今回は実装案４のViewを使うのがいいのではないかと考えた。 &lt;br&gt;
+が、Viewにもデメリットがある。必ずしもViewがいいというものではないことは留意。&lt;/p&gt;
+
+&lt;h2&gt;(実装案１) &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;側で頑張る&lt;/h2&gt;
+
+&lt;p&gt;まず、データを取り出す際に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;で頑張ることを思いつくはずだ。&lt;br&gt;
+例えば以下みたいに。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;select
+  id,
+  name,
+  case
+    when check_a is null and check_b is null  then &#39;検査未完了&#39;
+    when check_a is not null and check_b is not null then &#39;検査完了 &#39;
+    else &#39;検査途中&#39;
+  end as check_status
+from request
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これが悪いとはいわない。&lt;br&gt;
+だが、例えば同じような表示方法で他の条件式で取得したい時があるだろう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;select
+  id,
+  name,
+  case
+    when check_a is null and check_b is null  then &#39;検査未完了&#39;
+    when check_a is not null and check_b is not null then &#39;検査完了 &#39;
+    else &#39;検査途中&#39;
+  end as check_status
+from request
+where name = &#39;xxxxx&#39;
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;もし、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9&#34;&gt;ソースコード&lt;/a&gt;の中に同じ形なのに条件だけがことなる&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;が出てきてしまったら、
+ヤバイと感じてくるはずだ。&lt;/p&gt;
+
+&lt;p&gt;そして、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ActiveRecord&#34;&gt;ActiveRecord&lt;/a&gt;のようなORマッパーを使っている場合、&lt;br&gt;
+case文などを利用し始めた時点で、生&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;を書かなければいけなくなる。&lt;br&gt;
+これも不吉な感じがしてくる。&lt;/p&gt;
+
+&lt;h1&gt;(実装案２) 受け取った側で頑張る&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;が複雑になるのがいやなら、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%B0%A5%E9%A5%DF%A5%F3%A5%B0%B8%C0%B8%EC&#34;&gt;プログラミング言語&lt;/a&gt;側で頑張ることもできる。&lt;br&gt;
+とりあえずデータは全部生でもらっておいて&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;select * from request;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;HTML出力の時に頑張る。(下記は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;のERB想定で記述)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;&amp;lt;% if(request.check_a.nil? and request.check_b.nil?) %&amp;gt;
+  &amp;lt;span&amp;gt;検査完了&amp;lt;/span&amp;gt; 
+&amp;lt;% elsif(!request.check_a.nil? and !request.check_b.nil?) %&amp;gt;
+  &amp;lt;span&amp;gt;検査未実施&amp;lt;/span&amp;gt; 
+&amp;lt;% else %&amp;gt;
+  &amp;lt;span&amp;gt;検査途中&amp;lt;/span&amp;gt; 
+&amp;lt;% end %&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ありといえばありだが、もっと条件が複雑になると条件式の管理が大変になってきそうだ。&lt;/p&gt;
+
+&lt;p&gt;出力部分をhelperなどに書いて関数化も考えた。&lt;br&gt;
+だが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;でERBを利用して出力する場合はいいが、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ajax&#34;&gt;Ajax&lt;/a&gt;でも出力する場合には&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;ヘルパーは利用できない。&lt;br&gt;
+とても嫌な予感がした。&lt;/p&gt;
+
+&lt;h1&gt;(実装案３) DBの設計の変更で頑張る&lt;/h1&gt;
+
+&lt;p&gt;そもそもテーブルの設計を変えてしまう方法も検討した。&lt;br&gt;
+テーブルの中で検査状態を持つのだ。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;id: int&lt;/li&gt;
+&lt;li&gt;name: varchar(20)&lt;/li&gt;
+&lt;li&gt;check_a: datetime&lt;/li&gt;
+&lt;li&gt;check_b: datetime&lt;/li&gt;
+&lt;li&gt;check_status: int&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;サーバサイド側で頑張らなきゃいけなくてとても実装する気になれなかったし、これってどうなの？&lt;/p&gt;
+
+&lt;h1&gt;(実装案４) Viewを利用して頑張る&lt;/h1&gt;
+
+&lt;p&gt;上３つで見てきたように、いろいろ考えたけどどれもイケてなかった。&lt;br&gt;
+そこで思いついたのがデータベースの機能の「View」だ。&lt;/p&gt;
+
+&lt;p&gt;Veiwを使ってよく利用する形を事前に作っておくことでいろいろ解決することがわかった。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;create view view_request as
+select
+  id,
+  name,
+  case
+    when check_a is null and check_b is null  then &#39;検査未完了&#39;
+    when check_a is not null and check_b is not null then &#39;検査完了 &#39;
+    else &#39;検査途中&#39;
+  end as check_status
+from request
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上記で作ったViewを参照することでいくつものメリットが生まれた。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ActiveRecord&#34;&gt;ActiveRecord&lt;/a&gt;が利用できるようになりコードが綺麗になった&lt;/li&gt;
+&lt;li&gt;重複した&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;が減った&lt;/li&gt;
+&lt;li&gt;実現のためのコードをほとんど書かなくて済んだ&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;だが、もちろんView機能が万能でないことは抑えておく必要がある。&lt;br&gt;
+Viewのデメリットは利用する前にしっかり確認してほしい。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fitpro.nikkeibp.co.jp%2Farticle%2FCOLUMN%2F20071126%2F287920%2F%3Frt%3Dnocnt&#34; title=&#34;[データベース編]ビュー、トリガーを多用してはいけない&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://itpro.nikkeibp.co.jp/article/COLUMN/20071126/287920/?rt=nocnt&#34;&gt;itpro.nikkeibp.co.jp&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;もっといい実装があれば教えて下さい。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

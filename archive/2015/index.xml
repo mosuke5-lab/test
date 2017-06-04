@@ -1,0 +1,1972 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>2015 on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/archive/2015/</link>
+    <description>Recent content in 2015 on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 28 Dec 2015 15:00:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/archive/2015/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>2015年振り返り</title>
+      <link>https://blog.mosuke.tech/entry/2015/12/28/150042/</link>
+      <pubDate>Mon, 28 Dec 2015 15:00:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/12/28/150042/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;去年に続き、2015年で技術分野でなにがあったか簡単に振り返りました。&lt;br&gt;
+&lt;a href=&#34;https://blog.mosuke.tech/entry/2015/01/01/161826&#34;&gt;2014年を思い返して… - Goldstine研究所&lt;/a&gt;&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;1. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryの開発と公開&lt;/h1&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20151227/20151227172616.png&#34; alt=&#34;f:id:mosuke5:20151227172616p:plain:w300&#34; title=&#34;f:id:mosuke5:20151227172616p:plain:w300&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:300px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;2014年の秋から@mogulla3と定期的にインフラ関連技術の勉強会をやってきていて、&lt;br&gt;
+はじめはインプットの勉強会だけを主にやってきていたのですが、&lt;br&gt;
+サービスを作る中でインフラ関連技術を駆使し勉強したいと思うようなっていました。&lt;br&gt;
+そこで、今年は「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/vim&#34;&gt;vim&lt;/a&gt;の設定をブラウザ上で即体感できるサービス &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factory」の開発をしました。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://blog.mosuke.tech/entry/2015/07/19/135844/&#34;&gt;DockerとWebSocketを使って、vimの設定をブラウザで即体感できるサービスを作った - Goldstine研究所&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4&gt;良かった点&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;新しい技術などを組み合わせながら学習しがいのあるサービスを作れたこと&lt;/li&gt;
+&lt;li&gt;サービスの実現技術を公開しそれなりの反響を得られたこと&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;悪かった点&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;内部的な&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;の変更ばかりに時間を取られサービスそのものの改良ができなかったこと&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;2. インフラ関連の構築や運用、仕組みづくり&lt;/h1&gt;
+
+&lt;p&gt;主に仕事の話になりますが、今年はインフラ関連の構築や運用に多く携わった気がします。&lt;br&gt;
+（結構、雑な感じに書き残します。）&lt;/p&gt;
+
+&lt;h3&gt;(1) メールサーバの構築と運用&lt;/h3&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Postfix&#34;&gt;Postfix&lt;/a&gt;を使ったメールサーバの構築と運用に携わりました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;そもそもメールサーバってなんだっけってところからはじまったのを思い出します。&lt;/li&gt;
+&lt;li&gt;とにかく運用を楽にしたかったので、その部分に多くの工夫をしました。&lt;/li&gt;
+&lt;li&gt;Ansibleを使って設定の変更などのリリース作業も簡単することや&lt;/li&gt;
+&lt;li&gt;Zabbixのログ監視もいい感じに機能して、不正なメール送信とかもすぐ検知できるようにしました。&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/KVM&#34;&gt;KVM&lt;/a&gt;の仮想環境上なので、環境の作りなおしも容易にしました。&lt;/li&gt;
+&lt;li&gt;冗長性のために２つのリージョンに分散させたりもしました。&lt;/li&gt;
+&lt;li&gt;目新しいことはないですが、わりと運用が楽な感じに作れたのでほんとによかったなと振り返って思います。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;(2) インターネットから社内NWへの入口としてのリバプロサーバ構築&lt;/h3&gt;
+
+&lt;p&gt;インターネットから社内NWにあるシステムを利用できるようにするために、&lt;br&gt;
+リバースプロキシサーバを構築しました。（運用はこれから）&lt;br&gt;
+いわゆる&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/DMZ&#34;&gt;DMZ&lt;/a&gt;構成におけるリバプロです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;技術的なところで言うと、corosync+pacemakerを使って&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%B9%A5%BF%A5%EA%A5%F3%A5%B0&#34;&gt;クラスタリング&lt;/a&gt;を組みました。&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%B9%A5%BF%A5%EA%A5%F3%A5%B0&#34;&gt;クラスタリング&lt;/a&gt;は思ったより奥が深く、どのような&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%B9%A5%BF&#34;&gt;クラスタ&lt;/a&gt;を組むかかなり苦労しました。&lt;/li&gt;
+&lt;li&gt;障害時に相手側サーバの電源を落とす、いわゆるフェンシングなどをどう適切に使うかなど。&lt;/li&gt;
+&lt;li&gt;運用が始まってからそのあたりの実用性が確認できそうです。&lt;/li&gt;
+&lt;li&gt;ちなみにNginxでリバースプロキシたてました。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;(3) 仮想環境構築とか&lt;/h3&gt;
+
+&lt;p&gt;仮想環境というと、今まで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;などの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB&#34;&gt;ツール&lt;/a&gt;として、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;などのIaaSとして使うばかりでした。&lt;br&gt;
+今年は、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/KVM&#34;&gt;KVM&lt;/a&gt;を利用してプロダクションの仮想基盤を作るなどやりました。&lt;br&gt;
+仮想化ってそもそもなんだっけ？というもう少し基礎よりの知識と向き合う機会がありました。&lt;/p&gt;
+
+&lt;p&gt;また、主に来年の話になるがOpenStackなどを使った&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;環境を「作る・運用する」にも携わっていきそうです。&lt;br&gt;
+すこしづつOpenStackをかじり始めました。&lt;/p&gt;
+
+&lt;h3&gt;(4) Ansibleの活用と布教活動&lt;/h3&gt;
+
+&lt;p&gt;Ansibleの利用は去年から始めていたことですが、&lt;br&gt;
+今年はより活用することと、社内での布教活動を行いました。&lt;/p&gt;
+
+&lt;p&gt;活用でいうと、サーバの構築はAnsibleで行ってアプリケーションのデプロイは&lt;br&gt;
+別の方法でやる（手動とか…）というふうになっていたので、&lt;br&gt;
+Ansibleを使ってアプリケーションのデプロイまですべて行うようにしてきました。&lt;/p&gt;
+
+&lt;p&gt;また、こういった取り組みを社内（部内）で広めて他のチームにも活用してもらおうと、&lt;br&gt;
+布教活動してしたりしてきました。&lt;/p&gt;
+
+&lt;h1&gt;まとめ。来年の抱負的な&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryを自分が使いたいと思うようなサービスにする&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryをベースにより自分たちが学習できる環境を作る&lt;/li&gt;
+&lt;li&gt;引き続き、インフラ系エンジニア？っぽい感じで邁進する
+
+&lt;ul&gt;
+&lt;li&gt;OpenStackの運用とかやりたい&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB&#34;&gt;ツール&lt;/a&gt;などに踊らされない基礎力中心で学習したい&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;ISUCONにでます（あれば…）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;p&gt;では良いお年を。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>インフラのデプロイとテストを同時実行できるようにしてHappyになった</title>
+      <link>https://blog.mosuke.tech/entry/2015/12/17/192554/</link>
+      <pubDate>Thu, 17 Dec 2015 19:25:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/12/17/192554/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;h1&gt;はじめに&lt;/h1&gt;&lt;/p&gt;
+
+&lt;p&gt;私が開発しているシステムでは、Ansibleでサーバ構築からアプリケーションのデプロイまですべて実行できるようにしています。
+そして、serverspecを使って、インフラテストも行っています。&lt;br&gt;
+しかし、その運用にいくつか課題点がありました。&lt;/p&gt;
+
+&lt;p&gt;その課題点についてと、課題点へ対策したことについて書きます。&lt;/p&gt;
+
+&lt;h1&gt;課題だったこと&lt;/h1&gt;
+
+&lt;h2&gt;(課題1) デプロイとテストをそれぞれ実行していた&lt;/h2&gt;
+
+&lt;p&gt;Ansibleでのデプロイとserverspecのテストはそれぞれ別のコマンドで実行していました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ansible-playbook site.yml -i 
+$ bundle exec rake serverspec 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2つ実行することが面倒であり、面倒であるがゆえにserverspecの実行を怠ったりしていました。&lt;br&gt;
+これではテストの効果があまり発揮できませんね。&lt;/p&gt;
+
+&lt;h2&gt;(課題2) sudoパスワードをうまく管理できなかった&lt;/h2&gt;
+
+&lt;p&gt;上のような課題1について、真っ先に以下の様にコマンドを続けることを思いつきました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ansible -playbook site.yml -i ; bundle exec rake serverspec 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ですが、これだとansible実行終了後にserverspecを実行する際にsudoパスワードが再度聞かれるため、&lt;br&gt;
+コマンドを打ったまま「放置」ができませんでした。&lt;br&gt;
+&lt;span style=&#34;font-size: 80%&#34;&gt;※もちろん、sudoパスワードを要求しないようにユーザ設定をすればできますが、多くの場合ではセキュリティ上難しかったりすると思います。&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;接続は鍵認証、sudoには必ずパスワードを要求するようにしています。&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;Ansibleもserverspecにもコマンド実行時にsudoパスワードを記述する方法があります。&lt;br&gt;
+Ansibleでは、ansible.cfgにsudo_passwordを記述、あるいはコマンド実行時に--extra-argsでsudoパスワードを指定できます。&lt;br&gt;
+serverspecでも&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B4%C4%B6%AD%CA%D1%BF%F4&#34;&gt;環境変数&lt;/a&gt;でSUDO_PASSWORDが指定できます。&lt;/p&gt;
+
+&lt;p&gt;例 ）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ansible -playbook site.yml -i --extra-args=&#39;ansible_sudo_pass=xxxxxxxx&#39;
+bundle exec rake serverspec SUDO_PASSWORD=xxxxxxxx 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ですが、おわかりの通り、&lt;b&gt;コマンドの履歴にもパスワードが残ります&lt;/b&gt;。&lt;br&gt;
+なのであまり良い方法ではないと思っています。&lt;/p&gt;
+
+&lt;h2&gt;(課題3) タスクの実行方法がバラバラ&lt;/h2&gt;
+
+&lt;p&gt;デプロイはansibleコマンドで実行、テストはrakeで実行、他のタスクは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%A7%A5%EB%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;シェルスクリプト&lt;/a&gt;。。。&lt;br&gt;
+といったように、タスクによって実行方法が異なってしまう状況になっていました。&lt;br&gt;
+運用的にとても不便でしたので、１つに統一したいと思っていました。&lt;/p&gt;
+
+&lt;h1&gt;いい感じに同時に実行してくれるRakeタスクを作った&lt;/h1&gt;
+
+&lt;p&gt;上で述べたような課題点をクリアするように、下記の要件を満たすように工夫をしました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;デプロイ、テストが同じ形式で実行できる&lt;/li&gt;
+&lt;li&gt;sudoパスワードをベタ書きすることなく実行できる&lt;/li&gt;
+&lt;li&gt;sudoパスワードの入力を一回だけにする&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;結論は、すべてRakeタスクで実行できるようにしました。&lt;br&gt;
+タスク一覧を見ると以下の様な感じになりました。（※実行結果は例であり実際の内容とは少し異なる。）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ bundle exec rake -T
+rake deploy:development    # Deploy to development server
+rake deploy:production     # Deploy to production server
+rake serverspec            # Run serverspec to all hosts
+rake serverspec:app        # Run serverspec to app server
+rake serverspec:db        # Run serverspec to db server 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rakefile&#34;&gt;Rakefile&lt;/a&gt;の実装例（一部省略）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;desc &amp;quot;Deploy and Test&amp;quot;
+namespace :deploy do
+  require &amp;quot;io/console&amp;quot;
+  require &amp;quot;open3&amp;quot;
+
+  STDOUT.sync = true
+  desc &amp;quot;Deploy to development server&amp;quot;
+  task :development do
+    # sudoパスワードははじめに１回だけ聞くようにします。
+    sudo_password = ask_sudo_password
+
+    # デプロイとテストを同時に実行します。
+    deploy_and_test(&#39;development&#39;, sudo_password)
+  end
+
+  # デプロイとテストの同時実行関数
+  def deploy_and_test(env, sudo_password)
+    deploy_cmd = &amp;quot;ansible-playbook -i #{env} site.yml --extra-vars &#39;ansible_sudo_pass=#{sudo_password}&#39;&amp;quot;
+    test_cmd = &amp;quot;bundle exec rake serverspec ENVIRONMENT=#{env} SUDO_PASSWORD=#{sudo_password}&amp;quot;
+    Open3.pipeline(&amp;quot;#{deploy_cmd}; #{test_cmd}&amp;quot;)
+  end
+
+  # sudoパスワードを要求関数
+  def ask_sudo_password
+    print &amp;quot;SUDO Password: &amp;quot;
+    sudo_password = STDIN.noecho &amp;amp;:gets
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;まとめ&lt;/h1&gt;
+
+&lt;p&gt;タスクによってその実行方法が異なることは運用上とても不便です。&lt;br&gt;
+統一した実行方法にすることで、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;テストの実行し忘れがなくなり&lt;/li&gt;
+&lt;li&gt;ドキュメントも残しやすくなり&lt;/li&gt;
+&lt;li&gt;チームメンバーへの運用方法の伝授も楽になり&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ました。（今回に限る話ではないけれど）&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;また、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rakefile&#34;&gt;Rakefile&lt;/a&gt;はかなりやっつけで作ってしまったので、何をタスクにするか・その命名・実装方法などの改善は年末の課題ですかね。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ansible、実行速度高速化の実験。ControlMasterとPipeliningについて</title>
+      <link>https://blog.mosuke.tech/entry/2015/12/01/181304/</link>
+      <pubDate>Tue, 01 Dec 2015 18:13:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/12/01/181304/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;h1&gt;1. はじめに&lt;/h1&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryの開発や、仕事などでAnsibleを使うことが多いのだが、&lt;br&gt;
+その実行速度があまりでないことに不満をもっていて、どうしたら早くできるか考えていました。&lt;br&gt;
+調べると、ControlMasterを利用して&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;のコネクションを再利用するとか、pipelineの機能を利用するとかでてくる。&lt;/p&gt;
+
+&lt;p&gt;が、それによってどのくらいの効果が得られるのかよくわからないし、仕組みもよくわかっていなかったので、仕組みの理解と実行速度の実験をした。&lt;/p&gt;
+
+&lt;p&gt;もう少し余談をすると、&lt;br&gt;
+ControlMasterを有効にすれば早くなることは前から知っていたが、&lt;br&gt;
+最近&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;をEl Capitanに変えてから「なんか最近Ansibleはやいな〜」とか思っていて、&lt;br&gt;
+「OpenSSHのバージョンもあがったし、まさか。。。」と思って今にいきついている。&lt;/p&gt;
+
+&lt;h2&gt;ControlMasterについて&lt;/h2&gt;
+
+&lt;blockquote&gt;&lt;p&gt;OpenSSH は、1 つの接続で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4&#34;&gt;複数&lt;/a&gt;のセッションを共有する(束ねる)「コントロール マスター」と呼ばれる機能を持っています。コントロールマスターを使用すると、 &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EA%A5%E2%A1%BC%A5%C8%A5%DB%A5%B9%A5%C8&#34;&gt;リモートホスト&lt;/a&gt;に接続する最初のセッションは制御用のセッション(マスターセッショ ンと呼ばれます)として利用され、制御用のソケットを作成します。セッションを 共有する &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt; クライアントは、この制御用のソケットを通じて&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EA%A5%E2%A1%BC%A5%C8%A5%DB%A5%B9%A5%C8&#34;&gt;リモートホスト&lt;/a&gt;と 接続し通信を行います。&lt;br&gt;
+出典：「&lt;a href=&#34;http://www.amazon.co.jp/OpenSSH-%E5%AE%9F%E8%B7%B5-Software-Design-plus/dp/4774168076&#34;&gt;OpenSSH実践入門&lt;/a&gt;」&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;上記のように、１つの接続で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4&#34;&gt;複数&lt;/a&gt;のセッションを共有するため、&lt;br&gt;
+Ansibleのようにタスク実行ごとに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;接続するような場合には大きな効果を得ることができる。&lt;/p&gt;
+
+&lt;h2&gt;Pipeliningについて&lt;/h2&gt;
+
+&lt;p&gt;Pipelining機能の説明の前に、軽くAnsibleの実行までの流れを説明する。&lt;br&gt;
+Ansibleは対象サーバに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;ログインしたあと実行するタスクのモジュールをファイルとして転送しそれを実行する。&lt;br&gt;
+Pipelining機能をなしの状態だと、このファイル転送とファイルの削除を１タスクごとに行う。&lt;/p&gt;
+
+&lt;p&gt;ansibleを&lt;code&gt;-vvvv&lt;/code&gt;オプションをつけて実行するとわかるが、&lt;br&gt;
+４行目でファイルの&lt;code&gt;PUT&lt;/code&gt;（転送）を、５行目の最後の方に&lt;code&gt;rm -rf&lt;/code&gt;でディレクトリ・ファイルの削除を行っている。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;192.168.33.100&amp;gt; ESTABLISH CONNECTION FOR USER: deploy
+&amp;lt;192.168.33.100&amp;gt; REMOTE_MODULE command ls -l /root
+&amp;lt;192.168.33.100&amp;gt; EXEC ssh -C -tt -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&amp;quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&amp;quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=user -o ConnectTimeout=10 192.168.33.100 /bin/sh -c &#39;mkdir -p $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321 &amp;amp;&amp;amp; chmod a+rx $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321 &amp;amp;&amp;amp; echo $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321&#39;
+&amp;lt;192.168.33.100&amp;gt; PUT /var/folders/7_/d_dwdlcx1m95mn_846x30xb40000gn/T/tmpc8amAw TO /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/command
+&amp;lt;192.168.33.100&amp;gt; EXEC ssh -C -tt -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&amp;quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&amp;quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=user -o ConnectTimeout=10 192.168.33.100 /bin/sh -c &#39;sudo -k &amp;amp;&amp;amp; sudo -E -S -p &amp;quot;[sudo via ansible, key=koibtlgpbiprbaihcqxiqgcnnreofxuo] password: &amp;quot; -u root /bin/sh -c &#39;&amp;quot;&#39;&amp;quot;&#39;echo BECOME-SUCCESS-koibtlgpbiprbaihcqxiqgcnnreofxuo; LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8 /usr/bin/python /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/command; rm -rf /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/ &amp;gt;/dev/null 2&amp;gt;&amp;amp;1&#39;&amp;quot;&#39;&amp;quot;&#39;&#39; 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Pipiliningの機能を有効にすると、タスク実行ごとのモジュールファイルの転送と削除をしなくなる。&lt;br&gt;
+そのため、実効速度があがるのです。&lt;/p&gt;
+
+&lt;p&gt;下記はPipeliningを有効にした際の出力。&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;でタスクを実行しているだけなのがわかる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;192.168.33.100&amp;gt; ESTABLISH CONNECTION FOR USER: deploy
+&amp;lt;192.168.33.100&amp;gt; REMOTE_MODULE command ls -l /root
+&amp;lt;192.168.33.100&amp;gt; EXEC ssh -C -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&amp;quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&amp;quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=deploy -o ConnectTimeout=10 192.168.33.100 /bin/sh -c &#39;sudo -k &amp;amp;&amp;amp; sudo -E -S -p &amp;quot;[sudo via ansible, key=kjtoopnjepksibiitumqfycsoldadiws] password: &amp;quot; -u root /bin/sh -c &#39;&amp;quot;&#39;&amp;quot;&#39;echo BECOME-SUCCESS-kjtoopnjepksibiitumqfycsoldadiws; LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8 /usr/bin/python&#39;&amp;quot;&#39;&amp;quot;&#39;&#39; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://docs.ansible.com/ansible/intro_configuration.html#pipelining&#34;&gt;Configuration file — Ansible Documentation&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;2. 実験方法&lt;/h1&gt;
+
+&lt;p&gt;下記の３パターンでどれだけ実行速度に差があるか確認してみた。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;① ControlMaster: &lt;b&gt;無効&lt;/b&gt; ＆ pipeline: &lt;b&gt;無効&lt;/b&gt;
+&lt;/li&gt;
+&lt;li&gt;② ControlMaster: &lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;有効&lt;/span&gt;&lt;/b&gt; ＆ pipeline: &lt;b&gt;無効&lt;/b&gt;
+&lt;/li&gt;
+&lt;li&gt;③ ControlMaster: &lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;有効&lt;/span&gt;&lt;/b&gt; ＆ pipeline: &lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;有効&lt;/span&gt;&lt;/b&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;実行環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;クライアント
+
+&lt;ul&gt;
+&lt;li&gt;ハードウェア：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MacBook%20Air&#34;&gt;MacBook Air&lt;/a&gt; (13-inch, Mid 2012)&lt;/li&gt;
+&lt;li&gt;プロセッサ：1.8 GHz &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Intel&#34;&gt;Intel&lt;/a&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Core%20i5&#34;&gt;Core i5&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;メモリ：4 GB 1600 MHz DDR3&lt;/li&gt;
+&lt;li&gt;OS：El Capitan&lt;/li&gt;
+&lt;li&gt;OpenSSH：OpenSSH_6.9p1, LibreSSL 2.1.7&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;サーバ
+
+&lt;ul&gt;
+&lt;li&gt;ハードウェア：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;による仮想環境。メモリ１GB。&lt;/li&gt;
+&lt;li&gt;OS： &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/CentOS&#34;&gt;CentOS&lt;/a&gt; 7.0&lt;/li&gt;
+&lt;li&gt;ネットワーク：プライベートの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;をふっています&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;実行タスク&lt;/h2&gt;
+
+&lt;p&gt;ネットワーク環境やタスクの実行時間に左右されないように、&lt;br&gt;
+&lt;code&gt;ls -l /&lt;/code&gt;を実行するタスクを300個用意した。&lt;/p&gt;
+
+&lt;h2&gt;設定&lt;/h2&gt;
+
+&lt;p&gt;ansible.cfgを下記のように書いてためした。&lt;/p&gt;
+
+&lt;p&gt;① ControlMaster: &lt;b&gt;無効&lt;/b&gt; ＆ pipeline: &lt;b&gt;無効&lt;/b&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[defaults]
+transport = ssh
+
+[ssh_connection]
+pipeline = false
+ssh_args = -o ControlMaster=no 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;② ControlMaster: &lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;有効&lt;/span&gt;&lt;/b&gt; ＆ pipeline: &lt;b&gt;無効&lt;/b&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[defaults]
+transport = ssh
+
+[ssh_connection]
+pipeline = false
+ssh_args = -o ControlMaster=auto -o ControlPersist=300s 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;③ ControlMaster: &lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;有効&lt;/span&gt;&lt;/b&gt; ＆ pipeline: &lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;有効&lt;/span&gt;&lt;/b&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[defaults]
+transport = ssh
+
+[ssh_connection]
+pipeline = true
+ssh_args = -o ControlMaster=auto -o ControlPersist=300s 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;実行コマンド&lt;/h2&gt;
+
+&lt;p&gt;実行時間を図るために、下記のようにコマンドを実行した。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ date; ansible-playbook site.yml ; date
+※ansible-playbookコマンドは環境に合わせてオプションとかつけてください。 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;3. 結果&lt;/h1&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt; ControlMaster &lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt; Pipelining &lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt; 実行時間 &lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; ✕       &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;        ✕ &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;     6分38秒    &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; ◯       &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;        ✕&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;     1分31秒   &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; ◯       &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;        ◯&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;     &lt;span style=&#34;color: #ff0000&#34;&gt;&lt;b&gt;52秒&lt;/b&gt;&lt;/span&gt;   &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;p&gt;結果は明らかでした。&lt;br&gt;
+実際の環境ではタスクの実行時間などがあるため、この数字のように6倍はやくなるとかそういうことではないが、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EA%A5%E2%A1%BC%A5%C8%A5%DB%A5%B9%A5%C8&#34;&gt;リモートホスト&lt;/a&gt;への接続回数が多くなればなるほど大きな差が生まれそうです。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>インフラテスト(serverspec)はじめました</title>
+      <link>https://blog.mosuke.tech/entry/2015/11/02/161744/</link>
+      <pubDate>Mon, 02 Nov 2015 16:17:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/11/02/161744/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;※執筆後、業務でもserverspecを利用し始めたのもあり、業務レベルでの実践例も追記している。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;運営中の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryでserverspecを使ったインフラテストを導入したので、
+導入理由や工夫している点、悩んでいる点について記述します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryについてはこっちみてね。
+&lt;a href=&#34;https://blog.mosuke.tech/entry/2015/07/19/135844/&#34;&gt;DockerとWebSocketを使って、vimの設定をブラウザで即体感できるサービスを作った - Goldstine研究所&lt;/a&gt;
+
+&lt;h1&gt;1. serverspecってなによ&lt;/h1&gt;
+
+&lt;p&gt;詳しくは公式サイトや書籍などを参考にして欲しいですが、&lt;br&gt;
+「サーバの状態をコードで自動的にテスト・確認するためのツール」です。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://serverspec.org&#34;&gt;Serverspec - Home&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;例えば、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;でWebサーバを組んでいるサーバがあったとして、下記の要件で動いているとします。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/apache&#34;&gt;apache&lt;/a&gt;がインス&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C8%A1%BC%A5%EB&#34;&gt;トール&lt;/a&gt;されていること&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/apache&#34;&gt;apache&lt;/a&gt;が起動していること、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BC%AB%C6%B0%B5%AF%C6%B0&#34;&gt;自動起動&lt;/a&gt;する設定であること&lt;/li&gt;
+&lt;li&gt;ポート80があいていること&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;この要件をサーバが満たしているかコードでテストします。&lt;br&gt;
+上記の例だとこんなコードを書きます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;describe package(&#39;httpd&#39;) do
+  it { should be_installed }
+end
+
+describe service(&#39;httpd&#39;) do
+  it { should be_enabled   }
+  it { should be_running   }
+end
+
+describe port(80) do
+  it { should be_listening }
+end
+ 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;各種テストの立ち位置&lt;/h1&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170416/20170416114252.jpg&#34; alt=&#34;f:id:mosuke5:20170416114252j:plain:w600&#34; title=&#34;f:id:mosuke5:20170416114252j:plain:w600&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:600px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;serverspecは、サーバの状態（正しく設定されたか）を確認するためのテストツールです&lt;/li&gt;
+&lt;li&gt;サーバの振る舞いのテストは別のツールを使うことをおすすめします&lt;/li&gt;
+&lt;li&gt;また、監視も一種のテストと言えます&lt;/li&gt;
+&lt;li&gt;一般的には監視はその実行頻度の高さから、振る舞いを監視することが多い&lt;/li&gt;
+&lt;li&gt;監視ツールで、Configファイルが正しいかは見ない&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;2. なんで導入したの？&lt;/h1&gt;
+
+&lt;p&gt;serverspecを導入したのには大きく2つの理由があります。&lt;/p&gt;
+
+&lt;h2&gt;(その１) インフラの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C6%A5%B9%A5%C8%B6%EE%C6%B0%B3%AB%C8%AF&#34;&gt;テスト駆動開発&lt;/a&gt;を支えるため&lt;/h2&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryは趣味で開発・運用しているサービスで、まだ作りたての発展途上のサービスです。&lt;br&gt;
+（作って公開してからは日が経っている気もしますが、週1の開発なので…）&lt;br&gt;
+そのため、今後もインフラコードをガンガン修正していくことを想定しています。&lt;br&gt;
+ですので、その開発、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EA%A5%D5%A5%A1%A5%AF%A5%BF%A5%EA%A5%F3%A5%B0&#34;&gt;リファクタリング&lt;/a&gt;を支えるべく、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C6%A5%B9%A5%C8%B6%EE%C6%B0%B3%AB%C8%AF&#34;&gt;テスト駆動開発&lt;/a&gt;で行えるようにするためです。&lt;/p&gt;
+
+&lt;h2&gt;(その２) インフラテストの必要性を深く理解するため&lt;/h2&gt;
+
+&lt;p&gt;「インフラテストの必要性を深く理解するため」です。&lt;br&gt;
+必要性があるから導入したんじゃにないの？と思われるかもしれませんが、&lt;br&gt;
+ぼくはまだインフラテストの本当の必要性を理解できていないと思っています。&lt;/p&gt;
+
+&lt;p&gt;実は、はじめこんな風に思っていましたし、今でも少し思う部分もある。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ansibleやchefで実行結果がOKならそれでテストも兼ねているのでは？&lt;/li&gt;
+&lt;li&gt;実際にどんな項目をテストすればいいか、考えてみた時にピンと来ない…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;実際に試してみないと、その本質が見えてこないと思っているので、&lt;br&gt;
+導入してみて自分の肌で感じようと思っています。&lt;/p&gt;
+
+&lt;p&gt;個人的なお話なのでみなさんには関係のない話ではありますが、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryの開発は企業でもなければ営利目的でもありません。&lt;br&gt;
+「週末にインフラ技術のインプット勉強をしていたが、それだけでは飽きてきて、&lt;br&gt;
+サービスを開発・運用していくなかでインフラ技術を磨いていきたい」
+というものだったので、こういった実験も大歓迎だったのです。&lt;/p&gt;
+
+&lt;h1&gt;3. 工夫している点&lt;/h1&gt;
+
+&lt;h1&gt;チーム内でインフラテストコードの「指針」を決める&lt;/h1&gt;
+
+&lt;p&gt;Ansibleなど構成管理ツールがあるなかで、本当にインフラテストっているの？とはじめは誰もが思うはずです。&lt;br&gt;
+「なんとなく」、「流行っているから」という理由で導入をすると、&lt;br&gt;
+きっと&lt;b&gt;チーム内でインフラテストを書く意味や目的が異なって&lt;/b&gt;きてしまいます。&lt;br&gt;
+また、serverspecはいろんな使い方ができてしまうので、なおさら人によって考え方が異なってしまいます。&lt;/p&gt;
+
+&lt;p&gt;ですので、チーム内でインフラテストコードの「指針」を決めて共有しています。&lt;br&gt;
+こうすることで、「なぜインフラテストコードを書くのか」の目的意識を統一しています。&lt;/p&gt;
+
+&lt;p&gt;この指針には、下記の本をかなり参考にしました。（serverspec作者の本です）
+&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4873117097/hatena-blog-22/&#34;&gt;&lt;img src=&#34;https://images-fe.ssl-images-amazon.com/images/I/51P6qVOPALL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;Serverspec&#34; title=&#34;Serverspec&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4873117097/hatena-blog-22/&#34;&gt;Serverspec&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;作者:&lt;/span&gt; 宮下剛輔&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AA%A5%E9%A5%A4%A5%EA%A1%BC%A5%B8%A5%E3%A5%D1%A5%F3&#34;&gt;オライリージャパン&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2015/01/17&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; 単行本（ソフトカバー）&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/4873117097/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログ (6件) を見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h1&gt;テストをサーバの役割毎にまとめる&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8&#34;&gt;ディレクト&lt;/a&gt;リの主な構成は下記のようになっています。&lt;br&gt;
+（実際にはもっとファイルやホストが多いですがイメージです。）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;├ Rakefile
+├ spec/
+│ └ spec_helper.rb
+│ ├ base/
+│ │   ├ user_spec.rb
+│ │   └ selinux_spec.rb
+│ ├ proxy/
+│ │   └ nginx_spec.rb
+│ └ app/
+│     └ vimfactory-app_spec.rb
+└ sshconfig 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;nginxなどを搭載するプロキシサーバと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%B5%A1%BC%A5%D0&#34;&gt;アプリケーションサーバ&lt;/a&gt;があり、それぞれにロールを割り振ります。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rakefile&#34;&gt;Rakefile&lt;/a&gt;内に書いてます。もし記述が増えるようだと別ファイルに切り出すと思います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;hosts = [
+  {
+    :name   =&amp;gt; &amp;quot;proxy.vimfactory&amp;quot;,
+    :roles  =&amp;gt; %w( base proxy )
+  },
+  {
+    :name   =&amp;gt; &amp;quot;app.vimfactory&amp;quot;,
+    :roles  =&amp;gt; %w( base app )
+  }
+]
+ 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このようにすることで、役割の違うサーバでも共有するテスト項目はコードの重複なくテストできます。&lt;br&gt;
+また拡張性もそこそこいい感じなんじゃないかと思っています。&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;の設定ファイルを任意で指定する&lt;/h1&gt;
+
+&lt;p&gt;serverspecを使っていると&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;のクライアント側の設定ファイルを利用することがでてきます。&lt;br&gt;
+&lt;code&gt;serverspec-init&lt;/code&gt;コマンドで生成されるspec_helper.rbでは&lt;code&gt;~/.ssh/config&lt;/code&gt;をデフォルトで読むようになっています。&lt;/p&gt;
+
+&lt;p&gt;ですが個人的には&lt;code&gt;~/.ssh/config&lt;/code&gt;にプロジェクトの設定を書くのがあまり好きではないし、効果的でないことがあると考えています。&lt;br&gt;
+&lt;code&gt;~/.ssh/config&lt;/code&gt;は個人のPCなどの設定によって各々違うものです。&lt;br&gt;
+そこにプロジェクト固有の設定を書くと、設定が衝突したり、管理が難しくなります。&lt;/p&gt;
+
+&lt;p&gt;ですので、プロジェクトで使う&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;のクライアントの設定ファイルもgit管理しておいて、&lt;br&gt;
+それを使うようにすることが望ましいと思っています。&lt;/p&gt;
+
+&lt;p&gt;そこで、spec_helper.rbの&lt;code&gt;Net::SSH::Config&lt;/code&gt;部分を修正し、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;の設定ファイルを任意で指定できるようにしています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;config  = ENV[&#39;SSH_CONFIG&#39;]
+options = Net::SSH::Config.for(host, [config])
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;実行時に指定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bundle exec rake serverspec SSH_CONFIG=sshconfig 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;デプロイ作業での活用&lt;/h1&gt;
+
+&lt;p&gt;serverspecは主に、インフラの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C6%A5%B9%A5%C8%B6%EE%C6%B0%B3%AB%C8%AF&#34;&gt;テスト駆動開発&lt;/a&gt;のために導入したのですが、
+本番環境でのデプロイ作業（インフラ設定の変更）にも大活躍しています。&lt;/p&gt;
+
+&lt;p&gt;デプロイ作業時に、下記ステップで行うことで、デプロイ作業の安心感を得るとともに、&lt;br&gt;
+作業後の確認作業を軽減できたのはとても素晴らしいことでした。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;serverspec実行：テスト落ちる&lt;/li&gt;
+&lt;li&gt;Ansible実行：デプロイ&lt;/li&gt;
+&lt;li&gt;serverspec：テスト通る&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1&gt;4. 悩んでいること。これからについて&lt;/h1&gt;
+
+&lt;p&gt;serverspecのCIの方法に悩んでいます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;どうやってCIをやるのが効率的か？&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::FactoryはAnsibleでアプリケーションのデプロイまで行っているのだけど、&lt;/li&gt;
+&lt;li&gt;インフラテストとアプリのテスト同時にやってほうがよくないだろうか？&lt;/li&gt;
+&lt;li&gt;でも、アプリのテストをするごとにAnsibleで環境構築すると時間がかかってしまう。&lt;/li&gt;
+&lt;li&gt;上記を解決するためにCI用にDockerイメージを作るという案もあるけど、そこまでするべきか？？&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;これからは、どうCIをしていくか。&lt;br&gt;
+インフラテストとアプリのテストをどう結びつけていくか。&lt;br&gt;
+このあたりが課題と考えています。&lt;/p&gt;
+
+&lt;h1&gt;(追記)インフラCI失敗した&lt;/h1&gt;
+
+&lt;p&gt;よくある構成例ではあるが、下記のようにGitlabCI+ DigitalOceanを使ってインフラCIの検討を行った。&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170416/20170416125051.jpg&#34; alt=&#34;f:id:mosuke5:20170416125051j:plain:w600&#34; title=&#34;f:id:mosuke5:20170416125051j:plain:w600&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:600px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;しかし、結果的には運用にのるところまでいかなかった。理由はこんな感じ。&lt;br&gt;
+正直、趣味でやってる範囲にしては、ここを突破するモチベーションがなかった。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;実行に膨大な時間がかかる&lt;/li&gt;
+&lt;li&gt;それゆえにたまに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%BF%A5%A4%A5%E0%A5%A2%A5%A6%A5%C8&#34;&gt;タイムアウト&lt;/a&gt;で死ぬ&lt;/li&gt;
+&lt;li&gt;DigitalOcean&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%B9%A5%BF%A5%F3%A5%B9&#34;&gt;インスタンス&lt;/a&gt;の停止に失敗した場合が面倒（笑）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ansibleを踏み台サーバ越しに実行する</title>
+      <link>https://blog.mosuke.tech/entry/2015/09/25/232751/</link>
+      <pubDate>Fri, 25 Sep 2015 23:27:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/09/25/232751/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;タイトルの通りで、なにも特別なことはない内容。&lt;br&gt;
+そして、9月も終わりなのに今月はひとつも記事を書いていなかった。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/KVM&#34;&gt;KVM&lt;/a&gt;を使って仮想のゲストサーバを立てたが、&lt;br&gt;
+ゲストサーバはホストサーバと通信する用の（外に出る場合にはNAT通信で）&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;しか持っていない状況で、&lt;br&gt;
+Ansibleの実行対象としたかったのが背景。&lt;/p&gt;
+
+&lt;p&gt;ホストサーバにAnsibleをいれるわけにもいかず、ホストサーバを踏み台にして、&lt;br&gt;
+Ansibleを打ちたかったというもの。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150925/20150925232414.png&#34; alt=&#34;f:id:mosuke5:20150925232414p:plain&#34; title=&#34;f:id:mosuke5:20150925232414p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;の設定ファイルを作る&lt;/h1&gt;
+
+&lt;p&gt;&#34;Ansibleで&#34; と書いたが要は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;です。&lt;br&gt;
+まずは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;で踏み台サーバを経由してAnsible実行対象サーバへ接続できるように準備しました。&lt;br&gt;
+これはいわゆる「多段&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;」というやつで、以前にもブログに書いたので復習です。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://blog.mosuke.tech/entry/2014/11/09/172745&#34;&gt;【VPS1台でインフラ勉強】多段SSH設定（おまけ） - Goldstine研究所&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;一般的には&lt;code&gt;~/.ssh/config&lt;/code&gt;にこういった設定は書いたりもしますが、&lt;br&gt;
+Ansible実行の場合、&lt;b&gt;&lt;u&gt;端末に依存したくなかった&lt;/u&gt;&lt;/b&gt;ので、&lt;br&gt;
+Ansible&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&#34;&gt;レポジトリ&lt;/a&gt;に別途ファイルを作ることにした。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;## sshconfigという名前のファイルにした
+Host ansible-target
+    HostName 192.168.33.10
+    User xxxxx
+    ProxyCommand ssh -W %h:%p yyyyy@hostserver 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上記のファイルを使って多段&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;できることを確認します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ssh -F sshconfig ansible-target 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;Ansible実行時に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;設定ファイルを利用する&lt;/h1&gt;
+
+&lt;p&gt;ここまで来たらとても簡単で、&lt;br&gt;
+ansible.cfgに下記を追記し、ansible実行時に上記のsshconfigを読み込まれるようにしました。&lt;/p&gt;
+
+&lt;p&gt;ansible.cfg&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[ssh_connection]
+ssh_args = -F sshconfig 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>(個人的) YAPC::Asia 2015ふりかえり</title>
+      <link>https://blog.mosuke.tech/entry/2015/08/22/223025/</link>
+      <pubDate>Sat, 22 Aug 2015 22:30:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/08/22/223025/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;「ブログを書くまでが&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/YAPC&#34;&gt;YAPC&lt;/a&gt;」&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;というわけで、8/21, 22と&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/YAPC&#34;&gt;YAPC&lt;/a&gt;に参加したので、そこでの学んだこと、気になったことなどを振り返ります。&lt;br&gt;
+しかし、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/YAPC&#34;&gt;YAPC&lt;/a&gt;で聞いた公演内容を淡々とまとめるなどはしません。&lt;br&gt;
+単なる内容のまとめであれば、公開されているスライドなどをみるのが一番だと思いますので。&lt;/p&gt;
+
+&lt;p&gt;以下３点を中心に振り返ってみます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;インフラ関連セッションについて&lt;/li&gt;
+&lt;li&gt;発表を聞いてよかった、今の自分に一番必要だったことについて&lt;/li&gt;
+&lt;li&gt;興味を持ったことについて（CONBU）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;インフラ関連セッションについて&lt;/h1&gt;
+
+&lt;p&gt;意図的も半分くらいあるんだけど、なんとなくセッションを選んでいたら、インフラ関連のものが多くなりました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://yapcasia.org/2015/talk/show/9ec2791c-05e5-11e5-81fa-79c97d574c3a&#34;&gt;世界展開する大規模ウェブサービスのデプロイを支える技術 - YAPC::Asia Tokyo 2015&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://yapcasia.org/2015/talk/show/b335dee0-09ad-11e5-8d7a-67dc7d574c3a&#34;&gt;Consulと自作OSSを活用した100台規模のWebサービス運用 - YAPC::Asia Tokyo 2015&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://yapcasia.org/2015/talk/show/4f85e87a-f9ec-11e4-8262-8ab37d574c3a&#34;&gt;3分でサービスのOSを入れ替える技術 - YAPC::Asia Tokyo 2015&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://yapcasia.org/2015/talk/show/f2816038-10ec-11e5-89bf-d7f07d574c3a&#34;&gt;我々はどのように冗長化を失敗したのか - YAPC::Asia Tokyo 2015&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;デプロイについて&lt;/h2&gt;
+
+&lt;p&gt;大規模サービスでのデプロイにおいて、一台一台のホストが&lt;code&gt;git clone&lt;/code&gt;して、&lt;code&gt;bundle install&lt;/code&gt;やらせてーとかやると、&lt;br&gt;
+時間もかかるし、並列的にgit cloneした際などgitサーバが負荷的に危なくなってくる。&lt;br&gt;
+なので、予めライブラリとかすべてインストールされたものをターボールなどにまとめておいて、&lt;br&gt;
+それをプルしてくる形式のデプロイについて多くの発表がありました。&lt;/p&gt;
+
+&lt;p&gt;このデプロイ方法、並列で数百MBのファイルをダウンロードしても落ちないストーレジ（ようは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;のS3）を前提に構築されている感がありました。&lt;br&gt;
+（というかそう言っていた）&lt;/p&gt;
+
+&lt;p&gt;相変わらず&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;はせこいなーと思っています（笑）&lt;/p&gt;
+
+&lt;p&gt;うちの環境では真似するのは難しいなーと思う部分もありますが、&lt;br&gt;
+それ以前にシステムの規模や用途によってデプロイのあり方も多種多様になることを改めて考えさせられました。&lt;br&gt;
+自分の環境にあった最適なデプロイ形態を探す日々がまた始まりそうですが、良いヒントになりそうなのはまちがいなしです。&lt;/p&gt;
+
+&lt;h2&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BC%B0%C7%AF%C1%AB%B5%DC&#34;&gt;式年遷宮&lt;/a&gt;インフラストラクチャ&lt;/h2&gt;
+
+&lt;p&gt;Kenjiさんの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BC%B0%C7%AF%C1%AB%B5%DC&#34;&gt;式年遷宮&lt;/a&gt;インフラストラクチャ。
+この考え方、ぼくも一度考えたことはありますが、ここまで実践してみた経験談がきけたのは面白かった。&lt;/p&gt;
+
+&lt;p&gt;いざというときに切り替わらない、切り替えられないという問題に対して、&lt;br&gt;
+自動ではないが、「切替訓練」ということで、定期的に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;の系を切り替えることはしてもいいのかなーと思ったりしています。&lt;/p&gt;
+
+&lt;h2&gt;consulについて&lt;/h2&gt;
+
+&lt;p&gt;実は、上であげた４つのセッション全てで共通していたのが&lt;code&gt;consul&lt;/code&gt;を使っていた。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fwww.consul.io%2F&#34; title=&#34;Consul by HashiCorp&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;a href=&#34;https://www.consul.io/&#34;&gt;Consul by HashiCorp&lt;/a&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://www.consul.io/&#34;&gt;www.consul.io&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;正直、consulについて、名前くらいしかしらなかったのに、ここまで利用されていたので、時代に乗り遅れている感を感じた。
+でも利用用途をみていくと、iaas環境で力を発揮するっぽいので、概要と用途だけ押さえておくか…といったところ。&lt;br&gt;
+今月中の課題です。&lt;/p&gt;
+
+&lt;h1&gt;発表を聞いてよかった、今の自分に一番必要だったことについて&lt;/h1&gt;
+
+&lt;p&gt;たくさん学びのあったなかで、なんだかんだいっても、koemuさんの発表が今の自分が一番考えていてることであり、&lt;br&gt;
+一番必要なことであったように感じた。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fyapcasia.org%2F2015%2Ftalk%2Fshow%2F53aacc02-faca-11e4-8c2e-8ab37d574c3a&#34; title=&#34;辛いことをやめる！から始まる業務改善とInfrastructure as Code - YAPC::Asia Tokyo 2015&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;a href=&#34;http://yapcasia.org/2015/talk/show/53aacc02-faca-11e4-8c2e-8ab37d574c3a&#34;&gt;辛いことをやめる！から始まる業務改善とInfrastructure as Code - YAPC::Asia Tokyo 2015&lt;/a&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://yapcasia.org/2015/talk/show/53aacc02-faca-11e4-8c2e-8ab37d574c3a&#34;&gt;yapcasia.org&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;実はkoemuさんのブログをたまにみていて、&lt;br&gt;
+いちど話を聞いてみたいなーと思っていた人であったので、とてもいい機会であった。&lt;/p&gt;
+
+&lt;p&gt;特に個人的に響いたのが、次の２つのこと。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CTO（という言い方をしていたが、要はキーパーソン）を味方につける働き方をする&lt;/li&gt;
+&lt;li&gt;ハンズオンを大事にする&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;キーパーソンにやりたいことを伝えて公認とするのは、いまもよくやっていることでぼくも大事にしていること。&lt;br&gt;
+だた、ハンズオンについてはうまくできていない部分も多くあったので見直していきたいポイントでした。&lt;/p&gt;
+
+&lt;p&gt;また、個人的にこの手でよくやっているのが、「スモールステップ展開」。&lt;br&gt;
+一度に、あれもこれも新しいことやっていく、となると、どんなにサポートを厚くしてもなかなか浸透しなかったりしてしまう。&lt;br&gt;
+なので、新しいことやるときはスモールステップでひとつひとつやっていき、文化浸透してから次のことをやるという風にしている。&lt;/p&gt;
+
+&lt;h1&gt;興味をもったことんついて（CONBU）&lt;/h1&gt;
+
+&lt;p&gt;会場のネットワークを作ってくれたのがCONBUという団体でした。
+CONBU自体はソフトウェアデザインで特集されているのを見ていたので知ってはいましたが、ネットワークの品質の良さ、&lt;br&gt;
+そしてリアルタイムでのネットワークの状態を&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/API&#34;&gt;API&lt;/a&gt;提供の便利さなど肌身で感じました。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fgihyo.jp%2Fmagazine%2FSD%2Farchive%2F2015%2F201503&#34; title=&#34;Software Design 2015年3月号&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;a href=&#34;http://gihyo.jp/magazine/SD/archive/2015/201503&#34;&gt;Software Design 2015年3月号&lt;/a&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://gihyo.jp/magazine/SD/archive/2015/201503&#34;&gt;gihyo.jp&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;こちら、LTで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WiFi&#34;&gt;WiFi&lt;/a&gt; AP設置の速さを実演したもの。&lt;br&gt;
+でも、ほんとの現場では安全第一でやっていると思うので、その辺も一言いってくれてるとよかったかなと笑&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34; lang=&#34;HASH(0x86c7010)&#34;&gt;
+&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;突然目の前に無線APが生えてきた &lt;a href=&#34;https://twitter.com/hashtag/yapcasia?src=hash&#34;&gt;#yapcasia&lt;/a&gt; &lt;a href=&#34;http://t.co/UWcSzvRv08&#34;&gt;pic.twitter.com/UWcSzvRv08&lt;/a&gt;&lt;/p&gt;— ぷりんたいは求職中です、 (@spacepro_be) &lt;a href=&#34;https://twitter.com/spacepro_be/status/635004222291902464&#34;&gt;August 22, 2015&lt;/a&gt;
+&lt;/blockquote&gt;
+&lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+&lt;h1&gt;最後に&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/YAPC&#34;&gt;YAPC&lt;/a&gt;は今年初参加でした。
+学びも多かったけど、それ以上にエンタメとしてとても楽しめました。&lt;/p&gt;
+
+&lt;p&gt;小さいところからでも楽しく学べる作っていきたいですね。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;本当にスタッフのみなさんお疲れ様でした。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>デスクトップUbuntuにVNC接続。ついでにSSHローカルポートフォワードの復習。</title>
+      <link>https://blog.mosuke.tech/entry/2015/08/13/000440/</link>
+      <pubDate>Thu, 13 Aug 2015 00:04:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/08/13/000440/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;完全に自分のための備忘録。内容はわりと薄め。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;やったこと&lt;/h1&gt;
+
+&lt;p&gt;最近、自作したPCに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ubuntu&#34;&gt;Ubuntu&lt;/a&gt;をいれて使っているのだけど、&lt;br&gt;
+デスクトップPCなので、部屋でしか操作することができません。&lt;/p&gt;
+
+&lt;p&gt;他の部屋からノートPCで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ubuntu&#34;&gt;Ubuntu&lt;/a&gt;を触れたらいいなーと思いその環境を整えることをしました。&lt;/p&gt;
+
+&lt;p&gt;主にやったことは以下の通りです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;サーバ構築について&lt;/li&gt;
+&lt;li&gt;ノートPC（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;）からの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;接続について&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;ローカルポートフォワードを使ってのセキュアな接続について&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ubuntu&#34;&gt;Ubuntu&lt;/a&gt;での&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;サーバ構築について&lt;/h1&gt;
+
+&lt;p&gt;今回利用している&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ubuntu&#34;&gt;Ubuntu&lt;/a&gt;は「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ubuntu&#34;&gt;Ubuntu&lt;/a&gt; Desktop 14.04」です。&lt;br&gt;
+また、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;の実現は標準でインストールされているvinoを使って行いました。&lt;/p&gt;
+
+&lt;p&gt;ご存知の方も多くいるかもしれませんが、vinoでの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;は簡易的なもので、サーバ側のユーザがログアウトしていると使えません。&lt;br&gt;
+ですので、会社などでの利用には耐えないと思います。&lt;br&gt;
+ユーザーをログアウトせずにロック状態にしていれば使えます。&lt;/p&gt;
+
+&lt;p&gt;まずはデスクトップ共有の設定をします。&lt;br&gt;
+「デスクトップの共有」のアプリケーションを起動します。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150809/20150809132410.png&#34; alt=&#34;f:id:mosuke5:20150809132410p:plain&#34; title=&#34;f:id:mosuke5:20150809132410p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;接続毎に要求するようにすると、サーバ側で毎度許可が必要なので、オフにします。&lt;br&gt;
+パスワードの設定はしておきましょう。&lt;br&gt;
+同じLANをつかんでる人に簡単に奪われてしまいますので。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150809/20150809132421.png&#34; alt=&#34;f:id:mosuke5:20150809132421p:plain&#34; title=&#34;f:id:mosuke5:20150809132421p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;ちょっと詳細な意味を把握していないのですが、&lt;br&gt;
+下記を実行しないと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;で接続すると「互換性のないバージョンです」的なこといわれました…すいません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ gsettings set org.gnome.Vino require-encryption false 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;設定ができたら、きちんとサーバとして&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;接続を待ち受けているか確認します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;% sudo lsof -i:5900
+COMMAND     PID    USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+vino-serv 24414 mosuke5   13u  IPv6 156661      0t0  TCP *:5900 (LISTEN)
+vino-serv 24414 mosuke5   14u  IPv4 156662      0t0  TCP *:5900 (LISTEN)
+
+% ps -ef | grep vino
+mosuke5  24414 24226  0 12:30 ?        00:00:21 /usr/lib/vino/vino-server --sm-disable
+mosuke5  25456 24470  0 13:19 pts/11   00:00:00 grep vino 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;から&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;接続する&lt;/h1&gt;
+
+&lt;p&gt;これをやるまで知らなかったのですが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;には標準で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;クライアントがついています。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/vnc&#34;&gt;vnc&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%C8%A5%B3%A5%EB&#34;&gt;プロトコル&lt;/a&gt;で対象のサーバの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;を入れれば接続できます。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150812/20150812225515.png&#34; alt=&#34;f:id:mosuke5:20150812225515p:plain&#34; title=&#34;f:id:mosuke5:20150812225515p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150812/20150812225126.png&#34; alt=&#34;f:id:mosuke5:20150812225126p:plain&#34; title=&#34;f:id:mosuke5:20150812225126p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;ローカルフォワードを使ってセキュアな通信をする&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%C8%A5%B3%A5%EB&#34;&gt;プロトコル&lt;/a&gt;は通信の内容を暗号化しません。&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/telnet&#34;&gt;telnet&lt;/a&gt;と同様で、非常に危険です。&lt;br&gt;
+家のLAN内で利用するので、正直ここまでする必要は全くないのだが、&lt;br&gt;
+より応用的な使い方に備えてと、復習を兼ねて&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;のローカルフォワードを利用してセキュアに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;を使ってみます。&lt;/p&gt;
+
+&lt;p&gt;復習と書いたのは以前に、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;のローカルフォワードについてはまとめたからです。&lt;/p&gt;
+&lt;a href=&#34;https://blog.mosuke.tech/entry/2014/12/31/170545/&#34;&gt;SSHでローカルポートフォワードを実際に試す - Goldstine研究所&lt;/a&gt;
+
+&lt;p&gt;まずは、ローカルフォワードの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;接続。&lt;br&gt;
+意味は「自分の端末のポート8888に来た通信は、192.168.11.5からみて&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/localhost&#34;&gt;localhost&lt;/a&gt;のポート5900にとばします」です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ssh -L8888:localhost:5900 mosuke5@192.168.11.5 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上のコマンドで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;接続した状態でなら、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/localhost&#34;&gt;localhost&lt;/a&gt;のポート8888が利用できます。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150812/20150812224539.png&#34; alt=&#34;f:id:mosuke5:20150812224539p:plain&#34; title=&#34;f:id:mosuke5:20150812224539p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;これでセキュアな&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;の完成。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Packerやる前にKickstartはじめよう</title>
+      <link>https://blog.mosuke.tech/entry/2015/07/31/211542/</link>
+      <pubDate>Fri, 31 Jul 2015 21:15:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/07/31/211542/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;h1&gt;1.はじめに&lt;/h1&gt;&lt;/p&gt;
+
+&lt;p&gt;開発環境はVirualboxを使った&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;を利用しているが、&lt;br&gt;
+本番環境は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;だったり&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/KVM&#34;&gt;KVM&lt;/a&gt;だったり違う仮想化機構で動作しているなんてことよくあると思います。&lt;br&gt;
+そういう環境下でどのように開発環境と本番環境の差分をなくしていますか？&lt;/p&gt;
+
+&lt;p&gt;わたしの場合、基本的にAnsibleを使ってプロビジョニングをしていますが、&lt;br&gt;
+そのプロビジョニング前のベースが異なってしまって困ることがよくあります。&lt;br&gt;
+一般に公開されているVagrantBox使ったら余計な設定が入っていたとか、すでにパッケージが入っていたとか…&lt;/p&gt;
+
+&lt;p&gt;そんな問題を解決しようとPackerを使おう！って考えました。&lt;br&gt;
+ですが、Packerも当たり前だけど魔法ではなく、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kickstart&#34;&gt;Kickstart&lt;/a&gt;などの自動インストールが前提なので、&lt;br&gt;
+Packerをやる前に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kickstart&#34;&gt;Kickstart&lt;/a&gt;を学習せよ、、、ということに気づきました。&lt;/p&gt;
+
+&lt;p&gt;ということで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kickstart&#34;&gt;Kickstart&lt;/a&gt;をはじめたよってことです。&lt;/p&gt;
+
+&lt;h1&gt;2.&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;ってなに&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;はOSのインストールを自動化する仕組みです。&lt;br&gt;
+anaconda社が提供するインストールの仕組みで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Redhat&#34;&gt;Redhat&lt;/a&gt;系のOSが採用しているものです。&lt;br&gt;
+ですので&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ubuntu&#34;&gt;Ubuntu&lt;/a&gt;だとPreseedっていう別の仕組みだそうです。（詳しくありませんっ）&lt;/p&gt;
+
+&lt;p&gt;で、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kickstart&#34;&gt;Kickstart&lt;/a&gt;でなにができるかというと...&lt;/p&gt;
+
+&lt;p&gt;OSのインストールをしたことがある方ならわかるかと思いますが、&lt;br&gt;
+普通にDVDなどからインストールすると、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;言語はなににしますかー？&lt;/li&gt;
+&lt;li&gt;ホスト名なににしますかー？&lt;/li&gt;
+&lt;li&gt;パッケージはなにをいれますかー？&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;とか、聞かれて選択していく必要があります。
+この作業を自動化できるのが&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;です。&lt;/p&gt;
+
+&lt;p&gt;URLのようなもの。
+&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fkajuhome.com%2Fcentos6_inst.shtml&#34; title=&#34;はじめての自宅サーバ構築 - Fedora/CentOS - CentOS6 のインストール手順&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;a href=&#34;http://kajuhome.com/centos6_inst.shtml&#34;&gt;はじめての自宅サーバ構築 - Fedora/CentOS - CentOS6 のインストール手順&lt;/a&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://kajuhome.com/centos6_inst.shtml&#34;&gt;kajuhome.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;(おまけ)Ansible, Chef, Puppetとの違い？&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;にはプロビジョニング機能もついているため、&lt;br&gt;
+AnsibleとかChefとかPuppetとの違いは？住み分けは？と思うかもしれません。&lt;br&gt;
+明確に、住み分けが決まっているわけではありませんが、
+個人的にはAnsibleやChefを実行する前の最低限の設定を&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;にやらせようと思っています。&lt;br&gt;
+（一般的かとは思いますが…？）&lt;/p&gt;
+
+&lt;p&gt;Lee ThompsonのProvisioning Toolchainを参考にKiskstarのやる範囲をまとめると。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150731/20150731223953.jpg&#34; alt=&#34;f:id:mosuke5:20150731223953j:plain&#34; title=&#34;f:id:mosuke5:20150731223953j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fen.oreilly.com%2Fvelocity-mar2010%2Fpublic%2Fschedule%2Fdetail%2F14180&#34; title=&#34;Provisioning Toolchain: Web Performance and Operations - Velocity Online Conference - March 17, 2010 - O&#39;Reilly Media&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;a href=&#34;http://en.oreilly.com/velocity-mar2010/public/schedule/detail/14180&#34;&gt;Provisioning Toolchain: Web Performance and Operations - Velocity Online Conference - March 17, 2010 - O&#39;Reilly Media&lt;/a&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://en.oreilly.com/velocity-mar2010/public/schedule/detail/14180&#34;&gt;en.oreilly.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;3.Hello &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kickstart&#34;&gt;Kickstart&lt;/a&gt;!!&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Virtualbox&#34;&gt;Virtualbox&lt;/a&gt;を使って&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kickstart&#34;&gt;Kickstart&lt;/a&gt;を試しました。&lt;/p&gt;
+
+&lt;h1&gt;3-1.用意したもの&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Virtualbox&#34;&gt;Virtualbox&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;自分の環境は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;で、バージョンは5.0&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;OSのisoファイル
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://isoredirect.centos.org/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-1503-01.iso&#34;&gt;CentOS Mirror&lt;/a&gt; ここからダウンロードしました&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;ファイル
+
+&lt;ul&gt;
+&lt;li&gt;ネットワーク上においてhttpでアクセスできるようにしておきました&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;利用した&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;ファイル。自分の学習のためコメントを多く残しました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# アップグレードするかインストールするか
+install
+
+# インストールタイプの設定
+# CD-ROM経由かネットワーク経由かとか
+cdrom
+
+# 言語設定
+lang ja_JP.UTF-8
+
+# キーボード設定
+keyboard jp106
+
+# ネットワーク設定
+# /etc/sysconfig/network-scripts/ifcfg-xxxx 部分
+network --onboot yes --device eth0 --bootproto dhcp --noipv6
+
+# rootのパスワード
+# xxxxxx部分はopensslコマンドで作成するといい
+# $openssl passwd -1
+rootpw --iscrypted xxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# iptablesの設定
+# プロビジョニングで設定するのでここでは無効にしておく
+firewall --disabled
+
+# 認証オプション
+authconfig --enableshadow --passalgo=sha512
+
+# SELinuxの設定
+# こちらも詳細はプロビジョニングで設定するので無効にしておく
+selinux --disabled
+
+# タイムゾーン
+timezone --utc Asia/Tokyo
+
+# ブートローダのインストール方法
+bootloader --location=mbr --driveorder=sda --append=&amp;quot;nomodeset crashkernel=auto rhgb quiet&amp;quot;
+
+# 設定後にリブート
+reboot
+
+# パーティション設定
+clearpart --linux --drives=sda
+autopart
+
+# インストールパッケージ選択
+%packages --nobase
+@core
+
+%end 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;参考になったもの&lt;/h3&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Redhat&#34;&gt;Redhat&lt;/a&gt;社のインストールガイドがよくまとまっていた。&lt;br&gt;
+特に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;ファイルについては下記あたりが役立ちます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://access.redhat.com/documentation/ja-JP/Red_Hat_Enterprise_Linux/6/html/Installation_Guide/s1-kickstart2-options.html&#34;&gt;32.4. キックスタートのオプション&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://access.redhat.com/documentation/ja-JP/Red_Hat_Enterprise_Linux/6/html/Installation_Guide/s1-kickstart2-packageselection.html&#34;&gt;32.5. パッケージの選択&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;3-2.&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;ファイルの使い方&lt;/h1&gt;
+
+&lt;p&gt;しかし、OSインストール前なのにどうやってファイルを使うのか…？&lt;br&gt;
+はじめ戸惑いました…&lt;/p&gt;
+
+&lt;p&gt;実は以下の方法で利用できます。&lt;/p&gt;
+
+&lt;p&gt;OSのisoファイルで起動するとこの画面がでるやろ。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150802/20150802125544.png&#34; alt=&#34;f:id:mosuke5:20150802125544p:plain&#34; title=&#34;f:id:mosuke5:20150802125544p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;そして、ここでTabをおすと、なにか入力できるが画面が出てきて。&lt;br&gt;
+そこに、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/kickstart&#34;&gt;kickstart&lt;/a&gt;ファイルのパスを入力してやる。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150802/20150802125630.png&#34; alt=&#34;f:id:mosuke5:20150802125630p:plain&#34; title=&#34;f:id:mosuke5:20150802125630p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;これで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kickstart&#34;&gt;Kickstart&lt;/a&gt;完了や。&lt;/p&gt;
+
+&lt;h1&gt;4.最後に&lt;/h1&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kickstart&#34;&gt;Kickstart&lt;/a&gt;入門したし、次はPackerをやりたいと思います。&lt;br&gt;
+が、ふと思ったのが、自分の用途だとPackerではなく&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kickstart&#34;&gt;Kickstart&lt;/a&gt;で十分かもなーとか思ったり思わなかったり…&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>DockerとWebSocketを使って、vimの設定をブラウザで即体感できるサービスを作った</title>
+      <link>https://blog.mosuke.tech/entry/2015/07/19/135844/</link>
+      <pubDate>Sun, 19 Jul 2015 13:58:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/07/19/135844/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;2014年の秋から&lt;code&gt;@mogulla3&lt;/code&gt;と定期的にインフラ関連技術の勉強会をやってきましたが、&lt;br&gt;
+インプットの勉強会だけでは飽き足らず、いつしかサービスを作る中でインフラ関連技術を駆使し勉強したいと思うように…&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;そして、普段使っている&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;を題材に、&lt;br&gt;
+&lt;b&gt;&lt;span style=&#34;font-size: 150%&#34;&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/vim&#34;&gt;vim&lt;/a&gt;の設定をブラウザ上で即体感できるサービス &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factory&lt;/span&gt;&lt;/b&gt;&lt;br&gt;
+を開発しました。&lt;/p&gt;
+
+&lt;p&gt;本記事は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryの簡単な紹介と技術的な仕組みについて記述しています。&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryはこちら。&lt;br&gt;
+&lt;a href=&#34;http://vimfactory.com/&#34;&gt;http://vimfactory.com/&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;1. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryについて&lt;/h1&gt;
+
+&lt;h2&gt;1-1. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryってなに？？&lt;/h2&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryは、選択した&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;の設定を、ブラウザ上で「即体感」できるサービスです。&lt;br&gt;
+数多くあり複雑な&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;の設定を容易にし、お気に入りの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;探しをサポートすることを目指しています。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150719/20150719155723.png&#34; alt=&#34;f:id:mosuke5:20150719155723p:plain&#34; title=&#34;f:id:mosuke5:20150719155723p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;1-2. なんで作ったの？&lt;/h2&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;の設定ってたくさんあってどれを選んでいいかわからなかったり、&lt;br&gt;
+設定したもののどう変わったかイマイチわからなかったりしませんか？&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;の設定がどのように反映されるか、もっと簡単に体験したいと考えたからです。&lt;/p&gt;
+
+&lt;p&gt;あと、例えば&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Github&#34;&gt;Github&lt;/a&gt;で100star以上をつける人の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;をブラウザ上で体験できたらいいなと思っていて、&lt;br&gt;
+それを実現のための第一歩としてこのサービスを作りました。&lt;/p&gt;
+
+&lt;h2&gt;1-3. このサービスの最大の特徴は？&lt;/h2&gt;
+
+&lt;p&gt;このサービスの最大の特徴はなんといっても&lt;b&gt;「ブラウザ上で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;が体感できること」&lt;/b&gt;です。&lt;/p&gt;
+
+&lt;p&gt;今までは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;の設定を試そうと思ったら、ネットで調べて自分の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;に反映させて…という作業が必要でしたが、&lt;br&gt;
+ブラウザ上で設定を即体感するという新しい体験を提供するために力を注いできました。&lt;br&gt;
+その実現方法については、後述しています。&lt;/p&gt;
+
+&lt;h2&gt;1-4. 紹介動画&lt;/h2&gt;
+
+&lt;p&gt;詳しくは、実際に試してもらうのが早いと思いますが、簡単な操作動画を用意してみました。&lt;br&gt;
+モバイルからこのサービスはちょっと使えないので、モバイルで読んでいる方は動画でお楽しみください(笑)&lt;br&gt;
+&lt;iframe width=&#34;480&#34; height=&#34;270&#34; src=&#34;https://www.youtube.com/embed/j20agcBcAec?feature=oembed&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=j20agcBcAec&amp;amp;feature=youtu.be&#34;&gt;www.youtube.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;2. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryの技術について&lt;/h1&gt;
+
+&lt;p&gt;ここから&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryの技術について一部ではありますがご紹介します。&lt;/p&gt;
+
+&lt;h2&gt;2-1. ブラウザ上での&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;を実現した技術&lt;/h2&gt;
+
+&lt;p&gt;ブラウザ上で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;を実現しようと思うと、ぱっと思いつくのは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/JavaScript&#34;&gt;JavaScript&lt;/a&gt;で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;そのものを実装してしまおうというものかもしれません。&lt;br&gt;
+ですが、JSで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;を実装することってどれくらい難しいでしょうか？&lt;br&gt;
+少なくともぼくにはそんなことはできませんし、できたとして質の悪いものになってしまうと思います。&lt;/p&gt;
+
+&lt;p&gt;そこで思いついたのが、一般的なターミナルソフトと同様にサーバ上で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/vim&#34;&gt;vim&lt;/a&gt;を起動し、&lt;br&gt;
+そのターミナル情報をブラウザ上で表示するという方法です。&lt;br&gt;
+この方法であれば自ら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;を実装せずとも&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;を再現できます。イメージは下記のとおりです。&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150718/20150718230605.png&#34; alt=&#34;f:id:mosuke5:20150718230605p:plain&#34; title=&#34;f:id:mosuke5:20150718230605p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;また、サービスとして上記を行うには、接続してきたユーザごとに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;を用意する必要があります。&lt;/p&gt;
+
+&lt;p&gt;これらを実現するために利用したのが&lt;b&gt;Docker&lt;/b&gt;と&lt;b&gt;WebSocket&lt;/b&gt;です。&lt;br&gt;
+dockerコンテナ上で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;を起動し、そのターミナル情報をWebSocketでブラウザに送信するようにしました。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150720/20150720002840.png&#34; alt=&#34;f:id:mosuke5:20150720002840p:plain&#34; title=&#34;f:id:mosuke5:20150720002840p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;dockerはコンテナ型の仮想化なので起動がとてもはやく、&lt;br&gt;
+httpのリクエストが来てからdockerコンテナを立ち上げても十分なほどのはやさをもっています。&lt;/p&gt;
+
+&lt;h2&gt;2-2. 全体構成&lt;/h2&gt;
+
+&lt;p&gt;システムの全体構成は以下のような感じです。&lt;br&gt;
+※実際の役割は図のとおりですが、サーバはこんなに多くありません。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150719/20150719124021.png&#34; alt=&#34;f:id:mosuke5:20150719124021p:plain&#34; title=&#34;f:id:mosuke5:20150719124021p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;2-3. 利用した技術とか&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB&#34;&gt;ツール&lt;/a&gt;のまとめ&lt;/h2&gt;
+
+&lt;p&gt;振り返りも兼ねて利用した技術・&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB&#34;&gt;ツール&lt;/a&gt;を一覧にまとめておきます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Sinatra&#34;&gt;Sinatra&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;thin&lt;/li&gt;
+&lt;li&gt;node.js&lt;/li&gt;
+&lt;li&gt;Websocket&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/memcached&#34;&gt;memcached&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;docker&lt;/li&gt;
+&lt;li&gt;nginx&lt;/li&gt;
+&lt;li&gt;centos7&lt;/li&gt;
+&lt;li&gt;Ansible&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;gitlab&lt;/li&gt;
+&lt;li&gt;mackerel&lt;/li&gt;
+&lt;li&gt;slack&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/esa&#34;&gt;esa&lt;/a&gt;.io(ドキュメント管理)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;3. まとめ&lt;/h1&gt;
+
+&lt;p&gt;このサービスで一番苦労したことはやっぱりブラウザ上での&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;の実現部分です。&lt;br&gt;
+当初、このサービスを思いついた時、実現不可能だ…とあきらめました。&lt;br&gt;
+というのもJS（アプリケーションサイド）で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;をどう実装しようかしか考えていなかったからです。&lt;/p&gt;
+
+&lt;p&gt;ですが、ふとしたときに上記の別の方法（インフラサイド）での実現方法を思いつきました。&lt;/p&gt;
+
+&lt;p&gt;このサービスを作るきっかけは、インフラ技術のインプット勉強だけでは飽きたらず、&lt;br&gt;
+サービスを開発・運用していくなかでインフラ技術を磨いていきたいというものでしたが、&lt;br&gt;
+インプットの勉強があってこそインフラサイドからの実現方法を見つけられたようにも思いました。&lt;/p&gt;
+
+&lt;p&gt;今後、運用を通してさらなるパワーアップができたらいいなと思います。&lt;/p&gt;
+
+&lt;h1&gt;4. 最後に&lt;/h1&gt;
+
+&lt;p&gt;最後になりますが、
+完全な趣味で作ってしまったサービスで、今後どのように展開していこうか何も考えていません。&lt;br&gt;
+まずは、このように公開し皆様に利用して頂いて、フィードバックなど頂いてから考えようと思っています。&lt;/p&gt;
+
+&lt;p&gt;サービスに関するご意見等あれば、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Twitter&#34;&gt;Twitter&lt;/a&gt;やメールで書いてくれると大変嬉しいです。&lt;/p&gt;
+
+&lt;p&gt;お問い合せはこちら:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Twitter&#34;&gt;Twitter&lt;/a&gt;: &lt;a href=&#34;https://twitter.com/mosuke5&#34;&gt;もーすけ (@mosuke5) | Twitter&lt;/a&gt; or &lt;a href=&#34;https://twitter.com/mogulla3&#34;&gt;もぐらマン (@mogulla3) | Twitter&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;e-mail: ilab.vimfactory+info@&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/gmail&#34;&gt;gmail&lt;/a&gt;.com&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;では、みなさんも&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;ライフを楽しみましょう！&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryはこちら。&lt;br&gt;
+&lt;a href=&#34;http://vimfactory.com/&#34;&gt;http://vimfactory.com/&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>PostgreSQL環境でFuelPHPのDBマイグレーションを使う</title>
+      <link>https://blog.mosuke.tech/entry/2015/06/17/212852/</link>
+      <pubDate>Wed, 17 Jun 2015 21:28:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/06/17/212852/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;今更&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FuelPHP&#34;&gt;FuelPHP&lt;/a&gt;感はあるのだが、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/postgresql&#34;&gt;postgresql&lt;/a&gt;利用時の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FuelPHP&#34;&gt;FuelPHP&lt;/a&gt;のmigration導入について、注意点をまとめた。&lt;br&gt;
+でも、結論は納得がいっていない。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;0. 前提&lt;/h1&gt;
+
+&lt;p&gt;下記の環境で行ったものです。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/PHP&#34;&gt;PHP&lt;/a&gt;: 5.5.7&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FuelPHP&#34;&gt;FuelPHP&lt;/a&gt;: 1.7&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Postgresql&#34;&gt;Postgresql&lt;/a&gt;: 9.4&lt;/p&gt;
+
+&lt;h1&gt;1. テーブル&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%B8%BB%FA%A5%B3%A1%BC%A5%C9&#34;&gt;文字コード&lt;/a&gt;の問題&lt;/h1&gt;
+
+&lt;h1&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BB%F6%BE%DD&#34;&gt;事象&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;公式サイトのサンプルの通りはじめに&lt;code&gt;app/migrations/001_example.php&lt;/code&gt;を作り、migrationを実行した。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;app/migrations/001_example.php&lt;/code&gt;の作成&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;&amp;lt;?php
+namespace Fuel\Migrations;
+class Example
+{
+    function up()
+    {
+        \DBUtil::create_table(&#39;posts&#39;, array(
+            &#39;id&#39; =&amp;gt; array(&#39;type&#39; =&amp;gt; &#39;int&#39;, &#39;constraint&#39; =&amp;gt; 5),
+            &#39;title&#39; =&amp;gt; array(&#39;type&#39; =&amp;gt; &#39;varchar&#39;, &#39;constraint&#39; =&amp;gt; 100),
+            &#39;body&#39; =&amp;gt; array(&#39;type&#39; =&amp;gt; &#39;text&#39;),
+        ), array(&#39;id&#39;));
+    }
+    
+    function down()
+    {
+        \DBUtil::drop_table(&#39;posts&#39;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%A4%A5%B0%A5%EC%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;マイグレーション&lt;/a&gt;実行すると以下のエラーに襲われた。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ php oil refine migrate
+Uncaught exception Fuel\Core\Database_Exception: SQLSTATE[42601]: Syntax error: 7 ERROR: syntax error at or near &amp;quot;DEFAULT&amp;quot;
+LINE 5: )DEFAULT CHARACTER SET utf8;
+^ with query: &amp;quot;CREATE TABLE IF NOT EXISTS &amp;quot;migration&amp;quot; (
+&amp;quot;type&amp;quot; varchar(25) NOT NULL,
+&amp;quot;name&amp;quot; varchar(50) NOT NULL,
+&amp;quot;migration&amp;quot; varchar(100) DEFAULT &#39;&#39; NOT NULL
+)DEFAULT CHARACTER SET utf8;&amp;quot; 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;理由&lt;/h1&gt;
+
+&lt;p&gt;しょっぱなから躓くわけだが…&lt;/p&gt;
+
+&lt;p&gt;初めて&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%A4%A5%B0%A5%EC%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;マイグレーション&lt;/a&gt;を実行する際には&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%A4%A5%B0%A5%EC%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;マイグレーション&lt;/a&gt;管理用のテーブルを作る。&lt;br&gt;
+そのテーブルを作る&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;が下記の通り発行されている。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;CREATE TABLE IF NOT EXISTS &amp;quot;migration&amp;quot; (
+&amp;quot;type&amp;quot; varchar(25) NOT NULL,
+&amp;quot;name&amp;quot; varchar(50) NOT NULL,
+&amp;quot;migration&amp;quot; varchar(100) DEFAULT &#39;&#39; NOT NULL
+)DEFAULT CHARACTER SET utf8;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;理由は単純で、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/postgresql&#34;&gt;postgresql&lt;/a&gt;のcreate tableでは次のdefault構文は利用できないから。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;create table xxxx ( ) default character set xxx;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なぜ、利用できない構文の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;が発行されたのか？&lt;br&gt;
+それは単に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FuelPHP&#34;&gt;FuelPHP&lt;/a&gt;の問題です。次期バージョンでは解決されることを祈る。&lt;/p&gt;
+
+&lt;h1&gt;解決方法&lt;/h1&gt;
+
+&lt;p&gt;解決方法は下記の記事がわかりやすかった。
+&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fqiita.com%2Fhirobow%2Fitems%2F8c2c379b33f0040480b7&#34; title=&#34;FuelPHP で PDOによるPostgreSQL接続の罠 - Qiita&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;a href=&#34;http://qiita.com/hirobow/items/8c2c379b33f0040480b7&#34;&gt;FuelPHP で PDOによるPostgreSQL接続の罠 - Qiita&lt;/a&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://qiita.com/hirobow/items/8c2c379b33f0040480b7&#34;&gt;qiita.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;簡単に言うとdbのコンフィグで、charsetをnullにすると&lt;code&gt;DEFAULT CHARACTER SET xxx&lt;/code&gt;部分が発行されない。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&#39;charset&#39; =&amp;gt; NULL, 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;2. PRIMARY KEYの問題&lt;/h1&gt;
+
+&lt;h1&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BB%F6%BE%DD&#34;&gt;事象&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;1.の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%B8%BB%FA%A5%B3%A1%BC%A5%C9&#34;&gt;文字コード&lt;/a&gt;の問題は解決して、さあもう一度&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%A4%A5%B0%A5%EC%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;マイグレーション&lt;/a&gt;を！と思って実行するもさらなるエラーに阻まれる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ php oil refine migrate
+Uncaught exception Fuel\Core\Database_Exception: SQLSTATE[42601]: Syntax error: 7 ERROR: syntax error at or near &amp;quot;(&amp;quot;
+LINE 2: &amp;quot;id&amp;quot; int(5) NOT NULL,
+^ with query: &amp;quot;CREATE TABLE IF NOT EXISTS &amp;quot;users&amp;quot; (
+&amp;quot;id&amp;quot; int(5) NOT NULL,
+&amp;quot;name&amp;quot; text NOT NULL,
+PRIMARY KEY &amp;quot;id&amp;quot; (&amp;quot;id&amp;quot;)
+);&amp;quot; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;理由は1のときと一緒。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/postgresql&#34;&gt;postgresql&lt;/a&gt;では以下の構文は使えないのだ…&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;PRIMARY KEY &amp;quot;id&amp;quot; (&amp;quot;id&amp;quot;) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;3. 結局&lt;/h1&gt;
+
+&lt;p&gt;つまるところ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FuelPHP&#34;&gt;FuelPHP&lt;/a&gt;(すくなくとも1.7までは)では、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/postgresql&#34;&gt;postgresql&lt;/a&gt;で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%A4%A5%B0%A5%EC%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;マイグレーション&lt;/a&gt;を行う環境がちゃんと整っていないということ。&lt;br&gt;
+しかたないので、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%A4%A5%B0%A5%EC%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;マイグレーション&lt;/a&gt;の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;は生&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;を書くことにしました。&lt;/p&gt;
+
+&lt;p&gt;PRIMARY KEYを後から別途で付与するとか考えたけど、&lt;br&gt;
+ほかにも罠がありそうだったので、安全な生&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;を採用しました。&lt;br&gt;
+バージョン1.8では直っている?とのことだが、まだdevelopmentだったのでこれも見送り。&lt;/p&gt;
+
+&lt;p&gt;うむ。。。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;&amp;lt;参考&amp;gt;
+&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fimprove-future.com%2Favailable-dbms-in-fuelphp.html&#34; title=&#34;FuelPHP で使用可能なデータベース&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;a href=&#34;http://improve-future.com/available-dbms-in-fuelphp.html&#34;&gt;FuelPHP で使用可能なデータベース&lt;/a&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://improve-future.com/available-dbms-in-fuelphp.html&#34;&gt;improve-future.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ajaxの嫌いだった部分をJsRenderで心地良くした</title>
+      <link>https://blog.mosuke.tech/entry/2015/06/13/231917/</link>
+      <pubDate>Sat, 13 Jun 2015 23:19:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/06/13/231917/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;h1&gt;1. はじめに&lt;/h1&gt;&lt;/p&gt;
+
+&lt;p&gt;ぼくはフロントエンドは本業ではありません。&lt;br&gt;
+jsはあまり好きではありません。&lt;br&gt;
+そして&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ajax&#34;&gt;Ajax&lt;/a&gt;通信後にhtmlをアウトプットする際にjsの変数の中にhtmlを書いていく&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9&#34;&gt;ソースコード&lt;/a&gt;がもっと好きではありません。(後述)&lt;br&gt;
+それをJSテンプレートエンジンを使ってシンプルにしてみたって話です。
+（JsRenderの使い方を書いたものではありません。）&lt;/p&gt;
+
+&lt;h1&gt;2. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ajax&#34;&gt;Ajax&lt;/a&gt;が嫌いだった理由&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ajax&#34;&gt;Ajax&lt;/a&gt;はユーザ体感的にはいいのだけれど、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ajax&#34;&gt;Ajax&lt;/a&gt;の結果受け取った&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/json&#34;&gt;json&lt;/a&gt;などのデータを使ってhtmlを出力とかやると&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9&#34;&gt;ソースコード&lt;/a&gt;が煩雑になるので嫌いだった。&lt;/p&gt;
+
+&lt;p&gt;例として&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ajax&#34;&gt;Ajax&lt;/a&gt;で/xxxxxにリクエストを投げて、その結果(&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/json&#34;&gt;json&lt;/a&gt;データ)を使ってhtmlを出力するものを考えると。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;/* jsonデータは下記が返ってくるとする
+[
+    {
+        id: &#39;1&#39;,
+        name: &#39;らーめん&#39;,
+        text: &#39;らーめんはやっぱり濃厚鶏そばです。&#39;
+    },
+    {
+        id: &#39;2&#39;,
+        name: &#39;うどん&#39;,
+        text: &#39;うどんはやっぱり釜揚げうどんです。&#39;
+    }
+]
+*/
+$.ajax({
+  type: &amp;quot;GET&amp;quot;,
+  url: &amp;quot;/xxxxx&amp;quot;,
+  dataType: &amp;quot;json&amp;quot;,
+  success: function(data){
+    var html = &#39;&#39;;
+    data.forEach(function (e) {
+      html += &#39;&amp;lt;div id=&amp;quot;&#39; + e.id + &#39;&amp;quot;&amp;gt;&#39;;
+      html += &#39;&amp;lt;h1&amp;gt;&#39; + e.name + &#39;&amp;lt;/h1&amp;gt;&#39;;
+      html += &#39;&amp;lt;p&amp;gt;&#39; + e.text + &#39;&amp;lt;/p&amp;gt;&#39;;
+      html += &#39;&amp;lt;/div&amp;gt;&#39;;
+    });
+    $(&amp;quot;#result&amp;quot;).append(html);
+  },
+})
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;jsの変数の中にhtmlが含まれる。&lt;br&gt;
+&lt;b&gt;そう、jsの変数の中にhtmlが！！&lt;/b&gt;&lt;br&gt;
+この規模ならまだいいが、もう少しhtmlが肥大化してくると最悪である。&lt;br&gt;
+これがどうしても許せない。&lt;/p&gt;
+
+&lt;h1&gt;3.jsのテンプレートエンジンを使ってみた&lt;/h1&gt;
+
+&lt;p&gt;上の問題をなんとかできないかと思っていたところ、jsのテンプレートエンジンにいきついた。&lt;br&gt;
+jsのテンプレートエンジンは多数あるのだが今回はJsRenderを採用し、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ajax&#34;&gt;ajax&lt;/a&gt;を心地よく使うことができるようになった。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jsviews.com/&#34;&gt;JsRender/JsViews&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3&gt;3-1. jsテンプレートエンジンの選定について&lt;/h3&gt;
+
+&lt;p&gt;以下のまとめなど参考にするといいが、多数ある。
+&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fqiita.com%2FKumamon%2Fitems%2F7db7c8f5e5ace3b40874&#34; title=&#34;JavaScriptテンプレートエンジンまとめ - Qiita&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;a href=&#34;http://qiita.com/Kumamon/items/7db7c8f5e5ace3b40874&#34;&gt;JavaScriptテンプレートエンジンまとめ - Qiita&lt;/a&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://qiita.com/Kumamon/items/7db7c8f5e5ace3b40874&#34;&gt;qiita.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;用途としては下記のような感じで選んだ。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;クライアントサイドで利用できる
+
+&lt;ul&gt;
+&lt;li&gt;特にサーバサイドで使える必要はなかった&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;簡単に利用できること。学習コストが低そうなこと&lt;/li&gt;
+&lt;li&gt;for文やif文はつかえること&lt;/li&gt;
+&lt;li&gt;プレ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB&#34;&gt;コンパイル&lt;/a&gt;とかは必要なかった&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;3-2. JsRenderを使えばここまで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ajax&#34;&gt;ajax&lt;/a&gt;がシンプルになった&lt;/h3&gt;
+
+&lt;p&gt;JsRenderを利用して先ほどの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ajax&#34;&gt;ajax&lt;/a&gt;部分を書き直すと以下のようになる。&lt;/p&gt;
+
+&lt;h4&gt;js側&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;$.ajax({
+  type: &amp;quot;GET&amp;quot;,
+  url: &amp;quot;/xxxxx&amp;quot;,
+  dataType: &amp;quot;json&amp;quot;,
+  success: function(data){
+    var template = $.templates(&amp;quot;#result-template&amp;quot;);   // テンプレートを指定
+    var htmlOutput = template.render(data);   //テンプレート内に変数展開
+    $(&amp;quot;#result&amp;quot;).html(htmlOutput);   //出力
+  },
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;html側&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;div id=&amp;quot;result&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;script id=&amp;quot;result-template&amp;quot; type=&amp;quot;text/x-jsrender&amp;quot;&amp;gt;
+&amp;lt;div id=&amp;quot;{{:id}}&amp;quot;&amp;gt;
+  &amp;lt;h1&amp;gt;{{:name}}&amp;lt;/h1&amp;gt;
+  &amp;lt;p&amp;gt;{{:text}}&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;何が素晴らしいって、ロジックの部分と、ビュー部分を綺麗に分離できたこと。&lt;br&gt;
+いや、サーバサイドなら当たり前のようにやっていたことなんだけど、&lt;br&gt;
+JsRenderを使えばクライアントサイドでも簡単に実装できて最高でした。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;以上。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>他人の家のインターネットを環境を整えて分かった無線LANルータのこと</title>
+      <link>https://blog.mosuke.tech/entry/2015/05/24/220226/</link>
+      <pubDate>Sun, 24 May 2015 22:02:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/05/24/220226/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;他人の家のインターネットを環境を整えて分かった&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN&#34;&gt;無線LAN&lt;/a&gt;ルータのことがあったのでまとめる。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;我が家のインターネット環境は以下のような構成になっている。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150524/20150524215405.png&#34; alt=&#34;f:id:mosuke5:20150524215405p:plain&#34; title=&#34;f:id:mosuke5:20150524215405p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;この構成では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN&#34;&gt;無線LAN&lt;/a&gt;ルータは&lt;b&gt;L3とL2の両方&lt;/b&gt;の機器として働いている。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B0%A5%ED%A1%BC%A5%D0%A5%EBIP&#34;&gt;グローバルIP&lt;/a&gt;とプライベートIPの両方を持っており、&lt;br&gt;
+プライベートIPからの通信をグローバル側へルーティングする機能と、&lt;br&gt;
+LAN内の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4&#34;&gt;複数&lt;/a&gt;の端末に接続する機能として。&lt;/p&gt;
+
+&lt;p&gt;一方、この前、他の人の家のインターネット環境を整えたのだが、&lt;br&gt;
+以下のような構成だった。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150524/20150524214832.png&#34; alt=&#34;f:id:mosuke5:20150524214832p:plain&#34; title=&#34;f:id:mosuke5:20150524214832p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;１つめの構成と決定的に違うところは、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VDSL&#34;&gt;VDSL&lt;/a&gt;モデムにルータ機能もついていること。
+この場合は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN&#34;&gt;無線LAN&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC&#34;&gt;ルーター&lt;/a&gt;はL2の機器として働いている。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN&#34;&gt;無線LAN&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC&#34;&gt;ルーター&lt;/a&gt;自体には&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;はなく、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/DHCP&#34;&gt;DHCP&lt;/a&gt;で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;管理を行っているのも上位のルータだ。&lt;/p&gt;
+
+&lt;p&gt;この構成になるときは、一般的に光&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%C5%C5%CF%C3&#34;&gt;IP電話&lt;/a&gt;を利用するケースのようだ。&lt;br&gt;
+というのも、一般的な&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN&#34;&gt;無線LAN&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC&#34;&gt;ルーター&lt;/a&gt;には光&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%C5%C5%CF%C3&#34;&gt;IP電話&lt;/a&gt;につなぐことができず、&lt;br&gt;
+通信会社から貸与されるモデムルータを利用するため。&lt;/p&gt;
+
+&lt;p&gt;余談だが、今家では実は下記のような構成にしている。&lt;br&gt;
+というのも、家の構造上、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VDSL&#34;&gt;VDSL&lt;/a&gt;がでているところが納戸のようなところで、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN&#34;&gt;無線LAN&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC&#34;&gt;ルーター&lt;/a&gt;を設置しても壁が多すぎるために電波が弱くなってしまう。&lt;br&gt;
+そのため、リビング側へ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN&#34;&gt;無線LAN&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC&#34;&gt;ルーター&lt;/a&gt;を設置したかったからだ。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150524/20150524215424.png&#34; alt=&#34;f:id:mosuke5:20150524215424p:plain&#34; title=&#34;f:id:mosuke5:20150524215424p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;とても単純な話だが、&lt;br&gt;
+いろんなケースの家庭内インターネットの設定をすることで、&lt;br&gt;
+いろいろと気づくこともあった。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>sinatra-assetpackをproduction環境で使う時にはまったー</title>
+      <link>https://blog.mosuke.tech/entry/2015/05/08/174732/</link>
+      <pubDate>Fri, 08 May 2015 17:47:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/05/08/174732/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Sinatra&#34;&gt;Sinatra&lt;/a&gt;アプリケーションで、JSファイルを圧縮する&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/sinatra&#34;&gt;sinatra&lt;/a&gt;-assetpackを利用していて、&lt;br&gt;
+production環境で動作させようとしたら動かなくなってしまった問題について調査した。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;起こったこと&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Sinatra&#34;&gt;Sinatra&lt;/a&gt;を使ってアプリケーションを作っていて、development環境で完成したので、
+prorudction環境で動作させようとしたら、jsのエラーが出るようになってしまい、正常に動かなくなった。&lt;/p&gt;
+
+&lt;p&gt;アクセスすると、以下のエラーがでる。要は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/jquery&#34;&gt;jquery&lt;/a&gt;がないとのこと。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Uncaught ReferenceError: $ is not defined 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/jQuery&#34;&gt;jQuery&lt;/a&gt;はもちろん読み込ませてるし、なんでproduction環境でだけ？？？&lt;/p&gt;
+
+&lt;h1&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9&#34;&gt;ソースコード&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/sinatra&#34;&gt;sinatra&lt;/a&gt;のメインアプリケーションであるapp.rbには以下のように、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/sinatra&#34;&gt;sinatra&lt;/a&gt;-assetpackを利用してjsを読み込んでいる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;assets do
+  serve &#39;/js&#39;, from: &#39;public/js&#39;
+  serve &#39;/bower_components&#39;, from: &#39;bower_components&#39;
+
+  js :app, &#39;/js/app.js&#39;, [
+    &#39;/js/index.js&#39;,
+  ]
+
+  js :libs, &#39;/js/libs.js&#39;, [
+    &#39;/bower_components/jquery/dist/jquery.js&#39;,
+    &#39;/bower_components/bootstrap/dist/js/bootstrap.js&#39;,
+  ]
+
+  js_compression :jsmin
+end
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;layout.erbにはもちろん、libs.jsが先に来るように記述している。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;&amp;lt;%= js :libs %&amp;gt;
+&amp;lt;%= js :app %&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/sinatra&#34;&gt;sinatra&lt;/a&gt;-assetpackの挙動&lt;/h1&gt;
+
+&lt;p&gt;productionでのみ発生する&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BB%F6%BE%DD&#34;&gt;事象&lt;/a&gt;なので、改めて&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/sinatra&#34;&gt;sinatra&lt;/a&gt;-assetpackのproduction環境時の挙動を確認した。&lt;br&gt;
+production環境では、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4&#34;&gt;複数&lt;/a&gt;のjsファイルを1つのファイルにまとめ、圧縮を行う。&lt;/p&gt;
+
+&lt;h4&gt;development環境&lt;/h4&gt;
+
+&lt;p&gt;３つのjsファイルがあったら以下のように３つ別々に読み込まれる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;script type=&#39;text/javascript&#39; src=&#39;https://blog.mosuke.tech/js/vendor/jquery.283479.js&#39;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script type=&#39;text/javascript&#39; src=&#39;https://blog.mosuke.tech/js/vendor/underscore.589491.js&#39;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script type=&#39;text/javascript&#39; src=&#39;https://blog.mosuke.tech/js/app/main.589491.js&#39;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;production環境&lt;/h4&gt;
+
+&lt;p&gt;３つあったjsファイルは1つにまとめられ、また圧縮される。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;script type=&#39;text/javascript&#39; src=&#39;https://blog.mosuke.tech/js/app.589491.js&#39;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;詳細はこちら&lt;br&gt;
+&lt;a href=&#34;https://github.com/rstacruz/sinatra-assetpack#results&#34;&gt;rstacruz/sinatra-assetpack · GitHub&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BB%F6%BE%DD&#34;&gt;事象&lt;/a&gt;の理由&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Chrome&#34;&gt;Chrome&lt;/a&gt;の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0&#34;&gt;デバッグ&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB&#34;&gt;ツール&lt;/a&gt;のNetworkでファイルのダウンロード状況を確認してみると意外なことがわかった。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150508/20150508171833.png&#34; alt=&#34;f:id:mosuke5:20150508171833p:plain&#34; title=&#34;f:id:mosuke5:20150508171833p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;画像が小さくて見づらいかもしれないが、
+5行目と6行目のapp.jsとlibs.jsで先にlibs.jsを読み込んでいるのに、おそらく圧縮とダウンロードに時間がかかり、&lt;br&gt;
+app.jsのほうが先にダウンロードが終わっている。&lt;/p&gt;
+
+&lt;p&gt;libs.jsには&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/jQuery&#34;&gt;jQuery&lt;/a&gt;などが含まれていて、app.js内で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/jQuery&#34;&gt;jQuery&lt;/a&gt;を利用する。&lt;br&gt;
+よって、先にapp.jsが読み込まれてしまったことで、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/jQuery&#34;&gt;jQuery&lt;/a&gt;がねーぞ！と怒られてしまったのである。&lt;/p&gt;
+
+&lt;h1&gt;対策と考慮&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/sinatra&#34;&gt;sinatra&lt;/a&gt;-assetpackなどを利用して、jsを圧縮する際には、
+ファイルを1つにまとめたり圧縮したりする時間がかかることを十分に考慮しなければいけない。&lt;/p&gt;
+
+&lt;p&gt;あまり賢い手段をは言えないが、libs.jsとapp.jsひとつにまとめることで今回の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BB%F6%BE%DD&#34;&gt;事象&lt;/a&gt;は避けられる。
+app.rb&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;assets do
+  serve &#39;/js&#39;, from: &#39;public/js&#39;
+  serve &#39;/bower_components&#39;, from: &#39;bower_components&#39;
+
+  js :app, &#39;/js/app.js&#39;, [
+    &#39;/bower_components/jquery/dist/jquery.js&#39;,
+    &#39;/bower_components/bootstrap/dist/js/bootstrap.js&#39;,
+    &#39;/js/index.js&#39;,
+  ]
+
+  js_compression :jsmin
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;p&gt;また、事前に圧縮しておいて、ダウンロードだけする状態にしてもいいかもしれない。&lt;br&gt;
+&lt;a href=&#34;https://github.com/rstacruz/sinatra-assetpack#precompile&#34;&gt;rstacruz/sinatra-assetpack · GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ansibleで最新のMySQLをインストールする際にハマったこと。MySQL-shared-compatのこと。</title>
+      <link>https://blog.mosuke.tech/entry/2015/04/15/171127/</link>
+      <pubDate>Wed, 15 Apr 2015 17:11:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/04/15/171127/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/CentOS&#34;&gt;CentOS&lt;/a&gt; 6.5環境でAnsibleを使って最新の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;のセットアップをしようと思った際にハマったことをまとめた。&lt;br&gt;
+本質的にはAnsibleというより&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Linux&#34;&gt;Linux&lt;/a&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/RPM&#34;&gt;RPM&lt;/a&gt;パッケージのはなし。&lt;br&gt;
+ついでに、しょっぼい&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/github&#34;&gt;github&lt;/a&gt;を公開しました。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;(1) 本記事を書くに至った経緯&lt;/h1&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Ansibleで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;を使ったサーバを構築(CentOS6.5)することになった。
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;のバージョンは5.6を採用した。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;の公式&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/rpm&#34;&gt;rpm&lt;/a&gt;をダウンロードしインストールした。
+
+&lt;ul&gt;
+&lt;li&gt;インストールしたもの：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-client, &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-devel, &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-server, &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-shared&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-sharedをインストールする際にデフォルトの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;-libsと競合&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;-libsをアンインストールし再インストール&lt;/li&gt;
+&lt;li&gt;Ansibleで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;の操作をするには&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL-python&#34;&gt;MySQL-python&lt;/a&gt;が必要なのでインストール&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL-python&#34;&gt;MySQL-python&lt;/a&gt;をインストールするにはさっきアンインストールした&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;-libsが必要…(困った)&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-shared-compatの存在に気づく&lt;/li&gt;
+&lt;li&gt;備忘録に書いておくか…&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1&gt;(2) &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-shared-compatの存在&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;-libsは多くのパッケージの依存となっており、公式のMySQL5.6をインストールすることで、&lt;br&gt;
+他のパッケージがいれられない状況となっていた。&lt;br&gt;
+そんな状況を解決するために&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-shared-compatというパッケージが用意されていた。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-shared-compatは「過去の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;バージョン向けの共有クライアントライブラリが納められているもの」だ。&lt;/p&gt;
+
+&lt;p&gt;詳細は下記参照をおすすめ。&lt;br&gt;
+&lt;a href=&#34;http://y-ken.hatenablog.com/entry/inside-of-libmysqlclient-with-mysql-shared-compat&#34;&gt;MySQL-5.5.6から仕様が変わった「MySQL-shared-compat」の中身を徹底解剖 - Y-Ken Studio&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ちなみに&#34;compat&#34;という単語がよく使われるが&#34;compatibility&#34;の略で「互換性」とかそういう意味。&lt;/p&gt;
+
+&lt;h1&gt;(3) &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Github&#34;&gt;Github&lt;/a&gt;で公開しました&lt;/h1&gt;
+
+&lt;p&gt;内容は今のところ死ぬほど薄いのだが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;をインストールするansibleを公開しました。
+&lt;a href=&#34;https://github.com/mosuke5/mysql-ansible&#34;&gt;mosuke5/mysql-ansible · GitHub&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;内容はあれだが、特徴としては、インターネット上から&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/RPM&#34;&gt;RPM&lt;/a&gt;をダウンロードしてインストールする際に、&lt;br&gt;
+Ansibleでも「ダウンロード」→「インストール」の流れを踏む人が多いが、以下のようにするとシンプルになる。&lt;br&gt;
+varsでインストールしたい&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/rpm&#34;&gt;rpm&lt;/a&gt;やその取得先を記述しておいて、task側では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/yum&#34;&gt;yum&lt;/a&gt;でnameにvarsで定義した変数を読むだけでできる。&lt;/p&gt;
+
+&lt;p&gt;role/&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;/vars/main.yml&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;mysql_url: http://ftp.jaist.ac.jp/pub/mysql/Downloads/MySQL-5.6
+mysql_ver: &amp;quot;5.6.24-1&amp;quot;
+mysql_rpms:
+  - MySQL-client-{{ mysql_ver }}.el6.x86_64.rpm
+  - MySQL-shared-compat-{{ mysql_ver }}.el6.x86_64.rpm
+  - MySQL-shared-{{ mysql_ver }}.el6.x86_64.rpm
+  - MySQL-devel-{{ mysql_ver }}.el6.x86_64.rpm
+  - MySQL-server-{{ mysql_ver }}.el6.x86_64.rpm
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;role/&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;/tasks/main.yml&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;- name: Install MySQL without MySQL-shared
+  yum: name={{ mysql_url}}/{{ item }}
+  with_items: mysql_rpms
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>SSHエージェントフォワード後に他のユーザでgit cloneする(鍵を使う)ことに関する考察</title>
+      <link>https://blog.mosuke.tech/entry/2015/04/05/212518/</link>
+      <pubDate>Sun, 05 Apr 2015 21:25:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/04/05/212518/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;のエージェントフォワードした後に、接続したユーザとは別のユーザでgit cloneしたいことがあった。&lt;br&gt;
+それについて調べていく中で学習したことや検討したことについてまとめた。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;0. 前提&lt;/h1&gt;
+
+&lt;p&gt;ローカルのPC(&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;)上で、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;を使用してCentOS7の仮想サーバ(testsv)を立ち上げている。&lt;/p&gt;
+
+&lt;p&gt;&amp;lt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;&amp;gt;&lt;br&gt;
+ローカルPC：192.168.33.1&lt;br&gt;
+仮想サーバ：192.168.33.100&lt;/p&gt;
+
+&lt;p&gt;本記事上での「git cloneする」とは、「プライベートのGit&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&#34;&gt;レポジトリ&lt;/a&gt;から&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;を利用してクローンする」ということを指す。&lt;/p&gt;
+
+&lt;h1&gt;1. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;のエージェントフォワードを利用したい理由&lt;/h1&gt;
+
+&lt;p&gt;まず、そもそもなぜ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;のエージェントフォワードをする必要があったのか。&lt;br&gt;
+最近では多くの方がご存知かつ利用していることだと思うが、仮想のサーバ上でgitを利用するときによく利用する。&lt;br&gt;
+(もちろんそれだけの用途ではありません)&lt;/p&gt;
+
+&lt;p&gt;仮想サーバを作るたびに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;の鍵を生成して、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Github&#34;&gt;Github&lt;/a&gt;等に登録するのが手間なので、&lt;br&gt;
+ローカルのPCの鍵を他のサーバへ引き継ぐことでgit clone等を可能にするのだ。&lt;/p&gt;
+
+&lt;h1&gt;2. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;エージェントフォワード利用時の挙動&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;のエージェントフォワードで利用される認証情報は、接続先サーバの/tmp以下に保存されます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[myuser@localpc ~]$ ssh -A vagrant@192.168.33.100
+Last login: Sat Apr  4 xx:xx:xx 2015 from 192.168.33.1
+[vagrant@testsv ~]$
+[vagrant@testsv ~]$ ls -l /tmp | grep ssh
+drwx------. 2 vagrant    vagrant    23  4月  4 11:35 ssh-skQVHsUCHU 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br&gt;
+また、接続ユーザには&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;_AUTH_SOCKという&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B4%C4%B6%AD%CA%D1%BF%F4&#34;&gt;環境変数&lt;/a&gt;ができ、どの認証情報を利用するか記述がされます。&lt;br&gt;
+実際に確認してみる。&lt;br&gt;
+確認方法は、envコマンドで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B4%C4%B6%AD%CA%D1%BF%F4&#34;&gt;環境変数&lt;/a&gt;一覧を表示し、そのなかで&#34;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;&#34;を含むものを&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/grep&#34;&gt;grep&lt;/a&gt;。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[vagrant@testsv ~]$ env | grep -i ssh
+SSH_AUTH_SOCK=/tmp/ssh-skQVHsUCHU/agent.9034
+SSH_CLIENT=&#39;192.168.33.1 58017 22&#39;
+SSH_CONNECTION=&#39;192.168.33.1 58017 192.168.33.100 22&#39;
+SSH_TTY=/dev/pts/0 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br&gt;
+ちなみにエージェントフォワードは、認証エージェントに登録されている&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%C8%EB%CC%A9%B8%B0&#34;&gt;秘密鍵&lt;/a&gt;を&lt;br&gt;
+ログイン先のサーバから利用できるようにする機能であり、接続元自体が変わるわけではない。&lt;br&gt;
+試しにエージェントフォワードで接続したサーバ先から、更に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;をして、その接続状況をみてみる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[myuser@localpc ~]$ ssh -A vagrant@192.168.33.100
+Last login: Sat Apr  4 xx:xx:xx 2015 from 192.168.33.1
+[vagrant@testsv ~]$ ssh -A vagrant@192.168.33.100
+Last login: Sat Apr  4 xx:xx:xx 2015 from 192.168.33.1
+[vagrant@testsv ~]$
+[vagrant@testsv ~]$ w
+ 11:50:17 up  1:55,  2 users,  load average: 0.00, 0.01, 0.05
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+vagrant  pts/0    192.168.33.1     11:35    1.00s  0.04s  0.01s ssh -A vagrant@192.168.33.100
+vagrant  pts/1    192.168.33.100   11:50    1.00s  0.01s  0.00s w 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;wコマンドの結果の3行目のFROMをみるとわかるが、接続元が変わるわけではない。&lt;/p&gt;
+
+&lt;h1&gt;3. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;エージェントフォワードで接続後にrootユーザでgit cloneする&lt;/h1&gt;
+
+&lt;p&gt;例えば、rootでしかアクセスできないディレクトリにgit cloneしたいと思い、&lt;br&gt;
+以下のようにsudoをつけてgit cloneしてみる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[vagrant@testsv ~]$ sudo git clone git@xxxxx.xxx:yyyy/zzzzzz.git /root/hoge
+Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists. 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;sudoをつけてgit cloneしようとすると、エージェントフォワードしたのにアクセス権がありませんと言われてしまった。&lt;br&gt;
+なぜエージェントフォワードしたのにgit cloneできないのだろうか？&lt;/p&gt;
+
+&lt;p&gt;一般的な設定ではsudo実行すると、ユーザの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B4%C4%B6%AD%CA%D1%BF%F4&#34;&gt;環境変数&lt;/a&gt;はrootユーザへ引き継がれず、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;_AUTH_SOCKがないことがわかる。&lt;br&gt;
+sudo後に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B4%C4%B6%AD%CA%D1%BF%F4&#34;&gt;環境変数&lt;/a&gt;がどうなっているか確認してみる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[vagrant@testsv ~]$ sudo env | grep -i ssh
+　(なにも表示されない) 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br&gt;
+sudo実行しても、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;_AUTH_SOCKを引き継ぎたい！&lt;br&gt;
+実はsudoで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B4%C4%B6%AD%CA%D1%BF%F4&#34;&gt;環境変数&lt;/a&gt;を引き継ぐ方法がある。-Eのオプションを付けると&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B4%C4%B6%AD%CA%D1%BF%F4&#34;&gt;環境変数&lt;/a&gt;を引き継ぐことが可能だ。&lt;br&gt;
+以下のように&lt;code&gt;sudo -E&lt;/code&gt;とすると...&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[vagrant@testsv ~]$ sudo -E env | grep -i ssh
+SSH_CLIENT=192.168.33.100 60051 22
+SSH_TTY=/dev/pts/1
+SSH_AUTH_SOCK=/tmp/ssh-qhGLsXBURp/agent.9113
+SSH_CONNECTION=192.168.33.100 60051 192.168.33.100 22 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br&gt;
+&lt;code&gt;sudo -E&lt;/code&gt;で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B4%C4%B6%AD%CA%D1%BF%F4&#34;&gt;環境変数&lt;/a&gt;が引き継げ、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;_AUTH_SOCKが引き継げるので、-Eをつけてsudo git cloneをトライする。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[vagrant@testsv ~]$ sudo -E git clone git@xxxxx.xxx:yyyy/zzzzzz.git /root/hoge
+Cloning into &#39;zzzzzz&#39;...
+remote: Counting objects: 27, done.
+remote: Compressing objects: 100% (26/26), done.
+remote: Total 27 (delta 13), reused 0 (delta 0)
+Receiving objects: 100% (27/27), done.
+Resolving deltas: 100% (13/13), done.
+Checking connectivity... done. 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;予想通り成功しました！&lt;/p&gt;
+
+&lt;h3&gt;(余談) suもsudoと同じ考え方ができる&lt;/h3&gt;
+
+&lt;p&gt;sudoだけではなくsuでのユーザ切り替えについても同じことが言える。&lt;br&gt;
+rootユーザへ切り替えるとき、よく&lt;code&gt;su -&lt;/code&gt;とハイフンをつけると思う。&lt;br&gt;
+ハイフンをつけると、ログインシェルを使用してユーザを切り替えるので、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B4%C4%B6%AD%CA%D1%BF%F4&#34;&gt;環境変数&lt;/a&gt;の引き継ぎは行われない。&lt;/p&gt;
+
+&lt;h1&gt;4. rootユーザでない他のユーザでgit cloneする&lt;/h1&gt;
+
+&lt;p&gt;続いて、rootユーザではない別の一般ユーザでのgit cloneについて考える。&lt;br&gt;
+rootユーザの時と同じ要領で、sudoコマンドを利用しotheruserという別のユーザでgit cloneをしてみる。&lt;/p&gt;
+
+&lt;p&gt;まずは、sudoコマンドでは-uでユーザの指定ができるので、otheruserに切り替えた際の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B4%C4%B6%AD%CA%D1%BF%F4&#34;&gt;環境変数&lt;/a&gt;をみてみる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[vagrant@testsv ~]$ sudo -E -u otheruser env | grep -i ssh
+SSH_CLIENT=192.168.33.100 60051 22
+SSH_TTY=/dev/pts/1
+SSH_AUTH_SOCK=/tmp/ssh-qhGLsXBURp/agent.9113
+SSH_CONNECTION=192.168.33.100 60051 192.168.33.100 22 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br&gt;
+rootの時と同様で予想通りな感じ。
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;_AUTH_SOCKも引き継げているし、git clone可能だと思い以下を実行すると。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo -E -u otheruser git clone git@xxxxx.xxx:yyyy/zzzzzz.git /home/otheruser
+Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists. 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br&gt;
+rootユーザの時とは異なってgit cloneは不可…&lt;/p&gt;
+
+&lt;p&gt;でも理由はいたって簡単。&lt;br&gt;
+/tmp以下に保存されている認証情報は、所有者は接続したユーザで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A1%BC%A5%DF%A5%C3%A5%B7%A5%E7%A5%F3&#34;&gt;パーミッション&lt;/a&gt;は600なのだ。&lt;br&gt;
+つまり、otheruserではこの認証情報は読みこめないのである。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[vagrant@testsv ~]$ ls -l /tmp | grep ssh
+drwx------. 2 vagrant    vagrant    23  4月  4 11:35 ssh-skQVHsUCHU 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;重要な情報なので、アクセス権は妥当ですよね。&lt;br&gt;
+試しにアクセス権を変えてみるとgit cloneは可能だ。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[vagrant@testsv ~]$ chmod -R 777 /tmp/ssh-skQVHsUCHU
+[vagrant@testsv ~]$ sudo -E -u otheruser git clone git@xxxxx.xxx:yyyy/zzzzzz.git /home/otheruser
+Cloning into &#39;zzzzzz&#39;...
+remote: Counting objects: 27, done.
+remote: Compressing objects: 100% (26/26), done.
+remote: Total 27 (delta 13), reused 0 (delta 0)
+Receiving objects: 100% (27/27), done.
+Resolving deltas: 100% (13/13), done.
+Checking connectivity... done. 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;5. まとめ&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;のエージェントフォワードした際の動きと、重要な観点については抑えられた。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;エージェントフォワードの仕組みを見ていくことで、&lt;br&gt;
+うかつにエージェントフォワードは利用してはいけない理由も見えてきた。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;また、本題の「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;エージェントフォワード後に、接続したユーザとは別のユーザでgit cloneしたい」だが、
+そもそもそういうことをすることはNGということらしい。&lt;br&gt;
+別のもっと賢い方法を考えろってことのようでした。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クラウド上でのWordPressのスケールアウトを考える &middot; Goldstine研究所</title>
+
+    <meta name="description" content=" 複数台サーバでのWordPressの構築・運用について考える。 実際に、とあるクラウドで分散環境のWordPressを構築したのでその知見をまとめる。 なるべく特定のクラウドに特価しないものとして記載したい。  やりたいこと   スケール">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="クラウド上でのWordPressのスケールアウトを考える &middot; Goldstine研究所">
+    <meta name="twitter:description" content=" 複数台サーバでのWordPressの構築・運用について考える。 実際に、とあるクラウドで分散環境のWordPressを構築したのでその知見をまとめる。 なるべく特定のクラウドに特価しないものとして記載したい。  やりたいこと   スケール">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="クラウド上でのWordPressのスケールアウトを考える &middot; Goldstine研究所">
+    <meta property="og:description" content=" 複数台サーバでのWordPressの構築・運用について考える。 実際に、とあるクラウドで分散環境のWordPressを構築したのでその知見をまとめる。 なるべく特定のクラウドに特価しないものとして記載したい。  やりたいこと   スケール">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">04 Jan 2017, 22:35</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2017/01/04/223544/" class="post-title">クラウド上でのWordPressのスケールアウトを考える</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-WordPress" href="https://blog.mosuke.tech/categories/wordpress">WordPress</a><a class="post-category post-category-クラウド" href="https://blog.mosuke.tech/categories/%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89">クラウド</a><a class="post-category post-category-AWS" href="https://blog.mosuke.tech/categories/aws">AWS</a><a class="post-category post-category-Alibaba Cloud" href="https://blog.mosuke.tech/categories/alibaba-cloud">Alibaba Cloud</a><a class="post-category post-category-分散" href="https://blog.mosuke.tech/categories/%E5%88%86%E6%95%A3">分散</a><a class="post-category post-category-スケールアウト" href="https://blog.mosuke.tech/categories/%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%AB%E3%82%A2%E3%82%A6%E3%83%88">スケールアウト</a>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p><body>
+<p>複数台サーバでの<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>の構築・運用について考える。<br>
+実際に、とある<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9">クラウド</a>で分散環境の<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>を構築したのでその知見をまとめる。<br>
+なるべく特定の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9">クラウド</a>に特価しないものとして記載したい。</p></p>
+
+<h1>やりたいこと</h1>
+
+<ul>
+<li>スケールアウトできる<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>環境を作る</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSL">SSL</a>に対応する</li>
+<li>HTTP/2に対応する</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/AWS">AWS</a>などの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9">クラウド</a>環境で構築する</li>
+</ul>
+
+<h1><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3">アーキテクチャ</a></h1>
+
+<p>まず先に全体の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3">アーキテクチャ</a>図から示す。<br>
+これから各項目について解説していく。</p>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170104/20170104185455.png" alt="f:id:mosuke5:20170104185455p:plain" title="f:id:mosuke5:20170104185455p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<h1>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSL">SSL</a>・HTTP/2への対応</h1>
+
+<p>まず<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSL">SSL</a>への対応だが、通常ならばロードバランサを<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSL">SSL</a>の終端とし下記のような構成にすることが多いだろう。<br>
+この場合はロードバランサをL7のものとして稼働させる。</p>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170104/20170104190001.png" alt="f:id:mosuke5:20170104190001p:plain" title="f:id:mosuke5:20170104190001p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<p>しかし、HTTP/2に対応しようと思うと事情は異なってくる。<br>
+（もちろん、最近では<a class="keyword" href="http://d.hatena.ne.jp/keyword/AWS">AWS</a>のALBのようにHTTP/2に対応する製品がでてきているのは承知だが。）<br>
+現在の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9">パブリッククラウド</a>で利用できるロードバランサの多くはまだHTTP/2に対応していない。<br>
+そのため、ロードバランサをL4として稼働させ、配下のWebサーバにてHTTP/2を処理する必要がでてくる。<br>
+この場合、ロードバランサは<a class="keyword" href="http://d.hatena.ne.jp/keyword/TCP">TCP</a>でポート443を待ち受けるようにし、配下のWebサーバへポート443のままでフォワードすればいい。</p>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170104/20170104185953.png" alt="f:id:mosuke5:20170104185953p:plain" title="f:id:mosuke5:20170104185953p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9">クラウド</a>環境ではWebサーバがスケールすることは前提にいれることがおおい。<br>
+そのため、この場合の<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSL%BE%DA%CC%C0%BD%F1">SSL証明書</a>はN台に対応した製品を買う必要がある。<br>
+例えば以下のような製品など。</p>
+
+<ul>
+<li><a href="https://www.cybertrust.ne.jp/sureserver/productinfo/cloud.html">SureServer for クラウド｜Cybertrust.ne.jp</a></li>
+</ul>
+
+<h1>データベースの分離</h1>
+
+<p>分散環境での<a class="keyword" href="http://d.hatena.ne.jp/keyword/Wordpress">Wordpress</a>では共通したコンテンツを配信するため、データベースはもちろんWebサーバとは分離したほうがいい。<br>
+それぞれのWebサーバは共通のデータベースを見に行くべきだ。<br>
+データベースを自前で<a class="keyword" href="http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD">冗長化</a>しても構わないが、それなりの運用コストがかかることは容易に想像がつくので、<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9">クラウド</a>のマネージドデータベースサービスを利用した。</p>
+
+<ul>
+<li><a href="https://aws.amazon.com/jp/rds/">Amazon RDS（クラウドでのリレーショナルデータベースサービス） | AWS</a></li>
+<li><a href="https://jp.aliyun.com/product/apsaradb-for-rds">ApsaraDB for RDS - データベースホスティング | Alibaba Cloud</a></li>
+</ul>
+
+<h1>管理画面</h1>
+
+<p>管理画面のみを分離する<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3">アーキテクチャ</a>も考えられるが、ここではそうしないこととする。<br>
+管理画面へのログインセッションの保持は、別途KVS(Redisや<a class="keyword" href="http://d.hatena.ne.jp/keyword/Memcached">Memcached</a>)に保存してもいいと思う。<br>
+ですが、WordPress4.0以降ではデフォルトでは<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>へセッションを保存するので必須の対応ではないといえる。</p>
+
+<p><iframe src="//hatenablog-parts.com/embed?url=https%3A%2F%2Fgithub.com%2FWordPress%2FWordPress%2Fblob%2Fdd6da701b286579819cd6aa518aa2d7018efd759%2Fwp-includes%2Fclass-wp-user-meta-session-tokens.php" title="WordPress/WordPress" class="embed-card embed-webcard" scrolling="no" frameborder="0" style="display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;"></iframe><cite class="hatena-citation"><a href="https://github.com/WordPress/WordPress/blob/dd6da701b286579819cd6aa518aa2d7018efd759/wp-includes/class-wp-user-meta-session-tokens.php">github.com</a></cite></p>
+
+<h1>記事で使うアップロード画像などの対応</h1>
+
+<p>管理画面から記事を投稿するとする。<br>
+記事のデータはデータベースに保存されるためどのWebサーバからも記事を参照できる。<br>
+しかし、記事に含まれる画像データはどうだろうか。</p>
+
+<p>通常の<a class="keyword" href="http://d.hatena.ne.jp/keyword/Wordpress">Wordpress</a>では管理画面サーバの<code>/wp-content/uploads</code>以下に画像を保存する。<br>
+複数台Webサーバがある状態で、たまたまアクセスしているサーバに画像を保存しても、他のサーバからは参照することができない。</p>
+
+<p>これに対するソリューションはいくつかあるだろう。<br>
+例えば、<a class="keyword" href="http://d.hatena.ne.jp/keyword/rsync">rsync</a>などを使って他のサーバと画像ファイルを同期するとか、画像用のストレージを用意し<a class="keyword" href="http://d.hatena.ne.jp/keyword/NFS">NFS</a>で参照するとか。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD">冗長化</a>の観点からもここはオブジェクトストレージのサービスを利用するのがいいだろう。</p>
+
+<p>例えば、下記のような製品だ。</p>
+
+<ul>
+<li><a href="https://aws.amazon.com/jp/s3/">Amazon S3 (スケーラブルなクラウドストレージサービス ) | AWS</a></li>
+<li><a href="https://jp.aliyun.com/product/oss">Object Storage Service (OSS) - Alibaba Cloud の拡張性に優れた安全なクラウドストレージ | Alibaba Cloud</a></li>
+</ul>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9">クラウド</a>のオブジェクトストレージと<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>を連携する<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%B0%A5%A4%A5%F3">プラグイン</a>は多く出ている。</p>
+
+<ul>
+<li><a href="https://wordpress.org/plugins/nephila-clavata/">Nephila clavata — WordPress Plugins</a></li>
+</ul>
+
+<h1>デプロイへの対応</h1>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Wordpress">Wordpress</a>のコードのデプロイ、Webサーバの設定変更などにどう対応するか。<br>
+ツールはなんでもいいが（<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B7%A5%A7%A5%EB%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">シェルスクリプト</a>でもいいし、Ansible,Chefなどでも）、<br>
+デプロイツールなど用いて全台サーバにデプロイできるようにしておくといいだろう。あたりまえ。<br>
+影響の大きいデプロイをするときは<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC">ロードバランサー</a>から切り離してデプロイ、テストとやるといいと思う。<br>
+あるいは、新しく構築（デプロイ）した別のWebサー<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D0%A5%A4">バイ</a>ンスタンスを用意し、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC">ロードバランサー</a>で向き先を変更してもいい。</p>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC">ロードバランサー</a>配下のWebサーバはプライベートネットワークに配置しておりインターネットから直接アクセスできない。<br>
+そのため、デプロイサーバを用意することでデプロイできるようにした。<br>
+あるいは、踏み台サーバを用意して、多段<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>を使ってもいいかもしれない。</p>
+
+<h1>さいごに</h1>
+
+<p><p>他にも、工夫した点などはあるが、<a class="keyword" href="http://d.hatena.ne.jp/keyword/WordPress">WordPress</a>のスケールアウトという点に絞って簡単にまとめた。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/OSS">OSS</a>の利用は簡単だが、そのスケールや<a class="keyword" href="http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD">冗長化</a>は毎度悩まさせると感じる。<br>
+以前もGitlabを運用してた時に<a class="keyword" href="http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD">冗長化</a>をどうするか考えていたのを思い出す。</p>
+</body></p>
+
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label-counter" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+                            <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3a%2f%2fblog.mosuke.tech%2fentry%2f2017%2f01%2f04%2f223544%2f&layout=button_count&size=small&mobile_iframe=true&appId=1383467145023614&width=90&height=20" width="90" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

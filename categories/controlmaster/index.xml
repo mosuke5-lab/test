@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Controlmaster on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/controlmaster/</link>
+    <description>Recent content in Controlmaster on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 01 Dec 2015 18:13:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/controlmaster/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Ansible、実行速度高速化の実験。ControlMasterとPipeliningについて</title>
+      <link>https://blog.mosuke.tech/entry/2015/12/01/181304/</link>
+      <pubDate>Tue, 01 Dec 2015 18:13:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/12/01/181304/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;h1&gt;1. はじめに&lt;/h1&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryの開発や、仕事などでAnsibleを使うことが多いのだが、&lt;br&gt;
+その実行速度があまりでないことに不満をもっていて、どうしたら早くできるか考えていました。&lt;br&gt;
+調べると、ControlMasterを利用して&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;のコネクションを再利用するとか、pipelineの機能を利用するとかでてくる。&lt;/p&gt;
+
+&lt;p&gt;が、それによってどのくらいの効果が得られるのかよくわからないし、仕組みもよくわかっていなかったので、仕組みの理解と実行速度の実験をした。&lt;/p&gt;
+
+&lt;p&gt;もう少し余談をすると、&lt;br&gt;
+ControlMasterを有効にすれば早くなることは前から知っていたが、&lt;br&gt;
+最近&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;をEl Capitanに変えてから「なんか最近Ansibleはやいな〜」とか思っていて、&lt;br&gt;
+「OpenSSHのバージョンもあがったし、まさか。。。」と思って今にいきついている。&lt;/p&gt;
+
+&lt;h2&gt;ControlMasterについて&lt;/h2&gt;
+
+&lt;blockquote&gt;&lt;p&gt;OpenSSH は、1 つの接続で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4&#34;&gt;複数&lt;/a&gt;のセッションを共有する(束ねる)「コントロール マスター」と呼ばれる機能を持っています。コントロールマスターを使用すると、 &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EA%A5%E2%A1%BC%A5%C8%A5%DB%A5%B9%A5%C8&#34;&gt;リモートホスト&lt;/a&gt;に接続する最初のセッションは制御用のセッション(マスターセッショ ンと呼ばれます)として利用され、制御用のソケットを作成します。セッションを 共有する &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt; クライアントは、この制御用のソケットを通じて&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EA%A5%E2%A1%BC%A5%C8%A5%DB%A5%B9%A5%C8&#34;&gt;リモートホスト&lt;/a&gt;と 接続し通信を行います。&lt;br&gt;
+出典：「&lt;a href=&#34;http://www.amazon.co.jp/OpenSSH-%E5%AE%9F%E8%B7%B5-Software-Design-plus/dp/4774168076&#34;&gt;OpenSSH実践入門&lt;/a&gt;」&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;上記のように、１つの接続で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4&#34;&gt;複数&lt;/a&gt;のセッションを共有するため、&lt;br&gt;
+Ansibleのようにタスク実行ごとに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;接続するような場合には大きな効果を得ることができる。&lt;/p&gt;
+
+&lt;h2&gt;Pipeliningについて&lt;/h2&gt;
+
+&lt;p&gt;Pipelining機能の説明の前に、軽くAnsibleの実行までの流れを説明する。&lt;br&gt;
+Ansibleは対象サーバに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;ログインしたあと実行するタスクのモジュールをファイルとして転送しそれを実行する。&lt;br&gt;
+Pipelining機能をなしの状態だと、このファイル転送とファイルの削除を１タスクごとに行う。&lt;/p&gt;
+
+&lt;p&gt;ansibleを&lt;code&gt;-vvvv&lt;/code&gt;オプションをつけて実行するとわかるが、&lt;br&gt;
+４行目でファイルの&lt;code&gt;PUT&lt;/code&gt;（転送）を、５行目の最後の方に&lt;code&gt;rm -rf&lt;/code&gt;でディレクトリ・ファイルの削除を行っている。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;192.168.33.100&amp;gt; ESTABLISH CONNECTION FOR USER: deploy
+&amp;lt;192.168.33.100&amp;gt; REMOTE_MODULE command ls -l /root
+&amp;lt;192.168.33.100&amp;gt; EXEC ssh -C -tt -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&amp;quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&amp;quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=user -o ConnectTimeout=10 192.168.33.100 /bin/sh -c &#39;mkdir -p $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321 &amp;amp;&amp;amp; chmod a+rx $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321 &amp;amp;&amp;amp; echo $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321&#39;
+&amp;lt;192.168.33.100&amp;gt; PUT /var/folders/7_/d_dwdlcx1m95mn_846x30xb40000gn/T/tmpc8amAw TO /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/command
+&amp;lt;192.168.33.100&amp;gt; EXEC ssh -C -tt -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&amp;quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&amp;quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=user -o ConnectTimeout=10 192.168.33.100 /bin/sh -c &#39;sudo -k &amp;amp;&amp;amp; sudo -E -S -p &amp;quot;[sudo via ansible, key=koibtlgpbiprbaihcqxiqgcnnreofxuo] password: &amp;quot; -u root /bin/sh -c &#39;&amp;quot;&#39;&amp;quot;&#39;echo BECOME-SUCCESS-koibtlgpbiprbaihcqxiqgcnnreofxuo; LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8 /usr/bin/python /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/command; rm -rf /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/ &amp;gt;/dev/null 2&amp;gt;&amp;amp;1&#39;&amp;quot;&#39;&amp;quot;&#39;&#39; 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Pipiliningの機能を有効にすると、タスク実行ごとのモジュールファイルの転送と削除をしなくなる。&lt;br&gt;
+そのため、実効速度があがるのです。&lt;/p&gt;
+
+&lt;p&gt;下記はPipeliningを有効にした際の出力。&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;でタスクを実行しているだけなのがわかる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;192.168.33.100&amp;gt; ESTABLISH CONNECTION FOR USER: deploy
+&amp;lt;192.168.33.100&amp;gt; REMOTE_MODULE command ls -l /root
+&amp;lt;192.168.33.100&amp;gt; EXEC ssh -C -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&amp;quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&amp;quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=deploy -o ConnectTimeout=10 192.168.33.100 /bin/sh -c &#39;sudo -k &amp;amp;&amp;amp; sudo -E -S -p &amp;quot;[sudo via ansible, key=kjtoopnjepksibiitumqfycsoldadiws] password: &amp;quot; -u root /bin/sh -c &#39;&amp;quot;&#39;&amp;quot;&#39;echo BECOME-SUCCESS-kjtoopnjepksibiitumqfycsoldadiws; LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8 /usr/bin/python&#39;&amp;quot;&#39;&amp;quot;&#39;&#39; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://docs.ansible.com/ansible/intro_configuration.html#pipelining&#34;&gt;Configuration file — Ansible Documentation&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;2. 実験方法&lt;/h1&gt;
+
+&lt;p&gt;下記の３パターンでどれだけ実行速度に差があるか確認してみた。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;① ControlMaster: &lt;b&gt;無効&lt;/b&gt; ＆ pipeline: &lt;b&gt;無効&lt;/b&gt;
+&lt;/li&gt;
+&lt;li&gt;② ControlMaster: &lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;有効&lt;/span&gt;&lt;/b&gt; ＆ pipeline: &lt;b&gt;無効&lt;/b&gt;
+&lt;/li&gt;
+&lt;li&gt;③ ControlMaster: &lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;有効&lt;/span&gt;&lt;/b&gt; ＆ pipeline: &lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;有効&lt;/span&gt;&lt;/b&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;実行環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;クライアント
+
+&lt;ul&gt;
+&lt;li&gt;ハードウェア：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MacBook%20Air&#34;&gt;MacBook Air&lt;/a&gt; (13-inch, Mid 2012)&lt;/li&gt;
+&lt;li&gt;プロセッサ：1.8 GHz &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Intel&#34;&gt;Intel&lt;/a&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Core%20i5&#34;&gt;Core i5&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;メモリ：4 GB 1600 MHz DDR3&lt;/li&gt;
+&lt;li&gt;OS：El Capitan&lt;/li&gt;
+&lt;li&gt;OpenSSH：OpenSSH_6.9p1, LibreSSL 2.1.7&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;サーバ
+
+&lt;ul&gt;
+&lt;li&gt;ハードウェア：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;による仮想環境。メモリ１GB。&lt;/li&gt;
+&lt;li&gt;OS： &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/CentOS&#34;&gt;CentOS&lt;/a&gt; 7.0&lt;/li&gt;
+&lt;li&gt;ネットワーク：プライベートの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;をふっています&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;実行タスク&lt;/h2&gt;
+
+&lt;p&gt;ネットワーク環境やタスクの実行時間に左右されないように、&lt;br&gt;
+&lt;code&gt;ls -l /&lt;/code&gt;を実行するタスクを300個用意した。&lt;/p&gt;
+
+&lt;h2&gt;設定&lt;/h2&gt;
+
+&lt;p&gt;ansible.cfgを下記のように書いてためした。&lt;/p&gt;
+
+&lt;p&gt;① ControlMaster: &lt;b&gt;無効&lt;/b&gt; ＆ pipeline: &lt;b&gt;無効&lt;/b&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[defaults]
+transport = ssh
+
+[ssh_connection]
+pipeline = false
+ssh_args = -o ControlMaster=no 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;② ControlMaster: &lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;有効&lt;/span&gt;&lt;/b&gt; ＆ pipeline: &lt;b&gt;無効&lt;/b&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[defaults]
+transport = ssh
+
+[ssh_connection]
+pipeline = false
+ssh_args = -o ControlMaster=auto -o ControlPersist=300s 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;③ ControlMaster: &lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;有効&lt;/span&gt;&lt;/b&gt; ＆ pipeline: &lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;有効&lt;/span&gt;&lt;/b&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[defaults]
+transport = ssh
+
+[ssh_connection]
+pipeline = true
+ssh_args = -o ControlMaster=auto -o ControlPersist=300s 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;実行コマンド&lt;/h2&gt;
+
+&lt;p&gt;実行時間を図るために、下記のようにコマンドを実行した。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ date; ansible-playbook site.yml ; date
+※ansible-playbookコマンドは環境に合わせてオプションとかつけてください。 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;3. 結果&lt;/h1&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt; ControlMaster &lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt; Pipelining &lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt; 実行時間 &lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; ✕       &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;        ✕ &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;     6分38秒    &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; ◯       &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;        ✕&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;     1分31秒   &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt; ◯       &lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;        ◯&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;     &lt;span style=&#34;color: #ff0000&#34;&gt;&lt;b&gt;52秒&lt;/b&gt;&lt;/span&gt;   &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;p&gt;結果は明らかでした。&lt;br&gt;
+実際の環境ではタスクの実行時間などがあるため、この数字のように6倍はやくなるとかそういうことではないが、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EA%A5%E2%A1%BC%A5%C8%A5%DB%A5%B9%A5%C8&#34;&gt;リモートホスト&lt;/a&gt;への接続回数が多くなればなるほど大きな差が生まれそうです。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

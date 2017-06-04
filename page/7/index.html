@@ -1,0 +1,1189 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goldstine研究所 &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Goldstine研究所 &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Goldstine研究所 &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                
+                <h1 class="content-subhead">15 Sep 2014, 13:56</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/09/15/135611/" class="post-title">D3.js、DBからのデータ連携方法の検討</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-D3.js" href="https://blog.mosuke.tech/categories/d3.js">D3.js</a><a class="post-category post-category-Sinatra" href="https://blog.mosuke.tech/categories/sinatra">Sinatra</a><a class="post-category post-category-Ruby" href="https://blog.mosuke.tech/categories/ruby">Ruby</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>最近D3.jsを使う機会があり、DBのデータを読み込ませる方法についていくつか検討した。<br>
+例えば以下の状況を考える。<br>
+【やりたいこと】<br>
+「DBに格納されているデータを使って、D3.jsで折れ線グラフを描く」</p>
+<p>【DBの構造】<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AB%A5%E9%A5%E0%CC%BE">カラム名</a>：型<br>
+　date : datetime<br>
+　value : int</p>
+<p>※また、下記では<a class="keyword" href="http://d.hatena.ne.jp/keyword/Sinatra">Sinatra</a>上で行っているが、他の言語でも同様のことがいえる。</p></p>
+
+<p><div class="section">
+    <h3>(1) 簡単な<a class="keyword" href="http://d.hatena.ne.jp/keyword/API">API</a>のようなものを利用する</h3>
+    <p>先に結論から書くと、今まで次の(2)(3)のようなやりかたをやっていたのだけれど、<br>
+これが一番複雑にならずに良いと思ったということ。</p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Sinatra">Sinatra</a>側で/<a class="keyword" href="http://d.hatena.ne.jp/keyword/csv">csv</a>にアクセスすると<a class="keyword" href="http://d.hatena.ne.jp/keyword/csv">csv</a>ファイルをダウンロードできるようにする。</p>
+```ruby
+#Sinatra側
+get &lsquo;/csv&rsquo; do
+    content_type &lsquo;application/csv&rsquo;
+    attachment &lsquo;download.csv&rsquo;</p>
+
+<pre><code>#DBからデータ取得(Activerecord利用)
+@data   = Model.all()
+
+#出力するCSVデータの変数。csvヘッダーを先につけている。
+@csv = &quot;date,value\n&quot;
+
+#DBのデータをCSVの形にして格納
+@data.each do |d|
+    @csv += d.date.to_s + &quot;,&quot; + d.value.to_s + &quot;\n&quot;
+end
+
+#csvtest.erbというビューに出力
+erb :csvtest, :layout =&gt; false
+</code></pre>
+
+<p>end</p>
+
+<pre><code>&lt;p&gt;csvtest.erb&lt;/p&gt;
+```ruby
+&lt;%= @csv %&gt;
+</code></pre>
+
+<p>こうすることで"<a href="http://*****/csv">http://*****/csv</a>"にアクセスすると<a class="keyword" href="http://d.hatena.ne.jp/keyword/csv">csv</a>ファイルとしてダウンロードできる状態になる。<br>
+条件指定をしてデータをダウンロードできるようにしたい場合はGETでパラメータ指定できるようにすれば良いと思う。<br>
+（<a class="keyword" href="http://d.hatena.ne.jp/keyword/Sinatra">Sinatra</a>で<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSV">CSV</a>ファイルを生成するところのコードがナンセンスだと思っているので、もっといい方法があるはず…）</p>
+<p>また、今回は<a class="keyword" href="http://d.hatena.ne.jp/keyword/csv">csv</a>にしているが<a class="keyword" href="http://d.hatena.ne.jp/keyword/json">json</a>などの他の形式でも同様のことがいえる。</p>
+<p>これをD3.js側で以下のように読み込ませる。</p>
+
+<pre><code class="language-javascript">d3.csv(&quot;/csv&quot;, function(error, data) {
+    (中略)
+}
+</code></pre>
+
+<p>d3.jsの<a class="keyword" href="http://d.hatena.ne.jp/keyword/csv">csv</a>を読み込ませる関数の引数にURLを指定してあげればそれで終了。</p>
+
+<p></div>
+<div class="section">
+    <h3>(2) <a class="keyword" href="http://d.hatena.ne.jp/keyword/javascript">javascript</a>コードの中で<a class="keyword" href="http://d.hatena.ne.jp/keyword/Ruby">Ruby</a>変数を展開させる</h3>
+    <p>d3.jsのdatasetの中で<a class="keyword" href="http://d.hatena.ne.jp/keyword/Ruby">Ruby</a>の変数を展開させる。ビューに<a class="keyword" href="http://d.hatena.ne.jp/keyword/Javascript">Javascript</a>を書いているので、ビューの中で変数展開するのと同じ要領。<br>
+しかし、jsコードに<a class="keyword" href="http://d.hatena.ne.jp/keyword/Ruby">Ruby</a>コードも交じるので複雑になりがち。</p>
+```javascript
+var dataset = [
+&lt;% @data.each do |d| %&gt;
+    {date:&lt;%= d.date%&gt;, value:&lt;%= d.value %&gt;},
+&lt;% end %&gt;
+];</p>
+
+<pre><code>&lt;/div&gt;
+&lt;div class=&quot;section&quot;&gt;
+    &lt;h3&gt;(3) &lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/CSV&quot;&gt;CSV&lt;/a&gt;ファイルをおいておく&lt;/h3&gt;
+    &lt;p&gt;こちらはリアルタイムな更新でなれけばこれはこれでありだと思う。&lt;br&gt;
+publicのフォルダに予め&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/csv&quot;&gt;csv&lt;/a&gt;ファイルを設置しておき、以下のようにd3.jsで読み込ませる。&lt;/p&gt;
+
+```javascript
+d3.csv(&quot;test.csv&quot;, function(error, data) {
+    (中略)
+}
+</code></pre>
+
+<p></div>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">13 Sep 2014, 21:44</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/09/13/214414/" class="post-title">2014/8/2 Arduino会を実施の報告</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>2014年8月2日(土)に大学時代の研究室の同期・後輩を巻き込んで<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>勉強会を行った。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>をほとんど触ったことのないメンバーで実施したのだが、初心者でもプロダクトを作り上げられるところまでできた。<br>
+その勉強会の簡単な資料を掲載。</p>
+<p><script async class="speakerdeck-embed" data-id="04fb75c01d710132f325123486985575" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script></p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">13 Sep 2014, 11:15</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/09/13/111537/" class="post-title">【Ethernetシールド】Arduinoをネットワークへ繋げる(1)</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Arduino" href="https://blog.mosuke.tech/categories/arduino">Arduino</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Ethernet">Ethernet</a>シールドを使ってネットワークへ繋げる。<br>
+とりあえずは、スモールステップでPCとの1対1の通信。</p></p>
+
+<p><div class="section">
+    <h3>PCとの1対1通信</h3>
+    <p>構成図<br>
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140907/20140907231747.png" alt="f:id:mosuke5:20140907231747p:plain" title="f:id:mosuke5:20140907231747p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9">ソースコード</a></p></p>
+
+<pre><code class="language-c">#include &lt;SPI.h&gt;
+#include &lt;Ethernet.h&gt;
+
+byte MAC[] = {0x90,0xA2,0xDA,0x0F,0x8B,0xA2};
+byte IP[]  = {192,168,11,3};
+
+void setup()
+{
+  Ethernet.begin(MAC,IP);
+}
+
+void loop()
+{
+}
+</code></pre>
+
+<p>疎通確認</p>
+<<<<<<< HEAD
+<pre class="code" data-lang="" data-unlink>
+=======
+
+```
+>>>>>>> 4f3b2c72e32161441359f6d2116c410a27a8faaf
+% ping 192.168.100.3
+PING 192.168.100.3 (192.168.100.3): 56 data bytes
+Request timeout for icmp_seq 0
+64 bytes from 192.168.100.3: icmp_seq=1 ttl=128 time=0.576 ms
+64 bytes from 192.168.100.3: icmp_seq=2 ttl=128 time=0.425 ms
+64 bytes from 192.168.100.3: icmp_seq=3 ttl=128 time=0.302 ms 
+```
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Ping">Ping</a>確認ヨシ!!</p>
+<p>一応<a class="keyword" href="http://d.hatena.ne.jp/keyword/ARP">ARP</a>テーブルを見ておく。</p>
+<<<<<<< HEAD
+<pre class="code" data-lang="" data-unlink>
+=======
+
+```
+>>>>>>> 4f3b2c72e32161441359f6d2116c410a27a8faaf
+% arp -a
+? (192.168.100.3) at 90:a2:da:f:8b:a2 on en4 ifscope [ethernet]
+? (192.168.100.255) at ff:ff:ff:ff:ff:ff on en4 ifscope [ethernet] 
+```
+<p>マックアドレスの取得もヨシ!!</p>
+
+<p></div>
+<div class="section">
+    <h3>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/DHCP">DHCP</a>を使って家内LAN接続</h3>
+    <p>実運用では<a class="keyword" href="http://d.hatena.ne.jp/keyword/DHCP">DHCP</a>を利用することが圧倒的に多いと思うが、こちらもとても簡単。</p>
+<p>構成図<br>
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140913/20140913110038.png" alt="f:id:mosuke5:20140913110038p:plain" title="f:id:mosuke5:20140913110038p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN">無線LAN</a>ルータから有線LANケーブルを伸ばし<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>に結線。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/DHCP">DHCP</a>による<a class="keyword" href="http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9">IPアドレス</a>の取得はとても容易で以下のようにマックアドレスを指定するのみ。</p>
+```
+Ethernet.begin(mac)</p>
+
+<pre><code>&lt;p&gt;以下は&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/Arduino&quot;&gt;Arduino&lt;/a&gt;公式サイトに則って実施したもの。&lt;br&gt;
+&lt;a href=&quot;http://arduino.cc/en/Tutorial/DhcpAddressPrinter&quot;&gt;Arduino - DhcpAddressPrinter&lt;/a&gt;&lt;br&gt;
+&lt;/p&gt;
+
+```c
+#include &lt;SPI.h&gt;
+#include &lt;Ethernet.h&gt;
+
+//Mac Address Static
+byte mac[] = {0x90,0xA2,0xDA,0x0F,0x8B,0xA2};
+
+void setup()
+{
+  // Open serial communications and wait for port to open:
+  Serial.begin(9600);
+
+  // start the Ethernet connection:
+  if (Ethernet.begin(mac) == 0) {
+    Serial.println(&quot;Failed to configure Ethernet using DHCP&quot;);
+    // no point in carrying on, so do nothing forevermore:
+    for(;;)
+      ;
+      
+  }
+  // print your local IP address:
+  Serial.print(&quot;My IP address: &quot;);
+  for (byte thisByte = 0; thisByte &lt; 4; thisByte++) {
+    // print the value of each byte of the IP address:
+    Serial.print(Ethernet.localIP()[thisByte], DEC);
+    Serial.print(&quot;.&quot;); 
+  }
+  Serial.println();
+}
+
+void loop()
+{
+  Serial.println(&quot;abc&quot;);
+  delay(3000);
+}
+</code></pre>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>に<a class="keyword" href="http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9">IPアドレス</a>が割り当てられたかどうか確認するには、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN">無線LAN</a>ルータにアクセスし、マックアドレスと<a class="keyword" href="http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9">IPアドレス</a>のヒモ付のテーブルをみればよい。</p>
+
+<p></div>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">21 Jul 2014, 23:19</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/07/21/231946/" class="post-title">【これだけは抑えておきたい】Arduino入門まとめ</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Arduino" href="https://blog.mosuke.tech/categories/arduino">Arduino</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>前々から<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>自体はもっていたし、ちょろっと触ったことはあったのだが、<br>
+大学時代の研究室の仲間と<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>勉強会をやることになり、それに向けて友人と再入門したのでそのときのメモ。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>入門にこれだけは知っておきたい事項をプログラム形式にまとめた。</p>
+<p>もちろん、不足部分もたくさんあるが、これだけわかれば楽しめるようになるかも。</p>
+<p>以下が入門プログラム。</p></p>
+
+<p><ol>
+<li><a href="#program1">LEDの点灯</a></li>
+<li><a href="#program2">PCとArduino間のシリアル通信</a></li>
+<li><a href="#program3">超音波距離センサの利用</a></li>
+<li><a href="#program4">超音波距離センサとLEDの組み合わせ</a></li>
+<li><a href="#program5">Processingとの連携</a></li>
+<li><a href="#program6">電池でArduinoを動作させる</a></li>
+</ol>
+<p>【用意したもの】<br>
+基本は以下の２つ</p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/B0025Y6C5G/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/518mUs-GudL._SL160_.jpg" class="hatena-asin-detail-image" alt="Arduinoをはじめようキット" title="Arduinoをはじめようキット"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B0025Y6C5G/hatena-blog-22/">Arduinoをはじめようキット</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> スイッチサイエンス</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> エレクトロニクス</li>
+<li>
+<span class="hatena-asin-detail-label">購入</span>: 64人 <span class="hatena-asin-detail-label">クリック</span>: 1,164回</li>
+<li><a href="http://d.hatena.ne.jp/asin/B0025Y6C5G/hatena-blog-22" target="_blank">この商品を含むブログ (51件) を見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00IJ02A7O/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/51s%2BQnZbv0L._SL160_.jpg" class="hatena-asin-detail-image" alt="みんなのArduino入門：拡張キット" title="みんなのArduino入門：拡張キット"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00IJ02A7O/hatena-blog-22/">みんなのArduino入門：拡張キット</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> スイッチサイエンス</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> エレクトロニクス</li>
+<li><a href="http://d.hatena.ne.jp/asin/B00IJ02A7O/hatena-blog-22" target="_blank">この商品を含むブログを見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+<p>【参考にした書籍】</p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/487311537X/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/51zFePM-naL._SL160_.jpg" class="hatena-asin-detail-image" alt="Arduinoをはじめよう 第2版 (Make:PROJECTS)" title="Arduinoをはじめよう 第2版 (Make:PROJECTS)"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/487311537X/hatena-blog-22/">Arduinoをはじめよう 第2版 (Make:PROJECTS)</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">作者:</span> Massimo Banzi,船田巧</li>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AA%A5%E9%A5%A4%A5%EA%A1%BC%A5%B8%A5%E3%A5%D1%A5%F3">オライリージャパン</a>
+</li>
+<li>
+<span class="hatena-asin-detail-label">発売日:</span> 2012/03/16</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> 単行本（ソフトカバー）</li>
+<li>
+<span class="hatena-asin-detail-label">購入</span>: 9人 <span class="hatena-asin-detail-label">クリック</span>: 27回</li>
+<li><a href="http://d.hatena.ne.jp/asin/487311537X/hatena-blog-22" target="_blank">この商品を含むブログ (10件) を見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/489797948X/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/517KqAKiwvL._SL160_.jpg" class="hatena-asin-detail-image" alt="みんなのArduino入門" title="みんなのArduino入門"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/489797948X/hatena-blog-22/">みんなのArduino入門</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">作者:</span> 高本孝頼</li>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%C3%A5%AF%A5%C6%A5%EC%A5%B3%A5%E0">リックテレコム</a>
+</li>
+<li>
+<span class="hatena-asin-detail-label">発売日:</span> 2014/02/17</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> 単行本（ソフトカバー）</li>
+<li><a href="http://d.hatena.ne.jp/asin/489797948X/hatena-blog-22" target="_blank">この商品を含むブログを見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+<p></p>
+<h2 id="program1">1. LEDの点灯</h2>まずはじめの第一歩はLEDの点灯。<br>
+これは<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>標準搭載の「スケッチの例」を利用。<br>
+　利用したスケッチ：スケッチの例⇒01.<a class="keyword" href="http://d.hatena.ne.jp/keyword/Basic">Basic</a>⇒Blink<p>LEDのプラス側を13番に、マイナス側を<a class="keyword" href="http://d.hatena.ne.jp/keyword/GND">GND</a>に挿せば完成。<br>
+<span itemscope itemtype="http://schema.org/Photograph"><a href="http://f.hatena.ne.jp/mosuke5/20140721211703" class="hatena-fotolife" itemprop="url"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140721/20140721211703.jpg" alt="f:id:mosuke5:20140721211703j:image:h200" title="f:id:mosuke5:20140721211703j:image:h200" class="hatena-fotolife" style="height:200px" itemprop="image"></a></span></p>
+<p></p>
+<h2>2. PCと<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>間のシリアル通信</h2>センサーで取得したデータ等をPC側に渡すシリアル通信。<br>
+まずは最初なので、<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>本体側で文字列を適当に出力させてそれを表示する。<p>はじめは&rdquo;<a class="keyword" href="http://d.hatena.ne.jp/keyword/hoge">hoge</a>&ldquo;だけを出力させたのだが、ひたすら<a class="keyword" href="http://d.hatena.ne.jp/keyword/hoge">hoge</a>が並ぶだけなので<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>側の処理がよく見えなかったので、<br>
+以下のサンプルのようにした。また、回路側はなにもいじっていない。</p></p>
+
+<pre><code class="language-c">int i = 0;
+
+void setup(){
+
+  //シリアル通信の宣言
+  Serial.begin(9600);
+
+}
+
+void loop(){
+
+  Serial.print(&quot;hoge&quot;);
+  Serial.println(i);
+  i++;
+  
+  delay(300);
+
+}
+</code></pre>
+
+<p>出力結果</p>
+
+<pre><code>hoge1
+hoge2
+hoge3
+ .... 
+</code></pre>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140721/20140721103544.png" alt="f:id:mosuke5:20140721103544p:plain" title="f:id:mosuke5:20140721103544p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+<p></p>
+<h2>3. 超音波距離センサの利用</h2>次のステップとしてセンサーの利用を行った。<br>
+はじめ温度センサーを利用したのだが、温度の変化は室内ではわかりづらかったので「超音波距離センサ」を利用した。<br>
+ここでは超音波距離センサを利用するが、大事なことはセンサーの種類ではなく、センサーを利用した入力である。<p>【作ったもの】<br>
+超音波距離センサにて測定した物体との距離をシリアルモニターで表示するもの。</p>
+<p>【<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9">ソースコード</a>】</p>
+
+<pre><code class="language-c">// 送信側のピン番号
+const int TRIGPIN = 8; 
+
+// 受信側のピン番号
+const int ECHOPIN = 9;
+
+// HIGHの時間（μ秒）
+const int CTM = 10;
+
+// 時間差（μ秒）
+int dur;
+
+// 距離（ｃｍ）
+float dis;
+
+void setup() {
+
+  //シリアル通信の宣言
+  Serial.begin (9600);
+  
+  pinMode(TRIGPIN, OUTPUT);
+  pinMode(ECHOPIN, INPUT); 
+
+}
+
+void loop() {
+  
+  digitalWrite(TRIGPIN, HIGH);
+  delayMicroseconds(CTM);
+  digitalWrite(TRIGPIN, LOW);
+  
+  // 超音波が物体にあたり跳ね返ってくるまでの時間を測定
+  dur = pulseIn(ECHOPIN, HIGH);
+  
+  //物体までの距離に変換
+  dis  = (float) dur*0.017;
+  
+  //シリアルモニタへ出力
+  Serial.print(dis);
+  Serial.println(&quot; cm&quot;);
+  
+  delay(500);
+  
+}
+</code></pre>
+
+<p>【回路】<br>
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140721/20140721220559.png" alt="f:id:mosuke5:20140721220559p:plain" title="f:id:mosuke5:20140721220559p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+<p></p>
+<h2>4. 超音波距離センサとLEDの組み合わせ</h2>センサーを用いいた入力方法・LEDを使った出力方法について学んだので、それらを組み合わせて以下のものを作成。<p>【作ったもの】<br>
+超音波距離センサを用いて、物体がある一定以上近づいた場合には赤LED の点灯を、<br>
+物体がある一定以上離れている場合（あるいは物体がない場合）には青LEDの点灯をするもの。</p>
+<p>【<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9">ソースコード</a>】</p>
+
+<pre><code class="language-c">// 送信側のピン番号
+const int TRIGPIN = 8; 
+
+// 受信側のピン番号
+const int ECHOPIN = 9;
+
+// HIGHの時間（μ秒）
+const int CTM = 10;
+
+// 青LED
+const int LED_BLUE = 12;
+
+// 赤LED
+const int LED_RED = 13;
+
+// 時間差（μ秒）
+int dur;
+
+// 距離（ｃｍ）
+float dis;
+
+void setup() {
+
+  // シリアル通信の宣言
+  Serial.begin (9600);
+  
+  // 超音波距離センサ
+  pinMode(TRIGPIN, OUTPUT);
+  pinMode(ECHOPIN, INPUT); 
+  
+  // LED
+  pinMode(LED_BLUE, OUTPUT);
+  pinMode(LED_RED, OUTPUT); 
+
+}
+
+void loop() {
+  
+  digitalWrite(TRIGPIN, HIGH);
+  delayMicroseconds(CTM);
+  digitalWrite(TRIGPIN, LOW);
+  
+  // 超音波が物体にあたり跳ね返ってくるまでの時間を測定
+  dur = pulseIn(ECHOPIN, HIGH);
+  
+  // 物体までの距離に変換
+  dis = (float) dur * 0.017;
+  
+  // シリアルモニタへ出力
+  Serial.print(dis);
+  Serial.println(&quot; cm&quot;);
+  
+  // 距離が50cm以上なら青LEDを光らせる
+  if(dis &lt; 50) {
+    digitalWrite(LED_BLUE,HIGH);
+    digitalWrite(LED_RED,LOW);
+  
+  // 50cm未満なら赤LEDを光らせる
+  }else{
+    digitalWrite(LED_BLUE,LOW);
+    digitalWrite(LED_RED,HIGH);
+    
+  }
+  
+  delay(500);
+  
+}
+</code></pre>
+
+<p><br>
+【回路】<br>
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140721/20140721222730.png" alt="f:id:mosuke5:20140721222730p:plain" title="f:id:mosuke5:20140721222730p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+<p></p>
+<h2>5. Processingとの連携</h2>シリアル通信で受け取ったデータをシリアルモニターで表示するだけでなく、Processingで受け取ることもできる。<br>
+Processingで受け取ったデータをとりあえず、出力するところまで実施した。<p>【<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>側】</p>
+
+<pre><code class="language-c">// 送信側のピン番号
+const int TRIGPIN = 8; 
+
+// 受信側のピン番号
+const int ECHOPIN = 9;
+
+// HIGHの時間（μ秒）
+const int CTM = 10;
+
+// 時間差（μ秒）
+int dur;
+
+// 距離（ｃｍ）
+float dis;
+
+void setup() {
+
+  //シリアル通信の宣言
+  Serial.begin (9600);
+  
+  pinMode(TRIGPIN, OUTPUT);
+  pinMode(ECHOPIN, INPUT); 
+
+}
+
+void loop() {
+  
+  digitalWrite(TRIGPIN, HIGH);
+  delayMicroseconds(CTM);
+  digitalWrite(TRIGPIN, LOW);
+  
+  // 超音波が物体にあたり跳ね返ってくるまでの時間を測定
+  dur = pulseIn(ECHOPIN, HIGH);
+  
+  //物体までの距離に変換
+  dis  = (float) dur * 0.017;
+  
+  //シリアルモニタへ出力
+  Serial.println(dis);
+  
+  delay(500);
+  
+}
+</code></pre>
+
+<p>【Processing側】</p>
+
+<pre><code class="language-c">import processing.serial.*;
+
+int val;
+Serial myPort;
+
+void setup() {
+  String arduinoPort = Serial.list()[3]; 
+  myPort = new Serial(this, arduinoPort, 9600); 
+}
+
+void draw() {
+  println(val);
+}
+
+void serialEvent(Serial p){
+
+  val=myPort.read();
+  delay(1000);
+
+}
+</code></pre>
+
+<p><p>なんか受け取れているけど、これであっているか検討します…</p>
+<p></p>
+<h2>6. 電池で<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>を動作させる</h2>通常、<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>はPCから電源をとっているため、PCと切り離してしまうと動かなくなる。<br>
+しかし、PCと繋いでいないと動作できない<a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>なんて必要ない…とも思う。<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Arduino">Arduino</a>を電池で動かす方法はいたって簡単で以下の２つを用意して接続するだけ。</p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/B000FHVRLE/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/41IakcNEXoL._SL160_.jpg" class="hatena-asin-detail-image" alt="Panasonic 9V型アルカリ乾電池 1本 6LR61YXJ/1S" title="Panasonic 9V型アルカリ乾電池 1本 6LR61YXJ/1S"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B000FHVRLE/hatena-blog-22/">Panasonic 9V型アルカリ乾電池 1本 6LR61YXJ/1S</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D1%A5%CA%A5%BD%A5%CB%A5%C3%A5%AF">パナソニック</a>
+</li>
+<li>
+<span class="hatena-asin-detail-label">発売日:</span> 2006/04/10</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> エレクトロニクス</li>
+<li> <span class="hatena-asin-detail-label">クリック</span>: 2回</li>
+<li><a href="http://d.hatena.ne.jp/asin/B000FHVRLE/hatena-blog-22" target="_blank">この商品を含むブログを見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/0101625138/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/311H0nRslqL._SL160_.jpg" class="hatena-asin-detail-image" alt="DC 9V電池スナップ＋2.1mm DCプラグ  並行輸入品" title="DC 9V電池スナップ＋2.1mm DCプラグ  並行輸入品"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/0101625138/hatena-blog-22/">DC 9V電池スナップ＋2.1mm DCプラグ  並行輸入品</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> Gadgettown</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> </li>
+<li><a href="http://d.hatena.ne.jp/asin/0101625138/hatena-blog-22" target="_blank">この商品を含むブログを見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+<p>これらを以下のように接続する。<br>
+<span itemscope itemtype="http://schema.org/Photograph"><a href="http://f.hatena.ne.jp/mosuke5/20140721222037" class="hatena-fotolife" itemprop="url"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140721/20140721222037.jpg" alt="f:id:mosuke5:20140721222037j:image:w500" title="f:id:mosuke5:20140721222037j:image:w500" class="hatena-fotolife" style="width:500px" itemprop="image"></a></span></p>
+<br>
+<p>以上で入門まとめは終わりだが、<br>
+その他にも以下を購入しているので次はもっと高度なことを実践したい。<br>
+・<a href="http://www.switch-science.com/catalog/224/">XBee ZB / ワイヤアンテナ型 - スイッチサイエンス</a><br>
+・<a href="http://www.switch-science.com/catalog/786/">Arduino ワイヤレスプロトシールド - スイッチサイエンス</a><br>
+・<a href="http://www.switch-science.com/catalog/1031/">XBee USB アダプター(リセットスイッチ付き) - スイッチサイエンス</a><br>
+・<a href="http://www.switch-science.com/catalog/838/">Arduino イーサネットシールド R3 - スイッチサイエンス</a></p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">18 May 2014, 14:28</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/05/18/142838/" class="post-title">【雑記】VPSとお別れしました…</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-サーバ" href="https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90">サーバ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>2012年07月18日から契約していた<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPS">VPS</a>サーバを本日解約した。<br>
+約２年間の契約していたわけだがちょっと振り返るといろいろあったなーと思う。<br>
+ぼくがまだ大学３年のとき、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B7%A5%E3%A5%EB%A5%D6%A5%C3%A5%AF%A5%DE%A1%BC%A5%AF%A5%B5%A1%BC%A5%D3%A5%B9">ソーシャルブックマークサービス</a>をリリースしたのだが、<br>
+その時はまだエンジニア初心者で、<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPS">VPS</a>ではなく共有サーバを利用していた。</p>
+<p>そんなプロジェクトが終わり、次のサービス(<a class="keyword" href="http://d.hatena.ne.jp/keyword/Twitter">Twitter</a>の解析ツール)の開発で初めて<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPS">VPS</a>環境を与えられたのだが、<br>
+サーバ構築など右も左もわからなかったので、自分の勉強用環境として<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPS">VPS</a>を契約。VPS環境で行ったこと&gt;<br>
+プロダクトとしては次の３つくらい作った<br>
+・<a class="keyword" href="http://d.hatena.ne.jp/keyword/Amazon">Amazon</a>の最安値段通知サービス<br>
+　自分が欲しい物について希望価格を登録しておくと、<a class="keyword" href="http://d.hatena.ne.jp/keyword/Amazon">Amazon</a>の中古価格が希望価格を下回った時に通知してくれるサービス。<br>
+　個人的には結構好きだったのだが、運用がめんどくさくなって閉鎖。</p>
+<p>・うみなう ー<a class="keyword" href="http://d.hatena.ne.jp/keyword/Twitter">Twitter</a>上の「海なう」画像を眺めようー<br>
+　夏場になると<a class="keyword" href="http://d.hatena.ne.jp/keyword/Twitter">Twitter</a>で「海なう」と水着画像を付けて投稿する人が多い。<br>
+　海なうのキーワードで出てきた画像をただただ眺めるだけのサービス(笑)</p>
+<p>・キニナル ーきになるあの二人のツイートをー<br>
+　<a class="keyword" href="http://d.hatena.ne.jp/keyword/Twitter">Twitter</a>上で気になる二人のツイート時系列で並べて監視するサービス。<br>
+　公開はしていなかったけどちょくちょく身内でみていた。</p>
+<br>
+<p>こんなくだらないサービスを趣味で作っていた。<br>
+その他、仕事で使う新しいツールの実験導入などに利用していた。</p>
+<p>社会人になってからリモートで接続できるサーバを持っている必要がなくなってきたので解約することになったが、<br>
+いろいろと勉強になったし、思い出がおおかったなー。<br>
+またいつか契約する日があることを待ち望んで…</p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">17 May 2014, 22:18</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/05/17/221824/" class="post-title">ロードバランサをロードバランスする</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-ネットワーク" href="https://blog.mosuke.tech/categories/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF">ネットワーク</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>ぼくはネットワーク構成については素人です。<br>
+大量の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%D5%A5%A3%A5%C3%A5%AF">トラフィック</a>をさばくためにロードバランサを使うがロードバランサが耐えられない量の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%D5%A5%A3%A5%C3%A5%AF">トラフィック</a>にはどうするか。<br>
+ちょっと疑問に思ったので素人なりにちょろっと考えてみた。</p>
+<p><script async class="speakerdeck-embed" data-id="234d8a90bff301316cad3a6416977627" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script></p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">06 May 2014, 19:24</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/05/06/192424/" class="post-title">ER図作成ツール-MySQL Workbench- を使ってみた</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>表題の通りER図作成ツールというものを使ってみた。<br>
+開発をやる現場では当たり前のように使われているのかもしれないけど、ぼくは使ったことなかったです。<br>
+ER図とかテーブル構造は<a class="keyword" href="http://d.hatena.ne.jp/keyword/Excel">Excel</a>でまとめて管理していました。</p>
+<p>きっかけは、ソフトウエアデザインを読んでいてER図作成ツールなるものがでてきたので、便利そうと思ってぐぐってみた。<br>
+調べると主なフリーのER図作成ツールは以下があるっぽい。</p></p>
+
+<p><ol>
+<li>DBDesigner</li>
+<li>A5-SQLmk-2</li>
+<li>AmaterasERD</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a> Workbench</li>
+<li>ERMaster</li>
+</ol>
+<p>(参考)<a href="http://treeapps.hatenablog.com/entry/20110505/p1">http://treeapps.hatenablog.com/entry/20110505/p1</a></p>
+<p>この中で<a class="keyword" href="http://d.hatena.ne.jp/keyword/Mac">Mac</a>で使えそうなのが<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a> Workbenchしかなかったのでこちらを利用。<br>
+本当は<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>以外の<a class="keyword" href="http://d.hatena.ne.jp/keyword/DBMS">DBMS</a>にも対応しているものがよかったのだけど…</p>
+<p>ざっと使ってみた感じ以下３つがよいと感じた点。</p>
+<h4>1.ER図作成が容易</h4>ER図作成ツールなのであたりまえなのだが、今まで<a class="keyword" href="http://d.hatena.ne.jp/keyword/Excel">Excel</a>の図形など使っていて書いていたので簡単さに驚き。<br>
+属性についてもそれぞれ型やキー・制約などの設定も記述できる。<p></p>
+<h4>2.<a class="keyword" href="http://d.hatena.ne.jp/keyword/DDL">DDL</a>にすぐにエクスポート可能</h4>作成したER図については<a class="keyword" href="http://d.hatena.ne.jp/keyword/DDL">DDL</a>にすぐにエクスポートできる。<br>
+なので、ツールでER図さえきちんと書けば実際のDB、テーブル構築は一瞬で可能。<p></p>
+<h4>3.イメージ図としてエクスポート可能</h4>作成したER図を<a class="keyword" href="http://d.hatena.ne.jp/keyword/PNG">PNG</a>形式にエクスポートできるので、メンバー等との共有が容易。<br>
+また、ドキュメントとして残す際にもとても使えると思う。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/Excel">Excel</a>のシート形式にエクスポートできたらなぁとも思う…<br>
+<p>実際に<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a> Workbenchを使って簡単にER図を作成してみた。<br>
+・ユーザが飲んだお酒を記録していくWebシステムです。<br>
+・利用するにはシステムへのユーザ登録が必要。<br>
+・ユーザはお酒マスターから飲んだお酒を登録する。<br>
+　→同じお酒を何度登録（飲んでも）よい<br>
+・お酒には産地（<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C5%D4%C6%BB">都道</a>府県）を記入する。<br>
+・ユーザは本システムへログイン後の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%AF%A5%BB%A5%B9%A5%ED%A5%B0">アクセスログ</a>が取得される。</p>
+<p>こんなざっくりとした感じ。</p>
+<p>作成したER図はこんな感じに出来上がります（<a class="keyword" href="http://d.hatena.ne.jp/keyword/PNG">PNG</a>）。<br>
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140506/20140506191125.png" alt="f:id:mosuke5:20140506191125p:plain" title="f:id:mosuke5:20140506191125p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/DDL">DDL</a>はこんな感じに。</p></p>
+
+<pre><code class="language-mysql">-- MySQL Script generated by MySQL Workbench
+-- Tue May  6 19:16:11 2014
+-- Model: New Model    Version: 1.0
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`User`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`User` (
+  `user_id` INT NOT NULL AUTO_INCREMENT,
+  `account` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `team_id` INT NOT NULL,
+  `last_login` DATETIME NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE INDEX `account_UNIQUE` (`account` ASC))
+ENGINE = InnoDB;
+
+(以下省略)
+ 
+</code></pre>
+
+<p></body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">30 Mar 2014, 00:43</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/03/30/004337/" class="post-title">データベース、隔離性水準とはなにか</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>データベースには、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%F3%A5%B6%A5%AF%A5%B7%A5%E7%A5%F3">トランザクション</a>が持つべき<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C6%C3%C0%AD">特性</a>であるACID<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C6%C3%C0%AD">特性</a>というものを備えている。<br>
+<b>ACID<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C6%C3%C0%AD">特性</a></b><br>
+</p>
+<table>
+<tr>
+  <td>A</td>
+  <td>Atomicity</td>
+  <td>原始性</td>
+</tr>
+<tr>
+  <td>C</td>
+  <td>Consistency</td>
+  <td>一貫性</td>
+</tr>
+<tr>
+  <td>I</td>
+  <td>Isolation</td>
+  <td>隔離性</td>
+</tr>
+<tr>
+  <td>D</td>
+  <td>Dirability</td>
+  <td>耐久性</td>
+</tr>
+</table>
+<p>ACID<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C6%C3%C0%AD">特性</a>については詳しく書かないが、その中に隔離性という以下の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C6%C3%C0%AD">特性</a>がある。<br>
+「<b>複数の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%F3%A5%B6%A5%AF%A5%B7%A5%E7%A5%F3">トランザクション</a>を並行して実行しても直列に実行した時と同じ結果になる。<br>
+また、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%F3%A5%B6%A5%AF%A5%B7%A5%E7%A5%F3">トランザクション</a>実行中は変更前の状態として見える。</b>」</p>
+<p>しかし、複数の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%F3%A5%B6%A5%AF%A5%B7%A5%E7%A5%F3">トランザクション</a>を並列で実行すると、その隔離性を満たさない現象が発生することがある。<br>
+その現象は主に３つある。</p>
+<h4>1. ダーティリード</h4>[概要]<br>
+ある<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%F3%A5%B6%A5%AF%A5%B7%A5%E7%A5%F3">トランザクション</a>の処理中に、別のユーザがその<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%F3%A5%B6%A5%AF%A5%B7%A5%E7%A5%F3">トランザクション</a>でまだコミットしてないデータを読み込んでしまう現象のこと。<br>
+Q. 何が問題なの？<br>
+A. 例えばその<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%F3%A5%B6%A5%AF%A5%B7%A5%E7%A5%F3">トランザクション</a>が<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%EB%A5%D0%A5%C3%A5%AF">ロールバック</a>したとすると、存在しない処理のデータを読み込んでいることになってしまう。<p>[対策]<br>
+対策はシンプルで、まだコミットしていないデータは読み込めないようにするだけ。<br>
+つまり、データを更新するときは「排他ロック」をかけるようにするということ。</p>
+<p></p>
+<h4>2. ノンリピータブルリード</h4>[概要]<br>
+同一<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%F3%A5%B6%A5%AF%A5%B7%A5%E7%A5%F3">トランザクション</a>内で、一度読み込んだデータを再読み込みすると値が異なる現象。<p>[対策]<br>
+データを読み込むときには「共有ロック」をかけるようにするということ。<br>
+共有ロック中は他<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%F3%A5%B6%A5%AF%A5%B7%A5%E7%A5%F3">トランザクション</a>から更新はできなくなるのでノンリピータブルリードは起きない。</p>
+<p></p>
+<h4>3. ファントムリード</h4>[概要]<br>
+ある<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%F3%A5%B6%A5%AF%A5%B7%A5%E7%A5%F3">トランザクション</a>が複数行ある結果を返す検索条件で問合せを2度実行する間に、<br>
+コミットされた別の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%F3%A5%B6%A5%AF%A5%B7%A5%E7%A5%F3">トランザクション</a>によってその条件を満たす新しい行が挿入されたり、削除された行がでたりする現象。<p>[対策]<br>
+検索結果の範囲に対してロックをかけること。</p>
+<br>
+<p>上記現象が起こらないように<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%F3%A5%B6%A5%AF%A5%B7%A5%E7%A5%F3">トランザクション</a>の分離レベルが用意されている。</p>
+<p><b><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%F3%A5%B6%A5%AF%A5%B7%A5%E7%A5%F3">トランザクション</a>の分離レベルと、現象に発生の有無</b><br>
+</p>
+<table>
+<tr>
+  <th>分離レベル</th>
+  <th>ダーティリード</th>
+  <th>ノンリピータブルリード</th>
+  <th>ファントムリード</th>
+</tr>
+<tr>
+  <td>Read Uncommitted</td>
+  <td style="background-color:#fdf7f7;">あり</td>
+  <td style="background-color:#fdf7f7;">あり</td>
+  <td style="background-color:#fdf7f7;">あり</td>
+</tr>
+<tr>
+  <td>Read Committed</td>
+  <td>なし</td>
+  <td style="background-color:#fdf7f7;">あり</td>
+  <td style="background-color:#fdf7f7;">あり</td>
+</tr>
+<tr>
+  <td>Repeatable Read</td>
+  <td>なし</td>
+  <td>なし</td>
+  <td style="background-color:#fdf7f7;">あり</td>
+</tr>
+<tr>
+  <td>Serializable</td>
+  <td>なし</td>
+  <td>なし</td>
+  <td>なし</td>
+</tr>
+</table>
+<p>ここでひとつの疑問が…</p>
+<h4>Q. どの現象も起こらないSerializableに設定してしまえば…！？</h4>当然だがそう簡単にはいかない。<br>
+上の「<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%F3%A5%B6%A5%AF%A5%B7%A5%E7%A5%F3">トランザクション</a>の分離レベルと、現象に発生の有無」でいえば<br>
+したにいけばいくほど、処理負担が大きく実行スピードが遅くなります。<p>つまりは、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%F3%A5%B6%A5%AF%A5%B7%A5%E7%A5%F3">トランザクション</a>の分離レベルと実行スピードは<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%EC%A1%BC%A5%C9%A5%AA%A5%D5">トレードオフ</a>。<br>
+そのときそのときの特徴に合わせて分離レベルを選ばなければならない。</p>
+<p>ちなみに、<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>の<a class="keyword" href="http://d.hatena.ne.jp/keyword/InnoDB">InnoDB</a>ではデフォルトはRepeatable Read。<br>
+まずは標準のままでよいと思います。</p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">09 Mar 2014, 21:25</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/03/09/212520/" class="post-title">VLAN、Trunkを使った実践的な構成のメモ</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-ネットワーク" href="https://blog.mosuke.tech/categories/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF">ネットワーク</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>VLAN、Trunkそれぞれを一部分的に切り出した説明はよくあるが、<br>
+それらが組み合わさった実践的な構成についてあまり書いてないので、例を考えて載せてみる。</p>
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140309/20140309212318.jpg" alt="f:id:mosuke5:20140309212318j:plain" title="f:id:mosuke5:20140309212318j:plain" class="hatena-fotolife" itemprop="image"></span></p>
+<p>(1) L2スイッチに２つのシステムのサーバ（それぞれが冗長構成）がある。<br>
+(2) それぞれのシステムはVLANで切られている<br>
+(3) L2-L2間、L3-L2間はTrunkを使用(Vlan100,200)<br>
+(4) L3インターフェースはサブインタフェース利用<br>
+(5) L3の冗長はHSRPを利用</p>
+<p>ほかにいろいろ思いついたら、付け加えます。</p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">28 Feb 2014, 23:30</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/02/28/233025/" class="post-title">【SQLテーブル結合】INNER JOIN とWHERE結合の違いについて その２</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-データベース" href="https://blog.mosuke.tech/categories/%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9">データベース</a><a class="post-category post-category-SQL" href="https://blog.mosuke.tech/categories/sql">SQL</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>前回の「【<a class="keyword" href="http://d.hatena.ne.jp/keyword/SQL">SQL</a>テーブル結合】INNER JOIN とWHERE結合の違いについて」の続き。<br>
+やはりFROM句の後にテーブルを複数書いてWHEREで結合させるのはナンセンスだと思う。</p>
+<p>例えば、内部結合に加え、外部結合もある場合を考える。</p>
+<p>WHERE型</p></p>
+
+<pre><code class="language-mysql">SELECT * 
+FROM table1, table2 #←結合させたいもの
+LEFT OUTER JOIN (
+　・
+　・
+&lt;副問い合わせとか長いSQLが入ると想定&gt;
+　・
+　・
+) AS sub
+ON table1.id=sub.id AND table2.id=sub.id
+WHERE table1.id=table2.id #←結合条件
+ 
+</code></pre>
+
+<p>table1とtable2を内部結合させたいのに、<br>
+肝心の何と何を結合させるかの部分の"WHERE table1.id=table2.id"が離れてしまい、<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/SQL">SQL</a>文全体として何をしたいかわかりずらい。</p>
+<p>一方、INNER JOINなら</p>
+
+<pre><code class="language-mysql">SELECT * 
+FROM table1
+INNER JOIN table2 ON table1.id=table2.id #←結合させたいものと結合条件が一緒
+LEFT OUTER JOIN (
+　・
+　・
+&lt;副問い合わせとか長いSQLが入ると想定&gt;
+　・
+　・
+) AS sub
+ON table1.id=sub.id
+ 
+</code></pre>
+
+<p><p>上記のように、結合させたいテーブルと結合させる条件がくっつくため、<br>
+全体としてなにをしたいかわかりやすい気がする。</p>
+<p>慣れの問題なのかもしれんが、圧倒的にINNER JOINだろ…</p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+            </div>
+            
+<div class="pagination">
+  <nav role="pagination" class="post-list-pagination">
+      
+      <a href="/page/6/" class="post-list-pagination-item pure-button post-list-pagination-item-prev">
+        <i class="fa fa-angle-double-left"></i>&nbsp;Newer
+      </a>
+      
+    <span class="post-list-pagination-item post-list-pagination-item-current">Page 7 of 8</span>
+    
+      <a href="/page/8/" class="post-list-pagination-item pure-button post-list-pagination-item-next">
+        Older&nbsp;<i class="fa fa-angle-double-right"></i>
+      </a>
+    
+  </nav>
+</div>
+
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

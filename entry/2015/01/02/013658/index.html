@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スーパーサーバってなに？ xinetdでサービスを常駐起動せずに利用する &middot; Goldstine研究所</title>
+
+    <meta name="description" content=" 使用頻度の低いサービスのデーモンをメモリに常駐させておくのは効率が悪い。 そこでスーパーサーバという使用頻度の低いサービスの窓口のサービスのみ起動しておき、要求があったときだけ特定のサービスを起動させることが可能らしい。  ということで、">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="スーパーサーバってなに？ xinetdでサービスを常駐起動せずに利用する &middot; Goldstine研究所">
+    <meta name="twitter:description" content=" 使用頻度の低いサービスのデーモンをメモリに常駐させておくのは効率が悪い。 そこでスーパーサーバという使用頻度の低いサービスの窓口のサービスのみ起動しておき、要求があったときだけ特定のサービスを起動させることが可能らしい。  ということで、">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="スーパーサーバってなに？ xinetdでサービスを常駐起動せずに利用する &middot; Goldstine研究所">
+    <meta property="og:description" content=" 使用頻度の低いサービスのデーモンをメモリに常駐させておくのは効率が悪い。 そこでスーパーサーバという使用頻度の低いサービスの窓口のサービスのみ起動しておき、要求があったときだけ特定のサービスを起動させることが可能らしい。  ということで、">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">02 Jan 2015, 01:36</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/01/02/013658/" class="post-title">スーパーサーバってなに？ xinetdでサービスを常駐起動せずに利用する</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-サーバ" href="https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90">サーバ</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a><a class="post-category post-category-xinetd" href="https://blog.mosuke.tech/categories/xinetd">xinetd</a><a class="post-category post-category-スーパーサーバ" href="https://blog.mosuke.tech/categories/%E3%82%B9%E3%83%BC%E3%83%91%E3%83%BC%E3%82%B5%E3%83%BC%E3%83%90">スーパーサーバ</a>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p><body>
+<p>使用頻度の低いサービスのデーモンをメモリに常駐させておくのは効率が悪い。<br>
+そこでスーパーサーバという使用頻度の低いサービスの窓口のサービスのみ起動しておき、要求があったときだけ特定のサービスを起動させることが可能らしい。</p></p>
+
+<p>ということで、そのスーパーサーバとやらを実際に触ってみた。</p>
+
+<p>スーパーサーバというとinetdとxinetdがあるらしいが、<br>
+xinetdはinetdの拡張版で、アクセス制御などの機能を搭載しているとのこと。</p>
+
+<p>今回はxinetdを設定してみる。</p>
+
+<h1>1. 事前準備</h1>
+
+<p>【環境】<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/Vagrant">Vagrant</a>で構築した<a class="keyword" href="http://d.hatena.ne.jp/keyword/CentOS">CentOS</a> 6.5<br>
+(仮想環境の<a class="keyword" href="http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9">IPアドレス</a>は192.168.33.10)</p>
+
+<p>まずはスーパーサーバで管理するサービスを考えなければならない。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>とかhttpはどう考えてもスーパーサーバの管理するようなものではないだろうし…<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>や<a class="keyword" href="http://d.hatena.ne.jp/keyword/telnet">telnet</a>、<a class="keyword" href="http://d.hatena.ne.jp/keyword/POP3">POP3</a>なんかのサービスに利用されることが多いそう？（このへんよくわかない）</p>
+
+<p>今回は<a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>をスーパーサーバの管理対象とした。<br>
+※本来は<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4">複数</a>のサービスを管理対象とするからこそ意味がある。</p>
+
+<p>まずはxinetdとvsftpをインストール</p>
+
+<pre><code>$ sudo yum install xinetd vsftpd 
+
+</code></pre>
+
+<p><br>
+xinetdどうこうの前に、<a class="keyword" href="http://d.hatena.ne.jp/keyword/ftp">ftp</a>接続がきちんとできるか確認するのでサービスを起動。</p>
+
+<pre><code>$ sudo service vsftpd start 
+</code></pre>
+
+<p><br>
+ローカルPCから接続できることを確認する。</p>
+
+<pre><code>$ ftp 192.168.33.10
+Connected to 192.168.33.10.
+220 (vsFTPd 2.2.2)
+Name (192.168.33.10:username): 
+
+</code></pre>
+
+<h1>2. xinetdの設定</h1>
+
+<p>xinetdの基本設定は/etc/xinetd.confにかかれており、<br>
+xinetdで管理する各サービスの設定は/etc/xinetd.d/配下に書く方式。</p>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/ftp">ftp</a>の設定を以下の通りにした。<br>
+"service"のあとに書くサービス名称は/etc/servicesに定義されているものを記載する。<br>
+vsftpとか書いても動かないので注意。</p>
+
+<pre><code>$ sudo vim /etc/xinetd.d/ftp
+service ftp
+{
+        disable         = no
+        socket_type     = stream
+        wait            = no
+        user            = root
+        server          = /usr/sbin/vsftpd
+        log_on_failure  += USERID
+}
+ 
+
+</code></pre>
+
+<p>設定項目については以下参照。<br>
+<a href="https://www.express.nec.co.jp/linux/distributions/knowledge/network/xinetd.html">xinetd の設定</a></p>
+
+<p>これでxinetdを起動</p>
+
+<pre><code>$ sudo service xinetd start 
+</code></pre>
+
+<h3>(補足) /etc/servicesってなにもの？</h3>
+
+<p>/etc/servicesがなにか気になったので一応調べると。</p>
+
+<blockquote><p>サービス名とそこで使われるポート番号、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%C8%A5%B3%A5%EB">プロトコル</a>(<a class="keyword" href="http://d.hatena.ne.jp/keyword/tcp">tcp</a>/<a class="keyword" href="http://d.hatena.ne.jp/keyword/udp">udp</a>)との 対応関係を記述したファイルが /etc/services です。
+このファイルは 単なるサービス名のデータベースで、それ自体では何の働きもありませ んが、<a class="keyword" href="http://d.hatena.ne.jp/keyword/netstat">netstat</a> コマンドや次の inetd などで参照されます。
+(<a href="http://www.wakhok.ac.jp/~kanayama/summer/02/site/node43.html">http://www.wakhok.ac.jp/~kanayama/summer/02/site/node43.html</a>)</p></blockquote>
+
+<h1>3. xinetdを使って<a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>で接続してみる</h1>
+
+<p>xinetdが<b>"起動している"</b>ことと、vsftpdが<b>"起動していない"</b>ことを確認しておく。</p>
+
+<pre><code>$ sudo service xinetd status
+xinetd (pid  3521) is running...
+
+$ sudo service vsftpd status
+vsftpd is stopped 
+
+</code></pre>
+
+<p><br>
+ローカルPCから<a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>接続をしてみる。</p>
+
+<pre><code>$ ftp 192.168.33.10
+Connected to 192.168.33.10.
+421 Service not available, remote server has closed connection. 
+</code></pre>
+
+<p>あれ、接続が切られた…</p>
+
+<p>syslogを確認してみると。</p>
+
+<pre><code>$ sudo tail /var/log/message
+Jan  1 15:07:25 server xinetd[3335]: START: ftp pid=3337 from=::ffff:192.168.33.1
+Jan  1 15:07:28 server xinetd[3335]: EXIT: ftp status=1 pid=3337 duration=3(sec) 
+
+</code></pre>
+
+<p>接続できているようだがその後すぐに切断されているようにみえる。
+vsftpd側の設定を疑ってみた。</p>
+
+<h1>4. vsftpdの設定</h1>
+
+<p>vsftpd側で以下の設定をいじる必要があった。</p>
+
+<pre><code>$ sudo vim /etc/vsftpd/vsftpd.conf
+listen=NO
+ 
+
+</code></pre>
+
+<p>vsftpdのlistenの設定は以下のとおり。</p>
+
+<blockquote><p><a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a> コントロールポート (21) への接続要求を vsftpd 自身で見張るか。
+YES の状態を「<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%BF%A5%F3%A5%C9%A5%A2%A5%ED%A1%BC%A5%F3">スタンドアローン</a>モード」と呼ぶ。
+inetd や後述の <a class="keyword" href="http://d.hatena.ne.jp/keyword/tcpserver">tcpserver</a> を経由する場合は NO にする。
+(<a href="http://www.asahi-net.or.jp/~aa4t-nngk/ftpd.html">http://www.asahi-net.or.jp/~aa4t-nngk/ftpd.html</a>)</p></blockquote>
+
+<h1>5. <a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>接続の再チャレンジ</h1>
+
+<p>ローカルPCから再度<a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>接続を試みる。</p>
+
+<pre><code>$ ftp 192.168.33.10
+Connected to 192.168.33.10.
+220 (vsFTPd 2.2.2)
+Name (192.168.33.10:username): 
+</code></pre>
+
+<p>つながった！<br>
+<span style="font-size: 150%"><b>vsftpdサービスを停止しているのに<a class="keyword" href="http://d.hatena.ne.jp/keyword/ftp">ftp</a>接続ができる！</b></span></p>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/ftp">ftp</a>接続前と接続中、接続後でプロセスを確認してみる。</p>
+
+<pre><code>&gt; 接続前
+$ ps -ef | grep ftp
+vagrant   3552  2742  0 16:17 pts/0    00:00:00 grep ftp
+
+&gt; 接続中
+&gt; 接続中のみvsftpdのプロセスが立ち上がっている。
+$ ps -ef | grep ftp
+nobody    3555  3521  0 16:18 ?        00:00:00 vsftpd
+vagrant   3557  3555  0 16:18 ?        00:00:00 vsftpd
+vagrant   3559  2742  0 16:18 pts/0    00:00:00 grep ftp
+
+&gt; 接続終了後
+$ ps -ef | grep ftp
+vagrant   3552  2742  0 16:17 pts/0    00:00:00 grep ftp 
+
+</code></pre>
+
+<p><br>
+プロセスツリーを見てみると、xinetdプロセスがvsftpdを起動していることがわかる。</p>
+
+<pre><code>&gt; 接続前
+$ pstree -p
+init(1)-+-VBoxService(1003)-+-{VBoxService}(1004)
+        |
+        | (略)
+        |
+        `-xinetd(3521)
+
+&gt; 接続中
+$ pstree -p
+init(1)-+-VBoxService(1003)-+-{VBoxService}(1004)
+        |
+        | (略)
+        |
+        `-xinetd(3521)---vsftpd(3562)---vsftpd(3563) 
+</code></pre>
+
+<p><p><br>
+サービスを起動しておかなくてもxinetd経由で起動できるんですね。<br>
+これはこれで使い道あるかもしれぬ。</p>
+</body></p>
+
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label-counter" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+                            <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3a%2f%2fblog.mosuke.tech%2fentry%2f2015%2f01%2f02%2f013658%2f&layout=button_count&size=small&mobile_iframe=true&appId=1383467145023614&width=90&height=20" width="90" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

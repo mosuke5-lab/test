@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nginxの仕組みについて入門 &middot; Goldstine研究所</title>
+
+    <meta name="description" content=" 普段Nginxを使ってはいるものの、その仕組やなぜNignxを使うべきなのかというところがあまりわかっていなかったので、改めてNginxを入門しその仕組などについて調べてみた。 勉強不足もあって、間違ってることもあるかもしれないがその際は">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Nginxの仕組みについて入門 &middot; Goldstine研究所">
+    <meta name="twitter:description" content=" 普段Nginxを使ってはいるものの、その仕組やなぜNignxを使うべきなのかというところがあまりわかっていなかったので、改めてNginxを入門しその仕組などについて調べてみた。 勉強不足もあって、間違ってることもあるかもしれないがその際は">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Nginxの仕組みについて入門 &middot; Goldstine研究所">
+    <meta property="og:description" content=" 普段Nginxを使ってはいるものの、その仕組やなぜNignxを使うべきなのかというところがあまりわかっていなかったので、改めてNginxを入門しその仕組などについて調べてみた。 勉強不足もあって、間違ってることもあるかもしれないがその際は">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">04 Jun 2016, 18:01</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/06/04/180122/" class="post-title">Nginxの仕組みについて入門</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Nginx" href="https://blog.mosuke.tech/categories/nginx">Nginx</a><a class="post-category post-category-webサーバ" href="https://blog.mosuke.tech/categories/web%E3%82%B5%E3%83%BC%E3%83%90">webサーバ</a>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p><body>
+<p>普段Nginxを使ってはいるものの、その仕組やなぜNignxを使うべきなのかというところがあまりわかっていなかったので、
+改めてNginxを入門しその仕組などについて調べてみた。<br>
+勉強不足もあって、間違ってることもあるかもしれないがその際は教えて下さい。</p></p>
+
+<h1>1. C10K問題</h1>
+
+<p>まず、Nginxを理解する上でC10K問題について知る必要がある。<br>
+C10K問題とは下記の問題のことだ。</p>
+
+<blockquote><p>ハードウェアの性能上は問題がなくても、クライアント数があまりにも多くなるとサーバがパンクする問題のこと。
+C は「Client（クライアント）」の頭文字、10K は「1 万台」を意味する。「クライアント 1 万台問題」ともいわれる。<br>
+（<a href="http://d.hatena.ne.jp/keyword/C10K%20%CC%E4%C2%EA">C10K 問題とは - はてなキーワード</a> より引用）</p></blockquote>
+
+<h1>2. 従来のWebサーバの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3">アーキテクチャ</a>
+</h1>
+
+<h1>prefork</h1>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Apache">Apache</a>のデフォルトの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3">アーキテクチャ</a>などで採用されている。<br>
+特徴としては、１リクエストに対して１プロセスが処理する。<br>
+すなわち同時接続が 1000であれば 1000個のプロセスが必要となる。</p>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604171531.png" alt="f:id:mosuke5:20160604171531p:plain" title="f:id:mosuke5:20160604171531p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<h1>worker</h1>
+
+<p>リクエストはスレッドが処理する。<br>
+スレッドは１プロセスのなかで複数立ち上げることができる。<br>
+プロセス数は少なくて済むが、同時接続が1000であれば1000個のスレッドが必要となる。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/Apache">Apache</a>で指定可能な<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3">アーキテクチャ</a>の１つ。</p>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604171542.png" alt="f:id:mosuke5:20160604171542p:plain" title="f:id:mosuke5:20160604171542p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<p>いずれにしても、1000の同時接続があれば、1000のプロセスやスレッドが必要ということだ。<br>
+プロセス/スレッド数が多くなってくると「<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1">コンテキストスイッチ</a>」が多く発生し、処理が遅くなってしまう。</p>
+
+<h3>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1">コンテキストスイッチ</a>とは</h3>
+
+<blockquote><p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1">コンテキストスイッチ</a>とは、コンピュータの処理装置（CPU）が現在実行している処理の流れ（プロセス、スレッド）を一時停止し、別のものに切り替えて実行を再開すること。<br>
+（<a href="http://e-words.jp/w/%E3%82%B3%E3%83%B3%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81.html">コンテキストスイッチとは｜コンテキストスイッチング｜context switch - 意味/定義 ： IT用語辞典</a> より引用）</p></blockquote>
+
+<h1>3. Nginxの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3">アーキテクチャ</a>
+</h1>
+
+<p>Nginxが<a class="keyword" href="http://d.hatena.ne.jp/keyword/C10K%20%CC%E4%C2%EA">C10K 問題</a>を解決するために開発されたともいわれている。<br>
+上記のような課題を解決するような<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3">アーキテクチャ</a>を採用している。</p>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604171559.png" alt="f:id:mosuke5:20160604171559p:plain" title="f:id:mosuke5:20160604171559p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<p>ワーカプロセスがリクエストを処理する。<br>
+前述のpreforkやworkerと決定的に違うところは、１つのワーカプロセスが複数のリクエストを処理するということだ。</p>
+
+<p>また、マスタープロセスはワーカプロセスの立ち上げや、制御、管理などが主な仕事。<br>
+Nginxを終了あるいは再起動、設定ファイルを再読み込みして変更を反映するなど。</p>
+
+<p>下記のような仕組みがNginxの高速化（C10K問題対応）を可能としている。</p>
+
+<h1>シングルスレッド</h1>
+
+<p>接続ごとにプロセスやスレッドを立ち上げていては、C10K問題に対応できない。<br>
+そこで、Nginxは１つのスレッドで処理を行うようにしている。<br>
+それにより、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1">コンテキストスイッチ</a>と呼ばれるCPUの切り替え処理が発生しない。<br>
+正確に言うと、完全に１スレッドで処理するわけではなく図にあるようにワーカプロセス自体はマルチプロセス化できる。</p>
+
+<h1>イベント駆動</h1>
+
+<p>通常のプログラムは上から書かれた順に実行されますよね。<br>
+イベ ント駆動で動作するプログラムは何かしらのイベントが発生するまで待機し、発生したイベントの種類に応じて実行される。<br>
+ブラウザ上の<a class="keyword" href="http://d.hatena.ne.jp/keyword/JavaScript">JavaScript</a>の動きをイメージするとわかりやすいと思う。</p>
+
+<h1>非同期処理</h1>
+
+<p>一般的なwebサーバでは同期処理を行う。
+つまり、複数のリクエストがあったときに順番に処理していく。<br>
+そのため、１つのリクエストが遅いとそれに引きづられてあとのリクエストも遅くなる。<br>
+非同期処理では、リクエストがきたら他のリクエストの状況に関わらず処理を行う。</p>
+
+<h4>同期処理</h4>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604173212.png" alt="f:id:mosuke5:20160604173212p:plain" title="f:id:mosuke5:20160604173212p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<h4>非同期処理</h4>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604173226.png" alt="f:id:mosuke5:20160604173226p:plain" title="f:id:mosuke5:20160604173226p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<h1>向いていること / 向いていないこと</h1>
+
+<p>Nginxではイベント駆動で非同期的なIO処理によって、リクエストを完全に処理することを待たずに次から次へと処理を受け付けていきます。<br>
+そのため、１処理に時間のかかるものをNginx自身で行おうとするとキューがどんどん溜まってしまいます。<br>
+そのため、一般にアプリケーションの実行やデータベース処理などは向いていません。<br>
+一方で、軽量な静的データの配信やリバースプロキシなどに向いています。</p>
+
+<p>Nginxは、静的データの配信や、プロキシなどに特化させ、アプリケーションの実行などは別途<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%B5%A1%BC%A5%D0">アプリケーションサーバ</a>等で行わせることで有効活用できます。</p>
+
+<h2>向いていること</h2>
+
+<ul>
+<li>軽量データの大量配信</li>
+<li>ディスクI/Oの発生しないキャッシュ</li>
+<li>リバースプロキシ</li>
+<li>ロードバランサ</li>
+</ul>
+
+<h2>向いていないこと</h2>
+
+<ul>
+<li>アプリケーション実行</li>
+<li>データベース処理</li>
+<li>動画などの重たいデータの配信</li>
+</ul>
+
+<h1>4. 最後に</h1>
+
+<p>NginxやWebサーバについてより理解を深めるためには、<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/UNIX">UNIX</a>のプロセスやネットワーク<a class="keyword" href="http://d.hatena.ne.jp/keyword/API">API</a>についての知識が足りないと感じた。。。</p>
+
+<p>というわけでこれを買ってみたが、978ページもあってとりあえず挫折＼(^o^)／</p>
+
+<p></p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/4894712059/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/213B9PVJD1L._SL160_.jpg" class="hatena-asin-detail-image" alt="UNIXネットワークプログラミング〈Vol.1〉ネットワークAPI:ソケットとXTI" title="UNIXネットワークプログラミング〈Vol.1〉ネットワークAPI:ソケットとXTI"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/4894712059/hatena-blog-22/">UNIXネットワークプログラミング〈Vol.1〉ネットワークAPI:ソケットとXTI</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">作者:</span> W.リチャードスティーヴンス,W.Richard Stevens,篠田陽一</li>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> ピアソンエデュケーション</li>
+<li>
+<span class="hatena-asin-detail-label">発売日:</span> 1999/07</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> 単行本</li>
+<li>
+<span class="hatena-asin-detail-label">購入</span>: 8人 <span class="hatena-asin-detail-label">クリック</span>: 151回</li>
+<li><a href="http://d.hatena.ne.jp/asin/4894712059/hatena-blog-22" target="_blank">この商品を含むブログ (37件) を見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+
+<p>まずはこれからはじめようと思う。。。</p>
+
+<p><iframe src="//hatenablog-parts.com/embed?url=http%3A%2F%2Ftatsu-zine.com%2Fbooks%2Fnaruhounix" title="なるほどUnixプロセス ― Rubyで学ぶUnixの基礎" class="embed-card embed-webcard" scrolling="no" frameborder="0" style="display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;"></iframe><cite class="hatena-citation"><a href="http://tatsu-zine.com/books/naruhounix">tatsu-zine.com</a></cite></p>
+
+<h1>参考文献</h1>
+
+<ul>
+<li><a href="http://gihyo.jp/magazine/SD/archive/2014/201407">SoftwareDesign 2015年7月号</a></li>
+<li><a href="http://www.amazon.co.jp/nginx%E5%AE%9F%E8%B7%B5%E5%85%A5%E9%96%80-WEB-DB-PRESS-plus-%E4%B9%85%E4%BF%9D/dp/4774178667">Nginx実践入門</a></li>
+<li><a href="http://www.amazon.co.jp/24%E6%99%82%E9%96%93365%E6%97%A5-%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E3%82%92%E6%94%AF%E3%81%88%E3%82%8B%E6%8A%80%E8%A1%93-%E2%80%BE%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%A9%E3%83%93%E3%83%AA%E3%83%86%E3%82%A3%E3%80%81%E3%83%8F%E3%82%A4%E3%83%91%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%B3%E3%82%B9%E3%80%81%E7%9C%81%E5%8A%9B%E9%81%8B%E7%94%A8-PRESS-plus%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA/dp/4774135666/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1465030268&amp;sr=1-1&amp;keywords=%E3%82%B5%E3%83%BC%E3%83%90%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E3%82%92%E6%94%AF%E3%81%88%E3%82%8B">[サーバインフラを支える技術](https://gihyo.jp/magazine/wdpress/plus/978-4-7741-3566-3)</a></li>
+<li><a href="http://blog.yuuk.io/entry/2015-webserver-architecture">2015年Webサーバアーキテクチャ序論 - ゆううきブログ</a></li>
+</ul>
+
+<p></body></p>
+
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label-counter" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+                            <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3a%2f%2fblog.mosuke.tech%2fentry%2f2016%2f06%2f04%2f180122%2f&layout=button_count&size=small&mobile_iframe=true&appId=1383467145023614&width=90&height=20" width="90" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

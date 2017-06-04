@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ansible &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Ansible &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Ansible &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">25 Jan 2016, 22:21</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/01/25/222150/" class="post-title">Vagrant×Ansible環境の３つのスタイルとそのメリット・デメリットについて</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-Vagrant" href="https://blog.mosuke.tech/categories/vagrant">Vagrant</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        Vagrant×Ansibleで開発環境を作っているみなさんは、 どんなふうにそれを実現していますか？ きっといくつかのやり方、考え方があると思います。 例えば、ご自身のPCにAnsibleをインストールしてVagrantの仮想環境にプロビジョニングしているとか。 Vagrantで立てた仮想環境にAnsibleを入れて実行するとか。 本ブログでは下記３つのVagrant×Ansibleのやり方に注目し、 そのメリット・デメリットについて自分なりにまとめます。 ホストにAnsibleをインストールして利用する ゲストにAnsibleをインストールして利用する Ansible実行用のゲストを作って利用する 1. ホストにAnsibleをインストールして利用する 概要 1番よくあるやり方だと思う。 ご自身のPCにAnsibleを入れてVagrantで立ち上げたゲストにプロビジョニングを行う。 メリット なんといっても直感的でシンプル。 3.との比較になるが、Ansibleを実行する環境を別途用意する必要がないのでホストのリソースにも優しい。 また、2.との比較でゲストに無駄なものが入らない点でよい。 デメリット ただ、そもそもwimdowsユーザはホストにAnsibleをインストールすることはできない。 つまり、複数人での開発をしていて、人によって端末が異なる場合には向いていない。 個人の端末の設定などにも大きく依存するため、チーム開発向きでないといえる。 2. ゲストにAnsibleをインストールして利用する 概要 Vagrantで立ち上げたゲストの中にAnsibleをインストールし、自身へプロビジョニングするやりかた。 この方式はshin1x1さんもおすすめしている。 Vagrant + Ansible で開発環境を作るなら ansible_local プロビジョナがいい！ - Shin x Hatena Blog メリット （詳しくは上のブログを読むといいと思う。） 1.のデメリットで述べた、端末への依存度をなくすことができる。 vagrantの新機能であるansible_localも利用できるのでプロビジョニングが楽だ。 3.と比べてAnsible実行環境を用意しなくて済む。 デメリット メリットだけみると1.の問題点を解決していて最高のようにみえる。 しかし、ゲストに本来インストールされるべきものでないものがはいる点は忘れてはいけない。 Ansibleを使ってプロダクション環境にデプロイするユーザにとっては大きな問題だと思う。 開発環境とプロダクション環境での差分が広がってしまう。 また、Ansibleと並行してserverspecを使ってる人も多いと思うが、 そうなると今度はゲスト側にRubyもいれるのか？など様々な疑問が湧いてくる。 3. Ansible実行用のゲストを作って利用する 概要 Ansible実行用のゲストをVagrantで立ち上げて、開発用のゲストへプロビジョニングにする。 メリット 2.のデメリットで述べた、ゲストへの不要なもののインストールを防ぐことが可能。 例えばserverspecでRubyが必要な場合もAnsible実行用のゲストに入れればいい。 必要なものをインストールしたAnsible実行用のイメージファイルをチーム内で共有すれば端末依存もセットアップの手間も省ける。 デメリット なんといっても、ゲストを二つは立ちあげる必要があること。 これは少し面倒だ。 まとめ この見解は正直VagrantやAnsibleの使いみち、用途によってだいぶ変わると思う。 なので絶対な評価ではないと思うが、私のいままでの経験上はこのような評価となったので参考にしてもらえればと思う。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">17 Dec 2015, 19:25</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/12/17/192554/" class="post-title">インフラのデプロイとテストを同時実行できるようにしてHappyになった</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-serverspec" href="https://blog.mosuke.tech/categories/serverspec">serverspec</a><a class="post-category post-category-raketask" href="https://blog.mosuke.tech/categories/raketask">raketask</a><a class="post-category post-category-インフラテスト" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E3%83%86%E3%82%B9%E3%83%88">インフラテスト</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        はじめに 私が開発しているシステムでは、Ansibleでサーバ構築からアプリケーションのデプロイまですべて実行できるようにしています。 そして、serverspecを使って、インフラテストも行っています。 しかし、その運用にいくつか課題点がありました。 その課題点についてと、課題点へ対策したことについて書きます。 課題だったこと (課題1) デプロイとテストをそれぞれ実行していた Ansibleでのデプロイとserverspecのテストはそれぞれ別のコマンドで実行していました。 $ ansible-playbook site.yml -i $ bundle exec rake serverspec 2つ実行することが面倒であり、面倒であるがゆえにserverspecの実行を怠ったりしていました。 これではテストの効果があまり発揮できませんね。 (課題2) sudoパスワードをうまく管理できなかった 上のような課題1について、真っ先に以下の様にコマンドを続けることを思いつきました。 $ ansible -playbook site.yml -i ; bundle exec rake serverspec ですが、これだとansible実行終了後にserverspecを実行する際にsudoパスワードが再度聞かれるため、 コマンドを打ったまま「放置」ができませんでした。 ※もちろん、sudoパスワードを要求しないようにユーザ設定をすればできますが、多くの場合ではセキュリティ上難しかったりすると思います。ssh接続は鍵認証、sudoには必ずパスワードを要求するようにしています。 Ansibleもserverspecにもコマンド実行時にsudoパスワードを記述する方法があります。 Ansibleでは、ansible.cfgにsudo_passwordを記述、あるいはコマンド実行時に--extra-argsでsudoパスワードを指定できます。 serverspecでも環境変数でSUDO_PASSWORDが指定できます。 例 ） ansible -playbook site.yml -i --extra-args='ansible_sudo_pass=xxxxxxxx' bundle exec rake serverspec SUDO_PASSWORD=xxxxxxxx ですが、おわかりの通り、コマンドの履歴にもパスワードが残ります。 なのであまり良い方法ではないと思っています。 (課題3) タスクの実行方法がバラバラ デプロイはansibleコマンドで実行、テストはrakeで実行、他のタスクはシェルスクリプト。。。 といったように、タスクによって実行方法が異なってしまう状況になっていました。 運用的にとても不便でしたので、１つに統一したいと思っていました。 いい感じに同時に実行してくれるRakeタスクを作った 上で述べたような課題点をクリアするように、下記の要件を満たすように工夫をしました。 デプロイ、テストが同じ形式で実行できる sudoパスワードをベタ書きすることなく実行できる sudoパスワードの入力を一回だけにする 結論は、すべてRakeタスクで実行できるようにしました。 タスク一覧を見ると以下の様な感じになりました。（※実行結果は例であり実際の内容とは少し異なる。） $ bundle exec rake -T
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">01 Dec 2015, 18:13</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/12/01/181304/" class="post-title">Ansible、実行速度高速化の実験。ControlMasterとPipeliningについて</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-SSH" href="https://blog.mosuke.tech/categories/ssh">SSH</a><a class="post-category post-category-高速化" href="https://blog.mosuke.tech/categories/%E9%AB%98%E9%80%9F%E5%8C%96">高速化</a><a class="post-category post-category-ControlMaster" href="https://blog.mosuke.tech/categories/controlmaster">ControlMaster</a><a class="post-category post-category-pipelining" href="https://blog.mosuke.tech/categories/pipelining">pipelining</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        1. はじめに Vim::Factoryの開発や、仕事などでAnsibleを使うことが多いのだが、 その実行速度があまりでないことに不満をもっていて、どうしたら早くできるか考えていました。 調べると、ControlMasterを利用してSSHのコネクションを再利用するとか、pipelineの機能を利用するとかでてくる。 が、それによってどのくらいの効果が得られるのかよくわからないし、仕組みもよくわかっていなかったので、仕組みの理解と実行速度の実験をした。 もう少し余談をすると、 ControlMasterを有効にすれば早くなることは前から知っていたが、 最近MacをEl Capitanに変えてから「なんか最近Ansibleはやいな〜」とか思っていて、 「OpenSSHのバージョンもあがったし、まさか。。。」と思って今にいきついている。 ControlMasterについて OpenSSH は、1 つの接続で複数のセッションを共有する(束ねる)「コントロール マスター」と呼ばれる機能を持っています。コントロールマスターを使用すると、 リモートホストに接続する最初のセッションは制御用のセッション(マスターセッショ ンと呼ばれます)として利用され、制御用のソケットを作成します。セッションを 共有する SSH クライアントは、この制御用のソケットを通じてリモートホストと 接続し通信を行います。 出典：「OpenSSH実践入門」 上記のように、１つの接続で複数のセッションを共有するため、 Ansibleのようにタスク実行ごとにSSH接続するような場合には大きな効果を得ることができる。 Pipeliningについて Pipelining機能の説明の前に、軽くAnsibleの実行までの流れを説明する。 Ansibleは対象サーバにSSHログインしたあと実行するタスクのモジュールをファイルとして転送しそれを実行する。 Pipelining機能をなしの状態だと、このファイル転送とファイルの削除を１タスクごとに行う。 ansibleを-vvvvオプションをつけて実行するとわかるが、 ４行目でファイルのPUT（転送）を、５行目の最後の方にrm -rfでディレクトリ・ファイルの削除を行っている。 &lt;192.168.33.100&gt; ESTABLISH CONNECTION FOR USER: deploy &lt;192.168.33.100&gt; REMOTE_MODULE command ls -l /root &lt;192.168.33.100&gt; EXEC ssh -C -tt -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=user -o ConnectTimeout=10 192.168.33.100 /bin/sh -c 'mkdir -p $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321 &amp;&amp; chmod a+rx $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321 &amp;&amp; echo $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321' &lt;192.168.33.100&gt; PUT /var/folders/7_/d_dwdlcx1m95mn_846x30xb40000gn/T/tmpc8amAw TO /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/command &lt;192.168.33.100&gt; EXEC ssh -C -tt -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=user -o ConnectTimeout=10 192.168.33.100 /bin/sh -c 'sudo -k &amp;&amp; sudo -E -S -p &quot;[sudo via ansible, key=koibtlgpbiprbaihcqxiqgcnnreofxuo] password: &quot; -u root /bin/sh -c '&quot;'&quot;'echo BECOME-SUCCESS-koibtlgpbiprbaihcqxiqgcnnreofxuo; LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8 /usr/bin/python /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/command; rm -rf /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/ &gt;/dev/null 2&gt;&amp;1'&quot;'&quot;'' Pipiliningの機能を有効にすると、タスク実行ごとのモジュールファイルの転送と削除をしなくなる。 そのため、実効速度があがるのです。 下記はPipeliningを有効にした際の出力。SSHでタスクを実行しているだけなのがわかる。 &lt;192.168.33.100&gt; ESTABLISH CONNECTION FOR USER: deploy &lt;192.168.33.100&gt; REMOTE_MODULE command ls -l /root &lt;192.168.33.100&gt; EXEC ssh -C -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=deploy -o ConnectTimeout=10 192.168.33.100 /bin/sh -c 'sudo -k &amp;&amp; sudo -E -S -p &quot;[sudo via ansible, key=kjtoopnjepksibiitumqfycsoldadiws] password: &quot; -u root /bin/sh -c '&quot;'&quot;'echo BECOME-SUCCESS-kjtoopnjepksibiitumqfycsoldadiws; LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8 /usr/bin/python'&quot;'&quot;'' Configuration file — Ansible Documentation 2.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">25 Sep 2015, 23:27</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/09/25/232751/" class="post-title">Ansibleを踏み台サーバ越しに実行する</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-SSH" href="https://blog.mosuke.tech/categories/ssh">SSH</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        タイトルの通りで、なにも特別なことはない内容。 そして、9月も終わりなのに今月はひとつも記事を書いていなかった。 KVMを使って仮想のゲストサーバを立てたが、 ゲストサーバはホストサーバと通信する用の（外に出る場合にはNAT通信で）IPアドレスしか持っていない状況で、 Ansibleの実行対象としたかったのが背景。 ホストサーバにAnsibleをいれるわけにもいかず、ホストサーバを踏み台にして、 Ansibleを打ちたかったというもの。 SSHの設定ファイルを作る "Ansibleで" と書いたが要はSSHです。 まずはSSHで踏み台サーバを経由してAnsible実行対象サーバへ接続できるように準備しました。 これはいわゆる「多段SSH」というやつで、以前にもブログに書いたので復習です。 【VPS1台でインフラ勉強】多段SSH設定（おまけ） - Goldstine研究所 一般的には~/.ssh/configにこういった設定は書いたりもしますが、 Ansible実行の場合、端末に依存したくなかったので、 Ansibleレポジトリに別途ファイルを作ることにした。 ## sshconfigという名前のファイルにした Host ansible-target HostName 192.168.33.10 User xxxxx ProxyCommand ssh -W %h:%p yyyyy@hostserver 上記のファイルを使って多段SSHできることを確認します。 $ ssh -F sshconfig ansible-target Ansible実行時にSSH設定ファイルを利用する ここまで来たらとても簡単で、 ansible.cfgに下記を追記し、ansible実行時に上記のsshconfigを読み込まれるようにしました。 ansible.cfg [ssh_connection] ssh_args = -F sshconfig
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">15 Apr 2015, 17:11</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/04/15/171127/" class="post-title">Ansibleで最新のMySQLをインストールする際にハマったこと。MySQL-shared-compatのこと。</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a><a class="post-category post-category-MySQL" href="https://blog.mosuke.tech/categories/mysql">MySQL</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        CentOS 6.5環境でAnsibleを使って最新のMySQLのセットアップをしようと思った際にハマったことをまとめた。 本質的にはAnsibleというよりLinux RPMパッケージのはなし。 ついでに、しょっぼいgithubを公開しました。 (1) 本記事を書くに至った経緯 Ansibleでmysqlを使ったサーバを構築(CentOS6.5)することになった。 MySQLのバージョンは5.6を採用した。 MySQLの公式rpmをダウンロードしインストールした。 インストールしたもの：MySQL-client, MySQL-devel, MySQL-server, MySQL-shared MySQL-sharedをインストールする際にデフォルトのmysql-libsと競合 mysql-libsをアンインストールし再インストール AnsibleでMySQLの操作をするにはMySQL-pythonが必要なのでインストール MySQL-pythonをインストールするにはさっきアンインストールしたmysql-libsが必要…(困った) MySQL-shared-compatの存在に気づく 備忘録に書いておくか… (2) MySQL-shared-compatの存在 mysql-libsは多くのパッケージの依存となっており、公式のMySQL5.6をインストールすることで、 他のパッケージがいれられない状況となっていた。 そんな状況を解決するためにMySQL-shared-compatというパッケージが用意されていた。 MySQL-shared-compatは「過去のMySQLバージョン向けの共有クライアントライブラリが納められているもの」だ。 詳細は下記参照をおすすめ。 MySQL-5.5.6から仕様が変わった「MySQL-shared-compat」の中身を徹底解剖 - Y-Ken Studio ちなみに"compat"という単語がよく使われるが"compatibility"の略で「互換性」とかそういう意味。 (3) Githubで公開しました 内容は今のところ死ぬほど薄いのだが、MySQLをインストールするansibleを公開しました。 mosuke5/mysql-ansible · GitHub 内容はあれだが、特徴としては、インターネット上からRPMをダウンロードしてインストールする際に、 Ansibleでも「ダウンロード」→「インストール」の流れを踏む人が多いが、以下のようにするとシンプルになる。 varsでインストールしたいrpmやその取得先を記述しておいて、task側ではyumでnameにvarsで定義した変数を読むだけでできる。 role/mysql/vars/main.yml mysql_url: http://ftp.jaist.ac.jp/pub/mysql/Downloads/MySQL-5.6 mysql_ver: &quot;5.6.24-1&quot; mysql_rpms: - MySQL-client-{{ mysql_ver }}.el6.x86_64.rpm - MySQL-shared-compat-{{ mysql_ver }}.el6.x86_64.rpm - MySQL-shared-{{ mysql_ver }}.el6.x86_64.rpm - MySQL-devel-{{ mysql_ver }}.el6.x86_64.rpm - MySQL-server-{{ mysql_ver }}.el6.x86_64.rpm role/mysql/tasks/main.yml - name:
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">02 Feb 2015, 20:10</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/02/02/201008/" class="post-title">Ansible、コマンド実行結果を&amp;quot;ok&amp;quot;にする（冪等性を保つ方法）</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-サーバ" href="https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90">サーバ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        Ansibleでソースコードインストールする際とか すでにインストールされているかのチェックなどで、 シェルコマンドを実行してその結果で判断したい時がある。 ぼくがよくやる例では以下とか。 - name: check httpd installed command: which httpd ignore_errors: true なんですが... こうやってしまうと、仮に既にインストールされていて、正常なときでも"changed"と表示されてしまう。 これでは、本当にchangedなものなのか、わからなくなってくる。 これを解決するのにchaged_whenを使うといい。 - name: check httpd installed command: which httpd ignore_errors: true changed_when: false こうするとコマンドが成功した際には"ok"が表示される。 これで、何も変化がないときにはokとskippingしかでないから、 誰がみても結果がわかりやすいですね！ 秘伝のタレ回避！
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">28 Nov 2014, 00:17</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/28/001748/" class="post-title">Ansible, sudoパスワード要求を忘れただけでめんどくなる</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-サーバ" href="https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90">サーバ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        AnsibleをVagrant上でずっと使ってて、Playbookも完成したし本番サーバへ&hellip; と思ったところである初歩的な罠にハマった。 本番環境へPalybook実行！！ ``` $ ansible-playbook playbook.yml -i hosts &lt;p&gt;あれ、GATHERING FACTSで10分以上も待たされた...&lt;br&gt; しかも、エラー出た...&lt;/p&gt; GATHERING FACTS failed to parse [ sudo via ansible, key= &hellip;.. ] &lt;p&gt;sudoできていない...？&lt;/p&gt; &lt;p&gt;playbook内のsudo: yesを外して実行。&lt;/p&gt; &lt;p&gt;GATHERING FACTSは通過。&lt;br&gt; しかし、当たり前だがsudo で実行すべき部分で失敗...&lt;/p&gt; &lt;p&gt;とても単純なことに気づいた...&lt;br&gt; ・&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/Vagrant&quot;&gt;Vagrant&lt;/a&gt;環境ではsudoのパスワードを要求されない&lt;br&gt; ・本番環境はsudoのパスワードを要求されること&lt;br&gt; ・sudoのパスワードを入力するようにしていなかったこと&lt;/p&gt; &lt;p&gt;というわけで-Kをつけて実行&lt;/p&gt; $ ansible-playbook playbook.yml -i hosts -K &lt;p&gt;うまくいった...&lt;/p&gt; &lt;p&gt;完全なる私のミスなんだが、ただ-Kオプションを忘れるだけで、一回の実行に10分ほども待たされるのは…。&lt;br&gt; しかもGATHERING FACTSで止まっているときはCtl+Cで中断も聞かなかった。&lt;/p&gt; &lt;p&gt;要注意ですね。。。&lt;/p&gt; &lt;br&gt; &lt;p&gt;ちなみに、こんな方法で解決もできる。&lt;br&gt; sudoのパスワードを聞かれなくして対応。&lt;/p&gt; visudo user_name ALL=(ALL) NOPASSWD: ALL ```
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">18 Nov 2014, 22:55</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/18/225542/" class="post-title">Ansible、コマンドでワイルドカードを使うときの注意</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        AnsibleのPlaybookを書いていると、ワイルドカードを含んだコマンドを実行したい時がある。 そんなときあるところでハマった。 Apacheをソースインストールして、パスを/usr/sbinにリンクを貼ろうとして以下を実行した。 - command: ln -s /usr/local/httpd/bin/* /usr/sbin /usr/sbin内に「*」というリンクが貼られてしまった。 * -&gt; /usr/local/httpd/bin どうやらcommandモジュールはワイルドカードに対応していないよう。 ワイルドカードを使いたいときはshellモジュールを利用すると良い。 yaml - shell: ln -s /usr/local/httpd/bin/* /usr/sbin また、というリンクを消すときは要注意（笑） ``` $ rm ./ &lt;p&gt;とやってしまうとあたりまえだがやばいので&lt;/p&gt; $ rm ./¥* ``` こうですね…
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">16 Nov 2014, 15:32</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/16/153223/" class="post-title">Ansible、ソースインストールする際のPalybookの書き方</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        最近、Ansibleを使い始めたのだが、yumやapt-getでインストールできるものはいいけど、 どうしてもソースインストールが必要な場合がある。 ソースインストールを行う際のPlaybookの書き方と注意点をまとめた。 まず、あたりまえだが、ソースインストールを行うには以下のフローを踏まなければいけな。 1. ソースファイルの取得(tarで固められていると仮定) 2. tarファイルの解凍 3. 解答してできたディレクトリへ移動 4. configure 5. make 6. make install また、Ansibleでは何回もPlaybookを実行していくため、 すでにインストールされている場合は、インストールをスキップする必要がある。 yumやapt-getで管理されていれば上記を心配することはないのだが、やはりソースインストールだとこの壁がある。 ※パッケージ化しろよ！というツッコミは禁止 今回は例として、ubuntu13にemacsをソースインストールするのを例としてみた。 環境 【Ansible実行側】 さくらVPSの1G OS: Centos 7 IPアドレス:192.168.33.1 【設定対象側】 上記さくらVPS上にたてたVagrantの仮想サーバ OS: Ubuntu 13.10 IPアドレス:192.168.33.100 Playbook 以下playbookの例。 --- - hosts: 192.168.33.100 user: vagrant sudo: yes vars: src_dir: /usr/local/src emacs_ver: emacs-23.4 tasks: ## emacsのソースファイルを取得済みか確認 - name: check exist emacs source file command: ls -l {{src_dir}}/{{emacs_ver}}.tar.gz ignore_errors: True register: result1 ## emacsのソースファイル取得。ただし、すでに取得済みならスキップ
+                    </div>
+                </section>
+                
+            </div>
+            
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

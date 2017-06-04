@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【錦織圭も分析】ATP TennisのデータスクレイパーGem作った &middot; Goldstine研究所</title>
+
+    <meta name="description" content=" 背景  このブログは基本的に技術ブログとしてやっているので、 テニスの話題ははじめてだが、テニスがすごく好きだ。特に、プロの試合の観戦はとても好きだ。  2005年からずーっと見てて、欠かさずすべての試合結果はチェックしている。  数年前">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="【錦織圭も分析】ATP TennisのデータスクレイパーGem作った &middot; Goldstine研究所">
+    <meta name="twitter:description" content=" 背景  このブログは基本的に技術ブログとしてやっているので、 テニスの話題ははじめてだが、テニスがすごく好きだ。特に、プロの試合の観戦はとても好きだ。  2005年からずーっと見てて、欠かさずすべての試合結果はチェックしている。  数年前">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="【錦織圭も分析】ATP TennisのデータスクレイパーGem作った &middot; Goldstine研究所">
+    <meta property="og:description" content=" 背景  このブログは基本的に技術ブログとしてやっているので、 テニスの話題ははじめてだが、テニスがすごく好きだ。特に、プロの試合の観戦はとても好きだ。  2005年からずーっと見てて、欠かさずすべての試合結果はチェックしている。  数年前">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">06 Mar 2016, 14:05</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/03/06/140531/" class="post-title">【錦織圭も分析】ATP TennisのデータスクレイパーGem作った</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ruby" href="https://blog.mosuke.tech/categories/ruby">Ruby</a><a class="post-category post-category-Gem" href="https://blog.mosuke.tech/categories/gem">Gem</a><a class="post-category post-category-ATP" href="https://blog.mosuke.tech/categories/atp">ATP</a><a class="post-category post-category-テニス" href="https://blog.mosuke.tech/categories/%E3%83%86%E3%83%8B%E3%82%B9">テニス</a><a class="post-category post-category-ATP Tennis" href="https://blog.mosuke.tech/categories/atp-tennis">ATP Tennis</a><a class="post-category post-category-スクレイピング" href="https://blog.mosuke.tech/categories/%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%94%E3%83%B3%E3%82%B0">スクレイピング</a>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p><body>
+<h1>背景</h1></p>
+
+<p>このブログは基本的に技術ブログとしてやっているので、<br>
+テニスの話題ははじめてだが、テニスがすごく好きだ。
+特に、プロの試合の観戦はとても好きだ。</p>
+
+<p>2005年からずーっと見てて、欠かさずすべての試合結果はチェックしている。</p>
+
+<p>数年前から、テニス選手をある指標から分析したいなと思っていた。
+例えば、</p>
+
+<ul>
+<li>ランキングは高くないけど、爆発するとトップ選手に勝つ力を持っているかどうか</li>
+<li>自分より格下の選手に負けることが少ないかどうか</li>
+<li>小さい大会ではあまり勝てないけど、大舞台で勝てる選手かどうか</li>
+</ul>
+
+<p>これから伸びそうな選手かどうかなどをデータ的にみたかった。<br>
+ATPの公式サイトにもいくつか統計情報が載っているが、自分が大事と思う指標で分析したいと思っていた。</p>
+
+<p>まずは、データを取得しなければいけないので、それで<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EC%A5%A4%A5%D4%A5%F3%A5%B0">スクレイピング</a>のライブラリを作るにいたった。</p>
+
+<h1>AtpScraper</h1>
+
+<p>AtpScraperは男子のプロテニスの公式サイトである、<a href="http://www.atpworldtour.com">ATPのサイト</a>から情報を<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EC%A5%A4%A5%D4%A5%F3%A5%B0">スクレイピング</a>してくれる<a class="keyword" href="http://d.hatena.ne.jp/keyword/Ruby">Ruby</a>ライブラリだ。</p>
+
+<p><iframe src="//hatenablog-parts.com/embed?url=https%3A%2F%2Fgithub.com%2Fmosuke5%2Fatp_scraper" title="mosuke5/atp_scraper" class="embed-card embed-webcard" scrolling="no" frameborder="0" style="display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;"></iframe><cite class="hatena-citation"><a href="https://github.com/mosuke5/atp_scraper">github.com</a></cite></p>
+
+<p>現時点では、ぼくが今欲している機能しか実装していないが、下記ができる。</p>
+
+<ul>
+<li>シングルスのランキングの取得</li>
+<li>プレイヤーの対戦レコードの取得</li>
+</ul>
+
+<p>一例だが、どんなふうに利用できるかのせる。</p>
+
+<h3>シングルスのランキング取得</h3>
+
+<p>デフォルトだとトップ100のランキングを取得する。</p>
+
+<pre><code class="language-ruby">pry(main)&gt; AtpScraper::Get.singles_ranking
+=&gt; [{:ranking=&gt;&quot;1&quot;,
+  :player_name=&gt;&quot;Novak Djokovic&quot;,
+  :player_url_name=&gt;&quot;novak-djokovic&quot;,
+  :player_id=&gt;&quot;d643&quot;,
+  :points=&gt;&quot;16580&quot;},
+ {:ranking=&gt;&quot;2&quot;,
+  :player_name=&gt;&quot;Andy Murray&quot;,
+  :player_url_name=&gt;&quot;andy-murray&quot;,
+  :player_id=&gt;&quot;mc10&quot;,
+  :points=&gt;&quot;8765&quot;},
+ {:ranking=&gt;&quot;3&quot;,
+  :player_name=&gt;&quot;Roger Federer&quot;,
+  :player_url_name=&gt;&quot;roger-federer&quot;,
+  :player_id=&gt;&quot;f324&quot;,
+  :points=&gt;&quot;8295&quot;},
+
+(略)
+
+</code></pre>
+
+<p>下記のようにすれば、50位から60位のランキングを取得できる。<br>
+（※引数の指定の仕方がアレなのは突っ込まないこと）</p>
+
+<pre><code class="language-ruby">pry(main)&gt; AtpScraper::Get.singles_ranking(&quot;50-60&quot;)
+=&gt; [{:ranking=&gt;&quot;50&quot;,
+  :player_name=&gt;&quot;Lukas Rosol&quot;,
+  :player_url_name=&gt;&quot;lukas-rosol&quot;,
+  :player_id=&gt;&quot;r685&quot;,
+  :points=&gt;&quot;897&quot;},
+ {:ranking=&gt;&quot;51&quot;,
+  :player_name=&gt;&quot;Federico Delbonis&quot;,
+  :player_url_name=&gt;&quot;federico-delbonis&quot;,
+  :player_id=&gt;&quot;d874&quot;,
+  :points=&gt;&quot;895&quot;},
+
+(略)
+</code></pre>
+
+<h3>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B6%D3%BF%A5%B7%BD">錦織圭</a>の対戦レコード取得</h3>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%B6%D3%BF%A5%B7%BD">錦織圭</a>の2016年の対戦レコードを見たいと思えば下記のように取得できる。<br>
+（第一引数の<code>n552</code>は選手のIDのようなもので、これは上のランキングの取得時に手に入るのでそこで確認しなければいけない）</p>
+
+<pre><code class="language-ruby">pry(main)&gt; AtpScraper::Get.player_activity(&quot;n552&quot;, 2016)
+=&gt; [{:year=&gt;&quot;2016&quot;,
+  :player_name=&gt;&quot;Kei Nishikori&quot;,
+  :player_rank=&gt;&quot;6&quot;,
+  :opponent_name=&gt;&quot;Sam Querrey&quot;,
+  :opponent_rank=&gt;&quot;43&quot;,
+  :round=&gt;&quot;Round of 16&quot;,
+  :score=&gt;&quot;46 36&quot;,
+  :win_loss=&gt;&quot;L&quot;,
+  :tournament_name=&gt;&quot;Abierto Mexicano Telcel&quot;,
+  :tournament_category=&gt;&quot;500&quot;,
+  :tournament_location=&gt;&quot;Acapulco, Mexico&quot;,
+  :tournament_start_date=&gt;&quot;2016.02.22&quot;,
+  :tournament_end_date=&gt;&quot;2016.02.27&quot;,
+  :tournament_surface=&gt;&quot;Hard&quot;,
+  :tournament_surface_inout=&gt;&quot;Outdoor&quot;},
+ {:year=&gt;&quot;2016&quot;,
+  :player_name=&gt;&quot;Kei Nishikori&quot;,
+  :player_rank=&gt;&quot;6&quot;,
+  :opponent_name=&gt;&quot;Thiemo de Bakker&quot;,
+  :opponent_rank=&gt;&quot;105&quot;,
+  :round=&gt;&quot;Round of 32&quot;,
+  :score=&gt;&quot;60 63&quot;,
+  :win_loss=&gt;&quot;W&quot;,
+  :tournament_name=&gt;&quot;Abierto Mexicano Telcel&quot;,
+  :tournament_category=&gt;&quot;500&quot;,
+  :tournament_location=&gt;&quot;Acapulco, Mexico&quot;,
+  :tournament_start_date=&gt;&quot;2016.02.22&quot;,
+  :tournament_end_date=&gt;&quot;2016.02.27&quot;,
+  :tournament_surface=&gt;&quot;Hard&quot;,
+  :tournament_surface_inout=&gt;&quot;Outdoor&quot;},
+
+(略)
+
+</code></pre>
+
+<p>もし、過去のすべての<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B6%D3%BF%A5%B7%BD">錦織圭</a>の対戦レコードを取得したければ下記で取得できる。</p>
+
+<pre><code class="language-ruby">pry(main)&gt; AtpScraper::Get.player_activity(&quot;n552&quot;, &quot;all&quot;)
+</code></pre>
+
+<p>対戦レコードは１対戦ごとのレコードになっている。<br>
+トーナメントごとにまとめたりはしていない。</p>
+
+<h1>これから</h1>
+
+<p>データ取得ライブラリを作ったので、これからこれを使った分析をしていこうと思っている。<br>
+分析結果が見れるサービスを作るかもしれないし作らないかもしれない。</p>
+
+<p>また、データ取得について要望があれば受け付けるし、プルリクをしてくれてもOKです。</p>
+
+<p><p><a href="https://github.com/mosuke5/atp_scraper">GitHub - mosuke5/atp_scraper: atp_scraper is a tool scraping tennis data from atpworldtour.com.</a></p>
+</body></p>
+
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label-counter" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+                            <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3a%2f%2fblog.mosuke.tech%2fentry%2f2016%2f03%2f06%2f140531%2f&layout=button_count&size=small&mobile_iframe=true&appId=1383467145023614&width=90&height=20" width="90" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

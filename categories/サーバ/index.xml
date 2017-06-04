@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>サーバ on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90/</link>
+    <description>Recent content in サーバ on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 02 Feb 2015 20:10:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Ansible、コマンド実行結果を&amp;quot;ok&amp;quot;にする（冪等性を保つ方法）</title>
+      <link>https://blog.mosuke.tech/entry/2015/02/02/201008/</link>
+      <pubDate>Mon, 02 Feb 2015 20:10:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/02/02/201008/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;Ansibleで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9&#34;&gt;ソースコード&lt;/a&gt;インストールする際とか&lt;br&gt;
+すでにインストールされているかのチェックなどで、&lt;br&gt;
+シェルコマンドを実行してその結果で判断したい時がある。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;ぼくがよくやる例では以下とか。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;- name: check httpd installed
+  command: which httpd
+  ignore_errors: true
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なんですが...&lt;br&gt;
+こうやってしまうと、仮に既にインストールされていて、正常なときでも&#34;&lt;b&gt;&lt;span style=&#34;color: #f9ce1d&#34;&gt;changed&lt;/span&gt;&lt;/b&gt;&#34;と表示されてしまう。&lt;br&gt;
+これでは、本当にchangedなものなのか、わからなくなってくる。&lt;/p&gt;
+
+&lt;p&gt;これを解決するのに&lt;b&gt;chaged_when&lt;/b&gt;を使うといい。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;- name: check httpd installed
+  command: which httpd
+  ignore_errors: true
+  changed_when: false
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こうするとコマンドが成功した際には&#34;&lt;b&gt;&lt;span style=&#34;color: #00cc00&#34;&gt;ok&lt;/span&gt;&lt;/b&gt;&#34;が表示される。&lt;/p&gt;
+
+&lt;p&gt;これで、何も変化がないときにはokとskippingしかでないから、&lt;br&gt;
+誰がみても結果がわかりやすいですね！&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;秘伝のタレ回避！&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>スーパーサーバってなに？ xinetdでサービスを常駐起動せずに利用する</title>
+      <link>https://blog.mosuke.tech/entry/2015/01/02/013658/</link>
+      <pubDate>Fri, 02 Jan 2015 01:36:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/01/02/013658/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;使用頻度の低いサービスのデーモンをメモリに常駐させておくのは効率が悪い。&lt;br&gt;
+そこでスーパーサーバという使用頻度の低いサービスの窓口のサービスのみ起動しておき、要求があったときだけ特定のサービスを起動させることが可能らしい。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;ということで、そのスーパーサーバとやらを実際に触ってみた。&lt;/p&gt;
+
+&lt;p&gt;スーパーサーバというとinetdとxinetdがあるらしいが、&lt;br&gt;
+xinetdはinetdの拡張版で、アクセス制御などの機能を搭載しているとのこと。&lt;/p&gt;
+
+&lt;p&gt;今回はxinetdを設定してみる。&lt;/p&gt;
+
+&lt;h1&gt;1. 事前準備&lt;/h1&gt;
+
+&lt;p&gt;【環境】&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;で構築した&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/CentOS&#34;&gt;CentOS&lt;/a&gt; 6.5&lt;br&gt;
+(仮想環境の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;は192.168.33.10)&lt;/p&gt;
+
+&lt;p&gt;まずはスーパーサーバで管理するサービスを考えなければならない。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;とかhttpはどう考えてもスーパーサーバの管理するようなものではないだろうし…&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;や&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/telnet&#34;&gt;telnet&lt;/a&gt;、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/POP3&#34;&gt;POP3&lt;/a&gt;なんかのサービスに利用されることが多いそう？（このへんよくわかない）&lt;/p&gt;
+
+&lt;p&gt;今回は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;をスーパーサーバの管理対象とした。&lt;br&gt;
+※本来は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4&#34;&gt;複数&lt;/a&gt;のサービスを管理対象とするからこそ意味がある。&lt;/p&gt;
+
+&lt;p&gt;まずはxinetdとvsftpをインストール&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo yum install xinetd vsftpd 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br&gt;
+xinetdどうこうの前に、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ftp&#34;&gt;ftp&lt;/a&gt;接続がきちんとできるか確認するのでサービスを起動。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo service vsftpd start 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br&gt;
+ローカルPCから接続できることを確認する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ftp 192.168.33.10
+Connected to 192.168.33.10.
+220 (vsFTPd 2.2.2)
+Name (192.168.33.10:username): 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;2. xinetdの設定&lt;/h1&gt;
+
+&lt;p&gt;xinetdの基本設定は/etc/xinetd.confにかかれており、&lt;br&gt;
+xinetdで管理する各サービスの設定は/etc/xinetd.d/配下に書く方式。&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ftp&#34;&gt;ftp&lt;/a&gt;の設定を以下の通りにした。&lt;br&gt;
+&#34;service&#34;のあとに書くサービス名称は/etc/servicesに定義されているものを記載する。&lt;br&gt;
+vsftpとか書いても動かないので注意。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo vim /etc/xinetd.d/ftp
+service ftp
+{
+        disable         = no
+        socket_type     = stream
+        wait            = no
+        user            = root
+        server          = /usr/sbin/vsftpd
+        log_on_failure  += USERID
+}
+ 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;設定項目については以下参照。&lt;br&gt;
+&lt;a href=&#34;https://www.express.nec.co.jp/linux/distributions/knowledge/network/xinetd.html&#34;&gt;xinetd の設定&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;これでxinetdを起動&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo service xinetd start 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;(補足) /etc/servicesってなにもの？&lt;/h3&gt;
+
+&lt;p&gt;/etc/servicesがなにか気になったので一応調べると。&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;サービス名とそこで使われるポート番号、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%C8%A5%B3%A5%EB&#34;&gt;プロトコル&lt;/a&gt;(&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/tcp&#34;&gt;tcp&lt;/a&gt;/&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/udp&#34;&gt;udp&lt;/a&gt;)との 対応関係を記述したファイルが /etc/services です。
+このファイルは 単なるサービス名のデータベースで、それ自体では何の働きもありませ んが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/netstat&#34;&gt;netstat&lt;/a&gt; コマンドや次の inetd などで参照されます。
+(&lt;a href=&#34;http://www.wakhok.ac.jp/~kanayama/summer/02/site/node43.html&#34;&gt;http://www.wakhok.ac.jp/~kanayama/summer/02/site/node43.html&lt;/a&gt;)&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h1&gt;3. xinetdを使って&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;で接続してみる&lt;/h1&gt;
+
+&lt;p&gt;xinetdが&lt;b&gt;&#34;起動している&#34;&lt;/b&gt;ことと、vsftpdが&lt;b&gt;&#34;起動していない&#34;&lt;/b&gt;ことを確認しておく。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo service xinetd status
+xinetd (pid  3521) is running...
+
+$ sudo service vsftpd status
+vsftpd is stopped 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br&gt;
+ローカルPCから&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;接続をしてみる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ftp 192.168.33.10
+Connected to 192.168.33.10.
+421 Service not available, remote server has closed connection. 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;あれ、接続が切られた…&lt;/p&gt;
+
+&lt;p&gt;syslogを確認してみると。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo tail /var/log/message
+Jan  1 15:07:25 server xinetd[3335]: START: ftp pid=3337 from=::ffff:192.168.33.1
+Jan  1 15:07:28 server xinetd[3335]: EXIT: ftp status=1 pid=3337 duration=3(sec) 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;接続できているようだがその後すぐに切断されているようにみえる。
+vsftpd側の設定を疑ってみた。&lt;/p&gt;
+
+&lt;h1&gt;4. vsftpdの設定&lt;/h1&gt;
+
+&lt;p&gt;vsftpd側で以下の設定をいじる必要があった。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo vim /etc/vsftpd/vsftpd.conf
+listen=NO
+ 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;vsftpdのlistenの設定は以下のとおり。&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt; コントロールポート (21) への接続要求を vsftpd 自身で見張るか。
+YES の状態を「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%BF%A5%F3%A5%C9%A5%A2%A5%ED%A1%BC%A5%F3&#34;&gt;スタンドアローン&lt;/a&gt;モード」と呼ぶ。
+inetd や後述の &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/tcpserver&#34;&gt;tcpserver&lt;/a&gt; を経由する場合は NO にする。
+(&lt;a href=&#34;http://www.asahi-net.or.jp/~aa4t-nngk/ftpd.html&#34;&gt;http://www.asahi-net.or.jp/~aa4t-nngk/ftpd.html&lt;/a&gt;)&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h1&gt;5. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;接続の再チャレンジ&lt;/h1&gt;
+
+&lt;p&gt;ローカルPCから再度&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;接続を試みる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ftp 192.168.33.10
+Connected to 192.168.33.10.
+220 (vsFTPd 2.2.2)
+Name (192.168.33.10:username): 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;つながった！&lt;br&gt;
+&lt;span style=&#34;font-size: 150%&#34;&gt;&lt;b&gt;vsftpdサービスを停止しているのに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ftp&#34;&gt;ftp&lt;/a&gt;接続ができる！&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ftp&#34;&gt;ftp&lt;/a&gt;接続前と接続中、接続後でプロセスを確認してみる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; 接続前
+$ ps -ef | grep ftp
+vagrant   3552  2742  0 16:17 pts/0    00:00:00 grep ftp
+
+&amp;gt; 接続中
+&amp;gt; 接続中のみvsftpdのプロセスが立ち上がっている。
+$ ps -ef | grep ftp
+nobody    3555  3521  0 16:18 ?        00:00:00 vsftpd
+vagrant   3557  3555  0 16:18 ?        00:00:00 vsftpd
+vagrant   3559  2742  0 16:18 pts/0    00:00:00 grep ftp
+
+&amp;gt; 接続終了後
+$ ps -ef | grep ftp
+vagrant   3552  2742  0 16:17 pts/0    00:00:00 grep ftp 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br&gt;
+プロセスツリーを見てみると、xinetdプロセスがvsftpdを起動していることがわかる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; 接続前
+$ pstree -p
+init(1)-+-VBoxService(1003)-+-{VBoxService}(1004)
+        |
+        | (略)
+        |
+        `-xinetd(3521)
+
+&amp;gt; 接続中
+$ pstree -p
+init(1)-+-VBoxService(1003)-+-{VBoxService}(1004)
+        |
+        | (略)
+        |
+        `-xinetd(3521)---vsftpd(3562)---vsftpd(3563) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;br&gt;
+サービスを起動しておかなくてもxinetd経由で起動できるんですね。&lt;br&gt;
+これはこれで使い道あるかもしれぬ。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ansible, sudoパスワード要求を忘れただけでめんどくなる</title>
+      <link>https://blog.mosuke.tech/entry/2014/11/28/001748/</link>
+      <pubDate>Fri, 28 Nov 2014 00:17:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/11/28/001748/</guid>
+      <description>
+
+&lt;p&gt;&lt;body&gt;
+&lt;p&gt;Ansibleを&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;上でずっと使ってて、Playbookも完成したし本番サーバへ&amp;hellip;&lt;br&gt;
+と思ったところである初歩的な罠にハマった。&lt;/p&gt;
+&lt;p&gt;本番環境へPalybook実行！！&lt;/p&gt;
+```
+$ ansible-playbook playbook.yml -i hosts&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;あれ、GATHERING FACTSで10分以上も待たされた...&amp;lt;br&amp;gt;
+しかも、エラー出た...&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;GATHERING FACTS
+failed to parse [ sudo via ansible, key= &amp;hellip;.. ]
+&lt;code&gt;
+&amp;lt;p&amp;gt;sudoできていない...？&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;playbook内のsudo: yesを外して実行。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;GATHERING FACTSは通過。&amp;lt;br&amp;gt;
+しかし、当たり前だがsudo で実行すべき部分で失敗...&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;とても単純なことに気づいた...&amp;lt;br&amp;gt;
+・&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/Vagrant&amp;quot;&amp;gt;Vagrant&amp;lt;/a&amp;gt;環境ではsudoのパスワードを要求されない&amp;lt;br&amp;gt;
+・本番環境はsudoのパスワードを要求されること&amp;lt;br&amp;gt;
+・sudoのパスワードを入力するようにしていなかったこと&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;というわけで-Kをつけて実行&amp;lt;/p&amp;gt;
+&lt;/code&gt;
+$ ansible-playbook playbook.yml -i hosts -K&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;うまくいった...&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;完全なる私のミスなんだが、ただ-Kオプションを忘れるだけで、一回の実行に10分ほども待たされるのは…。&amp;lt;br&amp;gt;
+しかもGATHERING FACTSで止まっているときはCtl+Cで中断も聞かなかった。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;要注意ですね。。。&amp;lt;/p&amp;gt;
+&amp;lt;br&amp;gt;
+&amp;lt;p&amp;gt;ちなみに、こんな方法で解決もできる。&amp;lt;br&amp;gt;
+sudoのパスワードを聞かれなくして対応。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;visudo:e62e8b218521d80b052b676f1c595d9b&#34;&gt;visudo&lt;/h1&gt;
+
+&lt;p&gt;user_name ALL=(ALL) NOPASSWD: ALL
+```
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>【VPS1台でインフラ勉強】多段SSH設定（おまけ）</title>
+      <link>https://blog.mosuke.tech/entry/2014/11/09/172745/</link>
+      <pubDate>Sun, 09 Nov 2014 17:27:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/11/09/172745/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;VPS1台でインフラ勉強の会で、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;のホストサーバ上に仮想でさらにいつくかのサーバを立てたが、&lt;br&gt;
+仮想のサーバにアクセスするには、ホストサーバにアクセスしてから更に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;をしなければならない。&lt;br&gt;
+これが面倒だったので多段&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;の設定をして、一発で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;接続できるようにした。&lt;/p&gt;
+&lt;p&gt;以下の図で言うと、web10, web11(192.168.33.&lt;sup&gt;10&lt;/sup&gt;&amp;frasl;&lt;sub&gt;11&lt;/sub&gt;)に一発で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;できるようにする。&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141109/20141109170337.png&#34; alt=&#34;f:id:mosuke5:20141109170337p:plain&#34; title=&#34;f:id:mosuke5:20141109170337p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;クライアントPC側に以下の設定をした。&lt;/p&gt;
+```
+$ vim ~/.ssh/config
+host gateway
+    HostName xxxxx.xxx
+    User username&lt;/p&gt;
+
+&lt;p&gt;Host web10
+    HostName 192.168.33.10
+    User vagrant
+    ProxyCommand ssh -W %h:%p gateway&lt;/p&gt;
+
+&lt;p&gt;Host web11
+    HostName 192.168.33.11
+    User vagrant
+    ProxyCommand ssh -W %h:%p gateway&lt;/p&gt;
+
+&lt;p&gt;##これで以下で接続可能
+$ ssh web10
+$ ssh  web11
+```
+&lt;p&gt;簡単でした。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>【雑記】VPSとお別れしました…</title>
+      <link>https://blog.mosuke.tech/entry/2014/05/18/142838/</link>
+      <pubDate>Sun, 18 May 2014 14:28:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/05/18/142838/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;2012年07月18日から契約していた&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;サーバを本日解約した。&lt;br&gt;
+約２年間の契約していたわけだがちょっと振り返るといろいろあったなーと思う。&lt;br&gt;
+ぼくがまだ大学３年のとき、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B7%A5%E3%A5%EB%A5%D6%A5%C3%A5%AF%A5%DE%A1%BC%A5%AF%A5%B5%A1%BC%A5%D3%A5%B9&#34;&gt;ソーシャルブックマークサービス&lt;/a&gt;をリリースしたのだが、&lt;br&gt;
+その時はまだエンジニア初心者で、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;ではなく共有サーバを利用していた。&lt;/p&gt;
+&lt;p&gt;そんなプロジェクトが終わり、次のサービス(&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Twitter&#34;&gt;Twitter&lt;/a&gt;の解析ツール)の開発で初めて&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;環境を与えられたのだが、&lt;br&gt;
+サーバ構築など右も左もわからなかったので、自分の勉強用環境として&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;を契約。VPS環境で行ったこと&amp;gt;&lt;br&gt;
+プロダクトとしては次の３つくらい作った&lt;br&gt;
+・&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Amazon&#34;&gt;Amazon&lt;/a&gt;の最安値段通知サービス&lt;br&gt;
+　自分が欲しい物について希望価格を登録しておくと、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Amazon&#34;&gt;Amazon&lt;/a&gt;の中古価格が希望価格を下回った時に通知してくれるサービス。&lt;br&gt;
+　個人的には結構好きだったのだが、運用がめんどくさくなって閉鎖。&lt;/p&gt;
+&lt;p&gt;・うみなう ー&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Twitter&#34;&gt;Twitter&lt;/a&gt;上の「海なう」画像を眺めようー&lt;br&gt;
+　夏場になると&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Twitter&#34;&gt;Twitter&lt;/a&gt;で「海なう」と水着画像を付けて投稿する人が多い。&lt;br&gt;
+　海なうのキーワードで出てきた画像をただただ眺めるだけのサービス(笑)&lt;/p&gt;
+&lt;p&gt;・キニナル ーきになるあの二人のツイートをー&lt;br&gt;
+　&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Twitter&#34;&gt;Twitter&lt;/a&gt;上で気になる二人のツイート時系列で並べて監視するサービス。&lt;br&gt;
+　公開はしていなかったけどちょくちょく身内でみていた。&lt;/p&gt;
+&lt;br&gt;
+&lt;p&gt;こんなくだらないサービスを趣味で作っていた。&lt;br&gt;
+その他、仕事で使う新しいツールの実験導入などに利用していた。&lt;/p&gt;
+&lt;p&gt;社会人になってからリモートで接続できるサーバを持っている必要がなくなってきたので解約することになったが、&lt;br&gt;
+いろいろと勉強になったし、思い出がおおかったなー。&lt;br&gt;
+またいつか契約する日があることを待ち望んで…&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ドメイン on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3/</link>
+    <description>Recent content in ドメイン on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sun, 23 Apr 2017 15:49:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>(備忘録) 運用サイトのドメインとサーバ</title>
+      <link>https://blog.mosuke.tech/entry/2017/04/23/154957/</link>
+      <pubDate>Sun, 23 Apr 2017 15:49:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2017/04/23/154957/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;完全備忘録。自分でもわからなくなってきたので。
+公開すればきっと更新もする。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fdocs.google.com%2Fpresentation%2Fd%2F1MJ8c7QkdYl5BIp9eS3Li2viq-V-CgdpnJKWylYa_dW0%2Fedit%3Fusp%3Dsharing&#34; title=&#34;ドメインとサーバ関連図&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://docs.google.com/presentation/d/1MJ8c7QkdYl5BIp9eS3Li2viq-V-CgdpnJKWylYa_dW0/edit?usp=sharing&#34;&gt;docs.google.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

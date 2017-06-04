@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>無線lanルーター on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/%E7%84%A1%E7%B7%9Alan%E3%83%AB%E3%83%BC%E3%82%BF%E3%83%BC/</link>
+    <description>Recent content in 無線lanルーター on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sun, 24 May 2015 22:02:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/%E7%84%A1%E7%B7%9Alan%E3%83%AB%E3%83%BC%E3%82%BF%E3%83%BC/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>他人の家のインターネットを環境を整えて分かった無線LANルータのこと</title>
+      <link>https://blog.mosuke.tech/entry/2015/05/24/220226/</link>
+      <pubDate>Sun, 24 May 2015 22:02:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/05/24/220226/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;他人の家のインターネットを環境を整えて分かった&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN&#34;&gt;無線LAN&lt;/a&gt;ルータのことがあったのでまとめる。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;我が家のインターネット環境は以下のような構成になっている。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150524/20150524215405.png&#34; alt=&#34;f:id:mosuke5:20150524215405p:plain&#34; title=&#34;f:id:mosuke5:20150524215405p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;この構成では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN&#34;&gt;無線LAN&lt;/a&gt;ルータは&lt;b&gt;L3とL2の両方&lt;/b&gt;の機器として働いている。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B0%A5%ED%A1%BC%A5%D0%A5%EBIP&#34;&gt;グローバルIP&lt;/a&gt;とプライベートIPの両方を持っており、&lt;br&gt;
+プライベートIPからの通信をグローバル側へルーティングする機能と、&lt;br&gt;
+LAN内の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4&#34;&gt;複数&lt;/a&gt;の端末に接続する機能として。&lt;/p&gt;
+
+&lt;p&gt;一方、この前、他の人の家のインターネット環境を整えたのだが、&lt;br&gt;
+以下のような構成だった。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150524/20150524214832.png&#34; alt=&#34;f:id:mosuke5:20150524214832p:plain&#34; title=&#34;f:id:mosuke5:20150524214832p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;１つめの構成と決定的に違うところは、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VDSL&#34;&gt;VDSL&lt;/a&gt;モデムにルータ機能もついていること。
+この場合は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN&#34;&gt;無線LAN&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC&#34;&gt;ルーター&lt;/a&gt;はL2の機器として働いている。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN&#34;&gt;無線LAN&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC&#34;&gt;ルーター&lt;/a&gt;自体には&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;はなく、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/DHCP&#34;&gt;DHCP&lt;/a&gt;で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;管理を行っているのも上位のルータだ。&lt;/p&gt;
+
+&lt;p&gt;この構成になるときは、一般的に光&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%C5%C5%CF%C3&#34;&gt;IP電話&lt;/a&gt;を利用するケースのようだ。&lt;br&gt;
+というのも、一般的な&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN&#34;&gt;無線LAN&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC&#34;&gt;ルーター&lt;/a&gt;には光&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%C5%C5%CF%C3&#34;&gt;IP電話&lt;/a&gt;につなぐことができず、&lt;br&gt;
+通信会社から貸与されるモデムルータを利用するため。&lt;/p&gt;
+
+&lt;p&gt;余談だが、今家では実は下記のような構成にしている。&lt;br&gt;
+というのも、家の構造上、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VDSL&#34;&gt;VDSL&lt;/a&gt;がでているところが納戸のようなところで、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN&#34;&gt;無線LAN&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC&#34;&gt;ルーター&lt;/a&gt;を設置しても壁が多すぎるために電波が弱くなってしまう。&lt;br&gt;
+そのため、リビング側へ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN&#34;&gt;無線LAN&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC&#34;&gt;ルーター&lt;/a&gt;を設置したかったからだ。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150524/20150524215424.png&#34; alt=&#34;f:id:mosuke5:20150524215424p:plain&#34; title=&#34;f:id:mosuke5:20150524215424p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;とても単純な話だが、&lt;br&gt;
+いろんなケースの家庭内インターネットの設定をすることで、&lt;br&gt;
+いろいろと気づくこともあった。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

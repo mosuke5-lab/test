@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2016 &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="2016 &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="2016 &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">19 Mar 2016, 23:24</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/03/19/232437/" class="post-title">Github Pagesを今更作った話と、独自ドメイン適応時の通信のこと</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-github" href="https://blog.mosuke.tech/categories/github">github</a><a class="post-category post-category-github pages" href="https://blog.mosuke.tech/categories/github-pages">github pages</a><a class="post-category post-category-CDN" href="https://blog.mosuke.tech/categories/cdn">CDN</a><a class="post-category post-category-カスタムドメイン" href="https://blog.mosuke.tech/categories/%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3">カスタムドメイン</a><a class="post-category post-category-独自ドメイン" href="https://blog.mosuke.tech/categories/%E7%8B%AC%E8%87%AA%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3">独自ドメイン</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        今更ながらgithubページでプロフィールサイトを作った。 (もう少しデザインブラッシュアップしたい…) mosuke tech また、独自ドメイン（カスタムドメイン）の設定やその仕組みをおっている時に、 独自ドメイン適応時の通信について面白いことがわかったのでかく。 求めていたもの ブログとか作ったプロダクトをまとめたかった 極力シンプルでメンテしやすいものがよかった でもレスポンシブなデザインがよかった どのようにつくったか 上の条件を満たすために以下の２パターンのどっちで作ろうか迷った。 Jekyllなどを使いテンプレートを使って作る CSSフレームワークのみ利用し、あとは自分で作る １ページだけのシンプルなプロフィールサイトがよかったので、 Jekyllとか複雑なものは利用したくないと考えた。 また、CSSフレームワークだが、いつもよくTwitterBootstrapを使っているので、 それ以外のものでやってみようと考えた。 その結果、行き着いたのがSkeletonだった。 Skeletonは"A dead simple, responsive boilerplate."をうたっているものでよかった。 カスタムドメインの設定 デフォルトだとmosuke5.github.ioのURLが利用できる。 しかし、この前mosuke.techといういい感じのドメインを安く手に入れてたので、カスタムドメインの設定を行うことにした。 カスタムドメインの設定方法は以下のみだ。 レポジトリにCNAMEファイルを作成する $ echo mosuke.tech &gt; CNAME DNSの設定：Aレコードに192.30.252.153と192.30.252.154を追加 (本家ドキュメント) Setting up an apex domain - User Documentation カスタムドメイン設定時の通信について カスタムドメインがどのような仕組みで実現されているのか気になって、 いろいろと調べている時にあることに気づいた。 Aレコードに登録したIPアドレスを逆引きで調べると、pages.github.comが出てくるが、 pages.github.comをdigすると違う結果が返ってくる。 $ dig -x 192.30.252.153 ;; ANSWER SECTION: 153.252.30.192.in-addr.arpa. 3600 IN PTR pages.github.com. $ dig pages.github.com ;; ANSWER SECTION: pages.github.com. 900 IN CNAME github.map.fastly.net.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">16 Mar 2016, 17:54</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/03/16/175431/" class="post-title">DBのViewの使いどころの検討</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-データベース" href="https://blog.mosuke.tech/categories/%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9">データベース</a><a class="post-category post-category-DB" href="https://blog.mosuke.tech/categories/db">DB</a><a class="post-category post-category-ビュー" href="https://blog.mosuke.tech/categories/%E3%83%93%E3%83%A5%E3%83%BC">ビュー</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        ある実装についてどのように実装するか悩んだ。 その悩んだ過程や実装案をメモする。似たようなケースの実装案として参考になればと思う。 状況 ある申請に対して、検査Aと検査Bを行い、その検査状態・検査日時を管理・閲覧するシステムがあるとする。 申請のテーブルは下記とする。 id: int name: varchar(20) # どうでもいいので無視していい check_a: datetime # 検査すると実施した日時がはいる check_b: datetime # 検査すると実施した日時がはいる UIとして下記のように表示したいと考えている。 番号 状態 名前 検査A 検査B 1 検査完了 xxxxxx 2016/03/01 10:00 2016/03/01 12:00 2 検査未完了 xxxxxx - - 3 検査途中 xxxxxx 2016/03/01 13:00 - 4 検査途中 xxxxxx - 2016/03/01 15:00 ※SQLアンチパターンだろ！？ そもそもSQLアンチパターンの「マルチカラムアトリビュート」じゃないの？と思うかもしれない。 この場合は、この設計が一番という前提でお願いしたい。 www.amazon.co.jp 実装の検討 いくつかの実装パターンを検討した。 結果的に今回は実装案４のViewを使うのがいいのではないかと考えた。 が、Viewにもデメリットがある。必ずしもViewがいいというものではないことは留意。 (実装案１) SQL側で頑張る まず、データを取り出す際にSQLで頑張ることを思いつくはずだ。 例えば以下みたいに。 select id, name, case when check_a is null and check_b is null then '検査未完了' when check_a is not null and check_b is not null then '検査完了 ' else '検査途中' end as check_status from request これが悪いとはいわない。 だが、例えば同じような表示方法で他の条件式で取得したい時があるだろう。 select id, name, case when check_a is null and check_b is null then '検査未完了' when check_a is not null and check_b is not null then '検査完了 ' else '検査途中' end as check_status from request where name = 'xxxxx' もし、ソースコードの中に同じ形なのに条件だけがことなるSQLが出てきてしまったら、 ヤバイと感じてくるはずだ。 そして、ActiveRecordのようなORマッパーを使っている場合、 case文などを利用し始めた時点で、生SQLを書かなければいけなくなる。 これも不吉な感じがしてくる。 (実装案２) 受け取った側で頑張る SQLが複雑になるのがいやなら、プログラミング言語側で頑張ることもできる。 とりあえずデータは全部生でもらっておいて select * from request; HTML出力の時に頑張る。(下記はRubyのERB想定で記述) &lt;% if(request.check_a.nil?
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">06 Mar 2016, 14:05</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/03/06/140531/" class="post-title">【錦織圭も分析】ATP TennisのデータスクレイパーGem作った</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ruby" href="https://blog.mosuke.tech/categories/ruby">Ruby</a><a class="post-category post-category-Gem" href="https://blog.mosuke.tech/categories/gem">Gem</a><a class="post-category post-category-ATP" href="https://blog.mosuke.tech/categories/atp">ATP</a><a class="post-category post-category-テニス" href="https://blog.mosuke.tech/categories/%E3%83%86%E3%83%8B%E3%82%B9">テニス</a><a class="post-category post-category-ATP Tennis" href="https://blog.mosuke.tech/categories/atp-tennis">ATP Tennis</a><a class="post-category post-category-スクレイピング" href="https://blog.mosuke.tech/categories/%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%94%E3%83%B3%E3%82%B0">スクレイピング</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        背景 このブログは基本的に技術ブログとしてやっているので、 テニスの話題ははじめてだが、テニスがすごく好きだ。 特に、プロの試合の観戦はとても好きだ。 2005年からずーっと見てて、欠かさずすべての試合結果はチェックしている。 数年前から、テニス選手をある指標から分析したいなと思っていた。 例えば、 ランキングは高くないけど、爆発するとトップ選手に勝つ力を持っているかどうか 自分より格下の選手に負けることが少ないかどうか 小さい大会ではあまり勝てないけど、大舞台で勝てる選手かどうか これから伸びそうな選手かどうかなどをデータ的にみたかった。 ATPの公式サイトにもいくつか統計情報が載っているが、自分が大事と思う指標で分析したいと思っていた。 まずは、データを取得しなければいけないので、それでスクレイピングのライブラリを作るにいたった。 AtpScraper AtpScraperは男子のプロテニスの公式サイトである、ATPのサイトから情報をスクレイピングしてくれるRubyライブラリだ。 github.com 現時点では、ぼくが今欲している機能しか実装していないが、下記ができる。 シングルスのランキングの取得 プレイヤーの対戦レコードの取得 一例だが、どんなふうに利用できるかのせる。 シングルスのランキング取得 デフォルトだとトップ100のランキングを取得する。 pry(main)&gt; AtpScraper::Get.singles_ranking =&gt; [{:ranking=&gt;&quot;1&quot;, :player_name=&gt;&quot;Novak Djokovic&quot;, :player_url_name=&gt;&quot;novak-djokovic&quot;, :player_id=&gt;&quot;d643&quot;, :points=&gt;&quot;16580&quot;}, {:ranking=&gt;&quot;2&quot;, :player_name=&gt;&quot;Andy Murray&quot;, :player_url_name=&gt;&quot;andy-murray&quot;, :player_id=&gt;&quot;mc10&quot;, :points=&gt;&quot;8765&quot;}, {:ranking=&gt;&quot;3&quot;, :player_name=&gt;&quot;Roger Federer&quot;, :player_url_name=&gt;&quot;roger-federer&quot;, :player_id=&gt;&quot;f324&quot;, :points=&gt;&quot;8295&quot;}, (略) 下記のようにすれば、50位から60位のランキングを取得できる。 （※引数の指定の仕方がアレなのは突っ込まないこと） pry(main)&gt; AtpScraper::Get.singles_ranking(&quot;50-60&quot;) =&gt; [{:ranking=&gt;&quot;50&quot;, :player_name=&gt;&quot;Lukas Rosol&quot;, :player_url_name=&gt;&quot;lukas-rosol&quot;, :player_id=&gt;&quot;r685&quot;, :points=&gt;&quot;897&quot;}, {:ranking=&gt;&quot;51&quot;, :player_name=&gt;&quot;Federico Delbonis&quot;, :player_url_name=&gt;&quot;federico-delbonis&quot;, :player_id=&gt;&quot;d874&quot;, :points=&gt;&quot;895&quot;}, (略) 錦織圭の対戦レコード取得 錦織圭の2016年の対戦レコードを見たいと思えば下記のように取得できる。 （第一引数のn552は選手のIDのようなもので、これは上のランキングの取得時に手に入るのでそこで確認しなければいけない） pry(main)&gt; AtpScraper::Get.player_activity(&quot;n552&quot;, 2016) =&gt; [{:year=&gt;&quot;2016&quot;, :player_name=&gt;&quot;Kei Nishikori&quot;, :player_rank=&gt;&quot;6&quot;, :opponent_name=&gt;&quot;Sam Querrey&quot;, :opponent_rank=&gt;&quot;43&quot;, :round=&gt;&quot;Round of 16&quot;, :score=&gt;&quot;46 36&quot;, :win_loss=&gt;&quot;L&quot;, :tournament_name=&gt;&quot;Abierto Mexicano Telcel&quot;, :tournament_category=&gt;&quot;500&quot;, :tournament_location=&gt;&quot;Acapulco, Mexico&quot;, :tournament_start_date=&gt;&quot;2016.02.22&quot;, :tournament_end_date=&gt;&quot;2016.02.27&quot;, :tournament_surface=&gt;&quot;Hard&quot;, :tournament_surface_inout=&gt;&quot;Outdoor&quot;}, {:year=&gt;&quot;2016&quot;, :player_name=&gt;&quot;Kei Nishikori&quot;, :player_rank=&gt;&quot;6&quot;, :opponent_name=&gt;&quot;Thiemo de Bakker&quot;, :opponent_rank=&gt;&quot;105&quot;, :round=&gt;&quot;Round of 32&quot;, :score=&gt;&quot;60 63&quot;, :win_loss=&gt;&quot;W&quot;, :tournament_name=&gt;&quot;Abierto Mexicano Telcel&quot;, :tournament_category=&gt;&quot;500&quot;, :tournament_location=&gt;&quot;Acapulco, Mexico&quot;, :tournament_start_date=&gt;&quot;2016.02.22&quot;, :tournament_end_date=&gt;&quot;2016.02.27&quot;, :tournament_surface=&gt;&quot;Hard&quot;, :tournament_surface_inout=&gt;&quot;Outdoor&quot;}, (略) もし、過去のすべての錦織圭の対戦レコードを取得したければ下記で取得できる。 pry(main)&gt; AtpScraper::Get.player_activity(&quot;n552&quot;, &quot;all&quot;) 対戦レコードは１対戦ごとのレコードになっている。 トーナメントごとにまとめたりはしていない。 これから データ取得ライブラリを作ったので、これからこれを使った分析をしていこうと思っている。 分析結果が見れるサービスを作るかもしれないし作らないかもしれない。 また、データ取得について要望があれば受け付けるし、プルリクをしてくれてもOKです。 GitHub - mosuke5/atp_scraper: atp_scraper is a tool scraping tennis data from atpworldtour.com.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">07 Feb 2016, 21:03</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/02/07/210300/" class="post-title">社内マリカー大会やりました！運営の工夫どころとかまとめ</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-マリオカート" href="https://blog.mosuke.tech/categories/%E3%83%9E%E3%83%AA%E3%82%AA%E3%82%AB%E3%83%BC%E3%83%88">マリオカート</a><a class="post-category post-category-マリカー" href="https://blog.mosuke.tech/categories/%E3%83%9E%E3%83%AA%E3%82%AB%E3%83%BC">マリカー</a><a class="post-category post-category-マリカー大会" href="https://blog.mosuke.tech/categories/%E3%83%9E%E3%83%AA%E3%82%AB%E3%83%BC%E5%A4%A7%E4%BC%9A">マリカー大会</a><a class="post-category post-category-マリオカート大会" href="https://blog.mosuke.tech/categories/%E3%83%9E%E3%83%AA%E3%82%AA%E3%82%AB%E3%83%BC%E3%83%88%E5%A4%A7%E4%BC%9A">マリオカート大会</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        弊社では、年に一度、社内のコミュニケーション促進で、いろんな部署が集まって行う懇親会がある。 そこでは、恒例行事として何かしらのゲームを行っている。 そのゲームにて今年マリカー大会を行ったので、その報告と工夫した点などまとめておく。 マリオカートを選んだ理由 パーティとか懇親会のゲームイベントというと、 ビンゴ大会だったりクイズ大会、ジェスチャーゲームだったり行うのが一般的かと思う。 ですが、今回そういう場でマリオカート大会を選ぶに至ったのには下記のような理由があった。 準備が楽なものがよかった！ 順位が決められるものが良かった（景品の都合上） 楽しさに進行役の力量が影響しないものがよかった… まず、はじめはクイズ大会などを行おうかと検討していましたが、 そのクイズの問題を考えるのが結構たいへんであることに気づき、準備が楽なものがいいなと思った。 そして、運営的な理由だが、ゲームの結果を順位を簡単に決められる必要があった。 最後に、なんといっても自分が進行役だったので、 自分の笑いを取る力や進行技術で楽しさが左右されたらこまるなーとおもっていた。 これらを満たすことができると思ったのが「マリカー」だった！ 環境 参加者 ８つのチームから合計200人程度参加。 年齢層も結構バラバラ。若手からお偉いさんまでいる。 映像 WiiUの画像は、HDMIを使ってプロジェクターで大型スクリーンに投影した。 ルール 200人全員にマリオカートに参加してもらうことは難しかったので、 各チームで６人のゲーム参加者を事前に選んで頂いて、チームを代表として参加してもらうこととした。 （マリカー大会をやることは事前には言いませんでした。） WiiUでは４人対戦までしかできないので、下記のような形式で対戦を進めた。 8チームを4チーム×２分けて予選 下位２チームが下位決定戦 上位２チームが決勝戦 またなるべく多くの人がゲームに参加して欲しかったので、 特別ルールとして、コースを１周したらチームのほかの人に交代するというリレー形式とした。 準備したもの WiiU本体(ゲームパッド含む) マリオカート8のソフト Wiiリモコン 4つ www.amazon.co.jp 運営上の工夫 運営上幾つかの工夫を行ったので紹介する。 キャラクターについて 利用するキャラクターや乗り物は、予めこちらでチームごとにランダムで割り振った。 そうすることで、当日にキャラを選ぶ時間を短縮できるし、マリカーの知識の差がなくなる。 キャラクターは運ということにした。 コントローラについて ４人対戦だと画面が４つに分割される。 自分がどの画面を操作すべきかわからなくなるので、画面位置がわかるようにコントローラにシールを貼った。 この対応は必須です。 アイテムや操作など CPUなしで４人対戦で行った。 ４人対戦で普通のアイテム設定だと、「コイン」とか「バナナ」とか良いアイテムが出づらくつまらない。 アイテムの設定は「ダイナミック」にすることで、４人でも強力アイテムがでてバトルが白熱する。 カートの操作方法（曲がり方）は十字キーではなくハンドル操作とした。 普段ゲームに慣れている人でも、ハンドル操作だと不慣れなことも多くみんなうまい具合に下手になって白熱した。 初心者への対応 アイテムの細かい使い方などいちいち説明できないので、 初心者へは「アクセル」と「曲がること」のみ教えた。 一見、経験者と不公平のようにみえるが、今回のルールだと１週しか同じ人が回らないので、 心配するほどのことにはならなかったです。 トラブル時への備え こういう企画ではトラブルはつきもの。 トラブルに対しての対応を用意した。 コントローラの電池切れ対策で電池は買っておきました コントローラが故障した場合は、WiiUのゲームパッドで代用できるようにした 一応プロジェクターも２つ用意しておいた 進行役 進行役は２人でやったのだが、雰囲気をだすために赤と緑のマントをまといました。 こういうのもいいっすね。 www.amazon.co.jp 実況について
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">25 Jan 2016, 22:21</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/01/25/222150/" class="post-title">Vagrant×Ansible環境の３つのスタイルとそのメリット・デメリットについて</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-Vagrant" href="https://blog.mosuke.tech/categories/vagrant">Vagrant</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        Vagrant×Ansibleで開発環境を作っているみなさんは、 どんなふうにそれを実現していますか？ きっといくつかのやり方、考え方があると思います。 例えば、ご自身のPCにAnsibleをインストールしてVagrantの仮想環境にプロビジョニングしているとか。 Vagrantで立てた仮想環境にAnsibleを入れて実行するとか。 本ブログでは下記３つのVagrant×Ansibleのやり方に注目し、 そのメリット・デメリットについて自分なりにまとめます。 ホストにAnsibleをインストールして利用する ゲストにAnsibleをインストールして利用する Ansible実行用のゲストを作って利用する 1. ホストにAnsibleをインストールして利用する 概要 1番よくあるやり方だと思う。 ご自身のPCにAnsibleを入れてVagrantで立ち上げたゲストにプロビジョニングを行う。 メリット なんといっても直感的でシンプル。 3.との比較になるが、Ansibleを実行する環境を別途用意する必要がないのでホストのリソースにも優しい。 また、2.との比較でゲストに無駄なものが入らない点でよい。 デメリット ただ、そもそもwimdowsユーザはホストにAnsibleをインストールすることはできない。 つまり、複数人での開発をしていて、人によって端末が異なる場合には向いていない。 個人の端末の設定などにも大きく依存するため、チーム開発向きでないといえる。 2. ゲストにAnsibleをインストールして利用する 概要 Vagrantで立ち上げたゲストの中にAnsibleをインストールし、自身へプロビジョニングするやりかた。 この方式はshin1x1さんもおすすめしている。 Vagrant + Ansible で開発環境を作るなら ansible_local プロビジョナがいい！ - Shin x Hatena Blog メリット （詳しくは上のブログを読むといいと思う。） 1.のデメリットで述べた、端末への依存度をなくすことができる。 vagrantの新機能であるansible_localも利用できるのでプロビジョニングが楽だ。 3.と比べてAnsible実行環境を用意しなくて済む。 デメリット メリットだけみると1.の問題点を解決していて最高のようにみえる。 しかし、ゲストに本来インストールされるべきものでないものがはいる点は忘れてはいけない。 Ansibleを使ってプロダクション環境にデプロイするユーザにとっては大きな問題だと思う。 開発環境とプロダクション環境での差分が広がってしまう。 また、Ansibleと並行してserverspecを使ってる人も多いと思うが、 そうなると今度はゲスト側にRubyもいれるのか？など様々な疑問が湧いてくる。 3. Ansible実行用のゲストを作って利用する 概要 Ansible実行用のゲストをVagrantで立ち上げて、開発用のゲストへプロビジョニングにする。 メリット 2.のデメリットで述べた、ゲストへの不要なもののインストールを防ぐことが可能。 例えばserverspecでRubyが必要な場合もAnsible実行用のゲストに入れればいい。 必要なものをインストールしたAnsible実行用のイメージファイルをチーム内で共有すれば端末依存もセットアップの手間も省ける。 デメリット なんといっても、ゲストを二つは立ちあげる必要があること。 これは少し面倒だ。 まとめ この見解は正直VagrantやAnsibleの使いみち、用途によってだいぶ変わると思う。 なので絶対な評価ではないと思うが、私のいままでの経験上はこのような評価となったので参考にしてもらえればと思う。
+                    </div>
+                </section>
+                
+            </div>
+            
+<div class="pagination">
+  <nav role="pagination" class="post-list-pagination">
+      
+      <a href="/archive/2016/" class="post-list-pagination-item pure-button post-list-pagination-item-prev">
+        <i class="fa fa-angle-double-left"></i>&nbsp;Newer
+      </a>
+      
+    <span class="post-list-pagination-item post-list-pagination-item-current">Page 2 of 2</span>
+    
+  </nav>
+</div>
+
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

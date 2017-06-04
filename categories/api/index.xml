@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Api on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/api/</link>
+    <description>Recent content in Api on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 29 May 2017 20:06:31 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/api/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>CloudFlare APIを使ってキャッシュを削除する</title>
+      <link>https://blog.mosuke.tech/entry/2017/05/29/how_to_use_cloudflare_api/</link>
+      <pubDate>Mon, 29 May 2017 20:06:31 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2017/05/29/how_to_use_cloudflare_api/</guid>
+      <description>
+
+&lt;h1 id=&#34;はじめに:e4a3dd16fa46b2d60f7389ce23065fde&#34;&gt;はじめに&lt;/h1&gt;
+
+&lt;p&gt;最近ブログをはてなブログからHugoへ移行した。&lt;br /&gt;
+HugoのフロントにCloudFlareを利用している。&lt;br /&gt;
+ブログ移行についてはこちらを参照。&lt;br /&gt;
+「&lt;a href=&#34;https://blog.mosuke.tech/entry/2017/05/28/blog_migration/&#34;&gt;はてなブログからHugoに移行。その際に行ったあれこれ。&lt;/a&gt;」&lt;/p&gt;
+
+&lt;p&gt;コンテンツをアップロードした場合などにCloudFlareのキャッシュを削除したく、&lt;br /&gt;
+APIを利用して効率よく作業できる環境を整えた。&lt;/p&gt;
+
+&lt;h1 id=&#34;使い方:e4a3dd16fa46b2d60f7389ce23065fde&#34;&gt;使い方&lt;/h1&gt;
+
+&lt;p&gt;CloudFlareのAPIドキュメントはかなり充実している。&lt;br /&gt;
+キャッシュの全削除については下記に記載がある。&lt;br /&gt;
+&lt;a href=&#34;https://api.cloudflare.com/#zone-purge-all-files&#34;&gt;https://api.cloudflare.com/#zone-purge-all-files&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;利用方法をみると、&lt;code&gt;DELETE /zones/:identifier/purge_cache&lt;/code&gt;とあるが、&lt;br /&gt;
+&lt;code&gt;:identifier&lt;/code&gt;がなんのことかはじめわからずはじめ苦戦した。&lt;/p&gt;
+
+&lt;h2 id=&#34;identifierの確認:e4a3dd16fa46b2d60f7389ce23065fde&#34;&gt;identifierの確認&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;identifier&lt;/code&gt;は下記APIで確認できる。&lt;br /&gt;
+このAPIで返ってくるはじめの&lt;code&gt;id&lt;/code&gt;が&lt;code&gt;idenitifer&lt;/code&gt;だ。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;curl -X GET &amp;quot;https://api.cloudflare.com/client/v4/zones \
+    ?name=&amp;lt;your site&amp;gt; \
+    &amp;amp;status=active \
+    &amp;amp;page=1 \
+    &amp;amp;per_page=20 \
+    &amp;amp;order=status \
+    &amp;amp;direction=desc \
+    &amp;amp;match=all&amp;quot; \
+    -H &amp;quot;X-Auth-Email: &amp;lt;your email&amp;gt;&amp;quot; \
+    -H &amp;quot;X-Auth-Key: &amp;lt;your api key&amp;gt;&amp;quot; \
+    -H &amp;quot;Content-Type: application/json&amp;quot; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;result&amp;quot;: [
+    {
+      &amp;quot;id&amp;quot;: &amp;quot;xxxxxxxxxxxxxxxxxxxxxxx&amp;quot;,
+      &amp;quot;name&amp;quot;: &amp;quot;mosuke.tech&amp;quot;,
+      &amp;quot;status&amp;quot;: &amp;quot;active&amp;quot;,
+      &amp;quot;paused&amp;quot;: false,
+      &amp;quot;type&amp;quot;: &amp;quot;full&amp;quot;,
+      &amp;quot;development_mode&amp;quot;: 0,
+      &amp;quot;name_servers&amp;quot;: [
+        &amp;quot;rudy.ns.cloudflare.com&amp;quot;,
+        &amp;quot;sofia.ns.cloudflare.com&amp;quot;
+      ],
+      ...
+      (中略)
+      ...
+    }
+  ]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;キャッシュの削除:e4a3dd16fa46b2d60f7389ce23065fde&#34;&gt;キャッシュの削除&lt;/h2&gt;
+
+&lt;p&gt;うえで手に入れた&lt;code&gt;identifier&lt;/code&gt;を使って、ドキュメント通り&lt;code&gt;purge_cache&lt;/code&gt;を実行するだけだ。&lt;br /&gt;
+このAPIをデプロイの過程に組み込み効率よく運用できている。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;curl -X DELETE &amp;quot;https://api.cloudflare.com/client/v4/zones/&amp;lt;identifier&amp;gt;/purge_cache&amp;quot; \
+     -H &amp;quot;X-Auth-Email: &amp;lt;your email&amp;gt;&amp;quot; \
+     -H &amp;quot;X-Auth-Key: &amp;lt;your api key&amp;gt;&amp;quot; \
+     -H &amp;quot;Content-Type: application/json&amp;quot; \
+     --data &#39;{&amp;quot;purge_everything&amp;quot;:true}&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;さいごに:e4a3dd16fa46b2d60f7389ce23065fde&#34;&gt;さいごに&lt;/h2&gt;
+
+&lt;p&gt;最近のサービスではめずらしくないが、APIに対応しているのはやはりいい。&lt;br /&gt;
+毎度全キャッシュを消してしまっているのはどうかとは思うがそこは今後の改善点だ。&lt;br /&gt;
+本件とは関係ないがCloudFlareはterraformにも対応しているし、かなり運用には便利そう。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

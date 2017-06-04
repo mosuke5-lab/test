@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Thin on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/thin/</link>
+    <description>Recent content in Thin on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sun, 22 Feb 2015 21:13:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/thin/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Ruby, thin(bundler利用)を使った環境でのアプリの自動起動設定</title>
+      <link>https://blog.mosuke.tech/entry/2015/02/22/211316/</link>
+      <pubDate>Sun, 22 Feb 2015 21:13:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/02/22/211316/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;bunlderを使ったWebアプリをプロダクション環境で動かすときに、アプリの起動をどうやって実現しているだろうか。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt; Passengerを使う場合には、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;の起動がアプリの起動につながるので、
+アプリの起動はあまり気にしなかったかもしれない。&lt;/p&gt;
+
+&lt;p&gt;しかし、例えばNginx × &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Unicorn&#34;&gt;Unicorn&lt;/a&gt;/thinの構成などの場合は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Unicorn&#34;&gt;Unicorn&lt;/a&gt;やthinの起動もしなければいけなくなってくる。&lt;br&gt;
+（あるいはこのようなケースがあるかは謎だが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Unicorn&#34;&gt;Unicorn&lt;/a&gt;やthinを単体で動かそうとしている場合など）&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Unicorn&#34;&gt;Unicorn&lt;/a&gt;やthin（例ではthinを扱うが本質は同じ）の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BC%AB%C6%B0%B5%AF%C6%B0&#34;&gt;自動起動&lt;/a&gt;を実現する際の勘所、注意事項をまとめた。&lt;/p&gt;
+
+&lt;h1&gt;0. 前提&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CentOS6.5上で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;でのWebアプリケーションを作っている。&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%B5%A1%BC%A5%D0&#34;&gt;アプリケーションサーバ&lt;/a&gt;はthinを利用している。&lt;/li&gt;
+&lt;li&gt;また、gemパッケージ管理にbundlerを利用している。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;1. 開発環境でよくするアプリの起動&lt;/h1&gt;
+
+&lt;p&gt;開発環境では、アプリケーションのログの閲覧性なども兼ねて以下のようにアプリを起動していた。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ bundle exec rackup
+$ bundle exec thin start 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;でも、これではいつまでたってもプロダクション環境での利用はできません。&lt;/p&gt;
+
+&lt;h1&gt;2. 上記方法ではプロダクション環境で利用できない理由&lt;/h1&gt;
+
+&lt;p&gt;当然のことながら、プロダクション環境ではいちいち手動でコマンドを実行しアプリケーションを立ち上げるわけにはいかない。&lt;br&gt;
+例えば、なんらかの理由でサーバが再起動してしまった場合には、&lt;br&gt;
+このままではアプリケーションが自動的に立ち上がらないため、サービスの停止につながってしまう。&lt;/p&gt;
+
+&lt;p&gt;ではどうするのか？&lt;br&gt;
+以下の状態であることがプロダクション環境では理想なのではないだろうか？&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;オリジナルアプリケーションもserviceコマンドで起動・停止ができる
+
+&lt;ul&gt;
+&lt;li&gt;他のサービスと同様の操作方法が可能なのでわかりやすい&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;サーバ立ち上げ時にサービスが自動で起動される&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;3. 起動&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;スクリプト&lt;/a&gt;を作ろう&lt;/h1&gt;
+
+&lt;p&gt;上記の状態にもっていくためには、起動&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;スクリプト&lt;/a&gt;を作らなければならない。&lt;/p&gt;
+
+&lt;p&gt;起動&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;スクリプト&lt;/a&gt;を作る…！？&lt;br&gt;
+「作ったことないし、すぐには作れないよ〜」って思うかもしれないが、&lt;br&gt;
+サンプルはたくさんあるし、よく見てみるとそれほど難しくはない。&lt;/p&gt;
+
+&lt;p&gt;thinを使ったサンプルを探そうと思うと数は少ないが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Unicorn&#34;&gt;Unicorn&lt;/a&gt;も同じ仕組なので、
+&#34;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/unicorn&#34;&gt;unicorn&lt;/a&gt; init script&#34;なんて検索をかけてもいろいろでてくるのでおすすめ。&lt;/p&gt;
+
+&lt;p&gt;参考ししたもの&lt;br&gt;
+&lt;a href=&#34;https://gist.github.com/sbeam/3454488&#34;&gt;https://gist.github.com/sbeam/3454488&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;上を参考にしながら、こんな起動&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;スクリプト&lt;/a&gt;を作ってみた。（未完成版）&lt;br&gt;
+これを&lt;code&gt;/etc/init.d&lt;/code&gt;以下へ配置する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;#!/bin/bash
+
+### BEGIN CHKCONFIG INFO
+# chkconfig: 2345 55 25
+# description: sample-app
+### END CHKCONFIG INFO
+
+SCRIPT_NAME=/etc/init.d/sample-app
+CONFIG_PATH=/path/to/config
+BUNDLE_CMD=/usr/local/bin/bundle
+
+bundle_exec_thin ()
+{
+    for CONFIG_FILE in &amp;quot;$CONFIG_PATH/*.yml&amp;quot;; do
+        SITE_DIR=`awk &#39;/^chdir:/ { print $2; }&#39; $CONFIG_FILE`
+        cd $SITE_DIR
+        $BUNDLE_CMD exec thin $1 -C $CONFIG_FILE
+    done
+}
+
+
+case &amp;quot;$1&amp;quot; in
+  start)
+        bundle_exec_thin start
+        ;;
+  stop)
+        bundle_exec_thin stop
+        ;;
+  restart)
+        bundle_exec_thin restart
+        ;;
+  *)
+        echo &amp;quot;Usage: $SCRIPT_NAME {start|stop|restart}&amp;quot; &amp;gt;&amp;amp;2
+        exit 3
+        ;;
+esac
+
+:
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;起動&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;スクリプト&lt;/a&gt;も完成したし、実際にserviceコマンドで実行してみる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo service sample-app start
+/usr/bin/env: ruby: No such file or directory 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;んん。。。起動せず、撃沈…&lt;/p&gt;
+
+&lt;h3&gt;起動&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;スクリプト&lt;/a&gt;を作る上での注意&lt;/h3&gt;
+
+&lt;p&gt;起動しなかった原因に移る前に、起動&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;スクリプト&lt;/a&gt;を作る上での注意点を１つ。&lt;br&gt;
+chkconfigで認識させるためには冒頭のCHKCONFIG INFO部分(&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%E1%A5%F3%A5%C8%A5%A2%A5%A6%A5%C8&#34;&gt;コメントアウト&lt;/a&gt;部分)も重要になってくる。&lt;br&gt;
+CHKCONFIG INFO部分を書かないままchkconfigでaddしようとすると以下のように怒られます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo chkconfig --add sample-app
+service sample-app does not support chkconfig 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;4. serviceコマンド実行時のPATHのはなし&lt;/h1&gt;
+
+&lt;p&gt;なぜ、serviceコマンドでthinを起動できなかったのか。&lt;br&gt;
+調べていくと意外なことがわかった。&lt;br&gt;
+serviceコマンドを実行すると中で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B4%C4%B6%AD%CA%D1%BF%F4&#34;&gt;環境変数&lt;/a&gt;のPATHが上書きされてしまう。&lt;/p&gt;
+
+&lt;p&gt;【参照】&lt;br&gt;
+&lt;a href=&#34;http://heartbeats.jp/hbblog/2013/06/service-start-stop.html&#34;&gt;デーモンの起動・終了にはserviceコマンドを利用しよう - インフラエンジニアway - Powered by HEARTBEATS&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;試しに、起動&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;スクリプト&lt;/a&gt;内にPATHの出力を仕込んで確かめてみる。&lt;br&gt;
+起動&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;スクリプト&lt;/a&gt;に&lt;code&gt;echo $PATH&lt;/code&gt;を仕込んだ。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo service sample-app start
+/sbin:/usr/sbin:/bin:/usr/bin 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;起動&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;スクリプト&lt;/a&gt;内でbundleや&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ruby&#34;&gt;ruby&lt;/a&gt;がインストールされているディレクトリに&lt;br&gt;
+PATHを通すことで、解決することにした。&lt;br&gt;
+（もっと美しい方法があれば教えて下さい。。。）&lt;/p&gt;
+
+&lt;h1&gt;5. 起動&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;スクリプト&lt;/a&gt;修正(完成版)&lt;/h1&gt;
+
+&lt;p&gt;上記の通り起動&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;スクリプト&lt;/a&gt;を修正したものが以下。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;#!/bin/bash
+
+### BEGIN CHKCONFIG INFO
+# chkconfig: 2345 55 25
+# description: sample-app
+### END CHKCONFIG INFO
+
+# 以下を追加
+export PATH=/usr/local/bin:$PATH
+
+SCRIPT_NAME=/etc/init.d/sample-app
+CONFIG_PATH=/path/to/config
+BUNDLE_CMD=/usr/local/bin/bundle
+
+bundle_exec_thin ()
+{
+    for CONFIG_FILE in &amp;quot;$CONFIG_PATH/*.yml&amp;quot;; do
+        SITE_DIR=`awk &#39;/^chdir:/ { print $2; }&#39; $CONFIG_FILE`
+        cd $SITE_DIR
+        $BUNDLE_CMD exec thin $1 -C $CONFIG_FILE
+    done
+}
+
+
+case &amp;quot;$1&amp;quot; in
+  start)
+        bundle_exec_thin start
+        ;;
+  stop)
+        bundle_exec_thin stop
+        ;;
+  restart)
+        bundle_exec_thin restart
+        ;;
+  *)
+        echo &amp;quot;Usage: $SCRIPT_NAME {start|stop|restart}&amp;quot; &amp;gt;&amp;amp;2
+        exit 3
+        ;;
+esac
+
+:
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;(PATHを通したのでbundleコマンドはフルパスでなくても大丈夫ですよ...)&lt;/p&gt;
+
+&lt;p&gt;最後に起動&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;スクリプト&lt;/a&gt;を&lt;code&gt;/etc/init.d&lt;/code&gt;以下に配置し、
+忘れずにchkconfigに登録しましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo chkconfig --add sample-app 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;【おまけ】sudo だと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ruby&#34;&gt;ruby&lt;/a&gt;やgem、bundleが使えない？&lt;/h1&gt;
+
+&lt;p&gt;rootユーザでは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ruby&#34;&gt;ruby&lt;/a&gt;やgem, bundleが使えるけど、sudoで実行すると使えない…&lt;br&gt;
+という悩みの人も多いのではないだろうか。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo gem install xxxxx
+sudo: gem: command not found 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;p&gt;sudoでの実行はrootユーザで実行することなのになぜ実行できないか。&lt;br&gt;
+これはsudoを使うときに/usr/local/binが許可されていないからだ。&lt;br&gt;
+visudoでsecure_pathの設定を見直すとよい。&lt;br&gt;
+&lt;a href=&#34;http://www.xmisao.com/2013/10/11/sudoers-secure_path.html&#34;&gt;sudoersのsecure_pathについて &amp;ndash; ぺけみさお&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

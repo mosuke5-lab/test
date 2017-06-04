@@ -1,0 +1,1508 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goldstine研究所 &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Goldstine研究所 &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Goldstine研究所 &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                
+                <h1 class="content-subhead">17 Feb 2015, 22:05</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/02/17/220526/" class="post-title">勘違いしやすいFTPとSFTPの転送モードの話</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-SFTP" href="https://blog.mosuke.tech/categories/sftp">SFTP</a><a class="post-category post-category-FTP" href="https://blog.mosuke.tech/categories/ftp">FTP</a><a class="post-category post-category-転送モード" href="https://blog.mosuke.tech/categories/%E8%BB%A2%E9%80%81%E3%83%A2%E3%83%BC%E3%83%89">転送モード</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>やSFTPでの転送モードの話。</p></p>
+
+<p>ついこの前、<a class="keyword" href="http://d.hatena.ne.jp/keyword/WinSCP">WinSCP</a>を利用している人が転送モードを選んでいて、<br>
+「SFTPには転送モードはないと思っていたのに、転送モードを選んでいる！？」<br>
+と疑問に思ったのでその辺りまとめた。</p>
+
+<h1>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>のバイナリーモードと<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%B9%A5%AD%A1%BC">アスキー</a>モード</h1>
+
+<p>入社しはじめの頃、それまでSFTPしかほとんど使ったことなかったので、<br>
+先輩に「<a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>ではバイナリーモードを使って…」と言われて、意味が理解できなかったときがあったのを思い出す。</p>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>にはファイル転送モードが２つあって、ちゃんと理解していないと思わぬところで痛い目にあう。</p>
+
+<ul>
+<li>バイナリーモード：ファイルの改行コードを変換せず転送する。</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%B9%A5%AD%A1%BC">アスキー</a>モード：OS側で異なる改行コードを自動的に修正して転送する。</li>
+</ul>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>では標準では<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%B9%A5%AD%A1%BC">アスキー</a>モードのため、なにも考えずにファイルを送るとファイルが壊れてしまったりする。<br>
+昔にミスしたのは<a class="keyword" href="http://d.hatena.ne.jp/keyword/Windows">Windows</a>から<a class="keyword" href="http://d.hatena.ne.jp/keyword/Linux">Linux</a>へtar.gzファイルを<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%B9%A5%AD%A1%BC">アスキー</a>モードで送って、解凍したらファイルが壊れていたが、<br>
+それに気付かず壊れたファイルをサーバへ設置してしまったとか。</p>
+
+<h1>SFTPには転送モードはあるのか？</h1>
+
+<p>SFTPを普段から使ってる人は転送モードなんて気にしたことあまりないと思う。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>では気にしなければいけない転送モード、SFTPでは気にしなくていいのだろうか？</p>
+
+<p>結論から言うと、SFTPには転送モードはないので、気にする必要はない。<br>
+SFTPでは、<a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>でいうバイナリーモードでファイル転送をするようだ。</p>
+
+<p>sftpコマンドのマニュアルにも特に転送モードについては記述がないのがわかる。<br>
+<a href="http://www.unixuser.org/~euske/doc/openssh/jman/sftp.html">http://www.unixuser.org/~euske/doc/openssh/jman/sftp.html</a></p>
+
+<h1>SFTPでも転送モードを選択できる場合がある！？</h1>
+
+<p>ここで、SFTPにも転送モードはあるぞ！？と疑問を思った人もいるかもしれない。<br>
+確かに<a class="keyword" href="http://d.hatena.ne.jp/keyword/WinSCP">WinSCP</a>などファイル転送ソフトを使っていると転送モードを選ぶことができる場合もある。</p>
+
+<p>しかし、勘違いしてはいけないのが、<br>
+転送モードを選ぶことができるのはSFTPの機能ではなくて<b>ファイル転送ソフトの機能</b>であるということだ。</p>
+
+<h1>まとめ</h1>
+
+<p><p>ファイル転送でよく使われる<a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>やSFTP。<br>
+それぞれに違いはあるし、それを利用するソフトウェアによっても違いがある。<br>
+何が何を行っているか把握し、思わぬミスを減らしましょう。</p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">11 Feb 2015, 17:21</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/02/11/172123/" class="post-title">SSHポートフォワード、https接続をするときに間違えやすいこと</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-SSH" href="https://blog.mosuke.tech/categories/ssh">SSH</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-ポートフォワード" href="https://blog.mosuke.tech/categories/%E3%83%9D%E3%83%BC%E3%83%88%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89">ポートフォワード</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>ローカルフォワードの話。<br>
+前回は簡単に実践してみたというのを書いたのだが、今度は実際に使ってみてハマった部分があったのでメモ。<br>
+<a href="https://blog.mosuke.tech/entry/2014/12/31/170545">SSHでローカルポートフォワードを実際に試す - Goldstine研究所</a></p></p>
+
+<h1>1. やりたいこと</h1>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/https">https</a>でしか接続を許可していないサーバへ、<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>ローカルフォワーディングを使って接続しようした。<br>
+（直接疎通性がないためにポートフォワーディングする必要があった。）</p>
+
+<h1>2. 行ったこと</h1>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/https">https</a>でしか接続ができないので、ローカル端末のポート5000を接続したいサーバのポート443に飛ばせばおっけーと思って、<br>
+下記のように<a class="keyword" href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>接続とブラウザから接続を行った。</p>
+
+<pre><code>ssh -L5000:web-host:443 user@ssh-host 
+
+</code></pre>
+
+<p>※web-host: 今回<a class="keyword" href="http://d.hatena.ne.jp/keyword/https">https</a>で接続したサーバ<br>
+※<a class="keyword" href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>-host: <a class="keyword" href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>接続先サーバ</p>
+
+<p>これでローカルフォワーディングの設定は終わったので、ブラウザから以下に接続するだけで終わりだと思っていた。</p>
+
+<pre><code>http://localhost:5000 
+</code></pre>
+
+<p>が、接続不可…なぜでしょう？</p>
+
+<h1>3. 何が間違いだったか</h1>
+
+<p>正しくは以下で接続をしなければいけない。http<b><span style="color: #ff0000">s</span></b>が必要。</p>
+
+<pre><code>https://localhost:5000 
+</code></pre>
+
+<p>よーく考えればアタリマエのこと。<br>
+URLのはじめの&lt;http(s)&gt;の部分は<b><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%C8%A5%B3%A5%EB">プロトコル</a></b>で最後の&lt;:5000&gt;の部分は<b>ポート番号</b>。<br>
+<u><b><a class="keyword" href="http://d.hatena.ne.jp/keyword/https">https</a>は443のポートを一般的に使うが、ポート443が<a class="keyword" href="http://d.hatena.ne.jp/keyword/https">https</a>というわけではない。</b></u></p>
+
+<p><p>あたりまえのことだし知っていることなんだけど、見落としがちかもしれない。</p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">07 Feb 2015, 14:42</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/02/07/144208/" class="post-title">リモートのサーバでdockerを起動させるときの端末割り当て</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-docker" href="https://blog.mosuke.tech/categories/docker">docker</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>自分がハマったのでメモ。<br>
+リモートのサーバでdocker runを実行し(/bin/<a class="keyword" href="http://d.hatena.ne.jp/keyword/bash">bash</a>)、ローカル側でシェルを操作したかった。</p></p>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>でリモートサーバに接続し、docker runすればいいや、と思い以下を実行してみた。</p>
+
+<pre><code>ssh user@host 'docker run -t -i image_name /bin/bash' 
+
+</code></pre>
+
+<p>そうすると</p>
+
+<pre><code>[root@0c6742f02bd9 ~]#
+
+[root@0c6742f02bd9 ~]# ^[[A^[[A^[[C 
+</code></pre>
+
+<p>エンターを押すと2行されるし、矢印キーはキーコードがでてしまう。</p>
+
+<p>これを解消するのには以下のようにすればいい。</p>
+
+<pre><code>ssh -t user@host 'docker run -t -i image_name /bin/bash' 
+</code></pre>
+
+<p><p>-tとはなんなのか、なぜこのような<a class="keyword" href="http://d.hatena.ne.jp/keyword/%BB%F6%BE%DD">事象</a>が起きたのか、これからしっかり調べる。</p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">02 Feb 2015, 20:10</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/02/02/201008/" class="post-title">Ansible、コマンド実行結果を&amp;quot;ok&amp;quot;にする（冪等性を保つ方法）</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-サーバ" href="https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90">サーバ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>Ansibleで<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9">ソースコード</a>インストールする際とか<br>
+すでにインストールされているかのチェックなどで、<br>
+シェルコマンドを実行してその結果で判断したい時がある。</p></p>
+
+<p>ぼくがよくやる例では以下とか。</p>
+
+<pre><code class="language-yaml">- name: check httpd installed
+  command: which httpd
+  ignore_errors: true
+ 
+</code></pre>
+
+<p>なんですが...<br>
+こうやってしまうと、仮に既にインストールされていて、正常なときでも"<b><span style="color: #f9ce1d">changed</span></b>"と表示されてしまう。<br>
+これでは、本当にchangedなものなのか、わからなくなってくる。</p>
+
+<p>これを解決するのに<b>chaged_when</b>を使うといい。</p>
+
+<pre><code class="language-yaml">- name: check httpd installed
+  command: which httpd
+  ignore_errors: true
+  changed_when: false
+ 
+</code></pre>
+
+<p>こうするとコマンドが成功した際には"<b><span style="color: #00cc00">ok</span></b>"が表示される。</p>
+
+<p>これで、何も変化がないときにはokとskippingしかでないから、<br>
+誰がみても結果がわかりやすいですね！</p>
+
+<p><p>秘伝のタレ回避！</p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">24 Jan 2015, 21:32</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/01/24/213255/" class="post-title">dockerで特定ユーザでログインした状態のシェル環境を提供する</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-docker" href="https://blog.mosuke.tech/categories/docker">docker</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>dockerの一般的な利用の仕方ではあまり想定されないケースかもしれないが、<br>
+特定のユーザでログインした状態のコンテナを作りたいという場面に遭遇した。</p></p>
+
+<h1>&lt;やりたいこと&gt;</h1>
+
+<ul>
+<li>特定のユーザでログインした状態のシェルを提供すること</li>
+<li>その際、ユーザの.<a class="keyword" href="http://d.hatena.ne.jp/keyword/bash">bash</a>_profile（あるいあは.bashrc）を読み込んだ状態であること
+
+<ul>
+<li>.<a class="keyword" href="http://d.hatena.ne.jp/keyword/bash">bash</a>_profileに記載したPATHやaliasを使いたい</li>
+<li>ユーザのログインシェルを利用したい（カスタマイズされたシェルとか）</li>
+</ul>
+</li>
+</ul>
+
+<p>docker runに-uオプションがあるし、これで余裕！と思った。</p>
+
+<pre><code>[host] $ sudo docker run -u=user_name -i -t image_name /bin/bash 
+
+</code></pre>
+
+<p>しかし…以下を確認してみると…</p>
+
+<pre><code>[docker] $ pwd
+[docker] $ echo $PATH
+[docker] $ alias
+ 
+</code></pre>
+
+<p>ディレクトリは "/" だし、PATHも通ってない。<br>
+どうやら.<a class="keyword" href="http://d.hatena.ne.jp/keyword/bash">bash</a>_profileなどは読んでいないようだ。普通にログインした状態とは違う。</p>
+
+<p>dockerで-uでユーザを指定し場合、指定したuserでコマンドを実行するが、<br>
+サーバにユーザでログインしてからコマンドを実行するわけではないらしい。</p>
+
+<p>ディレクトリはどうやら-wオプションで解決できるようだが…</p>
+
+<pre><code>[host] $ sudo docker run -u=user_name -w /home/user_name -i -t image_name /bin/bash 
+
+</code></pre>
+
+<pre><code>[docker] $ pwd
+/home/user_name 
+</code></pre>
+
+<p>ディレクトリはおっけーだが、<br .>
+当然ながら依然として.<a class="keyword" href="http://d.hatena.ne.jp/keyword/bash">bash</a>_profileはダメ。</p>
+
+<p>そこでふと思いついた。-uも-wもいらない。<br>
+<b>あの手</b>があるではないか…！！</p>
+
+<pre><code>[host] $ sudo docker run -i -t image_name su - username 
+</code></pre>
+
+<p><p>suでスイッチユーザすれば.<a class="keyword" href="http://d.hatena.ne.jp/keyword/bash">bash</a>_profileもホームディレクトリも全部解決だ！！</p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">02 Jan 2015, 01:36</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/01/02/013658/" class="post-title">スーパーサーバってなに？ xinetdでサービスを常駐起動せずに利用する</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-サーバ" href="https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90">サーバ</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a><a class="post-category post-category-xinetd" href="https://blog.mosuke.tech/categories/xinetd">xinetd</a><a class="post-category post-category-スーパーサーバ" href="https://blog.mosuke.tech/categories/%E3%82%B9%E3%83%BC%E3%83%91%E3%83%BC%E3%82%B5%E3%83%BC%E3%83%90">スーパーサーバ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>使用頻度の低いサービスのデーモンをメモリに常駐させておくのは効率が悪い。<br>
+そこでスーパーサーバという使用頻度の低いサービスの窓口のサービスのみ起動しておき、要求があったときだけ特定のサービスを起動させることが可能らしい。</p></p>
+
+<p>ということで、そのスーパーサーバとやらを実際に触ってみた。</p>
+
+<p>スーパーサーバというとinetdとxinetdがあるらしいが、<br>
+xinetdはinetdの拡張版で、アクセス制御などの機能を搭載しているとのこと。</p>
+
+<p>今回はxinetdを設定してみる。</p>
+
+<h1>1. 事前準備</h1>
+
+<p>【環境】<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/Vagrant">Vagrant</a>で構築した<a class="keyword" href="http://d.hatena.ne.jp/keyword/CentOS">CentOS</a> 6.5<br>
+(仮想環境の<a class="keyword" href="http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9">IPアドレス</a>は192.168.33.10)</p>
+
+<p>まずはスーパーサーバで管理するサービスを考えなければならない。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>とかhttpはどう考えてもスーパーサーバの管理するようなものではないだろうし…<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>や<a class="keyword" href="http://d.hatena.ne.jp/keyword/telnet">telnet</a>、<a class="keyword" href="http://d.hatena.ne.jp/keyword/POP3">POP3</a>なんかのサービスに利用されることが多いそう？（このへんよくわかない）</p>
+
+<p>今回は<a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>をスーパーサーバの管理対象とした。<br>
+※本来は<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4">複数</a>のサービスを管理対象とするからこそ意味がある。</p>
+
+<p>まずはxinetdとvsftpをインストール</p>
+
+<pre><code>$ sudo yum install xinetd vsftpd 
+
+</code></pre>
+
+<p><br>
+xinetdどうこうの前に、<a class="keyword" href="http://d.hatena.ne.jp/keyword/ftp">ftp</a>接続がきちんとできるか確認するのでサービスを起動。</p>
+
+<pre><code>$ sudo service vsftpd start 
+</code></pre>
+
+<p><br>
+ローカルPCから接続できることを確認する。</p>
+
+<pre><code>$ ftp 192.168.33.10
+Connected to 192.168.33.10.
+220 (vsFTPd 2.2.2)
+Name (192.168.33.10:username): 
+
+</code></pre>
+
+<h1>2. xinetdの設定</h1>
+
+<p>xinetdの基本設定は/etc/xinetd.confにかかれており、<br>
+xinetdで管理する各サービスの設定は/etc/xinetd.d/配下に書く方式。</p>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/ftp">ftp</a>の設定を以下の通りにした。<br>
+"service"のあとに書くサービス名称は/etc/servicesに定義されているものを記載する。<br>
+vsftpとか書いても動かないので注意。</p>
+
+<pre><code>$ sudo vim /etc/xinetd.d/ftp
+service ftp
+{
+        disable         = no
+        socket_type     = stream
+        wait            = no
+        user            = root
+        server          = /usr/sbin/vsftpd
+        log_on_failure  += USERID
+}
+ 
+
+</code></pre>
+
+<p>設定項目については以下参照。<br>
+<a href="https://www.express.nec.co.jp/linux/distributions/knowledge/network/xinetd.html">xinetd の設定</a></p>
+
+<p>これでxinetdを起動</p>
+
+<pre><code>$ sudo service xinetd start 
+</code></pre>
+
+<h3>(補足) /etc/servicesってなにもの？</h3>
+
+<p>/etc/servicesがなにか気になったので一応調べると。</p>
+
+<blockquote><p>サービス名とそこで使われるポート番号、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%C8%A5%B3%A5%EB">プロトコル</a>(<a class="keyword" href="http://d.hatena.ne.jp/keyword/tcp">tcp</a>/<a class="keyword" href="http://d.hatena.ne.jp/keyword/udp">udp</a>)との 対応関係を記述したファイルが /etc/services です。
+このファイルは 単なるサービス名のデータベースで、それ自体では何の働きもありませ んが、<a class="keyword" href="http://d.hatena.ne.jp/keyword/netstat">netstat</a> コマンドや次の inetd などで参照されます。
+(<a href="http://www.wakhok.ac.jp/~kanayama/summer/02/site/node43.html">http://www.wakhok.ac.jp/~kanayama/summer/02/site/node43.html</a>)</p></blockquote>
+
+<h1>3. xinetdを使って<a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>で接続してみる</h1>
+
+<p>xinetdが<b>"起動している"</b>ことと、vsftpdが<b>"起動していない"</b>ことを確認しておく。</p>
+
+<pre><code>$ sudo service xinetd status
+xinetd (pid  3521) is running...
+
+$ sudo service vsftpd status
+vsftpd is stopped 
+
+</code></pre>
+
+<p><br>
+ローカルPCから<a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>接続をしてみる。</p>
+
+<pre><code>$ ftp 192.168.33.10
+Connected to 192.168.33.10.
+421 Service not available, remote server has closed connection. 
+</code></pre>
+
+<p>あれ、接続が切られた…</p>
+
+<p>syslogを確認してみると。</p>
+
+<pre><code>$ sudo tail /var/log/message
+Jan  1 15:07:25 server xinetd[3335]: START: ftp pid=3337 from=::ffff:192.168.33.1
+Jan  1 15:07:28 server xinetd[3335]: EXIT: ftp status=1 pid=3337 duration=3(sec) 
+
+</code></pre>
+
+<p>接続できているようだがその後すぐに切断されているようにみえる。
+vsftpd側の設定を疑ってみた。</p>
+
+<h1>4. vsftpdの設定</h1>
+
+<p>vsftpd側で以下の設定をいじる必要があった。</p>
+
+<pre><code>$ sudo vim /etc/vsftpd/vsftpd.conf
+listen=NO
+ 
+
+</code></pre>
+
+<p>vsftpdのlistenの設定は以下のとおり。</p>
+
+<blockquote><p><a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a> コントロールポート (21) への接続要求を vsftpd 自身で見張るか。
+YES の状態を「<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%BF%A5%F3%A5%C9%A5%A2%A5%ED%A1%BC%A5%F3">スタンドアローン</a>モード」と呼ぶ。
+inetd や後述の <a class="keyword" href="http://d.hatena.ne.jp/keyword/tcpserver">tcpserver</a> を経由する場合は NO にする。
+(<a href="http://www.asahi-net.or.jp/~aa4t-nngk/ftpd.html">http://www.asahi-net.or.jp/~aa4t-nngk/ftpd.html</a>)</p></blockquote>
+
+<h1>5. <a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>接続の再チャレンジ</h1>
+
+<p>ローカルPCから再度<a class="keyword" href="http://d.hatena.ne.jp/keyword/FTP">FTP</a>接続を試みる。</p>
+
+<pre><code>$ ftp 192.168.33.10
+Connected to 192.168.33.10.
+220 (vsFTPd 2.2.2)
+Name (192.168.33.10:username): 
+</code></pre>
+
+<p>つながった！<br>
+<span style="font-size: 150%"><b>vsftpdサービスを停止しているのに<a class="keyword" href="http://d.hatena.ne.jp/keyword/ftp">ftp</a>接続ができる！</b></span></p>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/ftp">ftp</a>接続前と接続中、接続後でプロセスを確認してみる。</p>
+
+<pre><code>&gt; 接続前
+$ ps -ef | grep ftp
+vagrant   3552  2742  0 16:17 pts/0    00:00:00 grep ftp
+
+&gt; 接続中
+&gt; 接続中のみvsftpdのプロセスが立ち上がっている。
+$ ps -ef | grep ftp
+nobody    3555  3521  0 16:18 ?        00:00:00 vsftpd
+vagrant   3557  3555  0 16:18 ?        00:00:00 vsftpd
+vagrant   3559  2742  0 16:18 pts/0    00:00:00 grep ftp
+
+&gt; 接続終了後
+$ ps -ef | grep ftp
+vagrant   3552  2742  0 16:17 pts/0    00:00:00 grep ftp 
+
+</code></pre>
+
+<p><br>
+プロセスツリーを見てみると、xinetdプロセスがvsftpdを起動していることがわかる。</p>
+
+<pre><code>&gt; 接続前
+$ pstree -p
+init(1)-+-VBoxService(1003)-+-{VBoxService}(1004)
+        |
+        | (略)
+        |
+        `-xinetd(3521)
+
+&gt; 接続中
+$ pstree -p
+init(1)-+-VBoxService(1003)-+-{VBoxService}(1004)
+        |
+        | (略)
+        |
+        `-xinetd(3521)---vsftpd(3562)---vsftpd(3563) 
+</code></pre>
+
+<p><p><br>
+サービスを起動しておかなくてもxinetd経由で起動できるんですね。<br>
+これはこれで使い道あるかもしれぬ。</p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">01 Jan 2015, 16:18</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/01/01/161826/" class="post-title">2014年を思い返して…</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>2015年になってしまいました。<br>
+2014年に技術分野で印象に残ってること３つを思い返してみる。<br></p></p>
+
+<h1>1. インフラ会</h1>
+
+<p>@mogulla3と軽いノリで始めたインフラ会。<br>
+普段触らない、あるいは触ったとしてもすでに構築された環境で触ることの多いインフラ技術について<br>
+土日を使って自らの手で構築してみるといった会。<br>
+10月くらいから初めて以下を実際にやってみた。</p>
+
+<ul>
+<li>仮想化　　　　　　：Docker, <a class="keyword" href="http://d.hatena.ne.jp/keyword/Vagrant">Vagrant</a>
+</li>
+<li>リバースプロキシ　：Nginx</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC">ロードバランサー</a>　：HAProxy</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%B9%A5%BF%A5%EA%A5%F3%A5%B0">クラスタリング</a>　　：Pacemaker+corosync(heartbeat)</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPN">VPN</a>　　　　　　　：<a class="keyword" href="http://d.hatena.ne.jp/keyword/SoftEther">SoftEther</a>
+</li>
+<li>構成管理<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB">ツール</a>　　：Ansible</li>
+<li><a class="keyword" href="http://d.hatena.ne.jp/keyword/%BC%AB%BA%EEPC">自作PC</a></li>
+</ul>
+
+<p>やったことについては全てではないがブログにまとめている。</p>
+
+<ul>
+<li><a href="https://blog.mosuke.tech/entry/2014/10/09/230555">【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築 - Goldstine研究所</a></li>
+<li><a href="https://blog.mosuke.tech/entry/2014/11/09/171436">【VPS1台でインフラ勉強】HAProxyでロードバランサーを構築 - Goldstine研究所</a></li>
+<li><a href="https://blog.mosuke.tech/entry/2014/12/07/212156">【VPS1台でインフラ勉強】SoftEtherを使ってVPN構築 - Goldstine研究所</a></li>
+<li><a href="https://blog.mosuke.tech/entry/2014/12/29/154251">【年末遊び】秋葉原で自作PCパーツ集めて作った - Goldstine研究所</a></li>
+</ul>
+
+<p>このインフラ会では３つを目標にしてたけど、これが仕事でも本当に役立った。<br>
+会もそうだが、目標にしていたマインドは今後もぜひ続けていきたい。</p>
+
+<ol>
+<li>"なんとなく知っている"をなくす</li>
+<li>考える引き出しをふやす</li>
+<li>自らの手で実践する</li>
+</ol>
+
+<h4>&lt;大変参考になった書籍&gt;</h4>
+
+<p></p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/4774135666/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/51uK4ACymiL._SL160_.jpg" class="hatena-asin-detail-image" alt="[24時間365日] サーバ/インフラを支える技術 ?スケーラビリティ、ハイパフォーマンス、省力運用 (WEB+DB PRESS plusシリーズ)" title="[24時間365日] サーバ/インフラを支える技術 ?スケーラビリティ、ハイパフォーマンス、省力運用 (WEB+DB PRESS plusシリーズ)"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/4774135666/hatena-blog-22/">[24時間365日] サーバ/インフラを支える技術 ?スケーラビリティ、ハイパフォーマンス、省力運用 (WEB+DB PRESS plusシリーズ)</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">作者:</span> 安井真伸,横川和哉,ひろせまさあき,<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B0%CB%C6%A3%C4%BE%CC%E9">伊藤直也</a>,田中慎司,勝見祐己</li>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> <a class="keyword" href="http://d.hatena.ne.jp/keyword/%B5%BB%BD%D1%C9%BE%CF%C0%BC%D2">技術評論社</a>
+</li>
+<li>
+<span class="hatena-asin-detail-label">発売日:</span> 2008/08/07</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> 単行本（ソフトカバー）</li>
+<li>
+<span class="hatena-asin-detail-label">購入</span>: 133人 <span class="hatena-asin-detail-label">クリック</span>: 2,270回</li>
+<li><a href="http://d.hatena.ne.jp/asin/4774135666/hatena-blog-22" target="_blank">この商品を含むブログ (289件) を見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+
+<h1>2. システム導入工事（工事監督マン）</h1>
+
+<p>仕事では主に社内SEなのだが、社内SEの仕事をしていると新規設備の導入工事なんかもまれにある。（IaaSとかつかってないので）<br>
+新規システムの導入で、データセンターへのサー<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D0%A5%E9%A5%C3%A5%AF">バラック</a>の立架工事など、インフラ機器の導入にいくつも立ち会った。<br>
+もちろんだが、私自身は工事をするわけではなく、あくまで立ち会い・監督の立場。<br>
+システム・ソフトウェア系の世界からは少し離れてるがインフラマンとしてはいい経験だった。</p>
+
+<p><span style="font-size: 80%">こんな仕事のおかげさまで、関西や北陸・四国など全国いろいろと行く機会があって、名物もかなり食べた笑<br>
+あとで、特に美味しかった名物料理を紹介するｗ</span></p>
+
+<p>工事で一番大事なのはなんといっても<b>「安全」</b>。<br>
+安全第一である。</p>
+
+<p>データセンターには無数のサーバやケーブルがある。もちろん自分が担当でないシステムの設備がたくさんある。<br>
+工事の際に過って、他の設備・機器・ケーブルを壊してしてしまった、切ってしまったなんていったらシャレにならない…<br>
+機器ならまだよいが、人的被害を出してしまったら…</p>
+
+<p>そのためにも以下をきちんとしておくことが最重要。</p>
+
+<ol>
+<li>事前の現地調査
+
+<ul>
+<li>工事場所はどこか？</li>
+<li>対象機器はどれか？場所はどこか？(ケーブルなどの接続先)</li>
+<li>十分な場所はあるか？</li>
+<li>段差などの危険ポイントはどこか？</li>
+<li>荷物はどうやって運ぶか？</li>
+</ul>
+</li>
+<li>工事内容の手順書・確認項目
+
+<ul>
+<li>上でよく確認したポイントが踏まえてあるか？</li>
+<li>実施する内容は明確か？</li>
+<li>監督側としてなにをどう確認すればいいか明確か？</li>
+</ul>
+</li>
+<li>現地の人とのネゴり
+
+<ul>
+<li>あとはいろいろと聞けるようにデータセンター管理者と仲良くしておきましょう笑</li>
+</ul>
+</li>
+</ol>
+
+<p>ラックの立架といっても、電気もひかなければいけないので、電気工事もある。<br>
+あまりにも電気的知識がなさすぎて電気の入門の本も買ってしまった…
+</p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/4274035441/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/51NQ79XKHNL._SL160_.jpg" class="hatena-asin-detail-image" alt="電気がわかる本 (なるほどナットク!)" title="電気がわかる本 (なるほどナットク!)"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/4274035441/hatena-blog-22/">電気がわかる本 (なるほどナットク!)</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">作者:</span> 松原洋平</li>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AA%A1%BC%A5%E0%BC%D2">オーム社</a>
+</li>
+<li>
+<span class="hatena-asin-detail-label">発売日:</span> 2001/03</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> 単行本</li>
+<li><a href="http://d.hatena.ne.jp/asin/4274035441/hatena-blog-22" target="_blank">この商品を含むブログを見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+
+<h1>3. <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%E9%A5%C3%A5%AF%A5%DC%A5%C3%A5%AF%A5%B9">ブラックボックス</a>をなくした開発組織を作る</h1>
+
+<p>好きなようにやりたいようにシステムや<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">スクリプト</a>を勝手につくって<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%E9%A5%C3%A5%AF%A5%DC%A5%C3%A5%AF%A5%B9">ブラックボックス</a>ができる…<br>
+そしてそんな<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%E9%A5%C3%A5%AF%A5%DC%A5%C3%A5%AF%A5%B9">ブラックボックス</a>が運用される…</p>
+
+<p>こんな状況はきっとどこにいってもあるものだと思う。<br>
+でも、なんとかこの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%E9%A5%C3%A5%AF%A5%DC%A5%C3%A5%AF%A5%B9">ブラックボックス</a>と化する状況をなくそうと以下の様な取り組みを行ってきた。<br></p>
+
+<p><b>(1) 使用する技術のある程度の統一化</b><br>
+業務の特性上、ひとつのシステムを作るというよりは、業務系システムを数十とあるのだけど、<br>
+個人の好き勝手に作ると言語も乱立し保守不可・改修難となるので、ある程度技術を統一化していくことに取り組んだ。<br>
+そうすることで、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%E9%A5%C3%A5%AF%A5%DC%A5%C3%A5%AF%A5%B9">ブラックボックス</a>の排除はもちろん、チームとしての技術の習得スピードも上がっていった。</p>
+
+<p><b>(2) Gitlabを使った開発フローの確立</b><br>
+恥ずかしながら、すべてのシステムできちんとバージョン管理ができている状況ではなかった。<br>
+Gitlabを使った開発フローをルール化し、文化的に浸透させる取り組みを行っていった。<br>
+Merge Request(Pull Request)のおかげで好き放題に作られた<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9">ソースコード</a>が減った気がする。</p>
+
+<p><b>(3) Ansibleでインフラも明確化</b><br>
+上２つで、アプリケーションレベルでの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%E9%A5%C3%A5%AF%A5%DC%A5%C3%A5%AF%A5%B9">ブラックボックス</a>はある程度解消できてきたが、<br>
+インフラレベルでは依然として<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%E9%A5%C3%A5%AF%A5%DC%A5%C3%A5%AF%A5%B9">ブラックボックス</a>のままだった。<br>
+こちらについてはAnsibleの導入と文化的に浸透を行っていった。</p>
+
+<h4>&lt;大変参考になった書籍&gt;</h4>
+
+<p></p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/4774164283/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/51ZhxAcsdkL._SL160_.jpg" class="hatena-asin-detail-image" alt="チーム開発実践入門 ~共同作業を円滑に行うツール・メソッド (WEB+DB PRESS plus)" title="チーム開発実践入門 ~共同作業を円滑に行うツール・メソッド (WEB+DB PRESS plus)"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/4774164283/hatena-blog-22/">チーム開発実践入門 ~共同作業を円滑に行うツール・メソッド (WEB+DB PRESS plus)</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">作者:</span> 池田尚史,藤倉和明,井上史彰</li>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> <a class="keyword" href="http://d.hatena.ne.jp/keyword/%B5%BB%BD%D1%C9%BE%CF%C0%BC%D2">技術評論社</a>
+</li>
+<li>
+<span class="hatena-asin-detail-label">発売日:</span> 2014/04/16</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> 単行本（ソフトカバー）</li>
+<li><a href="http://d.hatena.ne.jp/asin/4774164283/hatena-blog-22" target="_blank">この商品を含むブログ (8件) を見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+
+<h1>4. まとめ</h1>
+
+<p>今年だけに限ったことではないけど、<br>
+ネットワーク系、インフラを支える<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%DF%A5%C9%A5%EB%A5%A6%A5%A7%A5%A2">ミドルウェア</a>系、システムの開発系、システム導入工事系と<br>
+本当に多岐にわたる分野に携わり、システムを全体的に俯瞰して見れるようになってきたなーという実感がでてきた。<br>
+2014年は特にテクノロジーという側面で強くそれを感じた年だったと思う。</p>
+
+<p>これからどういう分野で生きていくか、それはとりあえずは流れに身を任せてドリフトするとしよう。<br>
+<a href="http://www.atmarkit.co.jp/ait/articles/0905/19/news148.html">エンジニアも知っておきたいキャリア理論入門（11）：金井壽宏教授が提唱する「節目」のキャリア論 (1/2) - ＠IT</a></p>
+
+<h1>5. 【おまけ】各地のうまかったもの</h1>
+
+<p>大阪 お好み焼き<br>
+<iframe src="//hatenablog-parts.com/embed?url=http%3A%2F%2Ftabelog.com%2Fosaka%2FA2701%2FA270101%2F27000297%2F" title="きじ 本店 (梅田/お好み焼き)" class="embed-card embed-webcard" scrolling="no" frameborder="0" style="width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;"><a href="http://tabelog.com/osaka/A2701/A270101/27000297/">きじ 本店 (梅田/お好み焼き)</a></iframe></p>
+
+<p>大阪 おでん<br>
+<iframe src="//hatenablog-parts.com/embed?url=http%3A%2F%2Ftabelog.com%2Fosaka%2FA2701%2FA270101%2F27002111%2F" title="たこ梅 北店 (梅田/おでん)" class="embed-card embed-webcard" scrolling="no" frameborder="0" style="width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;"><a href="http://tabelog.com/osaka/A2701/A270101/27002111/">たこ梅 北店 (梅田/おでん)</a></iframe></p>
+
+<p>金沢 海鮮丼<br>
+<iframe src="//hatenablog-parts.com/embed?url=http%3A%2F%2Ftabelog.com%2Fishikawa%2FA1701%2FA170101%2F17000181%2F" title="ひら井 (北鉄金沢/魚介料理・海鮮料理)" class="embed-card embed-webcard" scrolling="no" frameborder="0" style="width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;"><a href="http://tabelog.com/ishikawa/A1701/A170101/17000181/">ひら井 (北鉄金沢/魚介料理・海鮮料理)</a></iframe></p>
+
+<p>香川 うどん<br>
+<iframe src="//hatenablog-parts.com/embed?url=http%3A%2F%2Ftabelog.com%2Fkagawa%2FA3702%2FA370202%2F37001385%2F" title="将八うどん 丸亀店 (丸亀/うどん)" class="embed-card embed-webcard" scrolling="no" frameborder="0" style="width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;"><a href="http://tabelog.com/kagawa/A3702/A370202/37001385/">将八うどん 丸亀店 (丸亀/うどん)</a></iframe></p>
+
+<p>広島 あなご<br>
+<iframe src="//hatenablog-parts.com/embed?url=http%3A%2F%2Ftabelog.com%2Fhiroshima%2FA3402%2FA340202%2F34000065%2F" title="うえの (宮島口/丼もの（その他）)" class="embed-card embed-webcard" scrolling="no" frameborder="0" style="width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;"><a href="http://tabelog.com/hiroshima/A3402/A340202/34000065/">うえの (宮島口/丼もの（その他）)</a></iframe></p>
+
+<p><p>広島 お好み焼き<br>
+<iframe src="//hatenablog-parts.com/embed?url=http%3A%2F%2Ftabelog.com%2Fhiroshima%2FA3401%2FA340102%2F34001107%2F" title="お好み焼　きゃべつ 駅前ひろば店 (広島/お好み焼き)" class="embed-card embed-webcard" scrolling="no" frameborder="0" style="width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;"><a href="http://tabelog.com/hiroshima/A3401/A340102/34001107/">お好み焼　きゃべつ 駅前ひろば店 (広島/お好み焼き)</a></iframe></p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">31 Dec 2014, 17:05</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/12/31/170545/" class="post-title">SSHでローカルポートフォワードを実際に試す</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-SSH" href="https://blog.mosuke.tech/categories/ssh">SSH</a><a class="post-category post-category-ポートフォワード" href="https://blog.mosuke.tech/categories/%E3%83%9D%E3%83%BC%E3%83%88%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89">ポートフォワード</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>・・・<br>
+いろんなことができる&rdquo;らしい&rdquo;ということは知っていたし、<br>
+例えばポートフォワーディングなんていうこともできるのも知っている。</p></p>
+
+<p>でもそれがどんなものなのか自分の手で試したことはないし、<br>
+なんとなくただのサーバログイン<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB">ツール</a>として利用していた。</p>
+
+<p>サーバインフラ技術に興味を持つようになっていろんなことを勉強していると、<br>
+ポートフォワーディングは必須な技術であることも感じ、<br>
+年末の持て余す時間を使って<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>のローカルポートフォワードを試してみたのでメモする。</p>
+
+<h1>環境とやりたいこと</h1>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141231/20141231162958.png" alt="f:id:mosuke5:20141231162958p:plain" title="f:id:mosuke5:20141231162958p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<p>ローカルPCからexample.jpは以下で接続できる状態。</p>
+
+<pre><code>[local pc] $ ssh username@example.jp 
+
+</code></pre>
+
+<p>またWebサーバのポート番号は80で、<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPS">VPS</a>のホストサーバからはWebサーバへ接続できる。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/CUI">CUI</a>なのでわかりづらいが<a class="keyword" href="http://d.hatena.ne.jp/keyword/curl">curl</a>を打つと<a class="keyword" href="http://d.hatena.ne.jp/keyword/Hello%20World">Hello World</a>が返ってきている。</p>
+
+<pre><code>[example.jp] $ curl 192.168.33.10
+&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello World! Virtual Web Server&lt;/h1&gt;
+&lt;/body&gt;&lt;/html&gt; 
+</code></pre>
+
+<h1>ローカルポートフォワードの実行</h1>
+
+<p>ローカルPCから以下を実行する。<br>
+以下のコマンドは、<br>
+<b>ローカルPCのポート8888での接続はexample.jpからみて「192.168.33.10のポート80」に飛ばす</b><br>
+といったもの。</p>
+
+<pre><code>[local pc] $ ssh -L8888:192.168.33.10:80 username@example.jp 
+</code></pre>
+
+<p>この状態でブラウザから<code>http://localhost:8888</code>にアクセスすると<br>
+
+<p>なんと、ローカルホストにつないだはずが、example.jp上の仮想Webサーバのhtmlがうつっているではないか…</p>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141231/20141231163932.png" alt="f:id:mosuke5:20141231163932p:plain" title="f:id:mosuke5:20141231163932p:plain" class="hatena-fotolife" itemprop="image" style="border:solid 1px #ddd;"></span></p>
+
+<h1>セキュリティはどうなの？</h1>
+
+<p>ローカルの端末からhttpで仮想のWebサーバに接続しているけど、セキュリティはだいじょうぶなのだろうか？<br>
+http通信だから暗号化はされていないのだろうか？<br>
+なんて疑問もあるが、それは問題ない。</p>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>でローカルPCから<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%E2%A1%BC%A5%C8%A5%DB%A5%B9%A5%C8">リモートホスト</a>(example.jp)までトンネルをはり、<br>
+そのなかをhttpで通信しているから全く問題なしといえる。</p>
+
+<p>ローカルポートフォワードを利用する場合は、おそらく表には出したくないけど、<br>
+ローカルから接続したいなどの要件の時に使うと思うけど、<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>できちんと暗号化しているので安心。</p>
+
+<h1>最後に</h1>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>でできることはこの他にもたくさんある。<br>
+ポートフォワードだけみても他にも「リモートポートフォワード」や「ダイナミックポートフォワード」などがある。<br>
+リモートポートなどはいまぱっと試せる環境がなかったのでおいおい実践してみる…</p>
+
+<p><p><a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>をただのログイン<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB">ツール</a>だけに留めるのは今年で終わりにしよう…</p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">29 Dec 2014, 15:42</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/12/29/154251/" class="post-title">【年末遊び】秋葉原で自作PCパーツ集めて作った</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-自作PC" href="https://blog.mosuke.tech/categories/%E8%87%AA%E4%BD%9Cpc">自作PC</a><a class="post-category post-category-秋葉原" href="https://blog.mosuke.tech/categories/%E7%A7%8B%E8%91%89%E5%8E%9F">秋葉原</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%BC%AB%BA%EEPC">自作PC</a>を作ったのでその材料と参考資料などを簡単にまとめる。<br>
+すべての部品は<a class="keyword" href="http://d.hatena.ne.jp/keyword/%BD%A9%CD%D5%B8%B6">秋葉原</a>の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C4%A5%AF%A5%E2">ツクモ</a>で揃えた。<br>
+<a href="http://shop.tsukumo.co.jp/" target="_blank">パソコン・ゲームPC・自作パソコンなら【TSUKUMO】</a>
+<p>わけがあって荷物はすべて手で運んだのだが、かなり重くなるので郵送をおすすめする。<br>
+以下買ったパーツ一式や用意した道具。<br>
+ちなみに全部で54000円程度でした。（お店で買うとセット割などがあったため）</p></p>
+
+<div class="section">
+    <h2>材料・パーツ一式</h2>
+    
+<div class="section">
+    <h3><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%DE%A5%B6%A1%BC%A5%DC%A1%BC%A5%C9">マザーボード</a></h3>
+    <p></p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00KD6RZIG/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/61rM4AVJ3yL._SL160_.jpg" class="hatena-asin-detail-image" alt="ASUSTeK Intel H97チップセット搭載マザーボード H97-PRO 【ATX】" title="ASUSTeK Intel H97チップセット搭載マザーボード H97-PRO 【ATX】"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00KD6RZIG/hatena-blog-22/">ASUSTeK Intel H97チップセット搭載マザーボード H97-PRO 【ATX】</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> <a class="keyword" href="http://d.hatena.ne.jp/keyword/Asustek">Asustek</a>
+</li>
+<li>
+<span class="hatena-asin-detail-label">発売日:</span> 2014/05/17</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> Personal Computers</li>
+<li><a href="http://d.hatena.ne.jp/asin/B00KD6RZIG/hatena-blog-22" target="_blank">この商品を含むブログを見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+
+<p></div>
+<div class="section">
+    <h3>CPU</h3>
+    <p></p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00LV8U0VE/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/51R95kYLwCL._SL160_.jpg" class="hatena-asin-detail-image" alt="Intel CPU Core-i3-4160 3.60GHz 3Mキャッシュ LGA1150 BX80646I34160 【BOX】" title="Intel CPU Core-i3-4160 3.60GHz 3Mキャッシュ LGA1150 BX80646I34160 【BOX】"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00LV8U0VE/hatena-blog-22/">Intel CPU Core-i3-4160 3.60GHz 3Mキャッシュ LGA1150 BX80646I34160 【BOX】</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%C6%A5%EB">インテル</a>
+</li>
+<li>
+<span class="hatena-asin-detail-label">発売日:</span> 2014/07/27</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> Personal Computers</li>
+<li><a href="http://d.hatena.ne.jp/asin/B00LV8U0VE/hatena-blog-22" target="_blank">この商品を含むブログを見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div></p>
+
+<p></div>
+<div class="section">
+    <h3>メモリ</h3>
+    <a href="http://kakaku.com/item/K0000290991/">価格.com - Team TED38192M1600C11DC [DDR3 PC3-12800 4GB 2枚組] 価格比較</a><br>
+</div>
+<div class="section">
+    <h3>HDD</h3>
+    <p></p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/B009QWUF9E/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/51XtnFUCHHL._SL160_.jpg" class="hatena-asin-detail-image" alt="【Amazon.co.jp限定】WD Blue 3.5inch 7,200rpm 1.0TB 64MBキャッシュ SATA3.0 WD10EZEX/N 【フラストレーションフリーパッケージ(FFP)】" title="【Amazon.co.jp限定】WD Blue 3.5inch 7,200rpm 1.0TB 64MBキャッシュ SATA3.0 WD10EZEX/N 【フラストレーションフリーパッケージ(FFP)】"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B009QWUF9E/hatena-blog-22/">【Amazon.co.jp限定】WD Blue 3.5inch 7,200rpm 1.0TB 64MBキャッシュ SATA3.0 WD10EZEX/N 【フラストレーションフリーパッケージ(FFP)】</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> <a class="keyword" href="http://d.hatena.ne.jp/keyword/Western%20Digital">Western Digital</a>
+</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> Personal Computers</li>
+<li> <span class="hatena-asin-detail-label">クリック</span>: 5回</li>
+<li><a href="http://d.hatena.ne.jp/asin/B009QWUF9E/hatena-blog-22" target="_blank">この商品を含むブログを見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div></p>
+
+<p></div>
+<div class="section">
+    <h3>光学式ドライブ</h3>
+    <p></p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00OYQTP48/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/11PYvtXkVFL._SL160_.jpg" class="hatena-asin-detail-image" alt="ASUSTeK CyberLink Power2Go 8、E-Greenソフト付き内蔵ドライブ" title="ASUSTeK CyberLink Power2Go 8、E-Greenソフト付き内蔵ドライブ"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00OYQTP48/hatena-blog-22/">ASUSTeK CyberLink Power2Go 8、E-Greenソフト付き内蔵ドライブ</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> <a class="keyword" href="http://d.hatena.ne.jp/keyword/Asustek">Asustek</a>
+</li>
+<li>
+<span class="hatena-asin-detail-label">発売日:</span> 2014/11/12</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> Personal Computers</li>
+<li><a href="http://d.hatena.ne.jp/asin/B00OYQTP48/hatena-blog-22" target="_blank">この商品を含むブログを見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div></p>
+
+<p></div>
+<div class="section">
+    <h3>電源ユニット</h3>
+    <p>グラフィックボードも積んでいないし、ゲームとかもやる予定はないので430Wで十分。<br>
+また、PCケースも大きめのものを選ぶ予定だったので大きさも気にしなくてオッケーでした。</p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00FSFA566/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/51-UWNSkHAL._SL160_.jpg" class="hatena-asin-detail-image" alt="ENERMAX エナーマックス PC電源 Revolution X't 430W ERX430AWT" title="ENERMAX エナーマックス PC電源 Revolution X't 430W ERX430AWT"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00FSFA566/hatena-blog-22/">ENERMAX エナーマックス PC電源 Revolution X&rsquo;t 430W ERX430AWT</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> ENERMAX</li>
+<li>
+<span class="hatena-asin-detail-label">発売日:</span> 2014/08/02</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> 付属品</li>
+<li><a href="http://d.hatena.ne.jp/asin/B00FSFA566/hatena-blog-22" target="_blank">この商品を含むブログを見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div></p>
+
+<p></div>
+<div class="section">
+    <h3>ケース</h3>
+    <p></p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00E6GZL7Q/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/51SRInEw4oL._SL160_.jpg" class="hatena-asin-detail-image" alt="SharkoonミドルタワーPCケース サイドクリアウィンドウ グリーン SHA-T28-G-V3/A" title="SharkoonミドルタワーPCケース サイドクリアウィンドウ グリーン SHA-T28-G-V3/A"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00E6GZL7Q/hatena-blog-22/">SharkoonミドルタワーPCケース サイドクリアウィンドウ グリーン SHA-T28-G-V3/A</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> Sharkoon</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> Personal Computers</li>
+<li><a href="http://d.hatena.ne.jp/asin/B00E6GZL7Q/hatena-blog-22" target="_blank">この商品を含むブログ (1件) を見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div></p>
+
+<p></div>
+<div class="section">
+    <h3>参考にした書籍</h3>
+    <p></p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/4822269973/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/618HZCdKnkL._SL160_.jpg" class="hatena-asin-detail-image" alt="PC自作の鉄則! 2015 (日経BPパソコンベストムック)" title="PC自作の鉄則! 2015 (日経BPパソコンベストムック)"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/4822269973/hatena-blog-22/">PC自作の鉄則! 2015 (日経BPパソコンベストムック)</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">作者:</span> <a class="keyword" href="http://d.hatena.ne.jp/keyword/%C6%FC%B7%D0WinPC">日経WinPC</a>
+</li>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> <a class="keyword" href="http://d.hatena.ne.jp/keyword/%C6%FC%B7%D0BP">日経BP</a>社</li>
+<li>
+<span class="hatena-asin-detail-label">発売日:</span> 2014/11/17</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> 単行本</li>
+<li><a href="http://d.hatena.ne.jp/asin/4822269973/hatena-blog-22" target="_blank">この商品を含むブログを見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div></p>
+
+<p></div>
+<div class="section">
+    <h3>利用した道具など</h3>
+    <p><b>・プラスドライバー</b><br>
+　⇒PCケースと<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%DE%A5%B6%A1%BC%A5%DC%A1%BC%A5%C9">マザーボード</a>などを固定したりするのにドライバーは必須<br>
+<b>・インシュロック（結束バンド）</b><br>
+　⇒PCケースに何本かついてくるが、綺麗に配線しようと思うと何度かやり直したりするので用意しておいた方が無難。<br>
+<b>・ニッパー</b><br>
+　⇒インシュロックを切ったりするのに必要なので準備しておきましょう。<br>
+<b>・LANケーブル</b><br>
+　⇒今回<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN">無線LAN</a>モジュールは搭載していないので、家のネットワークにつなぐには優先が必要。<br>
+　　<a class="keyword" href="http://d.hatena.ne.jp/keyword/%BD%A9%CD%D5%B8%B6">秋葉原</a>のジャンクショップでカテゴリ6の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%C8%A5%EC%A1%BC%A5%C8%A5%B1%A1%BC%A5%D6%A5%EB">ストレートケーブル</a>5mで200円でした。（すごいお買い得）<br>
+<b>・OSインストールディスク</b><br>
+　⇒作ったPCには<a class="keyword" href="http://d.hatena.ne.jp/keyword/Ubuntu">Ubuntu</a>を入れたかったので予め、イメージをDVDに焼いておきました。</p>
+<p>以下は当然だがないと、セットアップできないので要注意。<br>
+・ディプレイ<br>
+・マウス<br>
+・キーボード</p></p>
+
+<p></div>
+</div>
+<div class="section">
+    <h2>完成ものと苦労したこと</h2>
+    <p>作るだけならとても簡単なのだが、そのなかでも一番苦労したのはやはり「配線」。<br>
+はじめはなにも考えずに配線してたら、蓋が閉まらなくなるわ、ファンに線がぶつかるわ…でやり直した。<br>
+配線を綺麗にするには上であげた「インシュロック」を追加で買っておくといいと思います。</p>
+<p>表面<br>
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141229/20141229154205.jpg" alt="f:id:mosuke5:20141229154205j:plain" title="f:id:mosuke5:20141229154205j:plain" class="hatena-fotolife" itemprop="image"></span></p>
+<p>裏面の配線<br>
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141229/20141229154214.jpg" alt="f:id:mosuke5:20141229154214j:plain" title="f:id:mosuke5:20141229154214j:plain" class="hatena-fotolife" itemprop="image"></span><br>
+</p></p>
+
+<p></div>
+<div class="section">
+    <h2>【おまけ】昼飯</h2>
+    <p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B7%A5%E5%A5%BF%A5%A4%A5%F3%A5%BA%A5%B2%A1%BC%A5%C8">シュタインズゲート</a>のまゆしぃおすすめのメンチカツ屋にいきました。<br>
+ご飯を大盛りにするとすごい量出てくるので注意(笑)<br>
+<a href="http://tabelog.com/tokyo/A1310/A131001/13000352/">キッチン ジロー 外神田店 （kitichen JIRO） - 秋葉原/洋食 [食べログ]</a></p></p>
+
+<p></div>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">07 Dec 2014, 21:21</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/12/07/212156/" class="post-title">【VPS1台でインフラ勉強】SoftEtherを使ってVPN構築</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-VPN" href="https://blog.mosuke.tech/categories/vpn">VPN</a><a class="post-category post-category-SoftEther" href="https://blog.mosuke.tech/categories/softether">SoftEther</a><a class="post-category post-category-ネットワーク" href="https://blog.mosuke.tech/categories/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF">ネットワーク</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        
+
+<p><body>
+<p>VPS1台でインフラ勉強シリーズで<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPN">VPN</a>構築を行ったのでそのメモ。</p></p>
+
+<p><div class="section">
+    <h2>1. 実施したこと</h2>
+    <p><a class="keyword" href="http://d.hatena.ne.jp/keyword/VPS">VPS</a>のホストサーバを<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPS">VPS</a>サーバとし、その上で仮想で立ち上げたサーバ(ローカルネットワーク)に外部から接続できるようにすること。</p></p>
+
+<p><div class="section">
+    <h3></h3>
+    <p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141207/20141207200544.png" alt="f:id:mosuke5:20141207200544p:plain" title="f:id:mosuke5:20141207200544p:plain" class="hatena-fotolife" itemprop="image"></span><br>
+</p></p>
+
+<p></div>
+</div>
+<div class="section">
+    <h2>2. 環境</h2>
+    <p>・<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPN">VPN</a>ソフトウェア：<a href="https://ja.softether.org/">SoftEther VPN プロジェクト - SoftEther VPN プロジェクト</a><br>
+・メモリ：１GB<br>
+・CPU：仮想２コア<br>
+・HDD：100GB<br>
+・OS：CentOS7<br>
+・サーバ仮想化：<a class="keyword" href="http://d.hatena.ne.jp/keyword/Vagrant">Vagrant</a>(Utuntu13)</p></p>
+
+<p></div>
+<div class="section">
+    <h2>3. <a class="keyword" href="http://d.hatena.ne.jp/keyword/SoftEther">SoftEther</a>のインストール</h2>
+    <p>インストール手順は公式ドキュメント通りなので簡単にコマンドのみ記述しておく。<br>
+<a href="https://ja.softether.org/4-docs/1-manual/7/7.3">7.3 Linux へのインストールと初期設定 - SoftEther VPN プロジェクト</a></p>
+<p>【ダウンロードしたもの】<br>
+ここから環境に応じて対象のソフトウェアを選ぶ<br>
+<a href="http://www.softether-download.com/ja.aspx?product=softether">SoftEther ダウンロード センター</a></p>
+<p>・<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%DD%A1%BC%A5%CD%A5%F3%A5%C8">コンポーネント</a>：<a class="keyword" href="http://d.hatena.ne.jp/keyword/SoftEther">SoftEther</a> <a class="keyword" href="http://d.hatena.ne.jp/keyword/VPN">VPN</a> Server<br>
+・プラットフォーム：<a class="keyword" href="http://d.hatena.ne.jp/keyword/Linux">Linux</a><br>
+・CPU：<a class="keyword" href="http://d.hatena.ne.jp/keyword/Intel">Intel</a> <a class="keyword" href="http://d.hatena.ne.jp/keyword/x86">x86</a> / <a class="keyword" href="http://d.hatena.ne.jp/keyword/AMD64">AMD64</a>(64bit)</p></p>
+
+<pre><code>## ダウンロード
+$ wget ttp://jp.softether-download.com/files/softether/v4.08-9449-rtm-2014.06.08-tree/Linux/SoftEther%20VPN%20Server/64bit%20-%20Intel%20x64%20or%20AMD64/softether-vpnserver-v4.08-9449-rtm-2014.06.08-linux-x64-64bit.tar.gz
+
+## 解凍
+$ tar zxvf softether-vpnserver-v4.08-9449-rtm-2014.06.08-linux-x64-64bit.tar.gz
+
+## 実行可能ファイル作成
+$ cd vpnserver/
+$ sudo make
+
+## /usr/localへ配置
+$ sudo mv vpnserver /usr/local
+
+## パーミッション変更
+### 基本的には600。実行ファイルのみ700
+$ cd /usr/local/vpnserver
+$ sudo chown root:root ./*
+$ sudo chmod 600 ./*
+$ sudo chmod 700 ./vpncmd
+$ sudo chmod 700 ./vpnserver
+
+## 動作チェック
+$ sudo ./vpncmd
+1. VPN Server または VPN Bridge の管理
+2. VPN Client の管理
+3. VPN Tools コマンドの使用 (証明書作成や通信速度測定)
+
+1 - 3 を選択: 3
+
+VPN Tools&gt;
+##helpとうつと利用可能なコマンドが出る
+VPN Tools&gt; help
+下記の 6 個のコマンドが使用できます:
+ About         - バージョン情報の表示
+ Check         - SoftEther VPN の動作が可能かどうかチェックする
+ MakeCert      - 新しい X.509 証明書と秘密鍵の作成 (1024 bit)
+ MakeCert2048  - 新しい X.509 証明書と秘密鍵の作成 (2048 bit)
+ TrafficClient - 通信スループット測定ツールクライアントの実行
+ TrafficServer - 通信スループット測定ツールサーバーの実行
+VPN Tools&gt; 
+VPN Tools&gt; Check
+(略)
+すべてのチェックに合格しました。
+VPN Tools&gt; 
+VPN Tools&gt; exit
+
+##起動スクリプトの作成
+$ sudo vim /etc/init.d/vpnserver
+#!/bin/sh
+# chkconfig: 2345 99 01
+# description: SoftEther VPN Server
+DAEMON=/usr/local/vpnserver/vpnserver
+LOCK=/var/lock/subsys/vpnserver
+test -x $DAEMON || exit 0
+case &quot;$1&quot; in
+start)
+$DAEMON start
+touch $LOCK
+;;
+stop)
+$DAEMON stop
+rm $LOCK
+;;
+restart)
+$DAEMON stop
+sleep 3
+$DAEMON start
+;;
+*)
+echo &quot;Usage: $0 {start|stop|restart}&quot;
+exit 1
+esac
+exit 0
+
+##サービス登録
+$ sudo chkconfig --add vpnserver
+$ sudo chkconfig --list vpnserver
+vpnserver       0:off   1:off   2:on    3:on    4:on    5:on    6:off
+
+##起動
+$ sudo /etc/init.d/vpnserver start  
+
+</code></pre>
+
+<p></div>
+<div class="section">
+    <h2>4. 設定</h2></p>
+
+<p><div class="section">
+    <h4>(1)管理者パスワードの設定</h4>
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+
+<h1 id="pre-class-code-data-lang-data-unlink-vpnserverへ接続:c1b6613662ee4f2f8321c8715a84defe"><pre class="code" data-lang="" data-unlink> ## vpnserverへ接続</h1>
+
+<pre><code>## vpnserverへ接続
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; 4f3b2c72e32161441359f6d2116c410a27a8faaf
+$ sudo ./vpncmd localhost:443 /SERVER
+
+## 管理者パスワード設定
+VPN Server&gt; ServerPasswordSet 
+</code></pre>
+
+<p></div>
+<div class="section">
+    <h4>(2)仮想HUBの作成</h4>
+    <p>デフォルトで「default」という仮想がHUBがあるのでそれで構築。<br>
+自分の仮想HUBを作りたければHubCreateでつくれる。</p>
+```
+VPN Server&gt; HubCreate</p>
+
+<pre><code>&lt;p&gt;※HELPコマンドがだいぶ使えるので使おう。日本語で書かれているのでわかりやすいです。&lt;/p&gt;
+
+</code></pre>
+
+<p>VPN Server&gt;HELP
+下記の 205 個のコマンドが使用できます:
+ About                      - バージョン情報の表示
+ AcAdd                      - 接続元 IP 制限リストにルールを追加 (IPv4)
+ AcAdd6                     - 接続元 IP 制限リストにルールを追加 (IPv6)
+ AcDel                      - 接続元 IP 制限リスト内のルールの削除
+ AcList                     - 接続元 IP 制限リストのルール一覧の取得
+(&hellip;以下略)
+<code>
+&lt;/div&gt;
+&lt;div class=&quot;section&quot;&gt;
+    &lt;h4&gt;(3) &lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/IPsec&quot;&gt;IPsec&lt;/a&gt; &lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/VPN&quot;&gt;VPN&lt;/a&gt; サーバー機能の有効化&lt;/h4&gt;
+    &lt;p&gt;&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/VPN&quot;&gt;VPN&lt;/a&gt;のトンネリングをするにあたって事前共有鍵が必要なので作成する必要がある。&lt;/p&gt;
+</code>
+VPN Server&gt;IPsecEnable
+    IPsecEnable コマンド - IPsec VPN サーバー機能の有効化 / 無効化
+    L2TP over IPsec サーバー機能を有効 (yes / no): yes
+    Raw L2TP サーバー機能を有効 (yes / no): yes
+    EtherIP / L2TPv3 over IPsec サーバー機能を有効 (yes / no): yes
+    IPsec 事前共有鍵の文字列 (9 文字以下を推奨): *******
+    VPN 接続時に仮想 HUB 名が省略された場合のデフォルト仮想 HUB 名: Default</p>
+
+<pre><code>&lt;/div&gt;
+&lt;div class=&quot;section&quot;&gt;
+    &lt;h4&gt;(4) グループとユーザの作成&lt;/h4&gt;
+    &lt;p&gt;ユーザを作成するにはグループの作成が必要なので先にグループを作る。&lt;br&gt;
+また、ユーザを作ったでではパスワードが設定されないので忘れずにパスワード設定。&lt;/p&gt;
+</code></pre>
+
+<p>VPN Server&gt;Hub Default
+VPN Server/DEFAULT&gt;GroupCreate
+    GroupCreate コマンド - グループの作成
+    グループ名: mygroup
+    グループの本名: mygroup
+    グループの説明: mygroup</p>
+
+<p>VPN Server/DEFAULT&gt;UserCreate
+    UserCreate コマンド - ユーザーの作成
+    ユーザー名: myuser
+    参加するグループ名: mygroup
+    ユーザーの本名: myuser
+    ユーザーの説明: myuser
+    コマンドは正常に終了しました。</p>
+
+<h2 id="ユーザを作っただけではパスワードが設定されないので:c1b6613662ee4f2f8321c8715a84defe">ユーザを作っただけではパスワードが設定されないので</h2>
+
+<p>VPN Server/DEFAULT&gt; UserPasswordSet
+<code>
+&lt;/div&gt;
+&lt;div class=&quot;section&quot;&gt;
+    &lt;h4&gt;(5) ローカルブリッジの設定&lt;/h4&gt;
+    &lt;p&gt;次にローカルブリッジの設定をする。&lt;br&gt;
+ローカルブリッジは&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/VPN&quot;&gt;VPN&lt;/a&gt;の仮想ネットワークと、LAN の実ネットワーク（ここでは&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/VPS&quot;&gt;VPS&lt;/a&gt;ホストサーバと仮想Webサーバ間のローカルネットワーク）をつなげる設定です。&lt;br&gt;
+ローカルブリッジを行うLANカードを指定する必要があるが、ここでは仮想の「vboxnet0」を使用します。&lt;/p&gt;
+</code>
+VPN Server/DEFAULT&gt;BridgeCreate
+    BridgeCreate コマンド - ローカルブリッジ接続の作成
+    ブリッジする仮想 HUB 名: Default
+    ブリッジ先のデバイス名: vboxnet0</p>
+
+<pre><code>&lt;/div&gt;
+&lt;div class=&quot;section&quot;&gt;
+    &lt;h4&gt;(6) &lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/DHCP&quot;&gt;DHCP&lt;/a&gt;の設定&lt;/h4&gt;
+    &lt;p&gt;&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/VPN&quot;&gt;VPN&lt;/a&gt;クライアント側に割り当てる&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&quot;&gt;IPアドレス&lt;/a&gt;のレンジを決めてあげます。&lt;br&gt;
+今回は最小限構成で実現するため、ローカルの&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&quot;&gt;IPアドレス&lt;/a&gt;は同一セグメントとしました。&lt;br&gt;
+192.168.33.0/24を利用セグメントとした。&lt;br&gt;
+また、サーバ側に割り当てているIPとバッティングしないように192.168.33.20以降を&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/DHCP&quot;&gt;DHCP&lt;/a&gt;のIPレンジとした。&lt;/p&gt;
+</code></pre>
+
+<p>##まずは有効化。これをやらないと「PPPサーバーとの接続が確立ができません」ってなってハマります。
+VPN Server/example&gt; SecureNatEnable</p>
+
+<p>VPN Server/DEFAULT&gt;DhcpSet
+    DhcpSet コマンド - SecureNAT 機能の仮想 DHCP サーバー機能の設定の変更
+    配布するアドレス帯の開始点: 192.168.33.20
+    配布するアドレス帯の終了点: 192.168.33.50
+    サブネットマスク: 255.255.255.0
+    リース期限 (秒): 7200
+    デフォルトゲートウェイ (未設定可):
+    DNS サーバー 1 (未設定可):
+    DNS サーバー 2 (未設定可):
+    ドメイン名:
+    ログの保存 (yes / no): yes
+```
+</div>
+</div>
+<div class="section">
+    <h2>5. <a class="keyword" href="http://d.hatena.ne.jp/keyword/VPN">VPN</a>接続試験</h2>
+    <p><a class="keyword" href="http://d.hatena.ne.jp/keyword/iPhone">iPhone</a>の<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPN">VPN</a>の設定から以下のように設定をする。<br>
+アカウントの部分は「ユーザ名@仮想Hub名」にすること。<br>
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141207/20141207212531.jpg" alt="f:id:mosuke5:20141207212531j:plain" title="f:id:mosuke5:20141207212531j:plain" class="hatena-fotolife" itemprop="image"></span></p>
+<br>
+<p>接続すると、ローカルのIPが割り当てられていることを確認。<br>
+途中で切れているが192.168.33.21が割り当てられました。<br>
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141207/20141207212546.jpg" alt="f:id:mosuke5:20141207212546j:plain" title="f:id:mosuke5:20141207212546j:plain" class="hatena-fotolife" itemprop="image"></span></p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/VPN">VPN</a>につないだ状態でブラウザから192.168.33.10にアクセスすると”It works!!!”。<br>
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141207/20141207212556.jpg" alt="f:id:mosuke5:20141207212556j:plain" title="f:id:mosuke5:20141207212556j:plain" class="hatena-fotolife" itemprop="image"></span><br>
+</p></p>
+
+<p></div>
+<div class="section">
+    <h2>6 最後に</h2>
+    <p><a class="keyword" href="http://d.hatena.ne.jp/keyword/VPN">VPN</a>の構築そのものはなんとかできるが、やはり奥は深い。<br>
+挙動がまだ不安定な部分もあるので、きちんと仕組みを理解していくことと、<br>
+今回は<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPN">VPN</a>クライアント側とアクセス先サーバを同一セグメントとしたので、L3の設定などをして違うセグメントにもアクセスできるようにしていきたい。</p></p>
+
+<p></div>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+            </div>
+            
+<div class="pagination">
+  <nav role="pagination" class="post-list-pagination">
+      
+      <a href="/page/4/" class="post-list-pagination-item pure-button post-list-pagination-item-prev">
+        <i class="fa fa-angle-double-left"></i>&nbsp;Newer
+      </a>
+      
+    <span class="post-list-pagination-item post-list-pagination-item-current">Page 5 of 8</span>
+    
+      <a href="/page/6/" class="post-list-pagination-item pure-button post-list-pagination-item-next">
+        Older&nbsp;<i class="fa fa-angle-double-right"></i>
+      </a>
+    
+  </nav>
+</div>
+
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

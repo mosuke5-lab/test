@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Gem on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/gem/</link>
+    <description>Recent content in Gem on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sun, 06 Mar 2016 14:05:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/gem/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>【錦織圭も分析】ATP TennisのデータスクレイパーGem作った</title>
+      <link>https://blog.mosuke.tech/entry/2016/03/06/140531/</link>
+      <pubDate>Sun, 06 Mar 2016 14:05:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/03/06/140531/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;h1&gt;背景&lt;/h1&gt;&lt;/p&gt;
+
+&lt;p&gt;このブログは基本的に技術ブログとしてやっているので、&lt;br&gt;
+テニスの話題ははじめてだが、テニスがすごく好きだ。
+特に、プロの試合の観戦はとても好きだ。&lt;/p&gt;
+
+&lt;p&gt;2005年からずーっと見てて、欠かさずすべての試合結果はチェックしている。&lt;/p&gt;
+
+&lt;p&gt;数年前から、テニス選手をある指標から分析したいなと思っていた。
+例えば、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ランキングは高くないけど、爆発するとトップ選手に勝つ力を持っているかどうか&lt;/li&gt;
+&lt;li&gt;自分より格下の選手に負けることが少ないかどうか&lt;/li&gt;
+&lt;li&gt;小さい大会ではあまり勝てないけど、大舞台で勝てる選手かどうか&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;これから伸びそうな選手かどうかなどをデータ的にみたかった。&lt;br&gt;
+ATPの公式サイトにもいくつか統計情報が載っているが、自分が大事と思う指標で分析したいと思っていた。&lt;/p&gt;
+
+&lt;p&gt;まずは、データを取得しなければいけないので、それで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EC%A5%A4%A5%D4%A5%F3%A5%B0&#34;&gt;スクレイピング&lt;/a&gt;のライブラリを作るにいたった。&lt;/p&gt;
+
+&lt;h1&gt;AtpScraper&lt;/h1&gt;
+
+&lt;p&gt;AtpScraperは男子のプロテニスの公式サイトである、&lt;a href=&#34;http://www.atpworldtour.com&#34;&gt;ATPのサイト&lt;/a&gt;から情報を&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EC%A5%A4%A5%D4%A5%F3%A5%B0&#34;&gt;スクレイピング&lt;/a&gt;してくれる&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;ライブラリだ。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fgithub.com%2Fmosuke5%2Fatp_scraper&#34; title=&#34;mosuke5/atp_scraper&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://github.com/mosuke5/atp_scraper&#34;&gt;github.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;現時点では、ぼくが今欲している機能しか実装していないが、下記ができる。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;シングルスのランキングの取得&lt;/li&gt;
+&lt;li&gt;プレイヤーの対戦レコードの取得&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;一例だが、どんなふうに利用できるかのせる。&lt;/p&gt;
+
+&lt;h3&gt;シングルスのランキング取得&lt;/h3&gt;
+
+&lt;p&gt;デフォルトだとトップ100のランキングを取得する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;pry(main)&amp;gt; AtpScraper::Get.singles_ranking
+=&amp;gt; [{:ranking=&amp;gt;&amp;quot;1&amp;quot;,
+  :player_name=&amp;gt;&amp;quot;Novak Djokovic&amp;quot;,
+  :player_url_name=&amp;gt;&amp;quot;novak-djokovic&amp;quot;,
+  :player_id=&amp;gt;&amp;quot;d643&amp;quot;,
+  :points=&amp;gt;&amp;quot;16580&amp;quot;},
+ {:ranking=&amp;gt;&amp;quot;2&amp;quot;,
+  :player_name=&amp;gt;&amp;quot;Andy Murray&amp;quot;,
+  :player_url_name=&amp;gt;&amp;quot;andy-murray&amp;quot;,
+  :player_id=&amp;gt;&amp;quot;mc10&amp;quot;,
+  :points=&amp;gt;&amp;quot;8765&amp;quot;},
+ {:ranking=&amp;gt;&amp;quot;3&amp;quot;,
+  :player_name=&amp;gt;&amp;quot;Roger Federer&amp;quot;,
+  :player_url_name=&amp;gt;&amp;quot;roger-federer&amp;quot;,
+  :player_id=&amp;gt;&amp;quot;f324&amp;quot;,
+  :points=&amp;gt;&amp;quot;8295&amp;quot;},
+
+(略)
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;下記のようにすれば、50位から60位のランキングを取得できる。&lt;br&gt;
+（※引数の指定の仕方がアレなのは突っ込まないこと）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;pry(main)&amp;gt; AtpScraper::Get.singles_ranking(&amp;quot;50-60&amp;quot;)
+=&amp;gt; [{:ranking=&amp;gt;&amp;quot;50&amp;quot;,
+  :player_name=&amp;gt;&amp;quot;Lukas Rosol&amp;quot;,
+  :player_url_name=&amp;gt;&amp;quot;lukas-rosol&amp;quot;,
+  :player_id=&amp;gt;&amp;quot;r685&amp;quot;,
+  :points=&amp;gt;&amp;quot;897&amp;quot;},
+ {:ranking=&amp;gt;&amp;quot;51&amp;quot;,
+  :player_name=&amp;gt;&amp;quot;Federico Delbonis&amp;quot;,
+  :player_url_name=&amp;gt;&amp;quot;federico-delbonis&amp;quot;,
+  :player_id=&amp;gt;&amp;quot;d874&amp;quot;,
+  :points=&amp;gt;&amp;quot;895&amp;quot;},
+
+(略)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B6%D3%BF%A5%B7%BD&#34;&gt;錦織圭&lt;/a&gt;の対戦レコード取得&lt;/h3&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B6%D3%BF%A5%B7%BD&#34;&gt;錦織圭&lt;/a&gt;の2016年の対戦レコードを見たいと思えば下記のように取得できる。&lt;br&gt;
+（第一引数の&lt;code&gt;n552&lt;/code&gt;は選手のIDのようなもので、これは上のランキングの取得時に手に入るのでそこで確認しなければいけない）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;pry(main)&amp;gt; AtpScraper::Get.player_activity(&amp;quot;n552&amp;quot;, 2016)
+=&amp;gt; [{:year=&amp;gt;&amp;quot;2016&amp;quot;,
+  :player_name=&amp;gt;&amp;quot;Kei Nishikori&amp;quot;,
+  :player_rank=&amp;gt;&amp;quot;6&amp;quot;,
+  :opponent_name=&amp;gt;&amp;quot;Sam Querrey&amp;quot;,
+  :opponent_rank=&amp;gt;&amp;quot;43&amp;quot;,
+  :round=&amp;gt;&amp;quot;Round of 16&amp;quot;,
+  :score=&amp;gt;&amp;quot;46 36&amp;quot;,
+  :win_loss=&amp;gt;&amp;quot;L&amp;quot;,
+  :tournament_name=&amp;gt;&amp;quot;Abierto Mexicano Telcel&amp;quot;,
+  :tournament_category=&amp;gt;&amp;quot;500&amp;quot;,
+  :tournament_location=&amp;gt;&amp;quot;Acapulco, Mexico&amp;quot;,
+  :tournament_start_date=&amp;gt;&amp;quot;2016.02.22&amp;quot;,
+  :tournament_end_date=&amp;gt;&amp;quot;2016.02.27&amp;quot;,
+  :tournament_surface=&amp;gt;&amp;quot;Hard&amp;quot;,
+  :tournament_surface_inout=&amp;gt;&amp;quot;Outdoor&amp;quot;},
+ {:year=&amp;gt;&amp;quot;2016&amp;quot;,
+  :player_name=&amp;gt;&amp;quot;Kei Nishikori&amp;quot;,
+  :player_rank=&amp;gt;&amp;quot;6&amp;quot;,
+  :opponent_name=&amp;gt;&amp;quot;Thiemo de Bakker&amp;quot;,
+  :opponent_rank=&amp;gt;&amp;quot;105&amp;quot;,
+  :round=&amp;gt;&amp;quot;Round of 32&amp;quot;,
+  :score=&amp;gt;&amp;quot;60 63&amp;quot;,
+  :win_loss=&amp;gt;&amp;quot;W&amp;quot;,
+  :tournament_name=&amp;gt;&amp;quot;Abierto Mexicano Telcel&amp;quot;,
+  :tournament_category=&amp;gt;&amp;quot;500&amp;quot;,
+  :tournament_location=&amp;gt;&amp;quot;Acapulco, Mexico&amp;quot;,
+  :tournament_start_date=&amp;gt;&amp;quot;2016.02.22&amp;quot;,
+  :tournament_end_date=&amp;gt;&amp;quot;2016.02.27&amp;quot;,
+  :tournament_surface=&amp;gt;&amp;quot;Hard&amp;quot;,
+  :tournament_surface_inout=&amp;gt;&amp;quot;Outdoor&amp;quot;},
+
+(略)
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;もし、過去のすべての&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B6%D3%BF%A5%B7%BD&#34;&gt;錦織圭&lt;/a&gt;の対戦レコードを取得したければ下記で取得できる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;pry(main)&amp;gt; AtpScraper::Get.player_activity(&amp;quot;n552&amp;quot;, &amp;quot;all&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;対戦レコードは１対戦ごとのレコードになっている。&lt;br&gt;
+トーナメントごとにまとめたりはしていない。&lt;/p&gt;
+
+&lt;h1&gt;これから&lt;/h1&gt;
+
+&lt;p&gt;データ取得ライブラリを作ったので、これからこれを使った分析をしていこうと思っている。&lt;br&gt;
+分析結果が見れるサービスを作るかもしれないし作らないかもしれない。&lt;/p&gt;
+
+&lt;p&gt;また、データ取得について要望があれば受け付けるし、プルリクをしてくれてもOKです。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/mosuke5/atp_scraper&#34;&gt;GitHub - mosuke5/atp_scraper: atp_scraper is a tool scraping tennis data from atpworldtour.com.&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

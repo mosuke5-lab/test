@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Git on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/git/</link>
+    <description>Recent content in Git on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Thu, 20 Nov 2014 23:03:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/git/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>後からGitレポジトリを共有設定に。sharedオプションの仕組みについて</title>
+      <link>https://blog.mosuke.tech/entry/2014/11/20/230334/</link>
+      <pubDate>Thu, 20 Nov 2014 23:03:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/11/20/230334/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;Git&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&#34;&gt;レポジトリ&lt;/a&gt;を作って、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4%BF%CD&#34;&gt;複数人&lt;/a&gt;で開発をしていた。&lt;br&gt;
+しかし、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&#34;&gt;レポジトリ&lt;/a&gt;の中に作成されるファイルやディレクトリが個人のグループになってしまい、&lt;br&gt;
+Push, PullするときにPermission &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/error&#34;&gt;error&lt;/a&gt;で怒られまくる。&lt;/p&gt;
+&lt;p&gt;ユーザには共通のグループを作っていたのに…なんでだっけ…&lt;/p&gt;
+&lt;p&gt;気づけば&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&#34;&gt;レポジトリ&lt;/a&gt;を作るとき以下のようにしていた。&lt;/p&gt;
+```
+$ git init &amp;ndash;bare&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4%BF%CD&amp;quot;&amp;gt;複数人&amp;lt;/a&amp;gt;で共有するときには以下のようにするべきであった。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ git init &amp;ndash;bare &amp;ndash;shared
+&lt;code&gt;
+&amp;lt;p&amp;gt;では、そもそもgitのsharedオプションをつけると何が裏で起こっているのか。&amp;lt;br&amp;gt;
+調べると「&amp;lt;b&amp;gt;setgid&amp;lt;/b&amp;gt;」というキーワードに辿り着いた。&amp;lt;br&amp;gt;
+setgidの権限を付けておくと、そのディレクトリに作成されたファイルの所有グループは、そのディレクトリの所有グループになる。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;以下のようにchmodでsetgidを付けることができる。&amp;lt;/p&amp;gt;
+&lt;/code&gt;
+$ chmod g+s dir_name&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;setgidがつくとあまり馴染みのない権限がつく。&amp;lt;br&amp;gt;
+「drwxrw&amp;lt;span style=&amp;quot;color: #ff40ff&amp;quot;&amp;gt;&amp;lt;b&amp;gt;s&amp;lt;/b&amp;gt;&amp;lt;/span&amp;gt;r-x」&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ ls -l
+drwxrwsr-x  4 user  group  136 11 16 22:49 test_dir
+&lt;code&gt;
+&amp;lt;p&amp;gt;そして、すでに共有設定なしで作ってしまった&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&amp;quot;&amp;gt;レポジトリ&amp;lt;/a&amp;gt;では以下のように対応可能。&amp;lt;br&amp;gt;
+（新しく&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&amp;quot;&amp;gt;レポジトリ&amp;lt;/a&amp;gt;つくるのはめんどいので…）&amp;lt;/p&amp;gt;
+&lt;/code&gt;
+##Gigレポジトリ内のディレクトリに
+$ chmod -R g+s ./branches
+$ chmod -R g+s ./hooks
+$ chmod -R g+s ./info
+$ chmod -R g+s ./objects
+$ chmod -R g+s ./refs
+$ vim .git/config
+  ##[core内に]以下を付け加えておいた
+  [core]
+       repositoryformatversion = 0
+```
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

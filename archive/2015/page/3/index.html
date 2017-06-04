@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2015 &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="2015 &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="2015 &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">24 Jan 2015, 21:32</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/01/24/213255/" class="post-title">dockerで特定ユーザでログインした状態のシェル環境を提供する</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-docker" href="https://blog.mosuke.tech/categories/docker">docker</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        dockerの一般的な利用の仕方ではあまり想定されないケースかもしれないが、 特定のユーザでログインした状態のコンテナを作りたいという場面に遭遇した。 &lt;やりたいこと&gt; 特定のユーザでログインした状態のシェルを提供すること その際、ユーザの.bash_profile（あるいあは.bashrc）を読み込んだ状態であること .bash_profileに記載したPATHやaliasを使いたい ユーザのログインシェルを利用したい（カスタマイズされたシェルとか） docker runに-uオプションがあるし、これで余裕！と思った。 [host] $ sudo docker run -u=user_name -i -t image_name /bin/bash しかし…以下を確認してみると… [docker] $ pwd [docker] $ echo $PATH [docker] $ alias ディレクトリは "/" だし、PATHも通ってない。 どうやら.bash_profileなどは読んでいないようだ。普通にログインした状態とは違う。 dockerで-uでユーザを指定し場合、指定したuserでコマンドを実行するが、 サーバにユーザでログインしてからコマンドを実行するわけではないらしい。 ディレクトリはどうやら-wオプションで解決できるようだが… [host] $ sudo docker run -u=user_name -w /home/user_name -i -t image_name /bin/bash [docker] $ pwd /home/user_name ディレクトリはおっけーだが、 当然ながら依然として.bash_profileはダメ。 そこでふと思いついた。-uも-wもいらない。 あの手があるではないか…！！ [host] $ sudo docker run -i -t image_name su - username suでスイッチユーザすれば.bash_profileもホームディレクトリも全部解決だ！！
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">02 Jan 2015, 01:36</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/01/02/013658/" class="post-title">スーパーサーバってなに？ xinetdでサービスを常駐起動せずに利用する</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-サーバ" href="https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90">サーバ</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a><a class="post-category post-category-xinetd" href="https://blog.mosuke.tech/categories/xinetd">xinetd</a><a class="post-category post-category-スーパーサーバ" href="https://blog.mosuke.tech/categories/%E3%82%B9%E3%83%BC%E3%83%91%E3%83%BC%E3%82%B5%E3%83%BC%E3%83%90">スーパーサーバ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        使用頻度の低いサービスのデーモンをメモリに常駐させておくのは効率が悪い。 そこでスーパーサーバという使用頻度の低いサービスの窓口のサービスのみ起動しておき、要求があったときだけ特定のサービスを起動させることが可能らしい。 ということで、そのスーパーサーバとやらを実際に触ってみた。 スーパーサーバというとinetdとxinetdがあるらしいが、 xinetdはinetdの拡張版で、アクセス制御などの機能を搭載しているとのこと。 今回はxinetdを設定してみる。 1. 事前準備 【環境】 Vagrantで構築したCentOS 6.5 (仮想環境のIPアドレスは192.168.33.10) まずはスーパーサーバで管理するサービスを考えなければならない。 SSHとかhttpはどう考えてもスーパーサーバの管理するようなものではないだろうし… FTPやtelnet、POP3なんかのサービスに利用されることが多いそう？（このへんよくわかない） 今回はFTPをスーパーサーバの管理対象とした。 ※本来は複数のサービスを管理対象とするからこそ意味がある。 まずはxinetdとvsftpをインストール $ sudo yum install xinetd vsftpd xinetdどうこうの前に、ftp接続がきちんとできるか確認するのでサービスを起動。 $ sudo service vsftpd start ローカルPCから接続できることを確認する。 $ ftp 192.168.33.10 Connected to 192.168.33.10. 220 (vsFTPd 2.2.2) Name (192.168.33.10:username): 2. xinetdの設定 xinetdの基本設定は/etc/xinetd.confにかかれており、 xinetdで管理する各サービスの設定は/etc/xinetd.d/配下に書く方式。 ftpの設定を以下の通りにした。 "service"のあとに書くサービス名称は/etc/servicesに定義されているものを記載する。 vsftpとか書いても動かないので注意。 $ sudo vim /etc/xinetd.d/ftp service ftp { disable = no socket_type = stream wait = no user = root server = /usr/sbin/vsftpd log_on_failure += USERID } 設定項目については以下参照。 xinetd の設定 これでxinetdを起動 $ sudo service xinetd start (補足) /etc/servicesってなにもの？ /etc/servicesがなにか気になったので一応調べると。 サービス名とそこで使われるポート番号、プロトコル(tcp/udp)との 対応関係を記述したファイルが /etc/services です。 このファイルは 単なるサービス名のデータベースで、それ自体では何の働きもありませ んが、netstat コマンドや次の inetd などで参照されます。 (http://www.wakhok.ac.jp/~kanayama/summer/02/site/node43.html) 3.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">01 Jan 2015, 16:18</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/01/01/161826/" class="post-title">2014年を思い返して…</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        2015年になってしまいました。 2014年に技術分野で印象に残ってること３つを思い返してみる。 1. インフラ会 @mogulla3と軽いノリで始めたインフラ会。 普段触らない、あるいは触ったとしてもすでに構築された環境で触ることの多いインフラ技術について 土日を使って自らの手で構築してみるといった会。 10月くらいから初めて以下を実際にやってみた。 仮想化 ：Docker, Vagrant リバースプロキシ ：Nginx ロードバランサー ：HAProxy クラスタリング ：Pacemaker+corosync(heartbeat) VPN ：SoftEther 構成管理ツール ：Ansible 自作PC やったことについては全てではないがブログにまとめている。 【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築 - Goldstine研究所 【VPS1台でインフラ勉強】HAProxyでロードバランサーを構築 - Goldstine研究所 【VPS1台でインフラ勉強】SoftEtherを使ってVPN構築 - Goldstine研究所 【年末遊び】秋葉原で自作PCパーツ集めて作った - Goldstine研究所 このインフラ会では３つを目標にしてたけど、これが仕事でも本当に役立った。 会もそうだが、目標にしていたマインドは今後もぜひ続けていきたい。 "なんとなく知っている"をなくす 考える引き出しをふやす 自らの手で実践する &lt;大変参考になった書籍&gt; [24時間365日] サーバ/インフラを支える技術 ?スケーラビリティ、ハイパフォーマンス、省力運用 (WEB+DB PRESS plusシリーズ) 作者: 安井真伸,横川和哉,ひろせまさあき,伊藤直也,田中慎司,勝見祐己 出版社/メーカー: 技術評論社 発売日: 2008/08/07 メディア: 単行本（ソフトカバー） 購入: 133人 クリック: 2,270回 この商品を含むブログ (289件) を見る 2. システム導入工事（工事監督マン） 仕事では主に社内SEなのだが、社内SEの仕事をしていると新規設備の導入工事なんかもまれにある。（IaaSとかつかってないので） 新規システムの導入で、データセンターへのサーバラックの立架工事など、インフラ機器の導入にいくつも立ち会った。 もちろんだが、私自身は工事をするわけではなく、あくまで立ち会い・監督の立場。 システム・ソフトウェア系の世界からは少し離れてるがインフラマンとしてはいい経験だった。 こんな仕事のおかげさまで、関西や北陸・四国など全国いろいろと行く機会があって、名物もかなり食べた笑 あとで、特に美味しかった名物料理を紹介するｗ 工事で一番大事なのはなんといっても「安全」。 安全第一である。 データセンターには無数のサーバやケーブルがある。もちろん自分が担当でないシステムの設備がたくさんある。 工事の際に過って、他の設備・機器・ケーブルを壊してしてしまった、切ってしまったなんていったらシャレにならない… 機器ならまだよいが、人的被害を出してしまったら… そのためにも以下をきちんとしておくことが最重要。 事前の現地調査 工事場所はどこか？ 対象機器はどれか？場所はどこか？(ケーブルなどの接続先) 十分な場所はあるか？ 段差などの危険ポイントはどこか？ 荷物はどうやって運ぶか？ 工事内容の手順書・確認項目 上でよく確認したポイントが踏まえてあるか？ 実施する内容は明確か？ 監督側としてなにをどう確認すればいいか明確か？ 現地の人とのネゴり あとはいろいろと聞けるようにデータセンター管理者と仲良くしておきましょう笑 ラックの立架といっても、電気もひかなければいけないので、電気工事もある。 あまりにも電気的知識がなさすぎて電気の入門の本も買ってしまった… 電気がわかる本 (なるほどナットク!) 作者: 松原洋平 出版社/メーカー: オーム社 発売日: 2001/03 メディア: 単行本 この商品を含むブログを見る 3.
+                    </div>
+                </section>
+                
+            </div>
+            
+<div class="pagination">
+  <nav role="pagination" class="post-list-pagination">
+      
+      <a href="/archive/2015/page/2/" class="post-list-pagination-item pure-button post-list-pagination-item-prev">
+        <i class="fa fa-angle-double-left"></i>&nbsp;Newer
+      </a>
+      
+    <span class="post-list-pagination-item post-list-pagination-item-current">Page 3 of 3</span>
+    
+  </nav>
+</div>
+
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>
