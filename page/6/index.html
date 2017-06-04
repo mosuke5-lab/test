@@ -1,0 +1,1178 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goldstine研究所 &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Goldstine研究所 &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Goldstine研究所 &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                
+                <h1 class="content-subhead">28 Nov 2014, 00:17</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/28/001748/" class="post-title">Ansible, sudoパスワード要求を忘れただけでめんどくなる</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-サーバ" href="https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90">サーバ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        
+
+<p><body>
+<p>Ansibleを<a class="keyword" href="http://d.hatena.ne.jp/keyword/Vagrant">Vagrant</a>上でずっと使ってて、Playbookも完成したし本番サーバへ&hellip;<br>
+と思ったところである初歩的な罠にハマった。</p>
+<p>本番環境へPalybook実行！！</p>
+```
+$ ansible-playbook playbook.yml -i hosts</p>
+
+<pre><code>&lt;p&gt;あれ、GATHERING FACTSで10分以上も待たされた...&lt;br&gt;
+しかも、エラー出た...&lt;/p&gt;
+</code></pre>
+
+<p>GATHERING FACTS
+failed to parse [ sudo via ansible, key= &hellip;.. ]
+<code>
+&lt;p&gt;sudoできていない...？&lt;/p&gt;
+&lt;p&gt;playbook内のsudo: yesを外して実行。&lt;/p&gt;
+&lt;p&gt;GATHERING FACTSは通過。&lt;br&gt;
+しかし、当たり前だがsudo で実行すべき部分で失敗...&lt;/p&gt;
+&lt;p&gt;とても単純なことに気づいた...&lt;br&gt;
+・&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/Vagrant&quot;&gt;Vagrant&lt;/a&gt;環境ではsudoのパスワードを要求されない&lt;br&gt;
+・本番環境はsudoのパスワードを要求されること&lt;br&gt;
+・sudoのパスワードを入力するようにしていなかったこと&lt;/p&gt;
+&lt;p&gt;というわけで-Kをつけて実行&lt;/p&gt;
+</code>
+$ ansible-playbook playbook.yml -i hosts -K</p>
+
+<pre><code>&lt;p&gt;うまくいった...&lt;/p&gt;
+&lt;p&gt;完全なる私のミスなんだが、ただ-Kオプションを忘れるだけで、一回の実行に10分ほども待たされるのは…。&lt;br&gt;
+しかもGATHERING FACTSで止まっているときはCtl+Cで中断も聞かなかった。&lt;/p&gt;
+&lt;p&gt;要注意ですね。。。&lt;/p&gt;
+&lt;br&gt;
+&lt;p&gt;ちなみに、こんな方法で解決もできる。&lt;br&gt;
+sudoのパスワードを聞かれなくして対応。&lt;/p&gt;
+</code></pre>
+
+<h1 id="visudo:e62e8b218521d80b052b676f1c595d9b">visudo</h1>
+
+<p>user_name ALL=(ALL) NOPASSWD: ALL
+```
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">22 Nov 2014, 19:06</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/22/190648/" class="post-title">GithubクローンのGitlabの導入とその際のちょっとした注意点</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>もろもろな理由のために<a class="keyword" href="http://d.hatena.ne.jp/keyword/Github">Github</a>が利用できないことも多くあると思う。<br>
+というわけで<a class="keyword" href="http://d.hatena.ne.jp/keyword/Github">Github</a>クローンのGitlabを試しに立ててみたが、簡単すぎでした…</p>
+<p><a href="https://about.gitlab.com/">GitLab | Open source software to collaborate on code</a></p>
+<p>環境<br>
+さくら<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPS">VPS</a> 1Gプラン<br>
+OS：CentOS7</p>
+<p>インストール<br>
+基本的にはドキュメントに書いてある以下のとおりで終わり。</p>
+```
+$ curl -O <a href="https://downloads-packages.s3.amazonaws.com/centos-7.0.1406/gitlab-7.5.1_omnibus.5.2.0.ci-1.el7.x86_64.rpm">https://downloads-packages.s3.amazonaws.com/centos-7.0.1406/gitlab-7.5.1_omnibus.5.2.0.ci-1.el7.x86_64.rpm</a>
+$ sudo yum install openssh-server
+$ sudo systemctl enable sshd
+$ sudo systemctl start sshd
+$ sudo yum install postfix
+$ sudo systemctl enable postfix
+$ sudo systemctl start postfix
+$ sudo rpm -i gitlab-7.5.1_omnibus.5.2.0.ci-1.el7.x86_64.rpm</p>
+
+<p>$ sudo gitlab-ctl reconfigure
+$ sudo firewall-cmd &ndash;permanent &ndash;add-service=http # open up the firewall for HTTP and SSH requests
+$ sudo systemctl reload firewalld</p>
+
+<pre><code>&lt;p&gt;しかし１つ気をつけないといけないことがある。&lt;br&gt;
+gitlabでは裏でNginxが起動しhttpのレスポンスに応答する。&lt;br&gt;
+すでに&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/Apache&quot;&gt;Apache&lt;/a&gt;等が動いている場合には停止、あるいはポート番号の変更などの工夫が必要。&lt;/p&gt;
+&lt;p&gt;ちなみに&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/Apache&quot;&gt;Apache&lt;/a&gt;を停止し、Gitlabを起動した状態で80番ポートのプロセスをみると。&lt;br&gt;
+nginxが動いていることがわかります。&lt;/p&gt;
+</code></pre>
+
+<p>$ sudo lsof -i:80
+COMMAND   PID       USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+nginx   25937       root    6u  IPv4  84715      0t0  TCP *:http (LISTEN)
+nginx   25942 gitlab-www    6u  IPv4  84715      0t0  TCP *:http (LISTEN)
+nginx   25943 gitlab-www    6u  IPv4  84715      0t0  TCP *:http (LISTEN)
+```
+<p>特定のポートで何が起動しているかみるのに<b>lsof</b>コマンドはとても便利。</p>
+<p>あともう一つとまどったのが、GItlabを起動させたものの、はじめログイン方法がわからなかった。<br>
+が、よーくページのしたの方よくみると書いてありました。（単なる見落とし）</p></p>
+
+<pre><code>&lt;blockquote&gt;
+    &lt;p&gt;Browse to the hostname and login &lt;br&gt;
+</code></pre>
+
+<p>Username: root <br>
+Password: 5iveL!fe</p></p>
+
+<pre><code>&lt;/blockquote&gt;
+</code></pre>
+
+<p></body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">20 Nov 2014, 23:03</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/20/230334/" class="post-title">後からGitレポジトリを共有設定に。sharedオプションの仕組みについて</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-git" href="https://blog.mosuke.tech/categories/git">git</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>Git<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA">レポジトリ</a>を作って、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4%BF%CD">複数人</a>で開発をしていた。<br>
+しかし、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA">レポジトリ</a>の中に作成されるファイルやディレクトリが個人のグループになってしまい、<br>
+Push, PullするときにPermission <a class="keyword" href="http://d.hatena.ne.jp/keyword/error">error</a>で怒られまくる。</p>
+<p>ユーザには共通のグループを作っていたのに…なんでだっけ…</p>
+<p>気づけば<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA">レポジトリ</a>を作るとき以下のようにしていた。</p>
+```
+$ git init &ndash;bare</p>
+
+<pre><code>&lt;p&gt;&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4%BF%CD&quot;&gt;複数人&lt;/a&gt;で共有するときには以下のようにするべきであった。&lt;/p&gt;
+</code></pre>
+
+<p>$ git init &ndash;bare &ndash;shared
+<code>
+&lt;p&gt;では、そもそもgitのsharedオプションをつけると何が裏で起こっているのか。&lt;br&gt;
+調べると「&lt;b&gt;setgid&lt;/b&gt;」というキーワードに辿り着いた。&lt;br&gt;
+setgidの権限を付けておくと、そのディレクトリに作成されたファイルの所有グループは、そのディレクトリの所有グループになる。&lt;/p&gt;
+&lt;p&gt;以下のようにchmodでsetgidを付けることができる。&lt;/p&gt;
+</code>
+$ chmod g+s dir_name</p>
+
+<pre><code>&lt;p&gt;setgidがつくとあまり馴染みのない権限がつく。&lt;br&gt;
+「drwxrw&lt;span style=&quot;color: #ff40ff&quot;&gt;&lt;b&gt;s&lt;/b&gt;&lt;/span&gt;r-x」&lt;/p&gt;
+</code></pre>
+
+<p>$ ls -l
+drwxrwsr-x  4 user  group  136 11 16 22:49 test_dir
+<code>
+&lt;p&gt;そして、すでに共有設定なしで作ってしまった&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&quot;&gt;レポジトリ&lt;/a&gt;では以下のように対応可能。&lt;br&gt;
+（新しく&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&quot;&gt;レポジトリ&lt;/a&gt;つくるのはめんどいので…）&lt;/p&gt;
+</code>
+##Gigレポジトリ内のディレクトリに
+$ chmod -R g+s ./branches
+$ chmod -R g+s ./hooks
+$ chmod -R g+s ./info
+$ chmod -R g+s ./objects
+$ chmod -R g+s ./refs
+$ vim .git/config
+  ##[core内に]以下を付け加えておいた
+  [core]
+       repositoryformatversion = 0
+```
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">18 Nov 2014, 22:55</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/18/225542/" class="post-title">Ansible、コマンドでワイルドカードを使うときの注意</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>AnsibleのPlaybookを書いていると、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EF%A5%A4%A5%EB%A5%C9%A5%AB%A1%BC%A5%C9">ワイルドカード</a>を含んだコマンドを実行したい時がある。<br>
+そんなときあるところでハマった。</p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Apache">Apache</a>をソースインストールして、パスを/usr/sbinにリンクを貼ろうとして以下を実行した。</p></p>
+
+<pre><code class="language-yaml">- command: ln -s /usr/local/httpd/bin/* /usr/sbin
+</code></pre>
+
+<p>/usr/sbin内に「*」というリンクが貼られてしまった。</p>
+
+<pre><code>* -&gt; /usr/local/httpd/bin 
+
+</code></pre>
+
+<p><p>どうやらcommandモジュールは<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EF%A5%A4%A5%EB%A5%C9%A5%AB%A1%BC%A5%C9">ワイルドカード</a>に対応していないよう。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EF%A5%A4%A5%EB%A5%C9%A5%AB%A1%BC%A5%C9">ワイルドカード</a>を使いたいときはshellモジュールを利用すると良い。</p>
+<code>yaml
+- shell: ln -s /usr/local/httpd/bin/* /usr/sbin
+</code>
+<p>また、<em>というリンクを消すときは要注意（笑）</p>
+```
+$ rm ./</em></p>
+
+<pre><code>&lt;p&gt;とやってしまうとあたりまえだがやばいので&lt;/p&gt;
+</code></pre>
+
+<p>$ rm ./¥*
+```
+<p>こうですね…</p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">16 Nov 2014, 15:32</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/16/153223/" class="post-title">Ansible、ソースインストールする際のPalybookの書き方</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>最近、Ansibleを使い始めたのだが、<a class="keyword" href="http://d.hatena.ne.jp/keyword/yum">yum</a>やapt-getでインストールできるものはいいけど、<br>
+どうしてもソースインストールが必要な場合がある。</p>
+<p>ソースインストールを行う際のPlaybookの書き方と注意点をまとめた。</p>
+<p>まず、あたりまえだが、ソースインストールを行うには以下のフローを踏まなければいけな。<br>
+1. ソースファイルの取得(tarで固められていると仮定)<br>
+2. tarファイルの解凍<br>
+3. 解答してできたディレクトリへ移動<br>
+4. configure<br>
+5. make<br>
+6. make install</p>
+<p>また、Ansibleでは何回もPlaybookを実行していくため、<br>
+<b>すでにインストールされている場合は、インストールをスキップする</b>必要がある。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/yum">yum</a>やapt-getで管理されていれば上記を心配することはないのだが、やはりソースインストールだとこの壁がある。<br>
+※パッケージ化しろよ！というツッコミは禁止</p>
+<p>今回は例として、ubuntu13に<a class="keyword" href="http://d.hatena.ne.jp/keyword/emacs">emacs</a>をソースインストールするのを例としてみた。</p></p>
+
+<p><div class="section">
+    <h3>環境</h3>
+    <p>【Ansible実行側】<br>
+さくら<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPS">VPS</a>の1G<br>
+OS: <a class="keyword" href="http://d.hatena.ne.jp/keyword/Centos">Centos</a> 7<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9">IPアドレス</a>:192.168.33.1</p>
+<p>【設定対象側】<br>
+上記さくら<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPS">VPS</a>上にたてた<a class="keyword" href="http://d.hatena.ne.jp/keyword/Vagrant">Vagrant</a>の仮想サーバ<br>
+OS: <a class="keyword" href="http://d.hatena.ne.jp/keyword/Ubuntu">Ubuntu</a> 13.10<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9">IPアドレス</a>:192.168.33.100</p></p>
+
+<p></div>
+<div class="section">
+    <h3>Playbook</h3>
+    <p>以下playbookの例。</p></p>
+
+<pre><code class="language-yaml">---
+- hosts: 192.168.33.100
+  user: vagrant
+  sudo: yes
+
+  vars:
+    src_dir: /usr/local/src
+    emacs_ver: emacs-23.4
+
+  tasks:
+   ## emacsのソースファイルを取得済みか確認
+   - name: check exist emacs source file
+     command: ls -l {{src_dir}}/{{emacs_ver}}.tar.gz
+     ignore_errors: True
+     register: result1
+
+   ## emacsのソースファイル取得。ただし、すでに取得済みならスキップ
+   - name: get emacs source file
+     command: chdir={{src_dir}} wget http://mirror.jre655.com/GNU/emacs/{{emacs_ver}}.tar.gz
+     when: result1|failed
+
+   ## emacsのソースインストールを解凍
+   - name: get emacs source file
+     command: chdir={{src_dir}} tar xvf {{emacs_ver}}.tar.gz
+     when: result1|failed
+
+   ## emacsがインストールされているか確認
+   #  確認基準はemacsコマンドのpathが通っているかで判断した
+   - name: check emacs install
+     command: which emacs
+     ignore_errors: True
+     register: result2
+
+   ## emacsのインストール。ただしすでにemacsがインストールされいたらスキップ
+   - name: expand emacs src
+     command: chdir={{src_dir}} tar xvf {{emacs_ver}}.tar.gz
+     when: result2|failed
+
+   - name: comfigure emacs
+     command: chdir={{src_dir}}/{{emacs_ver}} ./configure
+     when: result2|failed
+
+   - name: make emacs
+     command: chdir={{src_dir}}/{{emacs_ver}} make
+     when: result2|failed
+
+   - name: install emacs
+     command: chdir={{src_dir}}/{{emacs_ver}} make install
+     when: result2|failed
+ 
+</code></pre>
+
+<p></div>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">09 Nov 2014, 17:27</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/09/172745/" class="post-title">【VPS1台でインフラ勉強】多段SSH設定（おまけ）</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-サーバ" href="https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90">サーバ</a><a class="post-category post-category-VPS" href="https://blog.mosuke.tech/categories/vps">VPS</a><a class="post-category post-category-Vagrant" href="https://blog.mosuke.tech/categories/vagrant">Vagrant</a><a class="post-category post-category-SSH" href="https://blog.mosuke.tech/categories/ssh">SSH</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>VPS1台でインフラ勉強の会で、<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPS">VPS</a>のホストサーバ上に仮想でさらにいつくかのサーバを立てたが、<br>
+仮想のサーバにアクセスするには、ホストサーバにアクセスしてから更に<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>をしなければならない。<br>
+これが面倒だったので多段<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>の設定をして、一発で<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>接続できるようにした。</p>
+<p>以下の図で言うと、web10, web11(192.168.33.<sup>10</sup>&frasl;<sub>11</sub>)に一発で<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>できるようにする。<br>
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141109/20141109170337.png" alt="f:id:mosuke5:20141109170337p:plain" title="f:id:mosuke5:20141109170337p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+<p>クライアントPC側に以下の設定をした。</p>
+```
+$ vim ~/.ssh/config
+host gateway
+    HostName xxxxx.xxx
+    User username</p>
+
+<p>Host web10
+    HostName 192.168.33.10
+    User vagrant
+    ProxyCommand ssh -W %h:%p gateway</p>
+
+<p>Host web11
+    HostName 192.168.33.11
+    User vagrant
+    ProxyCommand ssh -W %h:%p gateway</p>
+
+<p>##これで以下で接続可能
+$ ssh web10
+$ ssh  web11
+```
+<p>簡単でした。</p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">09 Nov 2014, 17:14</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/09/171436/" class="post-title">【VPS1台でインフラ勉強】HAProxyでロードバランサーを構築</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a><a class="post-category post-category-HAProxy" href="https://blog.mosuke.tech/categories/haproxy">HAProxy</a><a class="post-category post-category-VPS" href="https://blog.mosuke.tech/categories/vps">VPS</a><a class="post-category post-category-vagrant" href="https://blog.mosuke.tech/categories/vagrant">vagrant</a><a class="post-category post-category-ロードバランサ" href="https://blog.mosuke.tech/categories/%E3%83%AD%E3%83%BC%E3%83%89%E3%83%90%E3%83%A9%E3%83%B3%E3%82%B5">ロードバランサ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        
+
+<p><body>
+<p>前回の<a href="https://blog.mosuke.tech/entry/2014/10/09/230555">【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築</a>に続き、同様の環境を用いて、ロードバランサ構築を行った。<br>
+ロードバランサの構築にはHAProxyを利用した。</p></p>
+
+<p><div class="section">
+    <h3>1. 環境</h3>
+    <p>前回同様で、さくら<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPS">VPS</a>の1GBのプラン1台のみ。<br>
+・メモリ：１GB<br>
+・CPU：仮想２コア<br>
+・HDD：100GB<br>
+・OS：CentOS7<br>
+・サーバ仮想化：<a class="keyword" href="http://d.hatena.ne.jp/keyword/Vagrant">Vagrant</a>(Utuntu13)<br>
+・ロードバランサ：<a href="http://www.haproxy.org/">HAProxy - The Reliable, High Performance TCP/HTTP Load Balancer</a><br>
+</p></p>
+
+<p></div>
+<div class="section">
+    <h3>2. 構成図</h3>
+    <p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141109/20141109170337.png" alt="f:id:mosuke5:20141109170337p:plain" title="f:id:mosuke5:20141109170337p:plain" class="hatena-fotolife" itemprop="image"></span><br>
+</p></p>
+
+<p></div>
+<div class="section">
+    <h3>3. ロードバランサの構築</h3>
+    <p>■ホストサーバ側の設定</p>
+```
+#HAProxyインストール
+$ sudo yum install haproxy</p>
+
+<p>#設定はすごく簡単で以下のファイルのみ。実際に
+$ sudo vim /etc/haproxy/haproxy.cfg</p>
+
+<p>#&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</p>
+
+<h1 id="example-configuration-for-a-possible-web-application-see-the:4125f84bdd8b5afb55876442f92cb5ec">Example configuration for a possible web application.  See the</h1>
+
+<h1 id="full-configuration-options-online:4125f84bdd8b5afb55876442f92cb5ec">full configuration options online.</h1>
+
+<p>#</p>
+
+<h1 id="http-haproxy-1wt-eu-download-1-4-doc-configuration-txt:4125f84bdd8b5afb55876442f92cb5ec"><a href="http://haproxy.1wt.eu/download/1.4/doc/configuration.txt">http://haproxy.1wt.eu/download/1.4/doc/configuration.txt</a></h1>
+
+<p>#
+#&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</p>
+
+<p>#&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</p>
+
+<h1 id="global-settings:4125f84bdd8b5afb55876442f92cb5ec">Global settings</h1>
+
+<p>#&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+global</p>
+
+<pre><code>log         127.0.0.1 local6 debug
+
+chroot      /var/lib/haproxy
+pidfile     /var/run/haproxy.pid
+maxconn     4000
+user        haproxy
+group       haproxy
+daemon
+
+# turn on stats unix socket
+stats socket /var/lib/haproxy/stats
+</code></pre>
+
+<p>#&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</p>
+
+<h1 id="common-defaults-that-all-the-listen-and-backend-sections-will:4125f84bdd8b5afb55876442f92cb5ec">common defaults that all the &lsquo;listen&rsquo; and &lsquo;backend&rsquo; sections will</h1>
+
+<h1 id="use-if-not-designated-in-their-block:4125f84bdd8b5afb55876442f92cb5ec">use if not designated in their block</h1>
+
+<p>#&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+defaults</p>
+
+<pre><code>##ロードバランサの動作モード。tcpにするとL4ロードバランサになる。httpにするとL7ロードバランサ。
+mode                    http
+log                     global
+option              log-health-checks
+option                  httplog
+option                  dontlognull
+
+##ヘルスチェック用のhtmlファイルをWebサーバ側に設置している。設置については後述。
+option httpchk GET /health_check.html HTTP/1.0\r\nUser-agent:\ Proxy-Check
+
+option http-server-close
+option forwardfor       except 127.0.0.0/8
+option                  redispatch
+retries                 3
+timeout http-request    10s
+timeout queue           1m
+timeout connect         10s
+timeout client          1m
+timeout server          1m
+timeout http-keep-alive 10s
+timeout check           10s
+maxconn                 3000
+</code></pre>
+
+<p>#&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</p>
+
+<h1 id="main-frontend-which-proxys-to-the-backends:4125f84bdd8b5afb55876442f92cb5ec">main frontend which proxys to the backends</h1>
+
+<p>#&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+frontend  main *:80
+    default_backend             hoge</p>
+
+<p>#&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</p>
+
+<h1 id="round-robin-balancing-between-the-various-backends:4125f84bdd8b5afb55876442f92cb5ec">round robin balancing between the various backends</h1>
+
+<p>#&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+backend hoge
+    balance     roundrobin
+    server      web10 192.168.33.10:80 check inter 3000 fall 2 rise 2
+    server      web11 192.168.33.11:80 check inter 3000 fall 2 rise 2</p>
+
+<pre><code>&lt;p&gt;L4, L7のロードバランサについては以下参照。&lt;br&gt;
+&lt;a href=&quot;http://www.atmarkit.co.jp/ait/articles/0302/05/news001.html&quot;&gt;ロードバランサの本質（1）：パケットフローから負荷分散の基本を理解する - ＠IT&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;ロードバランサ側でhttpのリクエストを返していないことを意味づけるために&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/apache&quot;&gt;apache&lt;/a&gt;, nginxを停止しておく。&lt;br&gt;
+（特に意味は無いが念押し確認のため）&lt;/p&gt;
+</code></pre>
+
+<p>$ sudo systemctl stop nginx
+$ sudo systemctl stop httpd
+<code>
+&lt;p&gt;HAProxyのログをsyslogに残すように設定する。&lt;br&gt;
+ただしメインのmessageではなく、独自のファイルに書くために以下の設定。&lt;/p&gt;
+</code>
+##ログの格納場所作成
+$ sudo mkdir /var/log/haproxy</p>
+
+<p>##syslogの設定変更
+$ vim /etc/rsyslog.d/haproxy.conf
+   $ModLoad imudp
+   $UDPServerRun 514
+   $template Haproxy,&ldquo;%msg%\n&rdquo;
+   local6.* -/var/log/haproxy/haproxy.log;Haproxy</p>
+
+<p>$ vim /etc/sysconfig/rsyslog
+以下を追加
+SYSLOGD_OPTIONS=&ldquo;-r&rdquo;</p>
+
+<h2 id="haproxyの起動:4125f84bdd8b5afb55876442f92cb5ec">haproxyの起動</h2>
+
+<p>$ sudo systemctl start haproxy</p>
+
+<pre><code>&lt;p&gt;&lt;br&gt;
+■Webサーバの設定&lt;br&gt;
+仮想でのWebサーバ構築は省くが、Apache2をインストールしただけである。&lt;br&gt;
+仮想でのサーバ構築は前回を参照。&lt;br&gt;
+&lt;a href=&quot;https://blog.mosuke.tech/entry/2014/10/09/230555&quot;&gt;【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築&lt;/a&gt;&lt;br&gt;
+&lt;/p&gt;
+</code></pre>
+
+<h2 id="var-www-html配下にヘルスチェック用のhtml設置:4125f84bdd8b5afb55876442f92cb5ec">/var/www/html配下にヘルスチェック用のhtml設置</h2>
+
+<p>$ sudo touch health_check.html
+<code>
+&lt;/div&gt;
+&lt;div class=&quot;section&quot;&gt;
+    &lt;h3&gt;4. 動作試験&lt;/h3&gt;
+    &lt;p&gt;ブラウザよりホストサーバへアクセス。&lt;br&gt;
+きちんとロードバランスされていることを確認。&lt;/p&gt;
+&lt;p&gt;HAProxy側のログは以下のとおり。&lt;/p&gt;
+</code>
+$ sudo tail -f /var/log/haproxy/haproxy.conf</p>
+
+<p>##起動した時。L7のhealt checkが走っている
+Proxy main started.
+Proxy hoge started.
+Health check for server hoge/web10 succeeded, reason: Layer7 check passed, code: 200, info: &ldquo;OK&rdquo;, check duration: 33ms, status: <sup>2</sup>&frasl;<sub>2</sub> UP.
+Health check for server hoge/web11 succeeded, reason: Layer7 check passed, code: 200, info: &ldquo;OK&rdquo;, check duration: 12ms, status: <sup>2</sup>&frasl;<sub>2</sub> UP.</p>
+
+<p>##webサーバ側でapacheを停止
+Health check for server hoge/web11 failed, reason: Layer7 wrong status, code: 404, info: &ldquo;Not Found&rdquo;, check duration: 13ms, status: <sup>1</sup>&frasl;<sub>2</sub> UP.
+Health check for server hoge/web11 failed, reason: Layer7 wrong status, code: 404, info: &ldquo;Not Found&rdquo;, check duration: 8ms, status: 0/2 DOWN.</p>
+
+<p>##webサーバ側でhealth_check.htmlを削除した時も同様に
+Health check for server hoge/web11 failed, reason: Layer7 wrong status, code: 404, info: &ldquo;Not Found&rdquo;, check duration: 13ms, status: <sup>1</sup>&frasl;<sub>2</sub> UP.
+Health check for server hoge/web11 failed, reason: Layer7 wrong status, code: 404, info: &ldquo;Not Found&rdquo;, check duration: 8ms, status: 0/2 DOWN.</p>
+
+<p>##webサーバ側でhealth_check.htmlを復活させた時
+Health check for server hoge/web11 succeeded, reason: Layer7 check passed, code: 200, info: &ldquo;OK&rdquo;, check duration: 8ms, status: <sup>1</sup>&frasl;<sub>2</sub> DOWN.
+Health check for server hoge/web11 succeeded, reason: Layer7 check passed, code: 200, info: &ldquo;OK&rdquo;, check duration: 6ms, status: <sup>2</sup>&frasl;<sub>2</sub> UP.
+Server hoge/web11 is UP. 2 active and 0 backup servers online. 0 sessions requeued, 0 total in queue.</p>
+
+<pre><code>&lt;p&gt;Webサーバ側の&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/Apache&quot;&gt;Apache&lt;/a&gt;ログを見てみると。&lt;/p&gt;
+</code></pre>
+
+<p>$ sudo tail -f /var/log/apache2/access.log</p>
+
+<p>##ロードバランサからのヘルスチェックが来ていることがわかる。
+192.168.33.1 - - [09/Nov/2014:08:07:43 +0000] &ldquo;GET /health_check.html HTTP/1.0&rdquo; 200 276 &ldquo;-&rdquo; &ldquo;Proxy-Check&rdquo;
+192.168.33.1 - - [09/Nov/2014:08:07:46 +0000] &ldquo;GET /health_check.html HTTP/1.0&rdquo; 200 276 &ldquo;-&rdquo; &ldquo;Proxy-Check&rdquo;
+192.168.33.1 - - [09/Nov/2014:08:07:49 +0000] &ldquo;GET /health_check.html HTTP/1.0&rdquo; 200 276 &ldquo;-&rdquo; &ldquo;Proxy-Check&rdquo;
+192.168.33.1 - - [09/Nov/2014:08:07:52 +0000] &ldquo;GET /health_check.html HTTP/1.0&rdquo; 200 276 &ldquo;-&rdquo; &ldquo;Proxy-Check&rdquo;</p>
+
+<p>##Webからのアクセスが来た場合
+##SorceのIPはロードバランサにIPになっているが、UserAgentなど書き込まれていることを確認。
+192.168.33.1 - - [09/Nov/2014:08:10:06 +0000] &ldquo;GET / HTTP/1.1&rdquo; 200 488 &ldquo;-&rdquo; &ldquo;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10) AppleWebKit/600.1.25 (KHTML, like Gecko) Version/8.0 Safari/600.1.25&rdquo;
+```
+</div>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">19 Oct 2014, 17:08</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/10/19/170854/" class="post-title">自宅サーバ公開時などのDDNS、固定IPについて整理</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-ネットワーク" href="https://blog.mosuke.tech/categories/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF">ネットワーク</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%BC%AB%C2%F0%A5%B5%A1%BC%A5%D0">自宅サーバ</a>を公開するときに使う<a class="keyword" href="http://d.hatena.ne.jp/keyword/DDNS">DDNS</a>や固定IP。<br>
+それが必要な理由について図解的にまとめ。それだけ。</p>
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141019/20141019170702.png" alt="f:id:mosuke5:20141019170702p:plain" title="f:id:mosuke5:20141019170702p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">09 Oct 2014, 23:05</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/10/09/230555/" class="post-title">【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-CentOS7" href="https://blog.mosuke.tech/categories/centos7">CentOS7</a><a class="post-category post-category-Nginx" href="https://blog.mosuke.tech/categories/nginx">Nginx</a><a class="post-category post-category-Vagrant" href="https://blog.mosuke.tech/categories/vagrant">Vagrant</a><a class="post-category post-category-リバースプロキシ" href="https://blog.mosuke.tech/categories/%E3%83%AA%E3%83%90%E3%83%BC%E3%82%B9%E3%83%97%E3%83%AD%E3%82%AD%E3%82%B7">リバースプロキシ</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-VPS" href="https://blog.mosuke.tech/categories/vps">VPS</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        
+
+<p><body>
+<p>ロードバランシングとか<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%B9%A5%BF%A5%EA%A5%F3%A5%B0">クラスタリング</a>とかリバースプロキシとか、<br>
+業務でも使っているし、概念とかはわかってるけど、自分で構築したことはやっぱりない。</p>
+<p>自分で構築してみたいなーと思いつつもあたりまえだけど、サーバやネットワーク機器をそう簡単に調達もできない。<br>
+お金も当然ない。</p>
+<p>というわけで、さくら<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPS">VPS</a>で仮想化つかってロードバランシングとか<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%B9%A5%BF%A5%EA%A5%F3%A5%B0">クラスタリング</a>とかリバースプロキシとか勉強しましょうという「サーバインフラ会」を友人と始めた。<br>
+その第１回目のメモ。</p>
+<p>第1回 サーバ<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4">複数</a>台構成、Nginxでリバースプロキシ構築<br>
+第2回 <a href="https://blog.mosuke.tech/entry/2014/11/09/171436">HAProxyでロードバランサ構築</a></p>
+<p></p>
+<div style="border: solid 1px #dddddd;"></div></p>
+
+<p><div class="section">
+    <h2>1. 使用した環境</h2>
+    <p>まず今回利用した環境は以下のとおり。<br>
+さくら<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPS">VPS</a>の1GBのプラン。<br>
+・メモリ：１GB<br>
+・CPU：仮想２コア<br>
+・HDD：100GB<br>
+・OS：CentOS7<br>
+・仮想化：<a class="keyword" href="http://d.hatena.ne.jp/keyword/Vagrant">Vagrant</a><br>
+　→dockerなどもはじめ検討していたが、コンテナ型仮想化だとサーバ感がでないので、よりサーバとして意識できる<a class="keyword" href="http://d.hatena.ne.jp/keyword/Vagrant">Vagrant</a>を採用</p>
+<p>【参考】<br>
+<a href="http://vps.sakura.ad.jp/specification.html">料金・サービス仕様 | VPS（仮想専用サーバ）は「さくらのVPS」</a><br>
+</p></p>
+
+<p></div>
+<div class="section">
+    <h2>2. 完成イメージ・物理イメージ</h2>
+    <p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140930/20140930210924.png" alt="f:id:mosuke5:20140930210924p:plain" title="f:id:mosuke5:20140930210924p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+<p></p>
+<div style="border: solid 1px #dddddd;"></div>
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140930/20140930210914.png" alt="f:id:mosuke5:20140930210914p:plain" title="f:id:mosuke5:20140930210914p:plain" class="hatena-fotolife" itemprop="image"></span><br>
+</p></p>
+
+<p></div>
+<div class="section">
+    <h2>3. <a class="keyword" href="http://d.hatena.ne.jp/keyword/Vagrant">Vagrant</a>でWebサーバ２台分を構築する</h2>
+    <p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Vagrant">Vagrant</a>の詳細な利用方法は公式ドキュメントをみてもらうとするが、セットアップまでのひととおりの流れと注意点のみ記載する。<br>
+<a href="https://docs.vagrantup.com/v2/">Vagrant Documentation</a></p>
+<p>今回はWebサーバ２台を仮想で実現するので、それぞれweb1, web2とする。<br>
+それぞれのディレクトリを作成。</p>
+```</p>
+
+<h2 id="web1-web2のディレクトリ作成:4ad775d019fc2a93172e04f65e0d5895">web1, web2のディレクトリ作成</h2>
+
+<p>$ pwd
+/home/vagrant
+$ mkdir web1
+$ mkdir web2</p>
+
+<h2 id="仮想化で利用するosイメージをダウンロード:4ad775d019fc2a93172e04f65e0d5895">仮想化で利用するOSイメージをダウンロード</h2>
+
+<p>$ vagrant box add ubuntu1310 ¥
+<a href="http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box">http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box</a></p>
+
+<h2 id="web1サーバ構築:4ad775d019fc2a93172e04f65e0d5895">web1サーバ構築</h2>
+
+<p>$ cd web1
+$ vagrant init ubuntu1310</p>
+
+<h2 id="ほぼほぼデフォルトの設定だが以下２つだけは設定を行った:4ad775d019fc2a93172e04f65e0d5895">ほぼほぼデフォルトの設定だが以下２つだけは設定を行った。</h2>
+
+<p>$ vim Vagrantfile</p>
+
+<h1 id="1-プライベートアドレスの割り当て:4ad775d019fc2a93172e04f65e0d5895">(1)プライベートアドレスの割り当て。</h1>
+
+<p>config.vm.network &ldquo;private_network&rdquo;, ip: &ldquo;192.168.33.10&rdquo;</p>
+
+<h1 id="2-1gbしかメモリがないのでこの設定をしないと２つ仮想化するとだいぶ大変なことになりました:4ad775d019fc2a93172e04f65e0d5895">(2)1GBしかメモリがないのでこの設定をしないと２つ仮想化するとだいぶ大変なことになりました。</h1>
+
+<p>config.vm.provider &ldquo;virtualbox&rdquo; do |vb|
+     vb.customize [&ldquo;modifyvm&rdquo;, :id, &ldquo;&ndash;memory&rdquo;, &ldquo;128&rdquo;]
+end</p>
+
+<p>$ vagrant ssh</p>
+
+<pre><code>&lt;p&gt;同様にweb2においても同じことを行った。&lt;/p&gt;
+&lt;p&gt;また、&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/vagrant&quot;&gt;vagrant&lt;/a&gt;では一般的に対象のディレクトリで&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/vagrant&quot;&gt;vagrant&lt;/a&gt; &lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/ssh&quot;&gt;ssh&lt;/a&gt;を利用してサーバに入るが、&lt;br&gt;
+今回はプライベートアドレスも振ってあるし、物理サーバとしてイメージしているので以下のようにしてサーバにはいるようにした。&lt;/p&gt;
+</code></pre>
+
+<p>$ ssh vagrant@192.168.33.10  # web1への接続
+$ ssh vagrant@192.168.33.11  # web2への接続
+<code>
+&lt;p&gt;ホストサーバ側の&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%BF%A1%BC%A5%D5%A5%A7%A5%A4%A5%B9&quot;&gt;インターフェイス&lt;/a&gt;情報をみると。&lt;/p&gt;
+</code></p>
+
+<h1 id="cent7なので以下コマンドだがifconfig-aのこと:4ad775d019fc2a93172e04f65e0d5895">cent7なので以下コマンドだがifconfig -aのこと</h1>
+
+<p>$ ip a
+(中略)
+5: vboxnet0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UNKNOWN qlen 1000
+    link/ether 0a:00:27:00:00:00 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.33.<sup>1</sup>&frasl;<sub>24</sub> brd 192.168.33.255 scope global vboxnet0
+       valid_lft forever preferred_lft forever
+    inet 192.168.56.<sup>101</sup>&frasl;<sub>24</sub> brd 192.168.56.255 scope global dynamic vboxnet0
+       valid_lft 839sec preferred_lft 839sec
+    inet6 fe80::800:27ff:fe00:0/64 scope link
+       valid_lft forever preferred_lft forever</p>
+
+<pre><code>&lt;p&gt;vboxnet0という仮想の&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%BF%A1%BC%A5%D5%A5%A7%A5%A4%A5%B9&quot;&gt;インターフェイス&lt;/a&gt;が作成され、&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&quot;&gt;IPアドレス&lt;/a&gt;も192.168.33.1が振られていることを確認。&lt;/p&gt;
+&lt;p&gt;ルーティングテーブルも確認しておくと&lt;/p&gt;
+</code></pre>
+
+<p>$ netstat -rn
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+0.0.0.0         153.120.2.1     0.0.0.0         UG        0 0          0 eth0
+153.120.2.0     0.0.0.0         255.255.254.0   U         0 0          0 eth0
+192.168.33.0    0.0.0.0         255.255.255.0   U         0 0          0 vboxnet0
+<code>
+&lt;p&gt;192.168.33.0/24行はvboxnet0から出るように設定されている。&lt;/p&gt;
+&lt;p&gt;上の物理イメージに詳細書き込むと以下。&lt;br&gt;
+&lt;span itemscope itemtype=&quot;http://schema.org/Photograph&quot;&gt;&lt;img src=&quot;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141006/20141006000246.png&quot; alt=&quot;f:id:mosuke5:20141006000246p:plain&quot; title=&quot;f:id:mosuke5:20141006000246p:plain&quot; class=&quot;hatena-fotolife&quot; itemprop=&quot;image&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div style=&quot;border: solid 1px #dddddd;&quot;&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/Apache&quot;&gt;Apache&lt;/a&gt;のみインスールする必要があるので、&lt;br&gt;
+web1, web2で以下を実施。（プロビジョニングしたほうが後々楽です。）&lt;/p&gt;
+</code>
+$ sudo apt-get apache2</p>
+
+<p>##どちらがweb1でどちらがweb2か区別するために以下ファイルは変えておきます。
+$ sudo vim /var/www/index.html
+#Web1とかWeb2とかわかりやすい文言を入れておきます。</p>
+
+<p>##Apache起動
+$ sudo service apache2 start</p>
+
+<p>##Apache起動確認
+$ curl localhost
+　上記で変更したindex.htmlの内容が表示されること</p>
+
+<pre><code>&lt;p&gt;これでWebサーバの準備は完了。&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;div class=&quot;section&quot;&gt;
+    &lt;h2&gt;4, Nginxでリバースプロキシサーバを構築する&lt;/h2&gt;
+    &lt;p&gt;Nginx初めて触ったがとてもシンプル。&lt;br&gt;
+今回はNginxをリバースプロキシとして利用したので、proxy.confを作成するだけ。&lt;/p&gt;
+</code></pre>
+
+<p>##インスール
+$ sudo yum install nginx</p>
+
+<h2 id="etc-nginx以下に設定ファイルなどあること確認:4ad775d019fc2a93172e04f65e0d5895">/etc/nginx以下に設定ファイルなどあること確認</h2>
+
+<p>$ ls /etc/nginx</p>
+
+<h2 id="プロキシ構築のための設定ファイル作成:4ad775d019fc2a93172e04f65e0d5895">プロキシ構築のための設定ファイル作成</h2>
+
+<p>$ cd /etc/nginx/conf.d
+$ sudo vim proxy.conf
+server {</p>
+
+<pre><code># /web1にアクセスが来た時
+location /web1 {
+</code></pre>
+
+<p>	proxy_http_version 1.1;</p>
+
+<p>	#受け渡す際のヘッダ情報を指定
+	proxy_set_header Host $host:$server_port;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header X-Forwarded_Proto http;</p>
+
+<pre><code>    # 飛ばす先のURL(Web1サーバ)
+    proxy_pass http://192.168.33.10/;
+}
+
+# /web2にアクセスが来た時
+location /web2 {
+</code></pre>
+
+<p>	proxy_http_version 1.1;</p>
+
+<p>	#受け渡す際のヘッダ情報を指定
+	proxy_set_header Host $host:$server_port;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header X-Forwarded_Proto http;</p>
+
+<pre><code>    # 飛ばす先のURL(Web2サーバ)
+</code></pre>
+
+<p>	proxy_pass <a href="http://192.168.33.11/">http://192.168.33.11/</a>;
+    }
+}</p>
+
+<h2 id="あとは起動させるのみ:4ad775d019fc2a93172e04f65e0d5895">あとは起動させるのみ</h2>
+
+<p>$ sudo systemctl enable nginx
+$ sudo systemctl start nginx
+```
+</div>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">20 Sep 2014, 18:03</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/09/20/180326/" class="post-title">CentOS7, iptables設定でハマった</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-CentOS7" href="https://blog.mosuke.tech/categories/centos7">CentOS7</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>最近<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPS">VPS</a>のOSをcentos7にしたのだが、なかなか手付かずで<a class="keyword" href="http://d.hatena.ne.jp/keyword/iptables">iptables</a>の設定も放置していた…<br>
+（<a class="keyword" href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>の最低限の設定はしていたが、ほんとうに良くない…）</p>
+<p>久しぶりに手が空いたので設定するかーと思いきや<br>
+まず/etc/sysconfig/<a class="keyword" href="http://d.hatena.ne.jp/keyword/iptables">iptables</a>がないし&hellip;</p>
+<p>Cent7からのsystemctlで<a class="keyword" href="http://d.hatena.ne.jp/keyword/iptables">iptables</a>のサービスを確認してもでてこないし…</p></p>
+
+<pre><code># systemctl status iptables
+iptables.service
+   Loaded: not-found (Reason: No such file or directory)
+   Active: inactive (dead)
+</code></pre>
+
+<p>というわけで、調べてみると、まず<a class="keyword" href="http://d.hatena.ne.jp/keyword/iptables">iptables</a>.serviceをインスールしないといけないとのこと。<br>
+そして、centos7からはfirewalldがデフォルトでオンになっているからオフにしないといけない。<br>
+（いけないわけではないけど両方使う意味が無いので。）</p>
+<br>
+<p>まずは<a class="keyword" href="http://d.hatena.ne.jp/keyword/iptables">iptables</a>-serviceをインスールし、firewalldをオフ、<a class="keyword" href="http://d.hatena.ne.jp/keyword/iptables">iptables</a>をオンとした。</p>
+
+<pre><code># yum install iptables-services
+# systemctl status firewalld
+   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled)
+   Active: active (running) since Sat 2014-09-20 17:47:11 JST; 4s ago
+ Main PID: 11162 (firewalld)
+   CGroup: /system.slice/firewalld.service
+           └─11162 /usr/bin/python -Es /usr/sbin/firewalld --nofork --nopid
+
+#
+# systemctl stop firewalld
+#
+# systemctl status firewalld
+   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled)
+   Active: inactive (dead)
+
+#
+#systemctl disable firewalld
+#
+#systemctl enable iptables
+#systemctl start iptables
+#
+#systemctl status iptables
+   Loaded: loaded (/usr/lib/systemd/system/iptables.service; enabled)
+   Active: inactive (dead) since Sat 2014-09-20 17:47:10 JST; 2min 48s ago
+  Process: 11139 ExecStop=/usr/libexec/iptables/iptables.init stop (code=exited, status=0/SUCCESS)
+  Process: 10096 ExecStart=/usr/libexec/iptables/iptables.init start (code=exited, status=0/SUCCESS)
+ Main PID: 10096 (code=exited, status=0/SUCCESS)
+....
+
+# 
+</code></pre>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/iptables">iptables</a>の設定はいつもどおり。<br>
+CentOS7の新しいコマンドに戸惑ったので一部メモ。</p>
+<p></p>
+<h2>service, chkconfigコマンドはsystemctlコマンドへ</h2>service, chkconfigコマンドは推奨されずsystemctlコマンドへ切り替わった。<br>
+試しにchkconfigコマンドを利用すると…
+
+```
+# chkconfig --list
+Note: This output shows SysV services only and does not include native
+      systemd services. SysV configuration data might be overridden by native
+      systemd configuration.
+
+      If you want to list systemd services use 'systemctl list-unit-files'.
+      To see services enabled on particular target use
+      'systemctl list-dependencies [target]'.
+
+iprdump        	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+iprinit        	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+iprupdate      	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+netconsole     	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+network        	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+pmcd           	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+pmie           	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+pmlogger       	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+pmmgr          	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+pmproxy        	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+pmwebd         	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+```
+
+<blockquote>
+    <p>"If you want to list systemd services use 'systemctl list-unit-files'."</p>
+</blockquote>
+<p>systemdのサービスを表示したければ、systemctl list-unit-filesを利用せよとのこと。<br>
+試しに打つと以下のように表示される</p>
+
+<pre><code># systemctl list-unit-files
+UNIT FILE                                   STATE
+proc-sys-fs-binfmt_misc.automount           static
+dev-hugepages.mount                         static
+dev-mqueue.mount                            static
+proc-fs-nfsd.mount                          static
+proc-sys-fs-binfmt_misc.mount               static
+sys-fs-fuse-connections.mount               static
+sys-kernel-config.mount                     static
+sys-kernel-debug.mount                      static
+tmp.mount                                   disabled
+var-lib-nfs-rpc_pipefs.mount                static
+brandbot.path                               disabled
+....
+ 
+</code></pre>
+
+<p>また、サービスの起動・停止・状態確認などは</p>
+
+<pre><code># service &lt;service name&gt; &lt;start/stop/restart/status&gt;
+　↓
+# systemctl &lt;start/stop/restart/status&gt; &lt;service name&gt;
+</code></pre>
+
+<p>そして、サービスの起動オプションの設定は</p>
+
+<pre><code># chkconfig &lt;service name&gt; &lt;on/off&gt;
+   ↓
+# systemctl &lt;enable/disable&gt; &lt;service name&gt;
+</code></pre>
+
+<p><p>まずはこんなところ。</p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+            </div>
+            
+<div class="pagination">
+  <nav role="pagination" class="post-list-pagination">
+      
+      <a href="/page/5/" class="post-list-pagination-item pure-button post-list-pagination-item-prev">
+        <i class="fa fa-angle-double-left"></i>&nbsp;Newer
+      </a>
+      
+    <span class="post-list-pagination-item post-list-pagination-item-current">Page 6 of 8</span>
+    
+      <a href="/page/7/" class="post-list-pagination-item pure-button post-list-pagination-item-next">
+        Older&nbsp;<i class="fa fa-angle-double-right"></i>
+      </a>
+    
+  </nav>
+</div>
+
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

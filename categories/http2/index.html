@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Http2 &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Http2 &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Http2 &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">28 May 2017, 13:02</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2017/05/28/blog_migration/" class="post-title">はてなブログからHugoに移行。その際に行ったあれこれ。</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Hugo" href="https://blog.mosuke.tech/categories/hugo">Hugo</a><a class="post-category post-category-はてなブログ" href="https://blog.mosuke.tech/categories/%E3%81%AF%E3%81%A6%E3%81%AA%E3%83%96%E3%83%AD%E3%82%B0">はてなブログ</a><a class="post-category post-category-常時SSL" href="https://blog.mosuke.tech/categories/%E5%B8%B8%E6%99%82ssl">常時SSL</a><a class="post-category post-category-HTTP2" href="https://blog.mosuke.tech/categories/http2">HTTP2</a><a class="post-category post-category-CloudFlare" href="https://blog.mosuke.tech/categories/cloudflare">CloudFlare</a><a class="post-category post-category-移行" href="https://blog.mosuke.tech/categories/%E7%A7%BB%E8%A1%8C">移行</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        1.はじめに 2017年5月27日に2014年2月から約3年3ヶ月程度使ってきたはてなブログからHugoを使ったブログへ移行をした。 長らく使いやすいブログを提供してきたはてなさんにはとても感謝している。 はてなブログはとても魅力なブログプラットフォームであると感じているし、いまでもそう思うのだけれどいくつかの判断をした結果Hugoへの移行を決めた。 本記事では、移行を決めた理由や移行する際に行ったこと、Hugoの実行環境などを紹介する。 2.Hugoに移行した理由 Hugoに移行した理由というか、はてなブログから別のところに移行しようとした理由になるのだが、 端的に言うと以下のとおりだ。 常時SSL化したかった HTTP/2に対応したかった 独自ドメイン(mosuke.tech)を利用したかった Hugo以外にももちろん他のツールやサイトも検討を行った。 はてなブログPro jekyll medium まず、はてなブログProだが、もっとも手間がかからず独自ドメイン利用もできてよかったのだが、 SSL化とHTTP/2化はやはり難しかったので外部を検討した。 次にGithub製のJelyllだが、Github Pagesとの相性もよくはじめに検討はじめたものだった。 Ruby製ということもあり、自分に馴染みのあるツールで最有力候補だった。 しかし、後発のHugoの完成度の高さ、コンパイルの速さ、気に入ったテンプレートがあった、という理由でHugoに劣った。 最後にmediumだが、自前で構築することなくやりたいことのすべてを実現していた。 正直一番いいのではないかとも思う（笑） 最終的には、よりカスタマイズ度の高いHugoを選んだ。特にこれといった理由はない。 ちょうどGo言語をやってみたいモチベーションがあったので、これをきっかけに勉強がはかどればいいなぁくらいの気持ちはあった。 3.移行に際して行ったこと 3-1.Hugoでのサイト構築、アーキテクチャ Github上でHugoを管理し、コンパイルしてできたPublicファイルを、Github Pages対応の別のレポジトリで管理。 独自ドメイン利用、SSL対応、HTTP/2対応するためにフロントにCloudFlareを利用した。 後述するが、CloudFlareはとても便利なツールだが、キャッシュの扱いは気をつけてなければいけない。 図にすると以下のとおりだ。 3-2.記事の移行 はてなブログはそのままのこし、新規に書くブログからHugoへ移行することも検討したが、 せっかくなのではてなブログ時代に書いた記事もすべて移行することを決めた。 はてなブログからデータのエクスポートができる。 エクスポートしたファイルを簡単なスクリプトを作ってHugoファイルへの変換を行った。（Github mosuke5/hatena-blog-parser） 正直このツールは汎用的なものではない。このスクリプトだけではうまく行かない部分も多数ある。 いくぶんかsedなど使って（たまに手動編集・・・）して整えた。。 はてなブログのエクスポートファイルのフォーマット -------- AUTHOR: mosuke5 TITLE: 万能じゃない。オブジェクトストレージの仕組みと利用を正しく理解する BASENAME: 2017/03/18/182252 STATUS: Publish ALLOW COMMENTS: 1 CONVERT BREAKS: 0 DATE: 03/18/2017 18:22:52 CATEGORY: オブジェクトストレージ CATEGORY: ObjectStorage CATEGORY: クラウド CATEGORY: S3 IMAGE: https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170318/20170318164020.jpg -----
+                    </div>
+                </section>
+                
+            </div>
+            
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

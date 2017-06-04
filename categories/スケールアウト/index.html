@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スケールアウト &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="スケールアウト &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="スケールアウト &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">04 Jan 2017, 22:35</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2017/01/04/223544/" class="post-title">クラウド上でのWordPressのスケールアウトを考える</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-WordPress" href="https://blog.mosuke.tech/categories/wordpress">WordPress</a><a class="post-category post-category-クラウド" href="https://blog.mosuke.tech/categories/%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89">クラウド</a><a class="post-category post-category-AWS" href="https://blog.mosuke.tech/categories/aws">AWS</a><a class="post-category post-category-Alibaba Cloud" href="https://blog.mosuke.tech/categories/alibaba-cloud">Alibaba Cloud</a><a class="post-category post-category-分散" href="https://blog.mosuke.tech/categories/%E5%88%86%E6%95%A3">分散</a><a class="post-category post-category-スケールアウト" href="https://blog.mosuke.tech/categories/%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%AB%E3%82%A2%E3%82%A6%E3%83%88">スケールアウト</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        複数台サーバでのWordPressの構築・運用について考える。 実際に、とあるクラウドで分散環境のWordPressを構築したのでその知見をまとめる。 なるべく特定のクラウドに特価しないものとして記載したい。 やりたいこと スケールアウトできるWordPress環境を作る SSLに対応する HTTP/2に対応する AWSなどのクラウド環境で構築する アーキテクチャ まず先に全体のアーキテクチャ図から示す。 これから各項目について解説していく。 SSL・HTTP/2への対応 まずSSLへの対応だが、通常ならばロードバランサをSSLの終端とし下記のような構成にすることが多いだろう。 この場合はロードバランサをL7のものとして稼働させる。 しかし、HTTP/2に対応しようと思うと事情は異なってくる。 （もちろん、最近ではAWSのALBのようにHTTP/2に対応する製品がでてきているのは承知だが。） 現在のパブリッククラウドで利用できるロードバランサの多くはまだHTTP/2に対応していない。 そのため、ロードバランサをL4として稼働させ、配下のWebサーバにてHTTP/2を処理する必要がでてくる。 この場合、ロードバランサはTCPでポート443を待ち受けるようにし、配下のWebサーバへポート443のままでフォワードすればいい。 クラウド環境ではWebサーバがスケールすることは前提にいれることがおおい。 そのため、この場合のSSL証明書はN台に対応した製品を買う必要がある。 例えば以下のような製品など。 SureServer for クラウド｜Cybertrust.ne.jp データベースの分離 分散環境でのWordpressでは共通したコンテンツを配信するため、データベースはもちろんWebサーバとは分離したほうがいい。 それぞれのWebサーバは共通のデータベースを見に行くべきだ。 データベースを自前で冗長化しても構わないが、それなりの運用コストがかかることは容易に想像がつくので、 クラウドのマネージドデータベースサービスを利用した。 Amazon RDS（クラウドでのリレーショナルデータベースサービス） | AWS ApsaraDB for RDS - データベースホスティング | Alibaba Cloud 管理画面 管理画面のみを分離するアーキテクチャも考えられるが、ここではそうしないこととする。 管理画面へのログインセッションの保持は、別途KVS(RedisやMemcached)に保存してもいいと思う。 ですが、WordPress4.0以降ではデフォルトではMySQLへセッションを保存するので必須の対応ではないといえる。 github.com 記事で使うアップロード画像などの対応 管理画面から記事を投稿するとする。 記事のデータはデータベースに保存されるためどのWebサーバからも記事を参照できる。 しかし、記事に含まれる画像データはどうだろうか。 通常のWordpressでは管理画面サーバの/wp-content/uploads以下に画像を保存する。 複数台Webサーバがある状態で、たまたまアクセスしているサーバに画像を保存しても、他のサーバからは参照することができない。 これに対するソリューションはいくつかあるだろう。 例えば、rsyncなどを使って他のサーバと画像ファイルを同期するとか、画像用のストレージを用意しNFSで参照するとか。 冗長化の観点からもここはオブジェクトストレージのサービスを利用するのがいいだろう。 例えば、下記のような製品だ。 Amazon S3 (スケーラブルなクラウドストレージサービス ) | AWS Object Storage Service (OSS) - Alibaba Cloud
+                    </div>
+                </section>
+                
+            </div>
+            
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

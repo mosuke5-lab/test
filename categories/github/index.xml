@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Github on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/github/</link>
+    <description>Recent content in Github on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sat, 19 Mar 2016 23:24:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/github/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Github Pagesを今更作った話と、独自ドメイン適応時の通信のこと</title>
+      <link>https://blog.mosuke.tech/entry/2016/03/19/232437/</link>
+      <pubDate>Sat, 19 Mar 2016 23:24:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/03/19/232437/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;今更ながら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/github&#34;&gt;github&lt;/a&gt;ページでプロフィールサイトを作った。&lt;br&gt;
+(もう少しデザインブラッシュアップしたい…)&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://mosuke.tech/&#34;&gt;mosuke tech&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;また、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%C6%C8%BC%AB%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;独自ドメイン&lt;/a&gt;（カスタム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;）の設定やその仕組みをおっている時に、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%C6%C8%BC%AB%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;独自ドメイン&lt;/a&gt;適応時の通信について面白いことがわかったのでかく。&lt;/p&gt;
+
+&lt;h1&gt;求めていたもの&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ブログとか作ったプロダクトをまとめたかった&lt;/li&gt;
+&lt;li&gt;極力シンプルでメンテしやすいものがよかった&lt;/li&gt;
+&lt;li&gt;でもレスポンシブなデザインがよかった&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;どのようにつくったか&lt;/h1&gt;
+
+&lt;p&gt;上の条件を満たすために以下の２パターンのどっちで作ろうか迷った。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Jekyllなどを使いテンプレートを使って作る&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/CSS&#34;&gt;CSS&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D5%A5%EC%A1%BC%A5%E0%A5%EF%A1%BC%A5%AF&#34;&gt;フレームワーク&lt;/a&gt;のみ利用し、あとは自分で作る&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;１ページだけのシンプルなプロフィールサイトがよかったので、&lt;br&gt;
+Jekyllとか複雑なものは利用したくないと考えた。&lt;/p&gt;
+
+&lt;p&gt;また、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/CSS&#34;&gt;CSS&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D5%A5%EC%A1%BC%A5%E0%A5%EF%A1%BC%A5%AF&#34;&gt;フレームワーク&lt;/a&gt;だが、いつもよくTwitterBootstrapを使っているので、&lt;br&gt;
+それ以外のものでやってみようと考えた。&lt;/p&gt;
+
+&lt;p&gt;その結果、行き着いたのが&lt;a href=&#34;http://getskeleton.com/&#34;&gt;Skeleton&lt;/a&gt;だった。&lt;br&gt;
+Skeletonは&lt;b&gt;&#34;A dead simple, responsive boilerplate.&#34;&lt;/b&gt;をうたっているものでよかった。&lt;/p&gt;
+
+&lt;h1&gt;カスタム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;の設定&lt;/h1&gt;
+
+&lt;p&gt;デフォルトだと&lt;code&gt;mosuke5.github.io&lt;/code&gt;のURLが利用できる。&lt;br&gt;
+しかし、この前&lt;code&gt;mosuke.tech&lt;/code&gt;といういい感じの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;を安く手に入れてたので、カスタム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;の設定を行うことにした。&lt;/p&gt;
+
+&lt;p&gt;カスタム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;の設定方法は以下のみだ。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&#34;&gt;レポジトリ&lt;/a&gt;にCNAMEファイルを作成する &lt;code&gt;$ echo mosuke.tech &amp;gt; CNAME&lt;/code&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/DNS&#34;&gt;DNS&lt;/a&gt;の設定：Aレコードに&lt;code&gt;192.30.252.153&lt;/code&gt;と&lt;code&gt;192.30.252.154&lt;/code&gt;を追加&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;(本家ドキュメント)&lt;br&gt;
+&lt;a href=&#34;https://help.github.com/articles/setting-up-an-apex-domain/&#34;&gt;Setting up an apex domain - User Documentation&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;カスタム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;設定時の通信について&lt;/h1&gt;
+
+&lt;p&gt;カスタム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;がどのような仕組みで実現されているのか気になって、&lt;br&gt;
+いろいろと調べている時にあることに気づいた。&lt;/p&gt;
+
+&lt;p&gt;Aレコードに登録した&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;を逆引きで調べると、pages.&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/github&#34;&gt;github&lt;/a&gt;.comが出てくるが、&lt;br&gt;
+pages.&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/github&#34;&gt;github&lt;/a&gt;.comをdigすると違う結果が返ってくる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ dig -x 192.30.252.153
+;; ANSWER SECTION:
+153.252.30.192.in-addr.arpa. 3600 IN    PTR pages.github.com.
+
+$ dig pages.github.com
+;; ANSWER SECTION:
+pages.github.com.   900 IN  CNAME   github.map.fastly.net.
+github.map.fastly.net.  23  IN  A   103.245.222.133[f:id:mosuke5:20160319233634j:plain] 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;後者のほうでは、fastly（CDN）の結果が返ってくる。&lt;br&gt;
+つまり、カスタム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;を設定しなければ、通常はCDN経由で通信されるが、&lt;br&gt;
+カスタム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;を割り当てるとCDNを利用できないのではないかということがわかった。&lt;/p&gt;
+
+&lt;p&gt;実際に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ping&#34;&gt;Ping&lt;/a&gt;で確かめてみる。明らかに速度差がでている。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;% ping mosuke5.github.io
+PING github.map.fastly.net (103.245.222.133): 56 data bytes
+64 bytes from 103.245.222.133: icmp_seq=0 ttl=58 time=18.485 ms
+64 bytes from 103.245.222.133: icmp_seq=1 ttl=58 time=19.108 ms
+64 bytes from 103.245.222.133: icmp_seq=2 ttl=58 time=18.709 ms
+64 bytes from 103.245.222.133: icmp_seq=3 ttl=58 time=19.161 ms
+64 bytes from 103.245.222.133: icmp_seq=4 ttl=58 time=20.574 ms
+
+
+% ping mosuke.tech
+PING mosuke.tech (192.30.252.154): 56 data bytes
+64 bytes from 192.30.252.154: icmp_seq=0 ttl=52 time=203.329 ms
+64 bytes from 192.30.252.154: icmp_seq=1 ttl=52 time=205.535 ms
+64 bytes from 192.30.252.154: icmp_seq=2 ttl=52 time=203.178 ms
+64 bytes from 192.30.252.154: icmp_seq=3 ttl=52 time=201.345 ms
+64 bytes from 192.30.252.154: icmp_seq=4 ttl=52 time=205.125 ms 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;また、それぞれの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;から場所も調べてみた。&lt;br&gt;
+CDN利用時がオーストラリア、そうでないとアメリカ西海岸ということがわかった。
+&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fwww.iputilities.net%2F&#34; title=&#34;IPアドレス所在地検索 IP Geolocation Search&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://www.iputilities.net/&#34;&gt;www.iputilities.net&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;以上のことをまとめつつ、地図に表した。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160319/20160319233634.jpg&#34; alt=&#34;f:id:mosuke5:20160319233634j:plain&#34; title=&#34;f:id:mosuke5:20160319233634j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;オーストラリアとアメリカ西海岸だとそんなに直線距離は変わらない気もするけど、&lt;br&gt;
+CDNの力なのかルート的な問題ないのか&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ping&#34;&gt;Ping&lt;/a&gt;の応答速度は10倍ほどの差があった。&lt;/p&gt;
+
+&lt;p&gt;カスタム&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;を使うと遅くなる！？（まあ全然いいんだけど…）&lt;/p&gt;
+
+&lt;h1&gt;最後に&lt;/h1&gt;
+
+&lt;p&gt;CDNの仕組みとかいまいち忘れてしまったので、アカマイ本を読み返したい。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00MIFE3BC/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/51T4L8K2yLL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;アカマイ　知られざるインターネットの巨人&amp;lt;アカマイ&amp;gt; (角川ＥＰＵＢ選書)&#34; title=&#34;アカマイ　知られざるインターネットの巨人&amp;lt;アカマイ&amp;gt; (角川ＥＰＵＢ選書)&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00MIFE3BC/hatena-blog-22/&#34;&gt;アカマイ　知られざるインターネットの巨人 (角川ＥＰＵＢ選書)&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;作者:&lt;/span&gt; 小川晃通&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/KADOKAWA&#34;&gt;KADOKAWA&lt;/a&gt; / &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%E1%A5%C7%A5%A3%A5%A2%A5%D5%A5%A1%A5%AF%A5%C8%A5%EA%A1%BC&#34;&gt;メディアファクトリー&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2014/08/11&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kindle&#34;&gt;Kindle&lt;/a&gt;版&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/B00MIFE3BC/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログ (5件) を見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

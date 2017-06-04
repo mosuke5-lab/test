@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Tech &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Tech &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">13 Sep 2014, 21:44</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/09/13/214414/" class="post-title">2014/8/2 Arduino会を実施の報告</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        2014年8月2日(土)に大学時代の研究室の同期・後輩を巻き込んでArduino勉強会を行った。 Arduinoをほとんど触ったことのないメンバーで実施したのだが、初心者でもプロダクトを作り上げられるところまでできた。 その勉強会の簡単な資料を掲載。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">13 Sep 2014, 11:15</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/09/13/111537/" class="post-title">【Ethernetシールド】Arduinoをネットワークへ繋げる(1)</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Arduino" href="https://blog.mosuke.tech/categories/arduino">Arduino</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        Ethernetシールドを使ってネットワークへ繋げる。 とりあえずは、スモールステップでPCとの1対1の通信。 PCとの1対1通信 構成図 Arduinoソースコード #include &lt;SPI.h&gt; #include &lt;Ethernet.h&gt; byte MAC[] = {0x90,0xA2,0xDA,0x0F,0x8B,0xA2}; byte IP[] = {192,168,11,3}; void setup() { Ethernet.begin(MAC,IP); } void loop() { } 疎通確認 ======= ``` 4f3b2c72e32161441359f6d2116c410a27a8faaf % ping 192.168.100.3 PING 192.168.100.3 (192.168.100.3): 56 data bytes Request timeout for icmp_seq 0 64 bytes from 192.168.100.3: icmp_seq=1 ttl=128 time=0.576 ms 64 bytes from 192.168.100.3: icmp_seq=2 ttl=128 time=0.425 ms 64 bytes from 192.168.100.3: icmp_seq=3 ttl=128 time=0.302 ms ``` Ping確認ヨシ!! 一応ARPテーブルを見ておく。 ======= ``` 4f3b2c72e32161441359f6d2116c410a27a8faaf % arp -a ?
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">21 Jul 2014, 23:19</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/07/21/231946/" class="post-title">【これだけは抑えておきたい】Arduino入門まとめ</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Arduino" href="https://blog.mosuke.tech/categories/arduino">Arduino</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        前々からArduino自体はもっていたし、ちょろっと触ったことはあったのだが、 大学時代の研究室の仲間とArduino勉強会をやることになり、それに向けて友人と再入門したのでそのときのメモ。 Arduino入門にこれだけは知っておきたい事項をプログラム形式にまとめた。 もちろん、不足部分もたくさんあるが、これだけわかれば楽しめるようになるかも。 以下が入門プログラム。 LEDの点灯 PCとArduino間のシリアル通信 超音波距離センサの利用 超音波距離センサとLEDの組み合わせ Processingとの連携 電池でArduinoを動作させる 【用意したもの】 基本は以下の２つ Arduinoをはじめようキット 出版社/メーカー: スイッチサイエンス メディア: エレクトロニクス 購入: 64人 クリック: 1,164回 この商品を含むブログ (51件) を見る みんなのArduino入門：拡張キット 出版社/メーカー: スイッチサイエンス メディア: エレクトロニクス この商品を含むブログを見る 【参考にした書籍】 Arduinoをはじめよう 第2版 (Make:PROJECTS) 作者: Massimo Banzi,船田巧 出版社/メーカー: オライリージャパン 発売日: 2012/03/16 メディア: 単行本（ソフトカバー） 購入: 9人 クリック: 27回 この商品を含むブログ (10件) を見る みんなのArduino入門 作者: 高本孝頼 出版社/メーカー: リックテレコム 発売日: 2014/02/17 メディア: 単行本（ソフトカバー） この商品を含むブログを見る 1. LEDの点灯まずはじめの第一歩はLEDの点灯。 これはArduino標準搭載の「スケッチの例」を利用。 利用したスケッチ：スケッチの例⇒01.Basic⇒BlinkLEDのプラス側を13番に、マイナス側をGNDに挿せば完成。 2. PCとArduino間のシリアル通信センサーで取得したデータ等をPC側に渡すシリアル通信。 まずは最初なので、Arduino本体側で文字列を適当に出力させてそれを表示する。はじめは&rdquo;hoge&ldquo;だけを出力させたのだが、ひたすらhogeが並ぶだけなのでArduino側の処理がよく見えなかったので、 以下のサンプルのようにした。また、回路側はなにもいじっていない。 int i = 0; void setup(){ //シリアル通信の宣言 Serial.begin(9600); } void loop(){ Serial.print(&quot;hoge&quot;); Serial.println(i); i++; delay(300); } 出力結果 hoge1 hoge2 hoge3 ....
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">18 May 2014, 14:28</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/05/18/142838/" class="post-title">【雑記】VPSとお別れしました…</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-サーバ" href="https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90">サーバ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        2012年07月18日から契約していたVPSサーバを本日解約した。 約２年間の契約していたわけだがちょっと振り返るといろいろあったなーと思う。 ぼくがまだ大学３年のとき、ソーシャルブックマークサービスをリリースしたのだが、 その時はまだエンジニア初心者で、VPSではなく共有サーバを利用していた。 そんなプロジェクトが終わり、次のサービス(Twitterの解析ツール)の開発で初めてVPS環境を与えられたのだが、 サーバ構築など右も左もわからなかったので、自分の勉強用環境としてVPSを契約。VPS環境で行ったこと&gt; プロダクトとしては次の３つくらい作った ・Amazonの最安値段通知サービス 自分が欲しい物について希望価格を登録しておくと、Amazonの中古価格が希望価格を下回った時に通知してくれるサービス。 個人的には結構好きだったのだが、運用がめんどくさくなって閉鎖。 ・うみなう ーTwitter上の「海なう」画像を眺めようー 夏場になるとTwitterで「海なう」と水着画像を付けて投稿する人が多い。 海なうのキーワードで出てきた画像をただただ眺めるだけのサービス(笑) ・キニナル ーきになるあの二人のツイートをー Twitter上で気になる二人のツイート時系列で並べて監視するサービス。 公開はしていなかったけどちょくちょく身内でみていた。 こんなくだらないサービスを趣味で作っていた。 その他、仕事で使う新しいツールの実験導入などに利用していた。 社会人になってからリモートで接続できるサーバを持っている必要がなくなってきたので解約することになったが、 いろいろと勉強になったし、思い出がおおかったなー。 またいつか契約する日があることを待ち望んで…
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">17 May 2014, 22:18</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/05/17/221824/" class="post-title">ロードバランサをロードバランスする</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-ネットワーク" href="https://blog.mosuke.tech/categories/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF">ネットワーク</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        ぼくはネットワーク構成については素人です。 大量のトラフィックをさばくためにロードバランサを使うがロードバランサが耐えられない量のトラフィックにはどうするか。 ちょっと疑問に思ったので素人なりにちょろっと考えてみた。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">06 May 2014, 19:24</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/05/06/192424/" class="post-title">ER図作成ツール-MySQL Workbench- を使ってみた</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        表題の通りER図作成ツールというものを使ってみた。 開発をやる現場では当たり前のように使われているのかもしれないけど、ぼくは使ったことなかったです。 ER図とかテーブル構造はExcelでまとめて管理していました。 きっかけは、ソフトウエアデザインを読んでいてER図作成ツールなるものがでてきたので、便利そうと思ってぐぐってみた。 調べると主なフリーのER図作成ツールは以下があるっぽい。 DBDesigner A5-SQLmk-2 AmaterasERD MySQL Workbench ERMaster (参考)http://treeapps.hatenablog.com/entry/20110505/p1 この中でMacで使えそうなのがMySQL Workbenchしかなかったのでこちらを利用。 本当はMySQL以外のDBMSにも対応しているものがよかったのだけど… ざっと使ってみた感じ以下３つがよいと感じた点。 1.ER図作成が容易ER図作成ツールなのであたりまえなのだが、今までExcelの図形など使っていて書いていたので簡単さに驚き。 属性についてもそれぞれ型やキー・制約などの設定も記述できる。 2.DDLにすぐにエクスポート可能作成したER図についてはDDLにすぐにエクスポートできる。 なので、ツールでER図さえきちんと書けば実際のDB、テーブル構築は一瞬で可能。 3.イメージ図としてエクスポート可能作成したER図をPNG形式にエクスポートできるので、メンバー等との共有が容易。 また、ドキュメントとして残す際にもとても使えると思う。 Excelのシート形式にエクスポートできたらなぁとも思う… 実際にMySQL Workbenchを使って簡単にER図を作成してみた。 ・ユーザが飲んだお酒を記録していくWebシステムです。 ・利用するにはシステムへのユーザ登録が必要。 ・ユーザはお酒マスターから飲んだお酒を登録する。 →同じお酒を何度登録（飲んでも）よい ・お酒には産地（都道府県）を記入する。 ・ユーザは本システムへログイン後のアクセスログが取得される。 こんなざっくりとした感じ。 作成したER図はこんな感じに出来上がります（PNG）。 DDLはこんな感じに。 -- MySQL Script generated by MySQL Workbench -- Tue May 6 19:16:11 2014 -- Model: New Model Version: 1.0 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0; SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0; SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES'; -- ----------------------------------------------------- -- Schema mydb -- ----------------------------------------------------- CREATE
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">30 Mar 2014, 00:43</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/03/30/004337/" class="post-title">データベース、隔離性水準とはなにか</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        データベースには、トランザクションが持つべき特性であるACID特性というものを備えている。 ACID特性 A Atomicity 原始性 C Consistency 一貫性 I Isolation 隔離性 D Dirability 耐久性 ACID特性については詳しく書かないが、その中に隔離性という以下の特性がある。 「複数のトランザクションを並行して実行しても直列に実行した時と同じ結果になる。 また、トランザクション実行中は変更前の状態として見える。」 しかし、複数のトランザクションを並列で実行すると、その隔離性を満たさない現象が発生することがある。 その現象は主に３つある。 1. ダーティリード[概要] あるトランザクションの処理中に、別のユーザがそのトランザクションでまだコミットしてないデータを読み込んでしまう現象のこと。 Q. 何が問題なの？ A. 例えばそのトランザクションがロールバックしたとすると、存在しない処理のデータを読み込んでいることになってしまう。[対策] 対策はシンプルで、まだコミットしていないデータは読み込めないようにするだけ。 つまり、データを更新するときは「排他ロック」をかけるようにするということ。 2. ノンリピータブルリード[概要] 同一トランザクション内で、一度読み込んだデータを再読み込みすると値が異なる現象。[対策] データを読み込むときには「共有ロック」をかけるようにするということ。 共有ロック中は他トランザクションから更新はできなくなるのでノンリピータブルリードは起きない。 3. ファントムリード[概要] あるトランザクションが複数行ある結果を返す検索条件で問合せを2度実行する間に、 コミットされた別のトランザクションによってその条件を満たす新しい行が挿入されたり、削除された行がでたりする現象。[対策] 検索結果の範囲に対してロックをかけること。 上記現象が起こらないようにトランザクションの分離レベルが用意されている。 トランザクションの分離レベルと、現象に発生の有無 分離レベル ダーティリード ノンリピータブルリード ファントムリード Read Uncommitted あり あり あり Read Committed なし あり あり Repeatable Read なし なし あり Serializable なし なし なし ここでひとつの疑問が… Q. どの現象も起こらないSerializableに設定してしまえば…！？当然だがそう簡単にはいかない。 上の「トランザクションの分離レベルと、現象に発生の有無」でいえば したにいけばいくほど、処理負担が大きく実行スピードが遅くなります。つまりは、トランザクションの分離レベルと実行スピードはトレードオフ。 そのときそのときの特徴に合わせて分離レベルを選ばなければならない。 ちなみに、MySQLのInnoDBではデフォルトはRepeatable
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">09 Mar 2014, 21:25</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/03/09/212520/" class="post-title">VLAN、Trunkを使った実践的な構成のメモ</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-ネットワーク" href="https://blog.mosuke.tech/categories/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF">ネットワーク</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        VLAN、Trunkそれぞれを一部分的に切り出した説明はよくあるが、 それらが組み合わさった実践的な構成についてあまり書いてないので、例を考えて載せてみる。 (1) L2スイッチに２つのシステムのサーバ（それぞれが冗長構成）がある。 (2) それぞれのシステムはVLANで切られている (3) L2-L2間、L3-L2間はTrunkを使用(Vlan100,200) (4) L3インターフェースはサブインタフェース利用 (5) L3の冗長はHSRPを利用 ほかにいろいろ思いついたら、付け加えます。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">28 Feb 2014, 23:30</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/02/28/233025/" class="post-title">【SQLテーブル結合】INNER JOIN とWHERE結合の違いについて その２</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-データベース" href="https://blog.mosuke.tech/categories/%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9">データベース</a><a class="post-category post-category-SQL" href="https://blog.mosuke.tech/categories/sql">SQL</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        前回の「【SQLテーブル結合】INNER JOIN とWHERE結合の違いについて」の続き。 やはりFROM句の後にテーブルを複数書いてWHEREで結合させるのはナンセンスだと思う。 例えば、内部結合に加え、外部結合もある場合を考える。 WHERE型 SELECT * FROM table1, table2 #←結合させたいもの LEFT OUTER JOIN ( ・ ・ &lt;副問い合わせとか長いSQLが入ると想定&gt; ・ ・ ) AS sub ON table1.id=sub.id AND table2.id=sub.id WHERE table1.id=table2.id #←結合条件 table1とtable2を内部結合させたいのに、 肝心の何と何を結合させるかの部分の"WHERE table1.id=table2.id"が離れてしまい、 SQL文全体として何をしたいかわかりずらい。 一方、INNER JOINなら SELECT * FROM table1 INNER JOIN table2 ON table1.id=table2.id #←結合させたいものと結合条件が一緒 LEFT OUTER JOIN ( ・ ・ &lt;副問い合わせとか長いSQLが入ると想定&gt; ・ ・ ) AS sub ON table1.id=sub.id 上記のように、結合させたいテーブルと結合させる条件がくっつくため、 全体としてなにをしたいかわかりやすい気がする。 慣れの問題なのかもしれんが、圧倒的にINNER JOINだろ…
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">28 Feb 2014, 23:28</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/02/28/232846/" class="post-title">【SQL テーブル結合】INNER JOIN とWHERE結合の違いについて</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        テーブルを内部結合するとき、いつもINNER JOINを使って書いていたが、 「FROM句のあとに複数のテーブルを書いてWHERE句で絞り込む」やり方があることを知った。 INNER JOIN型 SELECT * FROM table1 INNER JOIN table2 ON table1.id=table2.id WHERE型 SELECT * FROM table1 table2 WHERE table1.id=table2.id 結果的には同じだし、調べる限りだとどちらが良いとかメリット・デメリットとかないそう。 個人的には「何に何を結合しているのかわかりやすい」という点からINNER JOIN型をおすすめしたいところ。 DBスペシャリストの本とか問題みてるとだいたいWHERE型なので戸惑う…
+                    </div>
+                </section>
+                
+            </div>
+            
+<div class="pagination">
+  <nav role="pagination" class="post-list-pagination">
+      
+      <a href="/tags/tech/page/6/" class="post-list-pagination-item pure-button post-list-pagination-item-prev">
+        <i class="fa fa-angle-double-left"></i>&nbsp;Newer
+      </a>
+      
+    <span class="post-list-pagination-item post-list-pagination-item-current">Page 7 of 7</span>
+    
+  </nav>
+</div>
+
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

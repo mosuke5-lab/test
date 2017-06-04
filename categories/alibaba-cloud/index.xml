@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Alibaba Cloud on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/alibaba-cloud/</link>
+    <description>Recent content in Alibaba Cloud on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 04 Jan 2017 22:35:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/alibaba-cloud/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>クラウド上でのWordPressのスケールアウトを考える</title>
+      <link>https://blog.mosuke.tech/entry/2017/01/04/223544/</link>
+      <pubDate>Wed, 04 Jan 2017 22:35:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2017/01/04/223544/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;複数台サーバでの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WordPress&#34;&gt;WordPress&lt;/a&gt;の構築・運用について考える。&lt;br&gt;
+実際に、とある&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;で分散環境の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WordPress&#34;&gt;WordPress&lt;/a&gt;を構築したのでその知見をまとめる。&lt;br&gt;
+なるべく特定の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;に特価しないものとして記載したい。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;やりたいこと&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;スケールアウトできる&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WordPress&#34;&gt;WordPress&lt;/a&gt;環境を作る&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSL&#34;&gt;SSL&lt;/a&gt;に対応する&lt;/li&gt;
+&lt;li&gt;HTTP/2に対応する&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;などの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;環境で構築する&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;まず先に全体の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;図から示す。&lt;br&gt;
+これから各項目について解説していく。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170104/20170104185455.png&#34; alt=&#34;f:id:mosuke5:20170104185455p:plain&#34; title=&#34;f:id:mosuke5:20170104185455p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSL&#34;&gt;SSL&lt;/a&gt;・HTTP/2への対応&lt;/h1&gt;
+
+&lt;p&gt;まず&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSL&#34;&gt;SSL&lt;/a&gt;への対応だが、通常ならばロードバランサを&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSL&#34;&gt;SSL&lt;/a&gt;の終端とし下記のような構成にすることが多いだろう。&lt;br&gt;
+この場合はロードバランサをL7のものとして稼働させる。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170104/20170104190001.png&#34; alt=&#34;f:id:mosuke5:20170104190001p:plain&#34; title=&#34;f:id:mosuke5:20170104190001p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;しかし、HTTP/2に対応しようと思うと事情は異なってくる。&lt;br&gt;
+（もちろん、最近では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;のALBのようにHTTP/2に対応する製品がでてきているのは承知だが。）&lt;br&gt;
+現在の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;で利用できるロードバランサの多くはまだHTTP/2に対応していない。&lt;br&gt;
+そのため、ロードバランサをL4として稼働させ、配下のWebサーバにてHTTP/2を処理する必要がでてくる。&lt;br&gt;
+この場合、ロードバランサは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/TCP&#34;&gt;TCP&lt;/a&gt;でポート443を待ち受けるようにし、配下のWebサーバへポート443のままでフォワードすればいい。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170104/20170104185953.png&#34; alt=&#34;f:id:mosuke5:20170104185953p:plain&#34; title=&#34;f:id:mosuke5:20170104185953p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;環境ではWebサーバがスケールすることは前提にいれることがおおい。&lt;br&gt;
+そのため、この場合の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSL%BE%DA%CC%C0%BD%F1&#34;&gt;SSL証明書&lt;/a&gt;はN台に対応した製品を買う必要がある。&lt;br&gt;
+例えば以下のような製品など。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.cybertrust.ne.jp/sureserver/productinfo/cloud.html&#34;&gt;SureServer for クラウド｜Cybertrust.ne.jp&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;データベースの分離&lt;/h1&gt;
+
+&lt;p&gt;分散環境での&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Wordpress&#34;&gt;Wordpress&lt;/a&gt;では共通したコンテンツを配信するため、データベースはもちろんWebサーバとは分離したほうがいい。&lt;br&gt;
+それぞれのWebサーバは共通のデータベースを見に行くべきだ。&lt;br&gt;
+データベースを自前で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;しても構わないが、それなりの運用コストがかかることは容易に想像がつくので、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;のマネージドデータベースサービスを利用した。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://aws.amazon.com/jp/rds/&#34;&gt;Amazon RDS（クラウドでのリレーショナルデータベースサービス） | AWS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://jp.aliyun.com/product/apsaradb-for-rds&#34;&gt;ApsaraDB for RDS - データベースホスティング | Alibaba Cloud&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;管理画面&lt;/h1&gt;
+
+&lt;p&gt;管理画面のみを分離する&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;も考えられるが、ここではそうしないこととする。&lt;br&gt;
+管理画面へのログインセッションの保持は、別途KVS(Redisや&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Memcached&#34;&gt;Memcached&lt;/a&gt;)に保存してもいいと思う。&lt;br&gt;
+ですが、WordPress4.0以降ではデフォルトでは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;へセッションを保存するので必須の対応ではないといえる。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fgithub.com%2FWordPress%2FWordPress%2Fblob%2Fdd6da701b286579819cd6aa518aa2d7018efd759%2Fwp-includes%2Fclass-wp-user-meta-session-tokens.php&#34; title=&#34;WordPress/WordPress&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://github.com/WordPress/WordPress/blob/dd6da701b286579819cd6aa518aa2d7018efd759/wp-includes/class-wp-user-meta-session-tokens.php&#34;&gt;github.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;記事で使うアップロード画像などの対応&lt;/h1&gt;
+
+&lt;p&gt;管理画面から記事を投稿するとする。&lt;br&gt;
+記事のデータはデータベースに保存されるためどのWebサーバからも記事を参照できる。&lt;br&gt;
+しかし、記事に含まれる画像データはどうだろうか。&lt;/p&gt;
+
+&lt;p&gt;通常の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Wordpress&#34;&gt;Wordpress&lt;/a&gt;では管理画面サーバの&lt;code&gt;/wp-content/uploads&lt;/code&gt;以下に画像を保存する。&lt;br&gt;
+複数台Webサーバがある状態で、たまたまアクセスしているサーバに画像を保存しても、他のサーバからは参照することができない。&lt;/p&gt;
+
+&lt;p&gt;これに対するソリューションはいくつかあるだろう。&lt;br&gt;
+例えば、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/rsync&#34;&gt;rsync&lt;/a&gt;などを使って他のサーバと画像ファイルを同期するとか、画像用のストレージを用意し&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/NFS&#34;&gt;NFS&lt;/a&gt;で参照するとか。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;の観点からもここはオブジェクトストレージのサービスを利用するのがいいだろう。&lt;/p&gt;
+
+&lt;p&gt;例えば、下記のような製品だ。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://aws.amazon.com/jp/s3/&#34;&gt;Amazon S3 (スケーラブルなクラウドストレージサービス ) | AWS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://jp.aliyun.com/product/oss&#34;&gt;Object Storage Service (OSS) - Alibaba Cloud の拡張性に優れた安全なクラウドストレージ | Alibaba Cloud&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;のオブジェクトストレージと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WordPress&#34;&gt;WordPress&lt;/a&gt;を連携する&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%B0%A5%A4%A5%F3&#34;&gt;プラグイン&lt;/a&gt;は多く出ている。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://wordpress.org/plugins/nephila-clavata/&#34;&gt;Nephila clavata — WordPress Plugins&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;デプロイへの対応&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Wordpress&#34;&gt;Wordpress&lt;/a&gt;のコードのデプロイ、Webサーバの設定変更などにどう対応するか。&lt;br&gt;
+ツールはなんでもいいが（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%A7%A5%EB%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;シェルスクリプト&lt;/a&gt;でもいいし、Ansible,Chefなどでも）、&lt;br&gt;
+デプロイツールなど用いて全台サーバにデプロイできるようにしておくといいだろう。あたりまえ。&lt;br&gt;
+影響の大きいデプロイをするときは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC&#34;&gt;ロードバランサー&lt;/a&gt;から切り離してデプロイ、テストとやるといいと思う。&lt;br&gt;
+あるいは、新しく構築（デプロイ）した別のWebサー&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%A4&#34;&gt;バイ&lt;/a&gt;ンスタンスを用意し、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC&#34;&gt;ロードバランサー&lt;/a&gt;で向き先を変更してもいい。&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC&#34;&gt;ロードバランサー&lt;/a&gt;配下のWebサーバはプライベートネットワークに配置しておりインターネットから直接アクセスできない。&lt;br&gt;
+そのため、デプロイサーバを用意することでデプロイできるようにした。&lt;br&gt;
+あるいは、踏み台サーバを用意して、多段&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;を使ってもいいかもしれない。&lt;/p&gt;
+
+&lt;h1&gt;さいごに&lt;/h1&gt;
+
+&lt;p&gt;&lt;p&gt;他にも、工夫した点などはあるが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WordPress&#34;&gt;WordPress&lt;/a&gt;のスケールアウトという点に絞って簡単にまとめた。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/OSS&#34;&gt;OSS&lt;/a&gt;の利用は簡単だが、そのスケールや&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;は毎度悩まさせると感じる。&lt;br&gt;
+以前もGitlabを運用してた時に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;をどうするか考えていたのを思い出す。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>「嵐」 2016年振り返り</title>
+      <link>https://blog.mosuke.tech/entry/2016/12/25/142744/</link>
+      <pubDate>Sun, 25 Dec 2016 14:27:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/12/25/142744/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;だいぶお久しぶりのブログ。
+そして恒例の年振り返りブログ。ついに2016年も終わってしまう。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;というわけで2016年を振り返りたいと思う。&lt;br&gt;
+一応このサイトは技術ブログのはずなんだけど、プライベートのことが大いに混ざったポエムになってしまった。&lt;/p&gt;
+
+&lt;h1&gt;なんの変哲もないはじまり&lt;/h1&gt;
+
+&lt;p&gt;2016年のはじめのほう。振り返ってもとくに振り返ることがあまりないくらい変哲もない日々だった。&lt;br&gt;
+嵐の前の静けさだったと今思う。&lt;/p&gt;
+
+&lt;h1&gt;TDD研修、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%DE%A5%CD&#34;&gt;プロマネ&lt;/a&gt;研修&lt;/h1&gt;
+
+&lt;p&gt;後述するが8月までは、社内システムのエンジニアとして活動していた。&lt;br&gt;
+いつもどおり、内製開発のチームをどう強くするかばかり考え働いていた。&lt;/p&gt;
+
+&lt;p&gt;そんななか、新しい開発チームの模索のために部署を代表としてTDD（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C6%A5%B9%A5%C8%B6%EE%C6%B0%B3%AB%C8%AF&#34;&gt;テスト駆動開発&lt;/a&gt;）の研修や、&lt;br&gt;
+プロジェクトマネージャーの研修など受けさせてもらった。&lt;/p&gt;
+
+&lt;p&gt;そのなかでもTDD研修はとても印象深い。&lt;br&gt;
+なぜなら、私が気に入っていた「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;による&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C7%A5%B6%A5%A4%A5%F3%A5%D1%A5%BF%A1%BC%A5%F3&#34;&gt;デザインパターン&lt;/a&gt;」の翻訳者の一人が講師だったからだ。&lt;br&gt;
+さらには、研修の受講生は2人しかおらず、徹底してTDDを実践できた。&lt;br&gt;
+こんな恵まれた外部研修があるもんかと、感心したのを思い出す。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4894712857/hatena-blog-22/&#34;&gt;&lt;img src=&#34;https://images-fe.ssl-images-amazon.com/images/I/41PNvUxHtgL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;Rubyによるデザインパターン&#34; title=&#34;Rubyによるデザインパターン&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4894712857/hatena-blog-22/&#34;&gt;Rubyによるデザインパターン&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;作者:&lt;/span&gt; Russ Olsen,ラス・&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AA%A5%EB%A5%BB%A5%F3&#34;&gt;オルセン&lt;/a&gt;,小&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CE%D3%B7%F2&#34;&gt;林健&lt;/a&gt;一,菅野裕,吉野雅人,山岸夢人,小島努&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; ピアソン桐原&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2009/04/01&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; 単行本&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;購入&lt;/span&gt;: 13人 &lt;span class=&#34;hatena-asin-detail-label&#34;&gt;クリック&lt;/span&gt;: 220回&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/4894712857/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログ (67件) を見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h1&gt;Gem公開、ATP-stat開発&lt;/h1&gt;
+
+&lt;p&gt;会社のとあるプロジェクトで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rails&#34;&gt;Rails&lt;/a&gt;使うことになり、&lt;br&gt;
+趣味がてらに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rails&#34;&gt;Rails&lt;/a&gt;を使ってATP-statというサービスを開発していた。&lt;br&gt;
+正直、ほんとに趣味で作ったものでクオリティは全く高くないし、最近はメンテもできていない。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://atpstat.org/&#34;&gt;AtpStat&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;また、このサービスに利用する仕組みをAtpScraperというGemにして公開した。&lt;br&gt;
+これは、せっかく受けたTDD研修を活かして、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C6%A5%B9%A5%C8%B6%EE%C6%B0%B3%AB%C8%AF&#34;&gt;テスト駆動開発&lt;/a&gt;で行ったりしていた。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fgithub.com%2Fmosuke5%2Fatp_scraper&#34; title=&#34;mosuke5/atp_scraper&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://github.com/mosuke5/atp_scraper&#34;&gt;github.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;嵐&lt;/h1&gt;
+
+&lt;p&gt;と、まあさほどいままでと変わらない感じの日々を送っていた。&lt;br&gt;
+だが、6月くらいから嵐が吹き始める。&lt;br&gt;
+プライベートでかなりショッキングなことがあった。ショッキングであると同時に生活がだいぶ変わるようなこと。  &lt;br&gt;
+それだけでもショッキングではあるのだけれど、その出来事はなにかのトリガーを引いてしまったようだ。&lt;br&gt;
+世界線が変動したのかもしれない。&lt;/p&gt;
+
+&lt;h1&gt;異動&lt;/h1&gt;
+
+&lt;p&gt;まず、ショッキングな出来事からわずか1週間後に、社内転職の結果がでた。&lt;br&gt;
+詳しくは下記のブログを読んでほしいが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;を提供する新規事業を行う会社に行くことになったのだ。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://blog.mosuke.tech/entry/2016/07/29/180000&#34;&gt;社内システム開発からパブリッククラウドの会社へジョインします - Goldstine研究所&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;仕事環境の変化&lt;/h1&gt;
+
+&lt;p&gt;仕事の環境は劇的に変わった。正直何もかもが違うといっても過言ではない。&lt;br&gt;
+変わった項目をまとめてみた。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;項目&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;前の仕事&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;今の仕事&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;システム種別&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;ネットワーク監視システム&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;職種&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%B9%A5%C6%A5%E0%A5%A8%A5%F3%A5%B8%A5%CB%A5%A2&#34;&gt;システムエンジニア&lt;/a&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;セールスエンジニア？&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;組織規模&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;大組織の中の１部署で100人程度&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;会社全体で数十人&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;チーム&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;エンジニアのみ&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;エンジニア、営業、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A1%BC%A5%B1%A5%C6%A5%A3%A5%F3%A5%B0&#34;&gt;マーケティング&lt;/a&gt;など&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;お客様&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;社内&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;社外&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;人&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;ほぼ100%日本人&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;半分くらい外国人&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;英語&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;利用しない&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;飛び交ってる&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1&gt;実際の仕事&lt;/h1&gt;
+
+&lt;h4&gt;セールスエンジニア&lt;/h4&gt;
+
+&lt;p&gt;最初に断っておくが、今の職種をセールスエンジニアというと少し語弊はあるのだが、&lt;br&gt;
+そういう一面があることは確かなのでそういうことにしておく。&lt;/p&gt;
+
+&lt;p&gt;今までやってきた開発エンジニアとはまったく異なった難しさを感じている。&lt;br&gt;
+お客さんはシステムを開発運用する現場のエンジニアの方であり何かしらに課題点を感じている人たちだ。&lt;br&gt;
+その課題についてソリューションを提案する必要があるわけであり、実際に自分が経験したことのないレベルで語ることは難しい。&lt;br&gt;
+自分が売る製品に知っているのは当たり前であり、それ以上に運用現場のことについて精通していてこそ仕事になる感がある。&lt;br&gt;
+職種的には運用現場から離れることになるわけだが、そこに精通し続ける必要があるのはとても難しさを感じとともに、だからこその価値と感じる。&lt;/p&gt;
+
+&lt;p&gt;どうやって現場感覚も失わないでいるか、課題の１つである。&lt;/p&gt;
+
+&lt;p&gt;そういえばこんな記事ありましたね。&lt;br&gt;
+&lt;a href=&#34;https://job-draft.jp/articles/70&#34;&gt;はてなの中でたった1人！Mackerelを支える「セールスエンジニア」って何だ!?｜転職ドラフトReport&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4&gt;サービスローンチ&lt;/h4&gt;
+
+&lt;p&gt;異動したときの会社のミッションはAlibaba Cloudの日本リージョンの開設だ。&lt;br&gt;
+とにかくそれに向けてもろもろの準備をしてきた。&lt;br&gt;
+まずは、リリースできたので宣伝しておきます(笑)&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fjp.aliyun.com%2F&#34; title=&#34;クラウドプロダクト、サービス、ソリューションの統合スイート | Alibaba Cloud&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://jp.aliyun.com/&#34;&gt;jp.aliyun.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fwww.sbcloud.co.jp%2F&#34; title=&#34;SBクラウド株式会社｜SB Cloud Corp.&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://www.sbcloud.co.jp/&#34;&gt;www.sbcloud.co.jp&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;Gihyoデビュー&lt;/h1&gt;
+
+&lt;p&gt;日本リージョンのリリースに伴って、Gihyoにデビューしました。&lt;br&gt;
+あとSoftwareDesignとWed+DB Pressに掲載されてます。みんなみてね。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fgihyo.jp%2Fadmin%2Fserial%2F01%2Fsb_cloud%2F0001&#34; title=&#34;いよいよ日本上陸！！ 現場のエンジニアが語る，「Alibaba Cloud」の魅力と可能性：世界有数のEC企業とソフトバンクが手を組んだクラウドサービス―いま注目される「Alibaba Cloud」の可能性&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://gihyo.jp/admin/serial/01/sb_cloud/0001&#34;&gt;gihyo.jp&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;英語&lt;/h1&gt;
+
+&lt;p&gt;コメント省略します。がんばりゅ…&lt;/p&gt;
+
+&lt;h1&gt;ISUCON6&lt;/h1&gt;
+
+&lt;p&gt;念願のISUCON6に参加した。圧倒的な力不足を痛感。&lt;br&gt;
+力不足を実感したこと自体とてもいいことだったし、またISUCON対策で得た知見は確実にいいものとなっているのでよし。&lt;br&gt;
+来年も出れたらリベンジしたいです。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://blog.mosuke.tech/entry/2016/09/19/172009/&#34;&gt;ISUCON6予選で惨敗した. 足りなかったのは&amp;rsquo;Courage&amp;rsquo; - Goldstine研究所&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;脱&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;
+&lt;/h1&gt;
+
+&lt;p&gt;長年&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;を使ってたけどやめた。
+本当は新&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MacBook%20Pro&#34;&gt;MacBook Pro&lt;/a&gt;が出たら買おうと思っていたんだけれど、&lt;br&gt;
+USB Tpye-Cしかないことと値段の高さに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ThinkPad&#34;&gt;ThinkPad&lt;/a&gt;をかってしまった。&lt;br&gt;
+この件については別途ブログを書きたいと思う。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://shopap.lenovo.com/jp/notebooks/thinkpad/t-series/t460s/&#34;&gt;ThinkPad T460s - 14.0型　ハイパフォーマンス・スリム・モバイル・ノートブックTシリーズ| レノボジャパン&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;脱&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;が目的というよりは、一度いい機会なので&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;を離れてみようという感じ。&lt;/p&gt;
+
+&lt;h4&gt;今のPC状況&lt;/h4&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;種類&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;PC&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;会社&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MacBook%20Pro&#34;&gt;MacBook Pro&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;自宅ノート&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ThinkPad&#34;&gt;ThinkPad&lt;/a&gt; T460S Windows10&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;自宅デスクトップ&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BC%AB%BA%EEPC&#34;&gt;自作PC&lt;/a&gt; Ubuntu16.04&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1&gt;一人暮らし&lt;/h1&gt;
+
+&lt;p&gt;一人暮らしも決めた。引っ越し自体は2月予定だが、物件は決めて申し込みした。&lt;br&gt;
+なんだろう、勢いでこういうことになった。&lt;/p&gt;
+
+&lt;h1&gt;最後に&lt;/h1&gt;
+
+&lt;p&gt;今年は気持ちの面、生活の面、仕事の面といろいろと変化が大きかった。&lt;br&gt;
+これで嵐は吹き終わるのだろうか。それとも続くのだろうか。&lt;br&gt;
+それはわからないけれど、次に来る変化も受け止め楽しむことにする。&lt;/p&gt;
+
+&lt;h4&gt;去年の抱負的なこと&lt;/h4&gt;
+
+&lt;p&gt;せっかくなので去年の振り返りブログに書いてあった抱負的なことを振り返ってみる。&lt;br&gt;
+あんまり達成度はよくないけど、それ以上にいろいろあったからいいか。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;項目&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;達成&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;コメント&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryを自分が使いたいと思うようなサービスにする&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;×&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;検討したが、サービスの方向性を見失った&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryをベースにより自分たちが学習できる環境を作る&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;△&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;基盤は勉強材料としては活躍している&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;引き続き、インフラ系エンジニア？っぽい感じで邁進する&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;〇&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;現場のエンジニアではないが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;インフラよりで頑張ってる&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;ISUCONにでます（あれば…）&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;〇&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;結果は惨敗&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4&gt;来年の抱負的なこと&lt;/h4&gt;
+
+&lt;p&gt;大きく2つの面で頑張りたいと思ってる。&lt;br&gt;
+１つは、技術面の話。&lt;br&gt;
+今の職種は現場の開発エンジニアでもインフラエンジニアでもない。
+しかし、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;を使うのは現場エンジニアであり、その感覚を忘れてはいけないと常に思っている。
+プライベートでは今まで通り何らかの形で開発エンジニアをやっていたいと思う。&lt;/p&gt;
+
+&lt;p&gt;また、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;はシステムを開発・運用していく中で必要なサービスが盛り込まれている。&lt;br&gt;
+今まで以上に幅広い視野を持ってテクノロジーと向き合わなければいけない。&lt;br&gt;
+トレンドやツールの使い方とかに流されない、基礎的な部分をきちんとみていきたい。&lt;/p&gt;
+
+&lt;p&gt;2つは、技術面以外の話。&lt;br&gt;
+我々の仕事はシステムの開発ではなく、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;のビジネスを技術面から理解し支援することが大事。&lt;br&gt;
+そして、サービス利用者のビジネスについても技術面から理解し支援しなければいけない。&lt;br&gt;
+じゃ、なにをするのかっていうと難しいんだけど、テクノロジーの範囲を超えてビジネスモデルなどに意識してみようと思う。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;そんじゃーね。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

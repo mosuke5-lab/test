@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Serverspec on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/serverspec/</link>
+    <description>Recent content in Serverspec on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Thu, 17 Dec 2015 19:25:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/serverspec/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>インフラのデプロイとテストを同時実行できるようにしてHappyになった</title>
+      <link>https://blog.mosuke.tech/entry/2015/12/17/192554/</link>
+      <pubDate>Thu, 17 Dec 2015 19:25:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/12/17/192554/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;h1&gt;はじめに&lt;/h1&gt;&lt;/p&gt;
+
+&lt;p&gt;私が開発しているシステムでは、Ansibleでサーバ構築からアプリケーションのデプロイまですべて実行できるようにしています。
+そして、serverspecを使って、インフラテストも行っています。&lt;br&gt;
+しかし、その運用にいくつか課題点がありました。&lt;/p&gt;
+
+&lt;p&gt;その課題点についてと、課題点へ対策したことについて書きます。&lt;/p&gt;
+
+&lt;h1&gt;課題だったこと&lt;/h1&gt;
+
+&lt;h2&gt;(課題1) デプロイとテストをそれぞれ実行していた&lt;/h2&gt;
+
+&lt;p&gt;Ansibleでのデプロイとserverspecのテストはそれぞれ別のコマンドで実行していました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ansible-playbook site.yml -i 
+$ bundle exec rake serverspec 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2つ実行することが面倒であり、面倒であるがゆえにserverspecの実行を怠ったりしていました。&lt;br&gt;
+これではテストの効果があまり発揮できませんね。&lt;/p&gt;
+
+&lt;h2&gt;(課題2) sudoパスワードをうまく管理できなかった&lt;/h2&gt;
+
+&lt;p&gt;上のような課題1について、真っ先に以下の様にコマンドを続けることを思いつきました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ansible -playbook site.yml -i ; bundle exec rake serverspec 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ですが、これだとansible実行終了後にserverspecを実行する際にsudoパスワードが再度聞かれるため、&lt;br&gt;
+コマンドを打ったまま「放置」ができませんでした。&lt;br&gt;
+&lt;span style=&#34;font-size: 80%&#34;&gt;※もちろん、sudoパスワードを要求しないようにユーザ設定をすればできますが、多くの場合ではセキュリティ上難しかったりすると思います。&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;接続は鍵認証、sudoには必ずパスワードを要求するようにしています。&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;Ansibleもserverspecにもコマンド実行時にsudoパスワードを記述する方法があります。&lt;br&gt;
+Ansibleでは、ansible.cfgにsudo_passwordを記述、あるいはコマンド実行時に--extra-argsでsudoパスワードを指定できます。&lt;br&gt;
+serverspecでも&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B4%C4%B6%AD%CA%D1%BF%F4&#34;&gt;環境変数&lt;/a&gt;でSUDO_PASSWORDが指定できます。&lt;/p&gt;
+
+&lt;p&gt;例 ）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ansible -playbook site.yml -i --extra-args=&#39;ansible_sudo_pass=xxxxxxxx&#39;
+bundle exec rake serverspec SUDO_PASSWORD=xxxxxxxx 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ですが、おわかりの通り、&lt;b&gt;コマンドの履歴にもパスワードが残ります&lt;/b&gt;。&lt;br&gt;
+なのであまり良い方法ではないと思っています。&lt;/p&gt;
+
+&lt;h2&gt;(課題3) タスクの実行方法がバラバラ&lt;/h2&gt;
+
+&lt;p&gt;デプロイはansibleコマンドで実行、テストはrakeで実行、他のタスクは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%A7%A5%EB%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;シェルスクリプト&lt;/a&gt;。。。&lt;br&gt;
+といったように、タスクによって実行方法が異なってしまう状況になっていました。&lt;br&gt;
+運用的にとても不便でしたので、１つに統一したいと思っていました。&lt;/p&gt;
+
+&lt;h1&gt;いい感じに同時に実行してくれるRakeタスクを作った&lt;/h1&gt;
+
+&lt;p&gt;上で述べたような課題点をクリアするように、下記の要件を満たすように工夫をしました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;デプロイ、テストが同じ形式で実行できる&lt;/li&gt;
+&lt;li&gt;sudoパスワードをベタ書きすることなく実行できる&lt;/li&gt;
+&lt;li&gt;sudoパスワードの入力を一回だけにする&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;結論は、すべてRakeタスクで実行できるようにしました。&lt;br&gt;
+タスク一覧を見ると以下の様な感じになりました。（※実行結果は例であり実際の内容とは少し異なる。）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ bundle exec rake -T
+rake deploy:development    # Deploy to development server
+rake deploy:production     # Deploy to production server
+rake serverspec            # Run serverspec to all hosts
+rake serverspec:app        # Run serverspec to app server
+rake serverspec:db        # Run serverspec to db server 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rakefile&#34;&gt;Rakefile&lt;/a&gt;の実装例（一部省略）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;desc &amp;quot;Deploy and Test&amp;quot;
+namespace :deploy do
+  require &amp;quot;io/console&amp;quot;
+  require &amp;quot;open3&amp;quot;
+
+  STDOUT.sync = true
+  desc &amp;quot;Deploy to development server&amp;quot;
+  task :development do
+    # sudoパスワードははじめに１回だけ聞くようにします。
+    sudo_password = ask_sudo_password
+
+    # デプロイとテストを同時に実行します。
+    deploy_and_test(&#39;development&#39;, sudo_password)
+  end
+
+  # デプロイとテストの同時実行関数
+  def deploy_and_test(env, sudo_password)
+    deploy_cmd = &amp;quot;ansible-playbook -i #{env} site.yml --extra-vars &#39;ansible_sudo_pass=#{sudo_password}&#39;&amp;quot;
+    test_cmd = &amp;quot;bundle exec rake serverspec ENVIRONMENT=#{env} SUDO_PASSWORD=#{sudo_password}&amp;quot;
+    Open3.pipeline(&amp;quot;#{deploy_cmd}; #{test_cmd}&amp;quot;)
+  end
+
+  # sudoパスワードを要求関数
+  def ask_sudo_password
+    print &amp;quot;SUDO Password: &amp;quot;
+    sudo_password = STDIN.noecho &amp;amp;:gets
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;まとめ&lt;/h1&gt;
+
+&lt;p&gt;タスクによってその実行方法が異なることは運用上とても不便です。&lt;br&gt;
+統一した実行方法にすることで、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;テストの実行し忘れがなくなり&lt;/li&gt;
+&lt;li&gt;ドキュメントも残しやすくなり&lt;/li&gt;
+&lt;li&gt;チームメンバーへの運用方法の伝授も楽になり&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ました。（今回に限る話ではないけれど）&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;また、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rakefile&#34;&gt;Rakefile&lt;/a&gt;はかなりやっつけで作ってしまったので、何をタスクにするか・その命名・実装方法などの改善は年末の課題ですかね。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>インフラテスト(serverspec)はじめました</title>
+      <link>https://blog.mosuke.tech/entry/2015/11/02/161744/</link>
+      <pubDate>Mon, 02 Nov 2015 16:17:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/11/02/161744/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;※執筆後、業務でもserverspecを利用し始めたのもあり、業務レベルでの実践例も追記している。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;運営中の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryでserverspecを使ったインフラテストを導入したので、
+導入理由や工夫している点、悩んでいる点について記述します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryについてはこっちみてね。
+&lt;a href=&#34;https://blog.mosuke.tech/entry/2015/07/19/135844/&#34;&gt;DockerとWebSocketを使って、vimの設定をブラウザで即体感できるサービスを作った - Goldstine研究所&lt;/a&gt;
+
+&lt;h1&gt;1. serverspecってなによ&lt;/h1&gt;
+
+&lt;p&gt;詳しくは公式サイトや書籍などを参考にして欲しいですが、&lt;br&gt;
+「サーバの状態をコードで自動的にテスト・確認するためのツール」です。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://serverspec.org&#34;&gt;Serverspec - Home&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;例えば、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;でWebサーバを組んでいるサーバがあったとして、下記の要件で動いているとします。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/apache&#34;&gt;apache&lt;/a&gt;がインス&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C8%A1%BC%A5%EB&#34;&gt;トール&lt;/a&gt;されていること&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/apache&#34;&gt;apache&lt;/a&gt;が起動していること、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BC%AB%C6%B0%B5%AF%C6%B0&#34;&gt;自動起動&lt;/a&gt;する設定であること&lt;/li&gt;
+&lt;li&gt;ポート80があいていること&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;この要件をサーバが満たしているかコードでテストします。&lt;br&gt;
+上記の例だとこんなコードを書きます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;describe package(&#39;httpd&#39;) do
+  it { should be_installed }
+end
+
+describe service(&#39;httpd&#39;) do
+  it { should be_enabled   }
+  it { should be_running   }
+end
+
+describe port(80) do
+  it { should be_listening }
+end
+ 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;各種テストの立ち位置&lt;/h1&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170416/20170416114252.jpg&#34; alt=&#34;f:id:mosuke5:20170416114252j:plain:w600&#34; title=&#34;f:id:mosuke5:20170416114252j:plain:w600&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:600px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;serverspecは、サーバの状態（正しく設定されたか）を確認するためのテストツールです&lt;/li&gt;
+&lt;li&gt;サーバの振る舞いのテストは別のツールを使うことをおすすめします&lt;/li&gt;
+&lt;li&gt;また、監視も一種のテストと言えます&lt;/li&gt;
+&lt;li&gt;一般的には監視はその実行頻度の高さから、振る舞いを監視することが多い&lt;/li&gt;
+&lt;li&gt;監視ツールで、Configファイルが正しいかは見ない&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;2. なんで導入したの？&lt;/h1&gt;
+
+&lt;p&gt;serverspecを導入したのには大きく2つの理由があります。&lt;/p&gt;
+
+&lt;h2&gt;(その１) インフラの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C6%A5%B9%A5%C8%B6%EE%C6%B0%B3%AB%C8%AF&#34;&gt;テスト駆動開発&lt;/a&gt;を支えるため&lt;/h2&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryは趣味で開発・運用しているサービスで、まだ作りたての発展途上のサービスです。&lt;br&gt;
+（作って公開してからは日が経っている気もしますが、週1の開発なので…）&lt;br&gt;
+そのため、今後もインフラコードをガンガン修正していくことを想定しています。&lt;br&gt;
+ですので、その開発、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EA%A5%D5%A5%A1%A5%AF%A5%BF%A5%EA%A5%F3%A5%B0&#34;&gt;リファクタリング&lt;/a&gt;を支えるべく、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C6%A5%B9%A5%C8%B6%EE%C6%B0%B3%AB%C8%AF&#34;&gt;テスト駆動開発&lt;/a&gt;で行えるようにするためです。&lt;/p&gt;
+
+&lt;h2&gt;(その２) インフラテストの必要性を深く理解するため&lt;/h2&gt;
+
+&lt;p&gt;「インフラテストの必要性を深く理解するため」です。&lt;br&gt;
+必要性があるから導入したんじゃにないの？と思われるかもしれませんが、&lt;br&gt;
+ぼくはまだインフラテストの本当の必要性を理解できていないと思っています。&lt;/p&gt;
+
+&lt;p&gt;実は、はじめこんな風に思っていましたし、今でも少し思う部分もある。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ansibleやchefで実行結果がOKならそれでテストも兼ねているのでは？&lt;/li&gt;
+&lt;li&gt;実際にどんな項目をテストすればいいか、考えてみた時にピンと来ない…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;実際に試してみないと、その本質が見えてこないと思っているので、&lt;br&gt;
+導入してみて自分の肌で感じようと思っています。&lt;/p&gt;
+
+&lt;p&gt;個人的なお話なのでみなさんには関係のない話ではありますが、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryの開発は企業でもなければ営利目的でもありません。&lt;br&gt;
+「週末にインフラ技術のインプット勉強をしていたが、それだけでは飽きてきて、&lt;br&gt;
+サービスを開発・運用していくなかでインフラ技術を磨いていきたい」
+というものだったので、こういった実験も大歓迎だったのです。&lt;/p&gt;
+
+&lt;h1&gt;3. 工夫している点&lt;/h1&gt;
+
+&lt;h1&gt;チーム内でインフラテストコードの「指針」を決める&lt;/h1&gt;
+
+&lt;p&gt;Ansibleなど構成管理ツールがあるなかで、本当にインフラテストっているの？とはじめは誰もが思うはずです。&lt;br&gt;
+「なんとなく」、「流行っているから」という理由で導入をすると、&lt;br&gt;
+きっと&lt;b&gt;チーム内でインフラテストを書く意味や目的が異なって&lt;/b&gt;きてしまいます。&lt;br&gt;
+また、serverspecはいろんな使い方ができてしまうので、なおさら人によって考え方が異なってしまいます。&lt;/p&gt;
+
+&lt;p&gt;ですので、チーム内でインフラテストコードの「指針」を決めて共有しています。&lt;br&gt;
+こうすることで、「なぜインフラテストコードを書くのか」の目的意識を統一しています。&lt;/p&gt;
+
+&lt;p&gt;この指針には、下記の本をかなり参考にしました。（serverspec作者の本です）
+&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4873117097/hatena-blog-22/&#34;&gt;&lt;img src=&#34;https://images-fe.ssl-images-amazon.com/images/I/51P6qVOPALL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;Serverspec&#34; title=&#34;Serverspec&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4873117097/hatena-blog-22/&#34;&gt;Serverspec&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;作者:&lt;/span&gt; 宮下剛輔&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AA%A5%E9%A5%A4%A5%EA%A1%BC%A5%B8%A5%E3%A5%D1%A5%F3&#34;&gt;オライリージャパン&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2015/01/17&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; 単行本（ソフトカバー）&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/4873117097/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログ (6件) を見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h1&gt;テストをサーバの役割毎にまとめる&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8&#34;&gt;ディレクト&lt;/a&gt;リの主な構成は下記のようになっています。&lt;br&gt;
+（実際にはもっとファイルやホストが多いですがイメージです。）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;├ Rakefile
+├ spec/
+│ └ spec_helper.rb
+│ ├ base/
+│ │   ├ user_spec.rb
+│ │   └ selinux_spec.rb
+│ ├ proxy/
+│ │   └ nginx_spec.rb
+│ └ app/
+│     └ vimfactory-app_spec.rb
+└ sshconfig 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;nginxなどを搭載するプロキシサーバと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%B5%A1%BC%A5%D0&#34;&gt;アプリケーションサーバ&lt;/a&gt;があり、それぞれにロールを割り振ります。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rakefile&#34;&gt;Rakefile&lt;/a&gt;内に書いてます。もし記述が増えるようだと別ファイルに切り出すと思います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;hosts = [
+  {
+    :name   =&amp;gt; &amp;quot;proxy.vimfactory&amp;quot;,
+    :roles  =&amp;gt; %w( base proxy )
+  },
+  {
+    :name   =&amp;gt; &amp;quot;app.vimfactory&amp;quot;,
+    :roles  =&amp;gt; %w( base app )
+  }
+]
+ 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このようにすることで、役割の違うサーバでも共有するテスト項目はコードの重複なくテストできます。&lt;br&gt;
+また拡張性もそこそこいい感じなんじゃないかと思っています。&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;の設定ファイルを任意で指定する&lt;/h1&gt;
+
+&lt;p&gt;serverspecを使っていると&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;のクライアント側の設定ファイルを利用することがでてきます。&lt;br&gt;
+&lt;code&gt;serverspec-init&lt;/code&gt;コマンドで生成されるspec_helper.rbでは&lt;code&gt;~/.ssh/config&lt;/code&gt;をデフォルトで読むようになっています。&lt;/p&gt;
+
+&lt;p&gt;ですが個人的には&lt;code&gt;~/.ssh/config&lt;/code&gt;にプロジェクトの設定を書くのがあまり好きではないし、効果的でないことがあると考えています。&lt;br&gt;
+&lt;code&gt;~/.ssh/config&lt;/code&gt;は個人のPCなどの設定によって各々違うものです。&lt;br&gt;
+そこにプロジェクト固有の設定を書くと、設定が衝突したり、管理が難しくなります。&lt;/p&gt;
+
+&lt;p&gt;ですので、プロジェクトで使う&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;のクライアントの設定ファイルもgit管理しておいて、&lt;br&gt;
+それを使うようにすることが望ましいと思っています。&lt;/p&gt;
+
+&lt;p&gt;そこで、spec_helper.rbの&lt;code&gt;Net::SSH::Config&lt;/code&gt;部分を修正し、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;の設定ファイルを任意で指定できるようにしています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;config  = ENV[&#39;SSH_CONFIG&#39;]
+options = Net::SSH::Config.for(host, [config])
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;実行時に指定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bundle exec rake serverspec SSH_CONFIG=sshconfig 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;デプロイ作業での活用&lt;/h1&gt;
+
+&lt;p&gt;serverspecは主に、インフラの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C6%A5%B9%A5%C8%B6%EE%C6%B0%B3%AB%C8%AF&#34;&gt;テスト駆動開発&lt;/a&gt;のために導入したのですが、
+本番環境でのデプロイ作業（インフラ設定の変更）にも大活躍しています。&lt;/p&gt;
+
+&lt;p&gt;デプロイ作業時に、下記ステップで行うことで、デプロイ作業の安心感を得るとともに、&lt;br&gt;
+作業後の確認作業を軽減できたのはとても素晴らしいことでした。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;serverspec実行：テスト落ちる&lt;/li&gt;
+&lt;li&gt;Ansible実行：デプロイ&lt;/li&gt;
+&lt;li&gt;serverspec：テスト通る&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1&gt;4. 悩んでいること。これからについて&lt;/h1&gt;
+
+&lt;p&gt;serverspecのCIの方法に悩んでいます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;どうやってCIをやるのが効率的か？&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::FactoryはAnsibleでアプリケーションのデプロイまで行っているのだけど、&lt;/li&gt;
+&lt;li&gt;インフラテストとアプリのテスト同時にやってほうがよくないだろうか？&lt;/li&gt;
+&lt;li&gt;でも、アプリのテストをするごとにAnsibleで環境構築すると時間がかかってしまう。&lt;/li&gt;
+&lt;li&gt;上記を解決するためにCI用にDockerイメージを作るという案もあるけど、そこまでするべきか？？&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;これからは、どうCIをしていくか。&lt;br&gt;
+インフラテストとアプリのテストをどう結びつけていくか。&lt;br&gt;
+このあたりが課題と考えています。&lt;/p&gt;
+
+&lt;h1&gt;(追記)インフラCI失敗した&lt;/h1&gt;
+
+&lt;p&gt;よくある構成例ではあるが、下記のようにGitlabCI+ DigitalOceanを使ってインフラCIの検討を行った。&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170416/20170416125051.jpg&#34; alt=&#34;f:id:mosuke5:20170416125051j:plain:w600&#34; title=&#34;f:id:mosuke5:20170416125051j:plain:w600&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:600px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;しかし、結果的には運用にのるところまでいかなかった。理由はこんな感じ。&lt;br&gt;
+正直、趣味でやってる範囲にしては、ここを突破するモチベーションがなかった。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;実行に膨大な時間がかかる&lt;/li&gt;
+&lt;li&gt;それゆえにたまに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%BF%A5%A4%A5%E0%A5%A2%A5%A6%A5%C8&#34;&gt;タイムアウト&lt;/a&gt;で死ぬ&lt;/li&gt;
+&lt;li&gt;DigitalOcean&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%B9%A5%BF%A5%F3%A5%B9&#34;&gt;インスタンス&lt;/a&gt;の停止に失敗した場合が面倒（笑）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

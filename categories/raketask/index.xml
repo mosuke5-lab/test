@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Raketask on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/raketask/</link>
+    <description>Recent content in Raketask on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Thu, 17 Dec 2015 19:25:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/raketask/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>インフラのデプロイとテストを同時実行できるようにしてHappyになった</title>
+      <link>https://blog.mosuke.tech/entry/2015/12/17/192554/</link>
+      <pubDate>Thu, 17 Dec 2015 19:25:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/12/17/192554/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;h1&gt;はじめに&lt;/h1&gt;&lt;/p&gt;
+
+&lt;p&gt;私が開発しているシステムでは、Ansibleでサーバ構築からアプリケーションのデプロイまですべて実行できるようにしています。
+そして、serverspecを使って、インフラテストも行っています。&lt;br&gt;
+しかし、その運用にいくつか課題点がありました。&lt;/p&gt;
+
+&lt;p&gt;その課題点についてと、課題点へ対策したことについて書きます。&lt;/p&gt;
+
+&lt;h1&gt;課題だったこと&lt;/h1&gt;
+
+&lt;h2&gt;(課題1) デプロイとテストをそれぞれ実行していた&lt;/h2&gt;
+
+&lt;p&gt;Ansibleでのデプロイとserverspecのテストはそれぞれ別のコマンドで実行していました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ansible-playbook site.yml -i 
+$ bundle exec rake serverspec 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2つ実行することが面倒であり、面倒であるがゆえにserverspecの実行を怠ったりしていました。&lt;br&gt;
+これではテストの効果があまり発揮できませんね。&lt;/p&gt;
+
+&lt;h2&gt;(課題2) sudoパスワードをうまく管理できなかった&lt;/h2&gt;
+
+&lt;p&gt;上のような課題1について、真っ先に以下の様にコマンドを続けることを思いつきました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ansible -playbook site.yml -i ; bundle exec rake serverspec 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ですが、これだとansible実行終了後にserverspecを実行する際にsudoパスワードが再度聞かれるため、&lt;br&gt;
+コマンドを打ったまま「放置」ができませんでした。&lt;br&gt;
+&lt;span style=&#34;font-size: 80%&#34;&gt;※もちろん、sudoパスワードを要求しないようにユーザ設定をすればできますが、多くの場合ではセキュリティ上難しかったりすると思います。&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;接続は鍵認証、sudoには必ずパスワードを要求するようにしています。&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;Ansibleもserverspecにもコマンド実行時にsudoパスワードを記述する方法があります。&lt;br&gt;
+Ansibleでは、ansible.cfgにsudo_passwordを記述、あるいはコマンド実行時に--extra-argsでsudoパスワードを指定できます。&lt;br&gt;
+serverspecでも&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B4%C4%B6%AD%CA%D1%BF%F4&#34;&gt;環境変数&lt;/a&gt;でSUDO_PASSWORDが指定できます。&lt;/p&gt;
+
+&lt;p&gt;例 ）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ansible -playbook site.yml -i --extra-args=&#39;ansible_sudo_pass=xxxxxxxx&#39;
+bundle exec rake serverspec SUDO_PASSWORD=xxxxxxxx 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ですが、おわかりの通り、&lt;b&gt;コマンドの履歴にもパスワードが残ります&lt;/b&gt;。&lt;br&gt;
+なのであまり良い方法ではないと思っています。&lt;/p&gt;
+
+&lt;h2&gt;(課題3) タスクの実行方法がバラバラ&lt;/h2&gt;
+
+&lt;p&gt;デプロイはansibleコマンドで実行、テストはrakeで実行、他のタスクは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%A7%A5%EB%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;シェルスクリプト&lt;/a&gt;。。。&lt;br&gt;
+といったように、タスクによって実行方法が異なってしまう状況になっていました。&lt;br&gt;
+運用的にとても不便でしたので、１つに統一したいと思っていました。&lt;/p&gt;
+
+&lt;h1&gt;いい感じに同時に実行してくれるRakeタスクを作った&lt;/h1&gt;
+
+&lt;p&gt;上で述べたような課題点をクリアするように、下記の要件を満たすように工夫をしました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;デプロイ、テストが同じ形式で実行できる&lt;/li&gt;
+&lt;li&gt;sudoパスワードをベタ書きすることなく実行できる&lt;/li&gt;
+&lt;li&gt;sudoパスワードの入力を一回だけにする&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;結論は、すべてRakeタスクで実行できるようにしました。&lt;br&gt;
+タスク一覧を見ると以下の様な感じになりました。（※実行結果は例であり実際の内容とは少し異なる。）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ bundle exec rake -T
+rake deploy:development    # Deploy to development server
+rake deploy:production     # Deploy to production server
+rake serverspec            # Run serverspec to all hosts
+rake serverspec:app        # Run serverspec to app server
+rake serverspec:db        # Run serverspec to db server 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rakefile&#34;&gt;Rakefile&lt;/a&gt;の実装例（一部省略）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;desc &amp;quot;Deploy and Test&amp;quot;
+namespace :deploy do
+  require &amp;quot;io/console&amp;quot;
+  require &amp;quot;open3&amp;quot;
+
+  STDOUT.sync = true
+  desc &amp;quot;Deploy to development server&amp;quot;
+  task :development do
+    # sudoパスワードははじめに１回だけ聞くようにします。
+    sudo_password = ask_sudo_password
+
+    # デプロイとテストを同時に実行します。
+    deploy_and_test(&#39;development&#39;, sudo_password)
+  end
+
+  # デプロイとテストの同時実行関数
+  def deploy_and_test(env, sudo_password)
+    deploy_cmd = &amp;quot;ansible-playbook -i #{env} site.yml --extra-vars &#39;ansible_sudo_pass=#{sudo_password}&#39;&amp;quot;
+    test_cmd = &amp;quot;bundle exec rake serverspec ENVIRONMENT=#{env} SUDO_PASSWORD=#{sudo_password}&amp;quot;
+    Open3.pipeline(&amp;quot;#{deploy_cmd}; #{test_cmd}&amp;quot;)
+  end
+
+  # sudoパスワードを要求関数
+  def ask_sudo_password
+    print &amp;quot;SUDO Password: &amp;quot;
+    sudo_password = STDIN.noecho &amp;amp;:gets
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;まとめ&lt;/h1&gt;
+
+&lt;p&gt;タスクによってその実行方法が異なることは運用上とても不便です。&lt;br&gt;
+統一した実行方法にすることで、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;テストの実行し忘れがなくなり&lt;/li&gt;
+&lt;li&gt;ドキュメントも残しやすくなり&lt;/li&gt;
+&lt;li&gt;チームメンバーへの運用方法の伝授も楽になり&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ました。（今回に限る話ではないけれど）&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;また、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rakefile&#34;&gt;Rakefile&lt;/a&gt;はかなりやっつけで作ってしまったので、何をタスクにするか・その命名・実装方法などの改善は年末の課題ですかね。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

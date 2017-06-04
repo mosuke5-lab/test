@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>デスクトップUbuntuにVNC接続。ついでにSSHローカルポートフォワードの復習。 &middot; Goldstine研究所</title>
+
+    <meta name="description" content=" 完全に自分のための備忘録。内容はわりと薄め。  やったこと  最近、自作したPCにUbuntuをいれて使っているのだけど、 デスクトップPCなので、部屋でしか操作することができません。  他の部屋からノートPCでUbuntuを触れたらいい">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="デスクトップUbuntuにVNC接続。ついでにSSHローカルポートフォワードの復習。 &middot; Goldstine研究所">
+    <meta name="twitter:description" content=" 完全に自分のための備忘録。内容はわりと薄め。  やったこと  最近、自作したPCにUbuntuをいれて使っているのだけど、 デスクトップPCなので、部屋でしか操作することができません。  他の部屋からノートPCでUbuntuを触れたらいい">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="デスクトップUbuntuにVNC接続。ついでにSSHローカルポートフォワードの復習。 &middot; Goldstine研究所">
+    <meta property="og:description" content=" 完全に自分のための備忘録。内容はわりと薄め。  やったこと  最近、自作したPCにUbuntuをいれて使っているのだけど、 デスクトップPCなので、部屋でしか操作することができません。  他の部屋からノートPCでUbuntuを触れたらいい">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">13 Aug 2015, 00:04</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/08/13/000440/" class="post-title">デスクトップUbuntuにVNC接続。ついでにSSHローカルポートフォワードの復習。</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ubuntu" href="https://blog.mosuke.tech/categories/ubuntu">Ubuntu</a><a class="post-category post-category-vnc" href="https://blog.mosuke.tech/categories/vnc">vnc</a><a class="post-category post-category-ポートフォワード" href="https://blog.mosuke.tech/categories/%E3%83%9D%E3%83%BC%E3%83%88%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89">ポートフォワード</a><a class="post-category post-category-SSH" href="https://blog.mosuke.tech/categories/ssh">SSH</a>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p><body>
+<p>完全に自分のための備忘録。内容はわりと薄め。</p></p>
+
+<h1>やったこと</h1>
+
+<p>最近、自作したPCに<a class="keyword" href="http://d.hatena.ne.jp/keyword/Ubuntu">Ubuntu</a>をいれて使っているのだけど、<br>
+デスクトップPCなので、部屋でしか操作することができません。</p>
+
+<p>他の部屋からノートPCで<a class="keyword" href="http://d.hatena.ne.jp/keyword/Ubuntu">Ubuntu</a>を触れたらいいなーと思いその環境を整えることをしました。</p>
+
+<p>主にやったことは以下の通りです。</p>
+
+<ul>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/VNC">VNC</a>サーバ構築について</li>
+<li>ノートPC（<a class="keyword" href="http://d.hatena.ne.jp/keyword/Mac">Mac</a>）からの<a class="keyword" href="http://d.hatena.ne.jp/keyword/VNC">VNC</a>接続について</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>ローカルポートフォワードを使ってのセキュアな接続について</li>
+</ul>
+
+<h1>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/Ubuntu">Ubuntu</a>での<a class="keyword" href="http://d.hatena.ne.jp/keyword/VNC">VNC</a>サーバ構築について</h1>
+
+<p>今回利用している<a class="keyword" href="http://d.hatena.ne.jp/keyword/Ubuntu">Ubuntu</a>は「<a class="keyword" href="http://d.hatena.ne.jp/keyword/Ubuntu">Ubuntu</a> Desktop 14.04」です。<br>
+また、<a class="keyword" href="http://d.hatena.ne.jp/keyword/VNC">VNC</a>の実現は標準でインストールされているvinoを使って行いました。</p>
+
+<p>ご存知の方も多くいるかもしれませんが、vinoでの<a class="keyword" href="http://d.hatena.ne.jp/keyword/VNC">VNC</a>は簡易的なもので、サーバ側のユーザがログアウトしていると使えません。<br>
+ですので、会社などでの利用には耐えないと思います。<br>
+ユーザーをログアウトせずにロック状態にしていれば使えます。</p>
+
+<p>まずはデスクトップ共有の設定をします。<br>
+「デスクトップの共有」のアプリケーションを起動します。
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150809/20150809132410.png" alt="f:id:mosuke5:20150809132410p:plain" title="f:id:mosuke5:20150809132410p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<p>接続毎に要求するようにすると、サーバ側で毎度許可が必要なので、オフにします。<br>
+パスワードの設定はしておきましょう。<br>
+同じLANをつかんでる人に簡単に奪われてしまいますので。</p>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150809/20150809132421.png" alt="f:id:mosuke5:20150809132421p:plain" title="f:id:mosuke5:20150809132421p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<p>ちょっと詳細な意味を把握していないのですが、<br>
+下記を実行しないと<a class="keyword" href="http://d.hatena.ne.jp/keyword/Mac">Mac</a>で接続すると「互換性のないバージョンです」的なこといわれました…すいません。</p>
+
+<pre><code>$ gsettings set org.gnome.Vino require-encryption false 
+
+</code></pre>
+
+<p>設定ができたら、きちんとサーバとして<a class="keyword" href="http://d.hatena.ne.jp/keyword/VNC">VNC</a>接続を待ち受けているか確認します。</p>
+
+<pre><code>% sudo lsof -i:5900
+COMMAND     PID    USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+vino-serv 24414 mosuke5   13u  IPv6 156661      0t0  TCP *:5900 (LISTEN)
+vino-serv 24414 mosuke5   14u  IPv4 156662      0t0  TCP *:5900 (LISTEN)
+
+% ps -ef | grep vino
+mosuke5  24414 24226  0 12:30 ?        00:00:21 /usr/lib/vino/vino-server --sm-disable
+mosuke5  25456 24470  0 13:19 pts/11   00:00:00 grep vino 
+</code></pre>
+
+<h1>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/Mac">Mac</a>から<a class="keyword" href="http://d.hatena.ne.jp/keyword/VNC">VNC</a>接続する</h1>
+
+<p>これをやるまで知らなかったのですが、<a class="keyword" href="http://d.hatena.ne.jp/keyword/Mac">Mac</a>には標準で<a class="keyword" href="http://d.hatena.ne.jp/keyword/VNC">VNC</a>クライアントがついています。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/vnc">vnc</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%C8%A5%B3%A5%EB">プロトコル</a>で対象のサーバの<a class="keyword" href="http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9">IPアドレス</a>を入れれば接続できます。
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150812/20150812225515.png" alt="f:id:mosuke5:20150812225515p:plain" title="f:id:mosuke5:20150812225515p:plain" class="hatena-fotolife" itemprop="image"></span>
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150812/20150812225126.png" alt="f:id:mosuke5:20150812225126p:plain" title="f:id:mosuke5:20150812225126p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<h1>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>ローカルフォワードを使ってセキュアな通信をする</h1>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/VNC">VNC</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%C8%A5%B3%A5%EB">プロトコル</a>は通信の内容を暗号化しません。<a class="keyword" href="http://d.hatena.ne.jp/keyword/telnet">telnet</a>と同様で、非常に危険です。<br>
+家のLAN内で利用するので、正直ここまでする必要は全くないのだが、<br>
+より応用的な使い方に備えてと、復習を兼ねて<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>のローカルフォワードを利用してセキュアに<a class="keyword" href="http://d.hatena.ne.jp/keyword/VNC">VNC</a>を使ってみます。</p>
+
+<p>復習と書いたのは以前に、<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>のローカルフォワードについてはまとめたからです。</p>
+<a href="/entry/2014/12/31/170545/">SSHでローカルポートフォワードを実際に試す - Goldstine研究所</a>
+
+<p>まずは、ローカルフォワードの<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>接続。<br>
+意味は「自分の端末のポート8888に来た通信は、192.168.11.5からみて<a class="keyword" href="http://d.hatena.ne.jp/keyword/localhost">localhost</a>のポート5900にとばします」です。</p>
+
+<pre><code>$ ssh -L8888:localhost:5900 mosuke5@192.168.11.5 
+</code></pre>
+
+<p>上のコマンドで<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>接続した状態でなら、<a class="keyword" href="http://d.hatena.ne.jp/keyword/localhost">localhost</a>のポート8888が利用できます。
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150812/20150812224539.png" alt="f:id:mosuke5:20150812224539p:plain" title="f:id:mosuke5:20150812224539p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<p><p>これでセキュアな<a class="keyword" href="http://d.hatena.ne.jp/keyword/VNC">VNC</a>の完成。</p>
+</body></p>
+
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label-counter" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+                            <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3a%2f%2fblog.mosuke.tech%2fentry%2f2015%2f08%2f13%2f000440%2f&layout=button_count&size=small&mobile_iframe=true&appId=1383467145023614&width=90&height=20" width="90" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

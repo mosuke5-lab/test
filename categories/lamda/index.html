@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lamda &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Lamda &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Lamda &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">02 Oct 2016, 21:24</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/10/02/212420/" class="post-title">三葉よ、サーバーレス、それもまた結び。</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-serverless" href="https://blog.mosuke.tech/categories/serverless">serverless</a><a class="post-category post-category-サーバレス" href="https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90%E3%83%AC%E3%82%B9">サーバレス</a><a class="post-category post-category-クラウド" href="https://blog.mosuke.tech/categories/%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89">クラウド</a><a class="post-category post-category-lamda" href="https://blog.mosuke.tech/categories/lamda">lamda</a><a class="post-category post-category-FaaS" href="https://blog.mosuke.tech/categories/faas">FaaS</a><a class="post-category post-category-ServerlessConf" href="https://blog.mosuke.tech/categories/serverlessconf">ServerlessConf</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        タイトルちょっとふざけました。 (が、半分本気。最後の方でわかる。) ServerlessConf Tokyoに参加してきた。 今年8月からパブリッククラウドの事業に異動していて、（異動ブログ） 開発者の立場よりクラウド提供側の立場として参加してきたので、また面白かった。 せっかくなので、自分なりにサーバレスについてまとめる。 新しいことというよりは、自分の中での整理した感じ。 1. サーバレスってなんだっけ カンファレンスの中でもサーバレスの定義についてはいろいろな意見がでていた。 Martin Fowlerのブログではサーバレスの定義として下記２つが書いてある。 BaaS (Backend as a Service) : ex) firebase FaaS (Function as a Service) : ex) AWS Lambda martinfowler.com ですが、ここでは焦点を絞って話すためにもFaaSということにしておく。 主にFaaSについて話したいのと、BaaSもいれてしまうとSaaSもサーバレスとかややこしいことになるので。 AWS Lambda なんといってもサーバレスの概念を推し進めたのはAWS Lambdaでしょう。 説明はいまさら不要だと思うが、少しだけ。 コードを AWS Lambda にアップロードすると、サービスが AWS インフラストラクチャを使用してコードの実行を代行するコンピューティングサービスです。コードをアップロードして、Lambda 関数と呼ばれる関数を作成することで、AWS Lambda がコードを実行するサーバーのプロビジョニングおよび管理を行います。(https://aws.amazon.com/jp/lambda/details/) 課金モデルは関数呼び出した回数、および実行に利用したコンピュートのスペックによって決まる。 また特徴的なことは、AWSの他のサービスで発生したイベントをトリガーに実行できること。 例えば、Amazon S3にファイルアップロードされたことをトリガーにLambdaを実行できるのだ。 サーバレスの特徴 サーバレス自体そしてサーバレスで実装することの特徴しては下記がある。 クラウド上のイベントを契機に実行できる 実行環境は、immutableで時間が立つと消える 実行環境は独立していて、コードは基本的にstatelessである 上記のようにimmutableでstatelessな構造につくるからこそスケールしやすい 2. どんな用途で利用しているか クラウド基盤のイベントをトリガーとして 個人的に一番強力だと思っている使い方。上で説明したとおりだが、クラウド上のプロダクトに対してのイベントをトリガーに処理を行うことができる。 例えばこんな場合を想定してみよう。 ユーザが写真をアップロードするサービスで、アップロードした写真にたいして何かしらの画像解析をしてメタ情報を持ちたいとする。 ざっと従来のやりかただと２つくらいやり方が思い浮かぶ。 (1) アップロードするたびにアプリケーションサーバで画像解析をする 解析にほとんど時間がかからない場合などはこれでいいと思う 時間がかかるようなだとユーザへのレスポンスが遅くなる 速くしようと思うとスケールアップで対応するしかない（やばい） (2) バッチ処理でやる バッチ処理で画像解析はまとめてやる。一番よくあるのでは？ 例えば５分に一度のバッチ処理で、５分間にたまった写真にたいしてまとめて処理する バッチ処理でまとめて処理した場合、どこかでコケたときが辛い この例ならそうでもないが、バッチ処理ではたいていスケールアウトが辛い このケースに対してLambdaであればどうなるか。 1000件のアップロードに対して、1000回のLambda実行によって対応できる。 これは何万件きても同じことで、スケールの面で大変優れている。 また、1件ごとに処理するため、エラーが発生した場合に原因などとても追いやすい。 アプリのAPIとして AWSでいうと、API Gatewayと組み合わせて、APIサーバとして利用するケース。 S3などのデータストアに直接アクセスできるように作ることもできるため、ファイルアップロードなどで使われることが多いとか。 個人的には今のところあまり魅力的には感じない使い方。 事例紹介 カンファレンスのなかで日経新聞社さんののサーバレスアーキテクチャの事例が一番よかったのでぜひ目を通しほしい。 speakerdeck.com ポイントとしては下記。見事にLambdaの特徴を活かした利用をしている。 新聞は基本的には朝刊と夕刊の２回で限られたときだけ処理する点 常時稼働させたくない。EC2立ち上げっぱなしにする必要がない。 しかし、号外や速報など臨時の場合もただあり、それにも備えられる点 日によってニュースの量が異なるため、いつでもスケールできる必要がある点 3.
+                    </div>
+                </section>
+                
+            </div>
+            
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

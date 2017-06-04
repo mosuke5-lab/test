@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mysql on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/mysql/</link>
+    <description>Recent content in Mysql on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 15 Apr 2015 17:11:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/mysql/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Ansibleで最新のMySQLをインストールする際にハマったこと。MySQL-shared-compatのこと。</title>
+      <link>https://blog.mosuke.tech/entry/2015/04/15/171127/</link>
+      <pubDate>Wed, 15 Apr 2015 17:11:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/04/15/171127/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/CentOS&#34;&gt;CentOS&lt;/a&gt; 6.5環境でAnsibleを使って最新の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;のセットアップをしようと思った際にハマったことをまとめた。&lt;br&gt;
+本質的にはAnsibleというより&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Linux&#34;&gt;Linux&lt;/a&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/RPM&#34;&gt;RPM&lt;/a&gt;パッケージのはなし。&lt;br&gt;
+ついでに、しょっぼい&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/github&#34;&gt;github&lt;/a&gt;を公開しました。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;(1) 本記事を書くに至った経緯&lt;/h1&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Ansibleで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;を使ったサーバを構築(CentOS6.5)することになった。
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;のバージョンは5.6を採用した。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;の公式&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/rpm&#34;&gt;rpm&lt;/a&gt;をダウンロードしインストールした。
+
+&lt;ul&gt;
+&lt;li&gt;インストールしたもの：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-client, &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-devel, &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-server, &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-shared&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-sharedをインストールする際にデフォルトの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;-libsと競合&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;-libsをアンインストールし再インストール&lt;/li&gt;
+&lt;li&gt;Ansibleで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;の操作をするには&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL-python&#34;&gt;MySQL-python&lt;/a&gt;が必要なのでインストール&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL-python&#34;&gt;MySQL-python&lt;/a&gt;をインストールするにはさっきアンインストールした&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;-libsが必要…(困った)&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-shared-compatの存在に気づく&lt;/li&gt;
+&lt;li&gt;備忘録に書いておくか…&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1&gt;(2) &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-shared-compatの存在&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;-libsは多くのパッケージの依存となっており、公式のMySQL5.6をインストールすることで、&lt;br&gt;
+他のパッケージがいれられない状況となっていた。&lt;br&gt;
+そんな状況を解決するために&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-shared-compatというパッケージが用意されていた。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;-shared-compatは「過去の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;バージョン向けの共有クライアントライブラリが納められているもの」だ。&lt;/p&gt;
+
+&lt;p&gt;詳細は下記参照をおすすめ。&lt;br&gt;
+&lt;a href=&#34;http://y-ken.hatenablog.com/entry/inside-of-libmysqlclient-with-mysql-shared-compat&#34;&gt;MySQL-5.5.6から仕様が変わった「MySQL-shared-compat」の中身を徹底解剖 - Y-Ken Studio&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ちなみに&#34;compat&#34;という単語がよく使われるが&#34;compatibility&#34;の略で「互換性」とかそういう意味。&lt;/p&gt;
+
+&lt;h1&gt;(3) &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Github&#34;&gt;Github&lt;/a&gt;で公開しました&lt;/h1&gt;
+
+&lt;p&gt;内容は今のところ死ぬほど薄いのだが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;をインストールするansibleを公開しました。
+&lt;a href=&#34;https://github.com/mosuke5/mysql-ansible&#34;&gt;mosuke5/mysql-ansible · GitHub&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;内容はあれだが、特徴としては、インターネット上から&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/RPM&#34;&gt;RPM&lt;/a&gt;をダウンロードしてインストールする際に、&lt;br&gt;
+Ansibleでも「ダウンロード」→「インストール」の流れを踏む人が多いが、以下のようにするとシンプルになる。&lt;br&gt;
+varsでインストールしたい&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/rpm&#34;&gt;rpm&lt;/a&gt;やその取得先を記述しておいて、task側では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/yum&#34;&gt;yum&lt;/a&gt;でnameにvarsで定義した変数を読むだけでできる。&lt;/p&gt;
+
+&lt;p&gt;role/&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;/vars/main.yml&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;mysql_url: http://ftp.jaist.ac.jp/pub/mysql/Downloads/MySQL-5.6
+mysql_ver: &amp;quot;5.6.24-1&amp;quot;
+mysql_rpms:
+  - MySQL-client-{{ mysql_ver }}.el6.x86_64.rpm
+  - MySQL-shared-compat-{{ mysql_ver }}.el6.x86_64.rpm
+  - MySQL-shared-{{ mysql_ver }}.el6.x86_64.rpm
+  - MySQL-devel-{{ mysql_ver }}.el6.x86_64.rpm
+  - MySQL-server-{{ mysql_ver }}.el6.x86_64.rpm
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;role/&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mysql&#34;&gt;mysql&lt;/a&gt;/tasks/main.yml&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;- name: Install MySQL without MySQL-shared
+  yum: name={{ mysql_url}}/{{ item }}
+  with_items: mysql_rpms
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

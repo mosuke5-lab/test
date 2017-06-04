@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vagrant &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Vagrant &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Vagrant &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">25 Jan 2016, 22:21</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/01/25/222150/" class="post-title">Vagrant×Ansible環境の３つのスタイルとそのメリット・デメリットについて</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-Vagrant" href="https://blog.mosuke.tech/categories/vagrant">Vagrant</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        Vagrant×Ansibleで開発環境を作っているみなさんは、 どんなふうにそれを実現していますか？ きっといくつかのやり方、考え方があると思います。 例えば、ご自身のPCにAnsibleをインストールしてVagrantの仮想環境にプロビジョニングしているとか。 Vagrantで立てた仮想環境にAnsibleを入れて実行するとか。 本ブログでは下記３つのVagrant×Ansibleのやり方に注目し、 そのメリット・デメリットについて自分なりにまとめます。 ホストにAnsibleをインストールして利用する ゲストにAnsibleをインストールして利用する Ansible実行用のゲストを作って利用する 1. ホストにAnsibleをインストールして利用する 概要 1番よくあるやり方だと思う。 ご自身のPCにAnsibleを入れてVagrantで立ち上げたゲストにプロビジョニングを行う。 メリット なんといっても直感的でシンプル。 3.との比較になるが、Ansibleを実行する環境を別途用意する必要がないのでホストのリソースにも優しい。 また、2.との比較でゲストに無駄なものが入らない点でよい。 デメリット ただ、そもそもwimdowsユーザはホストにAnsibleをインストールすることはできない。 つまり、複数人での開発をしていて、人によって端末が異なる場合には向いていない。 個人の端末の設定などにも大きく依存するため、チーム開発向きでないといえる。 2. ゲストにAnsibleをインストールして利用する 概要 Vagrantで立ち上げたゲストの中にAnsibleをインストールし、自身へプロビジョニングするやりかた。 この方式はshin1x1さんもおすすめしている。 Vagrant + Ansible で開発環境を作るなら ansible_local プロビジョナがいい！ - Shin x Hatena Blog メリット （詳しくは上のブログを読むといいと思う。） 1.のデメリットで述べた、端末への依存度をなくすことができる。 vagrantの新機能であるansible_localも利用できるのでプロビジョニングが楽だ。 3.と比べてAnsible実行環境を用意しなくて済む。 デメリット メリットだけみると1.の問題点を解決していて最高のようにみえる。 しかし、ゲストに本来インストールされるべきものでないものがはいる点は忘れてはいけない。 Ansibleを使ってプロダクション環境にデプロイするユーザにとっては大きな問題だと思う。 開発環境とプロダクション環境での差分が広がってしまう。 また、Ansibleと並行してserverspecを使ってる人も多いと思うが、 そうなると今度はゲスト側にRubyもいれるのか？など様々な疑問が湧いてくる。 3. Ansible実行用のゲストを作って利用する 概要 Ansible実行用のゲストをVagrantで立ち上げて、開発用のゲストへプロビジョニングにする。 メリット 2.のデメリットで述べた、ゲストへの不要なもののインストールを防ぐことが可能。 例えばserverspecでRubyが必要な場合もAnsible実行用のゲストに入れればいい。 必要なものをインストールしたAnsible実行用のイメージファイルをチーム内で共有すれば端末依存もセットアップの手間も省ける。 デメリット なんといっても、ゲストを二つは立ちあげる必要があること。 これは少し面倒だ。 まとめ この見解は正直VagrantやAnsibleの使いみち、用途によってだいぶ変わると思う。 なので絶対な評価ではないと思うが、私のいままでの経験上はこのような評価となったので参考にしてもらえればと思う。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">09 Nov 2014, 17:27</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/09/172745/" class="post-title">【VPS1台でインフラ勉強】多段SSH設定（おまけ）</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-サーバ" href="https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90">サーバ</a><a class="post-category post-category-VPS" href="https://blog.mosuke.tech/categories/vps">VPS</a><a class="post-category post-category-Vagrant" href="https://blog.mosuke.tech/categories/vagrant">Vagrant</a><a class="post-category post-category-SSH" href="https://blog.mosuke.tech/categories/ssh">SSH</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        VPS1台でインフラ勉強の会で、VPSのホストサーバ上に仮想でさらにいつくかのサーバを立てたが、 仮想のサーバにアクセスするには、ホストサーバにアクセスしてから更にSSHをしなければならない。 これが面倒だったので多段SSHの設定をして、一発でSSH接続できるようにした。 以下の図で言うと、web10, web11(192.168.33.10&frasl;11)に一発でSSHできるようにする。 クライアントPC側に以下の設定をした。 ``` $ vim ~/.ssh/config host gateway HostName xxxxx.xxx User username Host web10 HostName 192.168.33.10 User vagrant ProxyCommand ssh -W %h:%p gateway Host web11 HostName 192.168.33.11 User vagrant ProxyCommand ssh -W %h:%p gateway ##これで以下で接続可能 $ ssh web10 $ ssh web11 ``` 簡単でした。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">09 Nov 2014, 17:14</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/09/171436/" class="post-title">【VPS1台でインフラ勉強】HAProxyでロードバランサーを構築</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a><a class="post-category post-category-HAProxy" href="https://blog.mosuke.tech/categories/haproxy">HAProxy</a><a class="post-category post-category-VPS" href="https://blog.mosuke.tech/categories/vps">VPS</a><a class="post-category post-category-vagrant" href="https://blog.mosuke.tech/categories/vagrant">vagrant</a><a class="post-category post-category-ロードバランサ" href="https://blog.mosuke.tech/categories/%E3%83%AD%E3%83%BC%E3%83%89%E3%83%90%E3%83%A9%E3%83%B3%E3%82%B5">ロードバランサ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        前回の【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築に続き、同様の環境を用いて、ロードバランサ構築を行った。 ロードバランサの構築にはHAProxyを利用した。 1. 環境 前回同様で、さくらVPSの1GBのプラン1台のみ。 ・メモリ：１GB ・CPU：仮想２コア ・HDD：100GB ・OS：CentOS7 ・サーバ仮想化：Vagrant(Utuntu13) ・ロードバランサ：HAProxy - The Reliable, High Performance TCP/HTTP Load Balancer 2. 構成図 3. ロードバランサの構築 ■ホストサーバ側の設定 ``` #HAProxyインストール $ sudo yum install haproxy #設定はすごく簡単で以下のファイルのみ。実際に $ sudo vim /etc/haproxy/haproxy.cfg #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; Example configuration for a possible web application. See the full configuration options online. # http://haproxy.1wt.eu/download/1.4/doc/configuration.txt # #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; Global settings #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; global log 127.0.0.1 local6 debug chroot /var/lib/haproxy pidfile /var/run/haproxy.pid maxconn 4000 user haproxy group haproxy daemon # turn on stats unix socket stats socket /var/lib/haproxy/stats #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; common defaults that all the &lsquo;listen&rsquo; and &lsquo;backend&rsquo; sections will use if not designated in their block #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; defaults ##ロードバランサの動作モード。tcpにするとL4ロードバランサになる。httpにするとL7ロードバランサ。 mode http log global option log-health-checks option httplog option dontlognull ##ヘルスチェック用のhtmlファイルをWebサーバ側に設置している。設置については後述。 option httpchk GET /health_check.html HTTP/1.0\r\nUser-agent:\ Proxy-Check option http-server-close option forwardfor except 127.0.0.0/8 option redispatch retries 3 timeout http-request 10s timeout queue 1m timeout connect 10s timeout client 1m timeout server 1m timeout http-keep-alive 10s timeout check 10s maxconn 3000 #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; main frontend which proxys to the backends #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; frontend main *:80 default_backend hoge #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; round robin balancing between the various backends #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; backend hoge balance roundrobin server web10 192.168.33.10:80 check inter 3000 fall 2 rise 2 server web11 192.168.33.11:80 check inter 3000 fall 2 rise 2 &lt;p&gt;L4, L7のロードバランサについては以下参照。&lt;br&gt; &lt;a href=&quot;http://www.atmarkit.co.jp/ait/articles/0302/05/news001.html&quot;&gt;ロードバランサの本質（1）：パケットフローから負荷分散の基本を理解する - ＠IT&lt;/a&gt;&lt;/p&gt; &lt;p&gt;ロードバランサ側でhttpのリクエストを返していないことを意味づけるために&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/apache&quot;&gt;apache&lt;/a&gt;, nginxを停止しておく。&lt;br&gt; （特に意味は無いが念押し確認のため）&lt;/p&gt; $ sudo systemctl stop nginx $ sudo systemctl stop httpd &lt;p&gt;HAProxyのログをsyslogに残すように設定する。&lt;br&gt; ただしメインのmessageではなく、独自のファイルに書くために以下の設定。&lt;/p&gt; ##ログの格納場所作成 $ sudo mkdir /var/log/haproxy ##syslogの設定変更 $ vim /etc/rsyslog.d/haproxy.conf $ModLoad imudp $UDPServerRun 514 $template Haproxy,&ldquo;%msg%\n&rdquo; local6.* -/var/log/haproxy/haproxy.log;Haproxy $ vim /etc/sysconfig/rsyslog 以下を追加 SYSLOGD_OPTIONS=&ldquo;-r&rdquo; haproxyの起動 $ sudo systemctl start haproxy &lt;p&gt;&lt;br&gt; ■Webサーバの設定&lt;br&gt; 仮想でのWebサーバ構築は省くが、Apache2をインストールしただけである。&lt;br&gt; 仮想でのサーバ構築は前回を参照。&lt;br&gt; &lt;a href=&quot;https://blog.mosuke.tech/entry/2014/10/09/230555&quot;&gt;【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築&lt;/a&gt;&lt;br&gt; &lt;/p&gt; /var/www/html配下にヘルスチェック用のhtml設置 $ sudo touch health_check.html &lt;/div&gt; &lt;div class=&quot;section&quot;&gt; &lt;h3&gt;4.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">09 Oct 2014, 23:05</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/10/09/230555/" class="post-title">【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-CentOS7" href="https://blog.mosuke.tech/categories/centos7">CentOS7</a><a class="post-category post-category-Nginx" href="https://blog.mosuke.tech/categories/nginx">Nginx</a><a class="post-category post-category-Vagrant" href="https://blog.mosuke.tech/categories/vagrant">Vagrant</a><a class="post-category post-category-リバースプロキシ" href="https://blog.mosuke.tech/categories/%E3%83%AA%E3%83%90%E3%83%BC%E3%82%B9%E3%83%97%E3%83%AD%E3%82%AD%E3%82%B7">リバースプロキシ</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-VPS" href="https://blog.mosuke.tech/categories/vps">VPS</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        ロードバランシングとかクラスタリングとかリバースプロキシとか、 業務でも使っているし、概念とかはわかってるけど、自分で構築したことはやっぱりない。 自分で構築してみたいなーと思いつつもあたりまえだけど、サーバやネットワーク機器をそう簡単に調達もできない。 お金も当然ない。 というわけで、さくらVPSで仮想化つかってロードバランシングとかクラスタリングとかリバースプロキシとか勉強しましょうという「サーバインフラ会」を友人と始めた。 その第１回目のメモ。 第1回 サーバ複数台構成、Nginxでリバースプロキシ構築 第2回 HAProxyでロードバランサ構築 1. 使用した環境 まず今回利用した環境は以下のとおり。 さくらVPSの1GBのプラン。 ・メモリ：１GB ・CPU：仮想２コア ・HDD：100GB ・OS：CentOS7 ・仮想化：Vagrant →dockerなどもはじめ検討していたが、コンテナ型仮想化だとサーバ感がでないので、よりサーバとして意識できるVagrantを採用 【参考】 料金・サービス仕様 | VPS（仮想専用サーバ）は「さくらのVPS」 2. 完成イメージ・物理イメージ 3. VagrantでWebサーバ２台分を構築する Vagrantの詳細な利用方法は公式ドキュメントをみてもらうとするが、セットアップまでのひととおりの流れと注意点のみ記載する。 Vagrant Documentation 今回はWebサーバ２台を仮想で実現するので、それぞれweb1, web2とする。 それぞれのディレクトリを作成。 ``` web1, web2のディレクトリ作成 $ pwd /home/vagrant $ mkdir web1 $ mkdir web2 仮想化で利用するOSイメージをダウンロード $ vagrant box add ubuntu1310 ¥ http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box web1サーバ構築 $ cd web1 $ vagrant init ubuntu1310 ほぼほぼデフォルトの設定だが以下２つだけは設定を行った。 $ vim Vagrantfile (1)プライベートアドレスの割り当て。 config.vm.network &ldquo;private_network&rdquo;, ip:
+                    </div>
+                </section>
+                
+            </div>
+            
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>他人の家のインターネットを環境を整えて分かった無線LANルータのこと &middot; Goldstine研究所</title>
+
+    <meta name="description" content=" 他人の家のインターネットを環境を整えて分かった無線LANルータのことがあったのでまとめる。  我が家のインターネット環境は以下のような構成になっている。  この構成では無線LANルータはL3とL2の両方の機器として働いている。 グローバル">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="他人の家のインターネットを環境を整えて分かった無線LANルータのこと &middot; Goldstine研究所">
+    <meta name="twitter:description" content=" 他人の家のインターネットを環境を整えて分かった無線LANルータのことがあったのでまとめる。  我が家のインターネット環境は以下のような構成になっている。  この構成では無線LANルータはL3とL2の両方の機器として働いている。 グローバル">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="他人の家のインターネットを環境を整えて分かった無線LANルータのこと &middot; Goldstine研究所">
+    <meta property="og:description" content=" 他人の家のインターネットを環境を整えて分かった無線LANルータのことがあったのでまとめる。  我が家のインターネット環境は以下のような構成になっている。  この構成では無線LANルータはL3とL2の両方の機器として働いている。 グローバル">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">24 May 2015, 22:02</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/05/24/220226/" class="post-title">他人の家のインターネットを環境を整えて分かった無線LANルータのこと</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-ネットワーク" href="https://blog.mosuke.tech/categories/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF">ネットワーク</a><a class="post-category post-category-無線LANルーター" href="https://blog.mosuke.tech/categories/%E7%84%A1%E7%B7%9Alan%E3%83%AB%E3%83%BC%E3%82%BF%E3%83%BC">無線LANルーター</a>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p><body>
+<p>他人の家のインターネットを環境を整えて分かった<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN">無線LAN</a>ルータのことがあったのでまとめる。</p></p>
+
+<p>我が家のインターネット環境は以下のような構成になっている。
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150524/20150524215405.png" alt="f:id:mosuke5:20150524215405p:plain" title="f:id:mosuke5:20150524215405p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<p>この構成では<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN">無線LAN</a>ルータは<b>L3とL2の両方</b>の機器として働いている。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B0%A5%ED%A1%BC%A5%D0%A5%EBIP">グローバルIP</a>とプライベートIPの両方を持っており、<br>
+プライベートIPからの通信をグローバル側へルーティングする機能と、<br>
+LAN内の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4">複数</a>の端末に接続する機能として。</p>
+
+<p>一方、この前、他の人の家のインターネット環境を整えたのだが、<br>
+以下のような構成だった。
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150524/20150524214832.png" alt="f:id:mosuke5:20150524214832p:plain" title="f:id:mosuke5:20150524214832p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<p>１つめの構成と決定的に違うところは、<a class="keyword" href="http://d.hatena.ne.jp/keyword/VDSL">VDSL</a>モデムにルータ機能もついていること。
+この場合は<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN">無線LAN</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC">ルーター</a>はL2の機器として働いている。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN">無線LAN</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC">ルーター</a>自体には<a class="keyword" href="http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9">IPアドレス</a>はなく、<a class="keyword" href="http://d.hatena.ne.jp/keyword/DHCP">DHCP</a>で<a class="keyword" href="http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9">IPアドレス</a>管理を行っているのも上位のルータだ。</p>
+
+<p>この構成になるときは、一般的に光<a class="keyword" href="http://d.hatena.ne.jp/keyword/IP%C5%C5%CF%C3">IP電話</a>を利用するケースのようだ。<br>
+というのも、一般的な<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN">無線LAN</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC">ルーター</a>には光<a class="keyword" href="http://d.hatena.ne.jp/keyword/IP%C5%C5%CF%C3">IP電話</a>につなぐことができず、<br>
+通信会社から貸与されるモデムルータを利用するため。</p>
+
+<p>余談だが、今家では実は下記のような構成にしている。<br>
+というのも、家の構造上、<a class="keyword" href="http://d.hatena.ne.jp/keyword/VDSL">VDSL</a>がでているところが納戸のようなところで、<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN">無線LAN</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC">ルーター</a>を設置しても壁が多すぎるために電波が弱くなってしまう。<br>
+そのため、リビング側へ<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN">無線LAN</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC">ルーター</a>を設置したかったからだ。</p>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150524/20150524215424.png" alt="f:id:mosuke5:20150524215424p:plain" title="f:id:mosuke5:20150524215424p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<p><p>とても単純な話だが、<br>
+いろんなケースの家庭内インターネットの設定をすることで、<br>
+いろいろと気づくこともあった。</p>
+</body></p>
+
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label-counter" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+                            <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3a%2f%2fblog.mosuke.tech%2fentry%2f2015%2f05%2f24%2f220226%2f&layout=button_count&size=small&mobile_iframe=true&appId=1383467145023614&width=90&height=20" width="90" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

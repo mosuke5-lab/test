@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Linux &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Linux &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">31 Jul 2015, 21:15</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/07/31/211542/" class="post-title">Packerやる前にKickstartはじめよう</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a><a class="post-category post-category-kickstart" href="https://blog.mosuke.tech/categories/kickstart">kickstart</a><a class="post-category post-category-virtualbox" href="https://blog.mosuke.tech/categories/virtualbox">virtualbox</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        1.はじめに 開発環境はVirualboxを使ったVagrantを利用しているが、 本番環境はAWSだったりKVMだったり違う仮想化機構で動作しているなんてことよくあると思います。 そういう環境下でどのように開発環境と本番環境の差分をなくしていますか？ わたしの場合、基本的にAnsibleを使ってプロビジョニングをしていますが、 そのプロビジョニング前のベースが異なってしまって困ることがよくあります。 一般に公開されているVagrantBox使ったら余計な設定が入っていたとか、すでにパッケージが入っていたとか… そんな問題を解決しようとPackerを使おう！って考えました。 ですが、Packerも当たり前だけど魔法ではなく、Kickstartなどの自動インストールが前提なので、 Packerをやる前にKickstartを学習せよ、、、ということに気づきました。 ということでKickstartをはじめたよってことです。 2.kickstartってなに kickstartはOSのインストールを自動化する仕組みです。 anaconda社が提供するインストールの仕組みでRedhat系のOSが採用しているものです。 ですのでUbuntuだとPreseedっていう別の仕組みだそうです。（詳しくありませんっ） で、Kickstartでなにができるかというと... OSのインストールをしたことがある方ならわかるかと思いますが、 普通にDVDなどからインストールすると、 言語はなににしますかー？ ホスト名なににしますかー？ パッケージはなにをいれますかー？ とか、聞かれて選択していく必要があります。 この作業を自動化できるのがkickstartです。 URLのようなもの。 はじめての自宅サーバ構築 - Fedora/CentOS - CentOS6 のインストール手順kajuhome.com (おまけ)Ansible, Chef, Puppetとの違い？ kickstartにはプロビジョニング機能もついているため、 AnsibleとかChefとかPuppetとの違いは？住み分けは？と思うかもしれません。 明確に、住み分けが決まっているわけではありませんが、 個人的にはAnsibleやChefを実行する前の最低限の設定をkickstartにやらせようと思っています。 （一般的かとは思いますが…？） Lee ThompsonのProvisioning Toolchainを参考にKiskstarのやる範囲をまとめると。 Provisioning Toolchain: Web Performance and Operations - Velocity Online Conference - March 17, 2010 - O'Reilly Mediaen.oreilly.com 3.Hello Kickstart!! Virtualboxを使ってKickstartを試しました。 3-1.用意したもの Virtualbox 自分の環境はMacで、バージョンは5.0 OSのisoファイル CentOS Mirror ここからダウンロードしました kickstartファイル ネットワーク上においてhttpでアクセスできるようにしておきました 利用したkickstartファイル。自分の学習のためコメントを多く残しました。 # アップグレードするかインストールするか install # インストールタイプの設定 # CD-ROM経由かネットワーク経由かとか cdrom # 言語設定 lang ja_JP.UTF-8 # キーボード設定 keyboard jp106 # ネットワーク設定 # /etc/sysconfig/network-scripts/ifcfg-xxxx 部分 network --onboot yes --device eth0 --bootproto dhcp --noipv6 # rootのパスワード # xxxxxx部分はopensslコマンドで作成するといい # $openssl passwd -1 rootpw --iscrypted xxxxxxxxxxxxxxxxxxxxxxxxxxx # iptablesの設定 # プロビジョニングで設定するのでここでは無効にしておく firewall --disabled # 認証オプション authconfig --enableshadow --passalgo=sha512 # SELinuxの設定 # こちらも詳細はプロビジョニングで設定するので無効にしておく selinux --disabled # タイムゾーン timezone --utc Asia/Tokyo # ブートローダのインストール方法 bootloader --location=mbr --driveorder=sda --append=&quot;nomodeset crashkernel=auto rhgb quiet&quot; # 設定後にリブート reboot # パーティション設定 clearpart --linux --drives=sda autopart # インストールパッケージ選択 %packages --nobase @core %end 参考になったもの Redhat社のインストールガイドがよくまとまっていた。 特にkickstartファイルについては下記あたりが役立ちます。 32.4.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">15 Apr 2015, 17:11</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/04/15/171127/" class="post-title">Ansibleで最新のMySQLをインストールする際にハマったこと。MySQL-shared-compatのこと。</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a><a class="post-category post-category-MySQL" href="https://blog.mosuke.tech/categories/mysql">MySQL</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        CentOS 6.5環境でAnsibleを使って最新のMySQLのセットアップをしようと思った際にハマったことをまとめた。 本質的にはAnsibleというよりLinux RPMパッケージのはなし。 ついでに、しょっぼいgithubを公開しました。 (1) 本記事を書くに至った経緯 Ansibleでmysqlを使ったサーバを構築(CentOS6.5)することになった。 MySQLのバージョンは5.6を採用した。 MySQLの公式rpmをダウンロードしインストールした。 インストールしたもの：MySQL-client, MySQL-devel, MySQL-server, MySQL-shared MySQL-sharedをインストールする際にデフォルトのmysql-libsと競合 mysql-libsをアンインストールし再インストール AnsibleでMySQLの操作をするにはMySQL-pythonが必要なのでインストール MySQL-pythonをインストールするにはさっきアンインストールしたmysql-libsが必要…(困った) MySQL-shared-compatの存在に気づく 備忘録に書いておくか… (2) MySQL-shared-compatの存在 mysql-libsは多くのパッケージの依存となっており、公式のMySQL5.6をインストールすることで、 他のパッケージがいれられない状況となっていた。 そんな状況を解決するためにMySQL-shared-compatというパッケージが用意されていた。 MySQL-shared-compatは「過去のMySQLバージョン向けの共有クライアントライブラリが納められているもの」だ。 詳細は下記参照をおすすめ。 MySQL-5.5.6から仕様が変わった「MySQL-shared-compat」の中身を徹底解剖 - Y-Ken Studio ちなみに"compat"という単語がよく使われるが"compatibility"の略で「互換性」とかそういう意味。 (3) Githubで公開しました 内容は今のところ死ぬほど薄いのだが、MySQLをインストールするansibleを公開しました。 mosuke5/mysql-ansible · GitHub 内容はあれだが、特徴としては、インターネット上からRPMをダウンロードしてインストールする際に、 Ansibleでも「ダウンロード」→「インストール」の流れを踏む人が多いが、以下のようにするとシンプルになる。 varsでインストールしたいrpmやその取得先を記述しておいて、task側ではyumでnameにvarsで定義した変数を読むだけでできる。 role/mysql/vars/main.yml mysql_url: http://ftp.jaist.ac.jp/pub/mysql/Downloads/MySQL-5.6 mysql_ver: &quot;5.6.24-1&quot; mysql_rpms: - MySQL-client-{{ mysql_ver }}.el6.x86_64.rpm - MySQL-shared-compat-{{ mysql_ver }}.el6.x86_64.rpm - MySQL-shared-{{ mysql_ver }}.el6.x86_64.rpm - MySQL-devel-{{ mysql_ver }}.el6.x86_64.rpm - MySQL-server-{{ mysql_ver }}.el6.x86_64.rpm role/mysql/tasks/main.yml - name:
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">05 Apr 2015, 21:25</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/04/05/212518/" class="post-title">SSHエージェントフォワード後に他のユーザでgit cloneする(鍵を使う)ことに関する考察</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-CentOS7" href="https://blog.mosuke.tech/categories/centos7">CentOS7</a><a class="post-category post-category-SSH" href="https://blog.mosuke.tech/categories/ssh">SSH</a><a class="post-category post-category-エージェントフォワード" href="https://blog.mosuke.tech/categories/%E3%82%A8%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%B3%E3%83%88%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89">エージェントフォワード</a><a class="post-category post-category-sudo" href="https://blog.mosuke.tech/categories/sudo">sudo</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        SSHのエージェントフォワードした後に、接続したユーザとは別のユーザでgit cloneしたいことがあった。 それについて調べていく中で学習したことや検討したことについてまとめた。 0. 前提 ローカルのPC(Mac)上で、Vagrantを使用してCentOS7の仮想サーバ(testsv)を立ち上げている。 &lt;IPアドレス&gt; ローカルPC：192.168.33.1 仮想サーバ：192.168.33.100 本記事上での「git cloneする」とは、「プライベートのGitレポジトリからSSHを利用してクローンする」ということを指す。 1. SSHのエージェントフォワードを利用したい理由 まず、そもそもなぜSSHのエージェントフォワードをする必要があったのか。 最近では多くの方がご存知かつ利用していることだと思うが、仮想のサーバ上でgitを利用するときによく利用する。 (もちろんそれだけの用途ではありません) 仮想サーバを作るたびにSSHの鍵を生成して、Github等に登録するのが手間なので、 ローカルのPCの鍵を他のサーバへ引き継ぐことでgit clone等を可能にするのだ。 2. SSHエージェントフォワード利用時の挙動 SSHのエージェントフォワードで利用される認証情報は、接続先サーバの/tmp以下に保存されます。 [myuser@localpc ~]$ ssh -A vagrant@192.168.33.100 Last login: Sat Apr 4 xx:xx:xx 2015 from 192.168.33.1 [vagrant@testsv ~]$ [vagrant@testsv ~]$ ls -l /tmp | grep ssh drwx------. 2 vagrant vagrant 23 4月 4 11:35 ssh-skQVHsUCHU また、接続ユーザにはSSH_AUTH_SOCKという環境変数ができ、どの認証情報を利用するか記述がされます。 実際に確認してみる。 確認方法は、envコマンドで環境変数一覧を表示し、そのなかで"ssh"を含むものをgrep。 [vagrant@testsv ~]$ env | grep -i ssh SSH_AUTH_SOCK=/tmp/ssh-skQVHsUCHU/agent.9034 SSH_CLIENT='192.168.33.1 58017 22' SSH_CONNECTION='192.168.33.1 58017 192.168.33.100 22' SSH_TTY=/dev/pts/0 ちなみにエージェントフォワードは、認証エージェントに登録されている秘密鍵を ログイン先のサーバから利用できるようにする機能であり、接続元自体が変わるわけではない。 試しにエージェントフォワードで接続したサーバ先から、更にsshをして、その接続状況をみてみる。 [myuser@localpc ~]$ ssh -A vagrant@192.168.33.100 Last login: Sat Apr 4 xx:xx:xx 2015 from 192.168.33.1 [vagrant@testsv ~]$ ssh -A vagrant@192.168.33.100 Last login: Sat Apr 4 xx:xx:xx 2015 from 192.168.33.1 [vagrant@testsv ~]$ [vagrant@testsv ~]$ w 11:50:17 up 1:55, 2 users, load average: 0.00, 0.01, 0.05 USER TTY FROM LOGIN@ IDLE JCPU PCPU WHAT vagrant pts/0 192.168.33.1 11:35 1.00s 0.04s 0.01s ssh -A vagrant@192.168.33.100 vagrant pts/1 192.168.33.100 11:50 1.00s 0.01s 0.00s w wコマンドの結果の3行目のFROMをみるとわかるが、接続元が変わるわけではない。 3.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">22 Feb 2015, 21:13</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/02/22/211316/" class="post-title">Ruby, thin(bundler利用)を使った環境でのアプリの自動起動設定</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a><a class="post-category post-category-init" href="https://blog.mosuke.tech/categories/init">init</a><a class="post-category post-category-自動起動" href="https://blog.mosuke.tech/categories/%E8%87%AA%E5%8B%95%E8%B5%B7%E5%8B%95">自動起動</a><a class="post-category post-category-Ruby" href="https://blog.mosuke.tech/categories/ruby">Ruby</a><a class="post-category post-category-thin" href="https://blog.mosuke.tech/categories/thin">thin</a><a class="post-category post-category-unicorn" href="https://blog.mosuke.tech/categories/unicorn">unicorn</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        bunlderを使ったWebアプリをプロダクション環境で動かすときに、アプリの起動をどうやって実現しているだろうか。 Apache Passengerを使う場合には、Apacheの起動がアプリの起動につながるので、 アプリの起動はあまり気にしなかったかもしれない。 しかし、例えばNginx × Unicorn/thinの構成などの場合はUnicornやthinの起動もしなければいけなくなってくる。 （あるいはこのようなケースがあるかは謎だが、Unicornやthinを単体で動かそうとしている場合など） Unicornやthin（例ではthinを扱うが本質は同じ）の自動起動を実現する際の勘所、注意事項をまとめた。 0. 前提 CentOS6.5上でRubyでのWebアプリケーションを作っている。 アプリケーションサーバはthinを利用している。 また、gemパッケージ管理にbundlerを利用している。 1. 開発環境でよくするアプリの起動 開発環境では、アプリケーションのログの閲覧性なども兼ねて以下のようにアプリを起動していた。 $ bundle exec rackup $ bundle exec thin start でも、これではいつまでたってもプロダクション環境での利用はできません。 2. 上記方法ではプロダクション環境で利用できない理由 当然のことながら、プロダクション環境ではいちいち手動でコマンドを実行しアプリケーションを立ち上げるわけにはいかない。 例えば、なんらかの理由でサーバが再起動してしまった場合には、 このままではアプリケーションが自動的に立ち上がらないため、サービスの停止につながってしまう。 ではどうするのか？ 以下の状態であることがプロダクション環境では理想なのではないだろうか？ オリジナルアプリケーションもserviceコマンドで起動・停止ができる 他のサービスと同様の操作方法が可能なのでわかりやすい サーバ立ち上げ時にサービスが自動で起動される 3. 起動スクリプトを作ろう 上記の状態にもっていくためには、起動スクリプトを作らなければならない。 起動スクリプトを作る…！？ 「作ったことないし、すぐには作れないよ〜」って思うかもしれないが、 サンプルはたくさんあるし、よく見てみるとそれほど難しくはない。 thinを使ったサンプルを探そうと思うと数は少ないが、Unicornも同じ仕組なので、 "unicorn init script"なんて検索をかけてもいろいろでてくるのでおすすめ。 参考ししたもの https://gist.github.com/sbeam/3454488 上を参考にしながら、こんな起動スクリプトを作ってみた。（未完成版） これを/etc/init.d以下へ配置する。 #!/bin/bash ### BEGIN CHKCONFIG INFO # chkconfig: 2345 55 25 # description: sample-app ### END CHKCONFIG INFO SCRIPT_NAME=/etc/init.d/sample-app CONFIG_PATH=/path/to/config BUNDLE_CMD=/usr/local/bin/bundle bundle_exec_thin () { for CONFIG_FILE in &quot;$CONFIG_PATH/*.yml&quot;; do SITE_DIR=`awk '/^chdir:/ { print $2; }' $CONFIG_FILE` cd $SITE_DIR $BUNDLE_CMD exec thin $1 -C $CONFIG_FILE done } case &quot;$1&quot; in start) bundle_exec_thin start ;; stop) bundle_exec_thin stop ;; restart) bundle_exec_thin restart ;; *) echo &quot;Usage: $SCRIPT_NAME {start|stop|restart}&quot; &gt;&amp;2 exit 3 ;; esac : 起動スクリプトも完成したし、実際にserviceコマンドで実行してみる。 $ sudo service sample-app start /usr/bin/env: ruby: No such file or directory んん。。。起動せず、撃沈… 起動スクリプトを作る上での注意 起動しなかった原因に移る前に、起動スクリプトを作る上での注意点を１つ。 chkconfigで認識させるためには冒頭のCHKCONFIG INFO部分(コメントアウト部分)も重要になってくる。 CHKCONFIG INFO部分を書かないままchkconfigでaddしようとすると以下のように怒られます。 $ sudo chkconfig --add sample-app service sample-app does not support chkconfig 4.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">02 Jan 2015, 01:36</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/01/02/013658/" class="post-title">スーパーサーバってなに？ xinetdでサービスを常駐起動せずに利用する</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-サーバ" href="https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90">サーバ</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a><a class="post-category post-category-xinetd" href="https://blog.mosuke.tech/categories/xinetd">xinetd</a><a class="post-category post-category-スーパーサーバ" href="https://blog.mosuke.tech/categories/%E3%82%B9%E3%83%BC%E3%83%91%E3%83%BC%E3%82%B5%E3%83%BC%E3%83%90">スーパーサーバ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        使用頻度の低いサービスのデーモンをメモリに常駐させておくのは効率が悪い。 そこでスーパーサーバという使用頻度の低いサービスの窓口のサービスのみ起動しておき、要求があったときだけ特定のサービスを起動させることが可能らしい。 ということで、そのスーパーサーバとやらを実際に触ってみた。 スーパーサーバというとinetdとxinetdがあるらしいが、 xinetdはinetdの拡張版で、アクセス制御などの機能を搭載しているとのこと。 今回はxinetdを設定してみる。 1. 事前準備 【環境】 Vagrantで構築したCentOS 6.5 (仮想環境のIPアドレスは192.168.33.10) まずはスーパーサーバで管理するサービスを考えなければならない。 SSHとかhttpはどう考えてもスーパーサーバの管理するようなものではないだろうし… FTPやtelnet、POP3なんかのサービスに利用されることが多いそう？（このへんよくわかない） 今回はFTPをスーパーサーバの管理対象とした。 ※本来は複数のサービスを管理対象とするからこそ意味がある。 まずはxinetdとvsftpをインストール $ sudo yum install xinetd vsftpd xinetdどうこうの前に、ftp接続がきちんとできるか確認するのでサービスを起動。 $ sudo service vsftpd start ローカルPCから接続できることを確認する。 $ ftp 192.168.33.10 Connected to 192.168.33.10. 220 (vsFTPd 2.2.2) Name (192.168.33.10:username): 2. xinetdの設定 xinetdの基本設定は/etc/xinetd.confにかかれており、 xinetdで管理する各サービスの設定は/etc/xinetd.d/配下に書く方式。 ftpの設定を以下の通りにした。 "service"のあとに書くサービス名称は/etc/servicesに定義されているものを記載する。 vsftpとか書いても動かないので注意。 $ sudo vim /etc/xinetd.d/ftp service ftp { disable = no socket_type = stream wait = no user = root server = /usr/sbin/vsftpd log_on_failure += USERID } 設定項目については以下参照。 xinetd の設定 これでxinetdを起動 $ sudo service xinetd start (補足) /etc/servicesってなにもの？ /etc/servicesがなにか気になったので一応調べると。 サービス名とそこで使われるポート番号、プロトコル(tcp/udp)との 対応関係を記述したファイルが /etc/services です。 このファイルは 単なるサービス名のデータベースで、それ自体では何の働きもありませ んが、netstat コマンドや次の inetd などで参照されます。 (http://www.wakhok.ac.jp/~kanayama/summer/02/site/node43.html) 3.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">20 Nov 2014, 23:03</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/20/230334/" class="post-title">後からGitレポジトリを共有設定に。sharedオプションの仕組みについて</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-git" href="https://blog.mosuke.tech/categories/git">git</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        Gitレポジトリを作って、複数人で開発をしていた。 しかし、レポジトリの中に作成されるファイルやディレクトリが個人のグループになってしまい、 Push, PullするときにPermission errorで怒られまくる。 ユーザには共通のグループを作っていたのに…なんでだっけ… 気づけばレポジトリを作るとき以下のようにしていた。 ``` $ git init &ndash;bare &lt;p&gt;&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4%BF%CD&quot;&gt;複数人&lt;/a&gt;で共有するときには以下のようにするべきであった。&lt;/p&gt; $ git init &ndash;bare &ndash;shared &lt;p&gt;では、そもそもgitのsharedオプションをつけると何が裏で起こっているのか。&lt;br&gt; 調べると「&lt;b&gt;setgid&lt;/b&gt;」というキーワードに辿り着いた。&lt;br&gt; setgidの権限を付けておくと、そのディレクトリに作成されたファイルの所有グループは、そのディレクトリの所有グループになる。&lt;/p&gt; &lt;p&gt;以下のようにchmodでsetgidを付けることができる。&lt;/p&gt; $ chmod g+s dir_name &lt;p&gt;setgidがつくとあまり馴染みのない権限がつく。&lt;br&gt; 「drwxrw&lt;span style=&quot;color: #ff40ff&quot;&gt;&lt;b&gt;s&lt;/b&gt;&lt;/span&gt;r-x」&lt;/p&gt; $ ls -l drwxrwsr-x 4 user group 136 11 16 22:49 test_dir &lt;p&gt;そして、すでに共有設定なしで作ってしまった&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&quot;&gt;レポジトリ&lt;/a&gt;では以下のように対応可能。&lt;br&gt; （新しく&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&quot;&gt;レポジトリ&lt;/a&gt;つくるのはめんどいので…）&lt;/p&gt; ##Gigレポジトリ内のディレクトリに $ chmod -R g+s ./branches $ chmod -R g+s ./hooks $ chmod -R g+s ./info $ chmod -R g+s
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">09 Nov 2014, 17:14</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/11/09/171436/" class="post-title">【VPS1台でインフラ勉強】HAProxyでロードバランサーを構築</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a><a class="post-category post-category-HAProxy" href="https://blog.mosuke.tech/categories/haproxy">HAProxy</a><a class="post-category post-category-VPS" href="https://blog.mosuke.tech/categories/vps">VPS</a><a class="post-category post-category-vagrant" href="https://blog.mosuke.tech/categories/vagrant">vagrant</a><a class="post-category post-category-ロードバランサ" href="https://blog.mosuke.tech/categories/%E3%83%AD%E3%83%BC%E3%83%89%E3%83%90%E3%83%A9%E3%83%B3%E3%82%B5">ロードバランサ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        前回の【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築に続き、同様の環境を用いて、ロードバランサ構築を行った。 ロードバランサの構築にはHAProxyを利用した。 1. 環境 前回同様で、さくらVPSの1GBのプラン1台のみ。 ・メモリ：１GB ・CPU：仮想２コア ・HDD：100GB ・OS：CentOS7 ・サーバ仮想化：Vagrant(Utuntu13) ・ロードバランサ：HAProxy - The Reliable, High Performance TCP/HTTP Load Balancer 2. 構成図 3. ロードバランサの構築 ■ホストサーバ側の設定 ``` #HAProxyインストール $ sudo yum install haproxy #設定はすごく簡単で以下のファイルのみ。実際に $ sudo vim /etc/haproxy/haproxy.cfg #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; Example configuration for a possible web application. See the full configuration options online. # http://haproxy.1wt.eu/download/1.4/doc/configuration.txt # #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; Global settings #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; global log 127.0.0.1 local6 debug chroot /var/lib/haproxy pidfile /var/run/haproxy.pid maxconn 4000 user haproxy group haproxy daemon # turn on stats unix socket stats socket /var/lib/haproxy/stats #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; common defaults that all the &lsquo;listen&rsquo; and &lsquo;backend&rsquo; sections will use if not designated in their block #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; defaults ##ロードバランサの動作モード。tcpにするとL4ロードバランサになる。httpにするとL7ロードバランサ。 mode http log global option log-health-checks option httplog option dontlognull ##ヘルスチェック用のhtmlファイルをWebサーバ側に設置している。設置については後述。 option httpchk GET /health_check.html HTTP/1.0\r\nUser-agent:\ Proxy-Check option http-server-close option forwardfor except 127.0.0.0/8 option redispatch retries 3 timeout http-request 10s timeout queue 1m timeout connect 10s timeout client 1m timeout server 1m timeout http-keep-alive 10s timeout check 10s maxconn 3000 #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; main frontend which proxys to the backends #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; frontend main *:80 default_backend hoge #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; round robin balancing between the various backends #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; backend hoge balance roundrobin server web10 192.168.33.10:80 check inter 3000 fall 2 rise 2 server web11 192.168.33.11:80 check inter 3000 fall 2 rise 2 &lt;p&gt;L4, L7のロードバランサについては以下参照。&lt;br&gt; &lt;a href=&quot;http://www.atmarkit.co.jp/ait/articles/0302/05/news001.html&quot;&gt;ロードバランサの本質（1）：パケットフローから負荷分散の基本を理解する - ＠IT&lt;/a&gt;&lt;/p&gt; &lt;p&gt;ロードバランサ側でhttpのリクエストを返していないことを意味づけるために&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/apache&quot;&gt;apache&lt;/a&gt;, nginxを停止しておく。&lt;br&gt; （特に意味は無いが念押し確認のため）&lt;/p&gt; $ sudo systemctl stop nginx $ sudo systemctl stop httpd &lt;p&gt;HAProxyのログをsyslogに残すように設定する。&lt;br&gt; ただしメインのmessageではなく、独自のファイルに書くために以下の設定。&lt;/p&gt; ##ログの格納場所作成 $ sudo mkdir /var/log/haproxy ##syslogの設定変更 $ vim /etc/rsyslog.d/haproxy.conf $ModLoad imudp $UDPServerRun 514 $template Haproxy,&ldquo;%msg%\n&rdquo; local6.* -/var/log/haproxy/haproxy.log;Haproxy $ vim /etc/sysconfig/rsyslog 以下を追加 SYSLOGD_OPTIONS=&ldquo;-r&rdquo; haproxyの起動 $ sudo systemctl start haproxy &lt;p&gt;&lt;br&gt; ■Webサーバの設定&lt;br&gt; 仮想でのWebサーバ構築は省くが、Apache2をインストールしただけである。&lt;br&gt; 仮想でのサーバ構築は前回を参照。&lt;br&gt; &lt;a href=&quot;https://blog.mosuke.tech/entry/2014/10/09/230555&quot;&gt;【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築&lt;/a&gt;&lt;br&gt; &lt;/p&gt; /var/www/html配下にヘルスチェック用のhtml設置 $ sudo touch health_check.html &lt;/div&gt; &lt;div class=&quot;section&quot;&gt; &lt;h3&gt;4.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">09 Oct 2014, 23:05</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/10/09/230555/" class="post-title">【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-CentOS7" href="https://blog.mosuke.tech/categories/centos7">CentOS7</a><a class="post-category post-category-Nginx" href="https://blog.mosuke.tech/categories/nginx">Nginx</a><a class="post-category post-category-Vagrant" href="https://blog.mosuke.tech/categories/vagrant">Vagrant</a><a class="post-category post-category-リバースプロキシ" href="https://blog.mosuke.tech/categories/%E3%83%AA%E3%83%90%E3%83%BC%E3%82%B9%E3%83%97%E3%83%AD%E3%82%AD%E3%82%B7">リバースプロキシ</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-VPS" href="https://blog.mosuke.tech/categories/vps">VPS</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        ロードバランシングとかクラスタリングとかリバースプロキシとか、 業務でも使っているし、概念とかはわかってるけど、自分で構築したことはやっぱりない。 自分で構築してみたいなーと思いつつもあたりまえだけど、サーバやネットワーク機器をそう簡単に調達もできない。 お金も当然ない。 というわけで、さくらVPSで仮想化つかってロードバランシングとかクラスタリングとかリバースプロキシとか勉強しましょうという「サーバインフラ会」を友人と始めた。 その第１回目のメモ。 第1回 サーバ複数台構成、Nginxでリバースプロキシ構築 第2回 HAProxyでロードバランサ構築 1. 使用した環境 まず今回利用した環境は以下のとおり。 さくらVPSの1GBのプラン。 ・メモリ：１GB ・CPU：仮想２コア ・HDD：100GB ・OS：CentOS7 ・仮想化：Vagrant →dockerなどもはじめ検討していたが、コンテナ型仮想化だとサーバ感がでないので、よりサーバとして意識できるVagrantを採用 【参考】 料金・サービス仕様 | VPS（仮想専用サーバ）は「さくらのVPS」 2. 完成イメージ・物理イメージ 3. VagrantでWebサーバ２台分を構築する Vagrantの詳細な利用方法は公式ドキュメントをみてもらうとするが、セットアップまでのひととおりの流れと注意点のみ記載する。 Vagrant Documentation 今回はWebサーバ２台を仮想で実現するので、それぞれweb1, web2とする。 それぞれのディレクトリを作成。 ``` web1, web2のディレクトリ作成 $ pwd /home/vagrant $ mkdir web1 $ mkdir web2 仮想化で利用するOSイメージをダウンロード $ vagrant box add ubuntu1310 ¥ http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box web1サーバ構築 $ cd web1 $ vagrant init ubuntu1310 ほぼほぼデフォルトの設定だが以下２つだけは設定を行った。 $ vim Vagrantfile (1)プライベートアドレスの割り当て。 config.vm.network &ldquo;private_network&rdquo;, ip:
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">20 Sep 2014, 18:03</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/09/20/180326/" class="post-title">CentOS7, iptables設定でハマった</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-CentOS7" href="https://blog.mosuke.tech/categories/centos7">CentOS7</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        最近VPSのOSをcentos7にしたのだが、なかなか手付かずでiptablesの設定も放置していた… （sshの最低限の設定はしていたが、ほんとうに良くない…） 久しぶりに手が空いたので設定するかーと思いきや まず/etc/sysconfig/iptablesがないし&hellip; Cent7からのsystemctlでiptablesのサービスを確認してもでてこないし… # systemctl status iptables iptables.service Loaded: not-found (Reason: No such file or directory) Active: inactive (dead) というわけで、調べてみると、まずiptables.serviceをインスールしないといけないとのこと。 そして、centos7からはfirewalldがデフォルトでオンになっているからオフにしないといけない。 （いけないわけではないけど両方使う意味が無いので。） まずはiptables-serviceをインスールし、firewalldをオフ、iptablesをオンとした。 # yum install iptables-services # systemctl status firewalld Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled) Active: active (running) since Sat 2014-09-20 17:47:11 JST; 4s ago Main PID: 11162 (firewalld) CGroup: /system.slice/firewalld.service └─11162 /usr/bin/python -Es /usr/sbin/firewalld --nofork --nopid # # systemctl stop firewalld # # systemctl status firewalld Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled) Active: inactive (dead) # #systemctl disable firewalld # #systemctl enable iptables #systemctl start iptables # #systemctl status iptables Loaded: loaded (/usr/lib/systemd/system/iptables.service; enabled) Active: inactive (dead) since Sat 2014-09-20 17:47:10 JST; 2min 48s ago Process: 11139 ExecStop=/usr/libexec/iptables/iptables.init stop (code=exited, status=0/SUCCESS) Process: 10096 ExecStart=/usr/libexec/iptables/iptables.init start (code=exited, status=0/SUCCESS) Main PID: 10096 (code=exited, status=0/SUCCESS) ....
+                    </div>
+                </section>
+                
+            </div>
+            
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

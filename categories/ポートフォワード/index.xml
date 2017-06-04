@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ポートフォワード on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/%E3%83%9D%E3%83%BC%E3%83%88%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89/</link>
+    <description>Recent content in ポートフォワード on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Thu, 13 Aug 2015 00:04:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/%E3%83%9D%E3%83%BC%E3%83%88%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>デスクトップUbuntuにVNC接続。ついでにSSHローカルポートフォワードの復習。</title>
+      <link>https://blog.mosuke.tech/entry/2015/08/13/000440/</link>
+      <pubDate>Thu, 13 Aug 2015 00:04:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/08/13/000440/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;完全に自分のための備忘録。内容はわりと薄め。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;やったこと&lt;/h1&gt;
+
+&lt;p&gt;最近、自作したPCに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ubuntu&#34;&gt;Ubuntu&lt;/a&gt;をいれて使っているのだけど、&lt;br&gt;
+デスクトップPCなので、部屋でしか操作することができません。&lt;/p&gt;
+
+&lt;p&gt;他の部屋からノートPCで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ubuntu&#34;&gt;Ubuntu&lt;/a&gt;を触れたらいいなーと思いその環境を整えることをしました。&lt;/p&gt;
+
+&lt;p&gt;主にやったことは以下の通りです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;サーバ構築について&lt;/li&gt;
+&lt;li&gt;ノートPC（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;）からの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;接続について&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;ローカルポートフォワードを使ってのセキュアな接続について&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ubuntu&#34;&gt;Ubuntu&lt;/a&gt;での&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;サーバ構築について&lt;/h1&gt;
+
+&lt;p&gt;今回利用している&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ubuntu&#34;&gt;Ubuntu&lt;/a&gt;は「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ubuntu&#34;&gt;Ubuntu&lt;/a&gt; Desktop 14.04」です。&lt;br&gt;
+また、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;の実現は標準でインストールされているvinoを使って行いました。&lt;/p&gt;
+
+&lt;p&gt;ご存知の方も多くいるかもしれませんが、vinoでの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;は簡易的なもので、サーバ側のユーザがログアウトしていると使えません。&lt;br&gt;
+ですので、会社などでの利用には耐えないと思います。&lt;br&gt;
+ユーザーをログアウトせずにロック状態にしていれば使えます。&lt;/p&gt;
+
+&lt;p&gt;まずはデスクトップ共有の設定をします。&lt;br&gt;
+「デスクトップの共有」のアプリケーションを起動します。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150809/20150809132410.png&#34; alt=&#34;f:id:mosuke5:20150809132410p:plain&#34; title=&#34;f:id:mosuke5:20150809132410p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;接続毎に要求するようにすると、サーバ側で毎度許可が必要なので、オフにします。&lt;br&gt;
+パスワードの設定はしておきましょう。&lt;br&gt;
+同じLANをつかんでる人に簡単に奪われてしまいますので。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150809/20150809132421.png&#34; alt=&#34;f:id:mosuke5:20150809132421p:plain&#34; title=&#34;f:id:mosuke5:20150809132421p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;ちょっと詳細な意味を把握していないのですが、&lt;br&gt;
+下記を実行しないと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;で接続すると「互換性のないバージョンです」的なこといわれました…すいません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ gsettings set org.gnome.Vino require-encryption false 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;設定ができたら、きちんとサーバとして&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;接続を待ち受けているか確認します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;% sudo lsof -i:5900
+COMMAND     PID    USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+vino-serv 24414 mosuke5   13u  IPv6 156661      0t0  TCP *:5900 (LISTEN)
+vino-serv 24414 mosuke5   14u  IPv4 156662      0t0  TCP *:5900 (LISTEN)
+
+% ps -ef | grep vino
+mosuke5  24414 24226  0 12:30 ?        00:00:21 /usr/lib/vino/vino-server --sm-disable
+mosuke5  25456 24470  0 13:19 pts/11   00:00:00 grep vino 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;から&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;接続する&lt;/h1&gt;
+
+&lt;p&gt;これをやるまで知らなかったのですが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;には標準で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;クライアントがついています。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/vnc&#34;&gt;vnc&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%C8%A5%B3%A5%EB&#34;&gt;プロトコル&lt;/a&gt;で対象のサーバの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;を入れれば接続できます。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150812/20150812225515.png&#34; alt=&#34;f:id:mosuke5:20150812225515p:plain&#34; title=&#34;f:id:mosuke5:20150812225515p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150812/20150812225126.png&#34; alt=&#34;f:id:mosuke5:20150812225126p:plain&#34; title=&#34;f:id:mosuke5:20150812225126p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;ローカルフォワードを使ってセキュアな通信をする&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%C8%A5%B3%A5%EB&#34;&gt;プロトコル&lt;/a&gt;は通信の内容を暗号化しません。&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/telnet&#34;&gt;telnet&lt;/a&gt;と同様で、非常に危険です。&lt;br&gt;
+家のLAN内で利用するので、正直ここまでする必要は全くないのだが、&lt;br&gt;
+より応用的な使い方に備えてと、復習を兼ねて&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;のローカルフォワードを利用してセキュアに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;を使ってみます。&lt;/p&gt;
+
+&lt;p&gt;復習と書いたのは以前に、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;のローカルフォワードについてはまとめたからです。&lt;/p&gt;
+&lt;a href=&#34;https://blog.mosuke.tech/entry/2014/12/31/170545/&#34;&gt;SSHでローカルポートフォワードを実際に試す - Goldstine研究所&lt;/a&gt;
+
+&lt;p&gt;まずは、ローカルフォワードの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;接続。&lt;br&gt;
+意味は「自分の端末のポート8888に来た通信は、192.168.11.5からみて&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/localhost&#34;&gt;localhost&lt;/a&gt;のポート5900にとばします」です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ssh -L8888:localhost:5900 mosuke5@192.168.11.5 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上のコマンドで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;接続した状態でなら、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/localhost&#34;&gt;localhost&lt;/a&gt;のポート8888が利用できます。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150812/20150812224539.png&#34; alt=&#34;f:id:mosuke5:20150812224539p:plain&#34; title=&#34;f:id:mosuke5:20150812224539p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;これでセキュアな&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VNC&#34;&gt;VNC&lt;/a&gt;の完成。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>SSHポートフォワード、https接続をするときに間違えやすいこと</title>
+      <link>https://blog.mosuke.tech/entry/2015/02/11/172123/</link>
+      <pubDate>Wed, 11 Feb 2015 17:21:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/02/11/172123/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;ローカルフォワードの話。&lt;br&gt;
+前回は簡単に実践してみたというのを書いたのだが、今度は実際に使ってみてハマった部分があったのでメモ。&lt;br&gt;
+&lt;a href=&#34;https://blog.mosuke.tech/entry/2014/12/31/170545&#34;&gt;SSHでローカルポートフォワードを実際に試す - Goldstine研究所&lt;/a&gt;&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;1. やりたいこと&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/https&#34;&gt;https&lt;/a&gt;でしか接続を許可していないサーバへ、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;ローカルフォワーディングを使って接続しようした。&lt;br&gt;
+（直接疎通性がないためにポートフォワーディングする必要があった。）&lt;/p&gt;
+
+&lt;h1&gt;2. 行ったこと&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/https&#34;&gt;https&lt;/a&gt;でしか接続ができないので、ローカル端末のポート5000を接続したいサーバのポート443に飛ばせばおっけーと思って、&lt;br&gt;
+下記のように&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;接続とブラウザから接続を行った。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ssh -L5000:web-host:443 user@ssh-host 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;※web-host: 今回&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/https&#34;&gt;https&lt;/a&gt;で接続したサーバ&lt;br&gt;
+※&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;-host: &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;接続先サーバ&lt;/p&gt;
+
+&lt;p&gt;これでローカルフォワーディングの設定は終わったので、ブラウザから以下に接続するだけで終わりだと思っていた。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http://localhost:5000 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;が、接続不可…なぜでしょう？&lt;/p&gt;
+
+&lt;h1&gt;3. 何が間違いだったか&lt;/h1&gt;
+
+&lt;p&gt;正しくは以下で接続をしなければいけない。http&lt;b&gt;&lt;span style=&#34;color: #ff0000&#34;&gt;s&lt;/span&gt;&lt;/b&gt;が必要。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;https://localhost:5000 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;よーく考えればアタリマエのこと。&lt;br&gt;
+URLのはじめの&amp;lt;http(s)&amp;gt;の部分は&lt;b&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%ED%A5%C8%A5%B3%A5%EB&#34;&gt;プロトコル&lt;/a&gt;&lt;/b&gt;で最後の&amp;lt;:5000&amp;gt;の部分は&lt;b&gt;ポート番号&lt;/b&gt;。&lt;br&gt;
+&lt;u&gt;&lt;b&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/https&#34;&gt;https&lt;/a&gt;は443のポートを一般的に使うが、ポート443が&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/https&#34;&gt;https&lt;/a&gt;というわけではない。&lt;/b&gt;&lt;/u&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;あたりまえのことだし知っていることなんだけど、見落としがちかもしれない。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>SSHでローカルポートフォワードを実際に試す</title>
+      <link>https://blog.mosuke.tech/entry/2014/12/31/170545/</link>
+      <pubDate>Wed, 31 Dec 2014 17:05:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/12/31/170545/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;・・・&lt;br&gt;
+いろんなことができる&amp;rdquo;らしい&amp;rdquo;ということは知っていたし、&lt;br&gt;
+例えばポートフォワーディングなんていうこともできるのも知っている。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;でもそれがどんなものなのか自分の手で試したことはないし、&lt;br&gt;
+なんとなくただのサーバログイン&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB&#34;&gt;ツール&lt;/a&gt;として利用していた。&lt;/p&gt;
+
+&lt;p&gt;サーバインフラ技術に興味を持つようになっていろんなことを勉強していると、&lt;br&gt;
+ポートフォワーディングは必須な技術であることも感じ、&lt;br&gt;
+年末の持て余す時間を使って&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;のローカルポートフォワードを試してみたのでメモする。&lt;/p&gt;
+
+&lt;h1&gt;環境とやりたいこと&lt;/h1&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141231/20141231162958.png&#34; alt=&#34;f:id:mosuke5:20141231162958p:plain&#34; title=&#34;f:id:mosuke5:20141231162958p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;ローカルPCからexample.jpは以下で接続できる状態。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[local pc] $ ssh username@example.jp 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;またWebサーバのポート番号は80で、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;のホストサーバからはWebサーバへ接続できる。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/CUI&#34;&gt;CUI&lt;/a&gt;なのでわかりづらいが&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/curl&#34;&gt;curl&lt;/a&gt;を打つと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Hello%20World&#34;&gt;Hello World&lt;/a&gt;が返ってきている。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[example.jp] $ curl 192.168.33.10
+&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;&amp;lt;h1&amp;gt;Hello World! Virtual Web Server&amp;lt;/h1&amp;gt;
+&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;ローカルポートフォワードの実行&lt;/h1&gt;
+
+&lt;p&gt;ローカルPCから以下を実行する。&lt;br&gt;
+以下のコマンドは、&lt;br&gt;
+&lt;b&gt;ローカルPCのポート8888での接続はexample.jpからみて「192.168.33.10のポート80」に飛ばす&lt;/b&gt;&lt;br&gt;
+といったもの。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[local pc] $ ssh -L8888:192.168.33.10:80 username@example.jp 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この状態でブラウザから&lt;code&gt;http://localhost:8888&lt;/code&gt;にアクセスすると&lt;br&gt;
+
+&lt;p&gt;なんと、ローカルホストにつないだはずが、example.jp上の仮想Webサーバのhtmlがうつっているではないか…&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141231/20141231163932.png&#34; alt=&#34;f:id:mosuke5:20141231163932p:plain&#34; title=&#34;f:id:mosuke5:20141231163932p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34; style=&#34;border:solid 1px #ddd;&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;セキュリティはどうなの？&lt;/h1&gt;
+
+&lt;p&gt;ローカルの端末からhttpで仮想のWebサーバに接続しているけど、セキュリティはだいじょうぶなのだろうか？&lt;br&gt;
+http通信だから暗号化はされていないのだろうか？&lt;br&gt;
+なんて疑問もあるが、それは問題ない。&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;でローカルPCから&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EA%A5%E2%A1%BC%A5%C8%A5%DB%A5%B9%A5%C8&#34;&gt;リモートホスト&lt;/a&gt;(example.jp)までトンネルをはり、&lt;br&gt;
+そのなかをhttpで通信しているから全く問題なしといえる。&lt;/p&gt;
+
+&lt;p&gt;ローカルポートフォワードを利用する場合は、おそらく表には出したくないけど、&lt;br&gt;
+ローカルから接続したいなどの要件の時に使うと思うけど、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;できちんと暗号化しているので安心。&lt;/p&gt;
+
+&lt;h1&gt;最後に&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;でできることはこの他にもたくさんある。&lt;br&gt;
+ポートフォワードだけみても他にも「リモートポートフォワード」や「ダイナミックポートフォワード」などがある。&lt;br&gt;
+リモートポートなどはいまぱっと試せる環境がなかったのでおいおい実践してみる…&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;をただのログイン&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB&#34;&gt;ツール&lt;/a&gt;だけに留めるのは今年で終わりにしよう…&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entries &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Entries &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Entries &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">31 May 2017, 19:25</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2017/05/31/aws_summit_network/" class="post-title">AWS Summit2017 Day2のぞいてきた。 ネットワーク設計入門メモ</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-クラウド" href="https://blog.mosuke.tech/categories/%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89">クラウド</a><a class="post-category post-category-AWS" href="https://blog.mosuke.tech/categories/aws">AWS</a><a class="post-category post-category-AWS Summit" href="https://blog.mosuke.tech/categories/aws-summit">AWS Summit</a><a class="post-category post-category-ネットワーク" href="https://blog.mosuke.tech/categories/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF">ネットワーク</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        はじめに 弊社はプレミアムフライデー導入企業なのだが、最終金曜日に早く帰る必要はなく、月内でどこか1日15時に帰りましょうという制度になっている。 金曜日が仕事の都合上取れなかったので、今月は5/31にプレミアムフライデー（プレミアムウェンズデー）を使った。 ちょうどAWS Summit開催中だったのでのぞきにいった。 雰囲気 想像していた雰囲気とはだいぶ異なっていたというのが第一印象。 想像以上にスーツの年齢層の高い人が多かった。それだけ、AWSもエンタープライズでも注目されるようになったということだろう。 以前に、JAWS2015に参加したことある。もちろんJAWSとAWS Summitでは参加者の層が違う。 が、あれから2年たちAWSに興味を持つ層も大きく変わってきたのを感じた。 セッションも非IT企業への導入事例や、思ったより入門セッションも多かった。 登壇者の話しぶりも「オンプレからの移行」を意識したように感じた。 ブース セッションだけではなく、AWSに関連するサービスを提供している企業がたくさんブースをだしている。 ここでのコミュニケーションが案外一番楽しい。お酒も用意されていて楽しくおしゃべりできた。 Heroku+AWSの組み合わせで利用するケースの話を聞いて、あーなるほどねって感じだった。 HerokuはAWS上で動作しているし、インターネット経由してもそこまで遅くはならない。 そんな利点を使って組み合わせて使う事例なんかきいた。 そのほかは、やっぱりどこもかしこもコンテナ。 コンテナをどう扱うか、どう監視するか、そんなところの話が多かった。 セッション「ネットワーク設計入門」 セッションは１つだけ「ネットワーク設計入門」を聞いた。 普段ならネットワーク設計入門のセッションは聞かないと思っているのだが、 どんなことを話すのか興味あって聞いてみた。 (1)クラウド上のNWの特徴 物理設計はいらない 可用性はすでにセット(VRRPなど気にしなくてよい） プロフラマブルに操作可能 (2)NWサービス NWサービスは意外とすくない。VPCがほぼすべて。 VPCが本質であり、ここが理解できればほぼ問題ない。 VPC Direct Connect Route53 (3)前提知識 VPC 物理設計はいらないんだけど、 やっぱり物理知っていることがアドバンテージになる。 VPCはリージョンの中のみ。ゾーンはまたぐことができる。 専用線 当たり前だがDCの場所は公開していない。 じゃどうやって接続するか？ 相互接続接続ポイントを用意しているからそこにつなぎに来てね、という考え方。 エッジロケーション CDNノードやRoute53が動作しているところ。 リージョンとはまた別にある。 (4)設計をはじめよう AWSのどのサービスを使いたいかでNWの設計方針はかわる。 まずはVPCの中で利用するサービスとVPCの外で使うものがあるのでその区別。 VPCの中で使うもの EC2とかRDSとかRedshift、EMR VPCの外で使うもの S3、LamdaとかDynamoDB、CloudWatch 次に、外部通信の設計 VPCと外部を接続する場合 専用線orインターネットVPNorパブリック(ssh/https) VPCがないけど外部から利用したい場合 httpsでまかなう場合が多い。 実は、VPCがなくてもDicrectConnectは使えるよ。 DirectConnectのパブリック接続 (5)プライベートNW設計のステップ VPCの作成 VPCのCIDRレンジは変えられないから大きくとっておこう オンプレミスとのレンジも被らないように /16がおすすめ サブネット作成 インターネットに接続するものとしないもの。ここでサブネット分けよう AZが落ちてもいいように設計しよう。サブネットは２つずつ
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">29 May 2017, 20:06</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2017/05/29/how_to_use_cloudflare_api/" class="post-title">CloudFlare APIを使ってキャッシュを削除する</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-CloudFlare" href="https://blog.mosuke.tech/categories/cloudflare">CloudFlare</a><a class="post-category post-category-Hugo" href="https://blog.mosuke.tech/categories/hugo">Hugo</a><a class="post-category post-category-API" href="https://blog.mosuke.tech/categories/api">API</a><a class="post-category post-category-キャッシュ" href="https://blog.mosuke.tech/categories/%E3%82%AD%E3%83%A3%E3%83%83%E3%82%B7%E3%83%A5">キャッシュ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        はじめに 最近ブログをはてなブログからHugoへ移行した。 HugoのフロントにCloudFlareを利用している。 ブログ移行についてはこちらを参照。 「はてなブログからHugoに移行。その際に行ったあれこれ。」 コンテンツをアップロードした場合などにCloudFlareのキャッシュを削除したく、 APIを利用して効率よく作業できる環境を整えた。 使い方 CloudFlareのAPIドキュメントはかなり充実している。 キャッシュの全削除については下記に記載がある。 https://api.cloudflare.com/#zone-purge-all-files 利用方法をみると、DELETE /zones/:identifier/purge_cacheとあるが、 :identifierがなんのことかはじめわからずはじめ苦戦した。 identifierの確認 identifierは下記APIで確認できる。 このAPIで返ってくるはじめのidがidenitiferだ。 curl -X GET &quot;https://api.cloudflare.com/client/v4/zones \ ?name=&lt;your site&gt; \ &amp;status=active \ &amp;page=1 \ &amp;per_page=20 \ &amp;order=status \ &amp;direction=desc \ &amp;match=all&quot; \ -H &quot;X-Auth-Email: &lt;your email&gt;&quot; \ -H &quot;X-Auth-Key: &lt;your api key&gt;&quot; \ -H &quot;Content-Type: application/json&quot; { &quot;result&quot;: [ { &quot;id&quot;: &quot;xxxxxxxxxxxxxxxxxxxxxxx&quot;, &quot;name&quot;: &quot;mosuke.tech&quot;, &quot;status&quot;: &quot;active&quot;, &quot;paused&quot;: false, &quot;type&quot;: &quot;full&quot;, &quot;development_mode&quot;: 0, &quot;name_servers&quot;: [ &quot;rudy.ns.cloudflare.com&quot;, &quot;sofia.ns.cloudflare.com&quot; ], ...
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">28 May 2017, 13:02</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2017/05/28/blog_migration/" class="post-title">はてなブログからHugoに移行。その際に行ったあれこれ。</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Hugo" href="https://blog.mosuke.tech/categories/hugo">Hugo</a><a class="post-category post-category-はてなブログ" href="https://blog.mosuke.tech/categories/%E3%81%AF%E3%81%A6%E3%81%AA%E3%83%96%E3%83%AD%E3%82%B0">はてなブログ</a><a class="post-category post-category-常時SSL" href="https://blog.mosuke.tech/categories/%E5%B8%B8%E6%99%82ssl">常時SSL</a><a class="post-category post-category-HTTP2" href="https://blog.mosuke.tech/categories/http2">HTTP2</a><a class="post-category post-category-CloudFlare" href="https://blog.mosuke.tech/categories/cloudflare">CloudFlare</a><a class="post-category post-category-移行" href="https://blog.mosuke.tech/categories/%E7%A7%BB%E8%A1%8C">移行</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        1.はじめに 2017年5月27日に2014年2月から約3年3ヶ月程度使ってきたはてなブログからHugoを使ったブログへ移行をした。 長らく使いやすいブログを提供してきたはてなさんにはとても感謝している。 はてなブログはとても魅力なブログプラットフォームであると感じているし、いまでもそう思うのだけれどいくつかの判断をした結果Hugoへの移行を決めた。 本記事では、移行を決めた理由や移行する際に行ったこと、Hugoの実行環境などを紹介する。 2.Hugoに移行した理由 Hugoに移行した理由というか、はてなブログから別のところに移行しようとした理由になるのだが、 端的に言うと以下のとおりだ。 常時SSL化したかった HTTP/2に対応したかった 独自ドメイン(mosuke.tech)を利用したかった Hugo以外にももちろん他のツールやサイトも検討を行った。 はてなブログPro jekyll medium まず、はてなブログProだが、もっとも手間がかからず独自ドメイン利用もできてよかったのだが、 SSL化とHTTP/2化はやはり難しかったので外部を検討した。 次にGithub製のJelyllだが、Github Pagesとの相性もよくはじめに検討はじめたものだった。 Ruby製ということもあり、自分に馴染みのあるツールで最有力候補だった。 しかし、後発のHugoの完成度の高さ、コンパイルの速さ、気に入ったテンプレートがあった、という理由でHugoに劣った。 最後にmediumだが、自前で構築することなくやりたいことのすべてを実現していた。 正直一番いいのではないかとも思う（笑） 最終的には、よりカスタマイズ度の高いHugoを選んだ。特にこれといった理由はない。 ちょうどGo言語をやってみたいモチベーションがあったので、これをきっかけに勉強がはかどればいいなぁくらいの気持ちはあった。 3.移行に際して行ったこと 3-1.Hugoでのサイト構築、アーキテクチャ Github上でHugoを管理し、コンパイルしてできたPublicファイルを、Github Pages対応の別のレポジトリで管理。 独自ドメイン利用、SSL対応、HTTP/2対応するためにフロントにCloudFlareを利用した。 後述するが、CloudFlareはとても便利なツールだが、キャッシュの扱いは気をつけてなければいけない。 図にすると以下のとおりだ。 3-2.記事の移行 はてなブログはそのままのこし、新規に書くブログからHugoへ移行することも検討したが、 せっかくなのではてなブログ時代に書いた記事もすべて移行することを決めた。 はてなブログからデータのエクスポートができる。 エクスポートしたファイルを簡単なスクリプトを作ってHugoファイルへの変換を行った。（Github mosuke5/hatena-blog-parser） 正直このツールは汎用的なものではない。このスクリプトだけではうまく行かない部分も多数ある。 いくぶんかsedなど使って（たまに手動編集・・・）して整えた。。 はてなブログのエクスポートファイルのフォーマット -------- AUTHOR: mosuke5 TITLE: 万能じゃない。オブジェクトストレージの仕組みと利用を正しく理解する BASENAME: 2017/03/18/182252 STATUS: Publish ALLOW COMMENTS: 1 CONVERT BREAKS: 0 DATE: 03/18/2017 18:22:52 CATEGORY: オブジェクトストレージ CATEGORY: ObjectStorage CATEGORY: クラウド CATEGORY: S3 IMAGE: https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170318/20170318164020.jpg -----
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">07 May 2017, 20:58</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/first-blog/" class="post-title">新ブログ検討。テスト投稿</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Hugo" href="https://blog.mosuke.tech/categories/hugo">Hugo</a><a class="post-category post-category-ブログ" href="https://blog.mosuke.tech/categories/%E3%83%96%E3%83%AD%E3%82%B0">ブログ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        Goldstine研究所移行の検討。 フォーマット確認する あいうえお(スペース2つで改行) かきくけこ h1タイトル # hogege def hoge puts &quot;hello hugo&quot; end package main import &quot;fmt&quot; func main() { fmt.Println(&quot;hello, world&quot;) } h2タイトル list1 list1-1 list1-1-1 list1-1-2 list1-2 list2 list3 h3タイトル list-number1 list-number2 list-number3 Left align Right align Center align This This This column column column will will will be be be left right center aligned aligned aligned Image
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">23 Apr 2017, 15:49</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2017/04/23/154957/" class="post-title">(備忘録) 運用サイトのドメインとサーバ</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-mosuke5" href="https://blog.mosuke.tech/categories/mosuke5">mosuke5</a><a class="post-category post-category-ドメイン" href="https://blog.mosuke.tech/categories/%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3">ドメイン</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        完全備忘録。自分でもわからなくなってきたので。 公開すればきっと更新もする。 docs.google.com
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">18 Mar 2017, 18:22</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2017/03/18/182252/" class="post-title">万能じゃない。オブジェクトストレージの仕組みと利用を正しく理解する</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-オブジェクトストレージ" href="https://blog.mosuke.tech/categories/%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8">オブジェクトストレージ</a><a class="post-category post-category-ObjectStorage" href="https://blog.mosuke.tech/categories/objectstorage">ObjectStorage</a><a class="post-category post-category-クラウド" href="https://blog.mosuke.tech/categories/%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89">クラウド</a><a class="post-category post-category-S3" href="https://blog.mosuke.tech/categories/s3">S3</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        1.はじめに Amazon S3をはじめとして、オブジェクトストレージが身近になってきています。 各クラウドベンダーはオブジェクトストレージサービスを提供しています。 Amazon S3 Azure Blob Storage Google Cloud Storage Alibaba Cloud OSS Cloud n ObjectStorage IDCF オブジェクトストレージ ですが、オブジェクトストレージをストレージの魔法として理解されているケースも多いように感じます。 原点に振り返ってそもそもオブジェクトストレージとはなんなのか。 どんな特徴を持っているストレージなのか。 気になってまとめました。 2.オブジェクトストレージとは オブジェクトストレージとは一言で言うと、 「オブジェクト単位（ファイル単位）で出し入れのできる、ネットワークストレージ」です。 オブジェクトストレージでは直接にストレージ上のファイルをRead/Writeすることはできません。 いうなれば、FTPサーバに近い存在と言えます。 今やクラウド上のストレージの代名詞として扱われるオブジェクトストレージですが、 実はファイルの出し入れしかできないストレージなのです！？！？ 3.特徴 では、そんな出し入れしかできないFTPサーバに似たオブジェクトストレージですが、 その本当の特徴はどこにあるのでしょうか。 特徴1: ディレクリ構造の排除 1つ目の特徴としては、ディレクトリ構造でファイルを管理しないことです。 ディレクトリ構造は、もしストレージサーバのハードディスク容量がいっぱいになり、 ファイルを別のディスクに移動する場合、そのディレクトリパスも変更しなければいけません。 クラウドサービスのようなたくさんのユーザが利用し拡張性の求められる場面では、ディレクトリ構造は適さないのです。 そこで、オブジェクトストレージではディレクトリ構造ではなく、階層のないフラットな関係でファイルが保存されます。 すべてのファイルにIDが付与され、そのIDがどこに保管されているか別で管理する仕組みとなっています。 特徴2: 分散保存 2つ目の特徴は「分散保存」です。 オブジェクトストレージでは、ファイルを分散保存するアーキテクチャによって、 ファイルの冗長化と大量のファイルへのアクセスさばくことを可能にしています。 詳しくは次の「オブジェクトストレージのアーキテクチャ」の項目でご紹介します。 特徴3: アプリケーションからの利用を意識 3つ目の特徴はアプリケーションでの利用を強く意識していることです。 この項目は製品によって異なる部分もありますが、主な点を３つあげます。 (1)メタ情報管理 従来のファイルシステムでのファイルへのメタ情報は、ファイルのサイズや更新日付などが一般的でした。 オブジェクトストレージでは更にファイルの有効期限などを設定することができ、インフラ管理を容易にします。 (2)HTTPプロトコルを使ったインターフェイス オブジェクトストレージでは、ファイルのアップロード、ダウンロードなどすべての操作はHTTPプロトコルを利用します。 HTTPのような汎用的なプロトコルを採用することにより、サーバからはもちろん、モバイル端末など幅広いデバイスから利用が可能です。 (3)Web公開機能 更には、保存したオブジェクトに対してURLを割り当てて公開することもできます。 静的なWebサイトの公開や、cssやJavaScript、画像ファイルなどを直接オブジェクトストレージへ取得しにいくこともできます。 4.オブジェクトストレージのアーキテクチャ オブジェクトストレージとひとまとめにいっても、製品によってその実現方法は様々で異なります。 しかし、ここでは一例として利用されるアーキテクチャについて紹介します。 ※ここで紹介するアーキテクチャがオブジェクトストレージのすべてのアーキテクチャを表すものではありません。また、わかりやすくするためかなり簡略化して記載しています。 アーキテクチャ 大きく分けて、プロキシノードとストレージノードの２つによって構成されています。 ファイルをアップロードする時（保存する時）、プロキシノードは受け取ったファイルを、 バックエンドにあるストレージノードに保存するのですが、この際に複数のストレージノードに対してファイルを保存します。 これによって、冗長化を実現しています。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">20 Feb 2017, 18:42</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2017/02/20/184220/" class="post-title">参加してきた、MSPJマイグレーションコンペ2017winter</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-クラウド" href="https://blog.mosuke.tech/categories/%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89">クラウド</a><a class="post-category post-category-Azure" href="https://blog.mosuke.tech/categories/azure">Azure</a><a class="post-category post-category-AWS" href="https://blog.mosuke.tech/categories/aws">AWS</a><a class="post-category post-category-MSPJ" href="https://blog.mosuke.tech/categories/mspj">MSPJ</a><a class="post-category post-category-マイグレーション" href="https://blog.mosuke.tech/categories/%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3">マイグレーション</a><a class="post-category post-category-MSP" href="https://blog.mosuke.tech/categories/msp">MSP</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        先日、2017年2月18日に「MSPJマイグレーションコンペティション2017winter」に参加してきた。 MSPJマイグレーションコンペティション2017winterとは、 日本MSP協会コンペティショングループが主催する、 次代を担う若手運用技術者同士の交流・競争を通して日本のMSP事業者における運用技術の向上を目指したコンペティション。 もう少し平たく言うと、MSP事業者の本当の業務に近い形でのコンペを通じて、スキルアップを図りましょうというものだ。 自分はMSPの人じゃないけど参加は全然できた。 connpass.com 競技ルール 今回の競技のお題は、 「AWS上で動作しているレガシーなRedmineをAzure上に移行する」というものだ。 このコンペの特徴としては、実際にMSPでの業務に則し、お客さんから曖昧な要望を受けている部分や、 お客さん側にしかない権限については、お客さんと調整する必要があること。 例えば、環境の移行する際にはDNSの切り替えが必要だったのですが、DNSの設定権限は我々にはなくて、 Slackを利用して、DNS設定変更依頼や作業周知を出さなければいけなかった。 このあたりはとてもユニークなポイント。 お客さんからは移行について以下のような曖昧な要望をもらっていた。 &lt;要望&gt; - 今の環境を新しい環境に完全移行して欲しいです。 - 実施した内容と結果については報告が欲しいです。 - システムを止めるときは利用者に告知が必要なので連絡が欲しいです。 - 昔から使っている古い環境なので、バージョンアップして欲しいです。 - できれば利用者に影響を出さないように切り替えたいです。 - できればサーバに関する資料があるとありがたいです。 - できれば今はまったくバックアップを取っていないのでバックアップを取れるようにしたいです - できれば今後は利用者が増えるのでシステムを冗長化したいです。 - できれば新しいインフラエンジニアに引継ぎするために必要な情報がまとまっていると嬉しいです。 &lt;担当者のコメント&gt; - 前任のインフラエンジニアが辞めちゃったのでこのシステムもう分かる人がいなくって。 - 結構前から使っているので環境も古くなっているみたいで、OSのサポートがもうすぐ切れるって話を聞いたものですから、セキュリティとか色々心配で何とかしたいんです。 - みんなこのシステムを結構便利に使っていてくれているようだから、システムを切り替えるときは連絡しないとなぁ。 - そうそう、近々新しいインフラエンジニアが入社予定だから、その方に引き継げるようになっていると嬉しいですね。 ちなみにチームについては、当日の参加者で適当に3人チームを作って行った。 一緒の参加者が同じチームにならないように調整された。 構成把握 開始後、まずやったことが環境・構成の把握。 ざっと下記のような感じ。ログインしてすぐに、pstree みて大体の構成を把握した。 インフラ: AWS(EC2) OS: CentOS5.2 Webサーバ: Apache2.0 + Passenger DB: MySQL5.1 Ruby: 1.9 Redmine: 2.3 DNS; Route53で管理。権限はお客さんのみ サーバ構成: サーバ1台のシングル構成 移行作戦 細かなバージョンはおいておいて、最終的に目指す構成は下記のようにした。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">23 Jan 2017, 23:37</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2017/01/23/233756/" class="post-title">Cookpad TechConf2017にいってきたメモ</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-CookpadTechConf" href="https://blog.mosuke.tech/categories/cookpadtechconf">CookpadTechConf</a><a class="post-category post-category-海外進出" href="https://blog.mosuke.tech/categories/%E6%B5%B7%E5%A4%96%E9%80%B2%E5%87%BA">海外進出</a><a class="post-category post-category-機械学習" href="https://blog.mosuke.tech/categories/%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92">機械学習</a><a class="post-category post-category-スケーラビリティ" href="https://blog.mosuke.tech/categories/%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%A9%E3%83%93%E3%83%AA%E3%83%86%E3%82%A3">スケーラビリティ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        はじめに CookpadTechConf2017に参加してきた。 昨年は抽選に外れていけなかったのでよかった。 techconf.cookpad.com おなじみCookpadが年に一回行っているテクノロジーカンファレンス。 １年間のクックパッドでの取り組みを発表する場。 完全メモ書きではあるが、ご活用ください。 クックパッドの取り組み セッションはたくさんあったが、クックパッドが今年１年間で取り組んできた大きな内容は以下３つと感じた。 海外進出 機械学習への取り組み スケールへの対応 海外進出の話は今まではほとんど聞いたことなかったので、本格的に力を入れ始めたというところだろう。 機械学習への取り組みは去年からと明確にいっていたのでこちらもそう。 最後のスケールへの対応は今までもたくさん発表してきたが、そこに大きな波がもう１つやってきた。後ほど。 海外進出 Go Global 宗教、言語、気候によってサービスを変える 同じ言語圏であっても気候が違えば違う食文化がある 例えばスペイン語圏でも、スペインと南米では全く食文化が異なる どうやってサービスを作っていくか あたりまえ品質 グローバリゼーションとローカライゼーション 検索のローカライズははてしなくどろくさい 翻訳もとんでもなく大変 Amazonの例だが、Kindleで"OR"で誤訳があった 「あるいは」のorなのか、「オレゴン州」のorなのか プレミアムという言葉も実は難しい プレミアムというのは地方によってはプレミアムでないものを差別する用語として使われることもある プライムやプレミアム、エクストリームなど使い分ける 国際チームは国籍がみんなばらばら それぞれの考え方も文化も異なる 最終的なアウトプットだけ共有しあとはまかせるというスタイルをとっている Global Infrastracture 多くのリージョンへ展開している Choose your Country - Cookpad でも中国は進出してない クックパッドはAWS絶対 中国市場ではやっぱり厳しさがあるようにみえる グローバルアプリはスクラッチで新規開発 いまは普通のRailsアプリ 日本のCookpadとはUIも全く異なる グローバルのインフラについて us-east-1のサーバを利用 データベースはAurora for MySQL Elasticache利用 nginx, unicornの構成 CDNはFastly 地域によってトラフィックピークが全く異なる 日本だとバレンタインシーズン イスラムではラマダンと呼ばれるシーズンがある しばらく断食していたその後に食事を楽しむ時期 Go Global - #CookpadTechconf 2017 // Speaker Deck Building
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">04 Jan 2017, 22:35</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2017/01/04/223544/" class="post-title">クラウド上でのWordPressのスケールアウトを考える</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-WordPress" href="https://blog.mosuke.tech/categories/wordpress">WordPress</a><a class="post-category post-category-クラウド" href="https://blog.mosuke.tech/categories/%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89">クラウド</a><a class="post-category post-category-AWS" href="https://blog.mosuke.tech/categories/aws">AWS</a><a class="post-category post-category-Alibaba Cloud" href="https://blog.mosuke.tech/categories/alibaba-cloud">Alibaba Cloud</a><a class="post-category post-category-分散" href="https://blog.mosuke.tech/categories/%E5%88%86%E6%95%A3">分散</a><a class="post-category post-category-スケールアウト" href="https://blog.mosuke.tech/categories/%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%AB%E3%82%A2%E3%82%A6%E3%83%88">スケールアウト</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        複数台サーバでのWordPressの構築・運用について考える。 実際に、とあるクラウドで分散環境のWordPressを構築したのでその知見をまとめる。 なるべく特定のクラウドに特価しないものとして記載したい。 やりたいこと スケールアウトできるWordPress環境を作る SSLに対応する HTTP/2に対応する AWSなどのクラウド環境で構築する アーキテクチャ まず先に全体のアーキテクチャ図から示す。 これから各項目について解説していく。 SSL・HTTP/2への対応 まずSSLへの対応だが、通常ならばロードバランサをSSLの終端とし下記のような構成にすることが多いだろう。 この場合はロードバランサをL7のものとして稼働させる。 しかし、HTTP/2に対応しようと思うと事情は異なってくる。 （もちろん、最近ではAWSのALBのようにHTTP/2に対応する製品がでてきているのは承知だが。） 現在のパブリッククラウドで利用できるロードバランサの多くはまだHTTP/2に対応していない。 そのため、ロードバランサをL4として稼働させ、配下のWebサーバにてHTTP/2を処理する必要がでてくる。 この場合、ロードバランサはTCPでポート443を待ち受けるようにし、配下のWebサーバへポート443のままでフォワードすればいい。 クラウド環境ではWebサーバがスケールすることは前提にいれることがおおい。 そのため、この場合のSSL証明書はN台に対応した製品を買う必要がある。 例えば以下のような製品など。 SureServer for クラウド｜Cybertrust.ne.jp データベースの分離 分散環境でのWordpressでは共通したコンテンツを配信するため、データベースはもちろんWebサーバとは分離したほうがいい。 それぞれのWebサーバは共通のデータベースを見に行くべきだ。 データベースを自前で冗長化しても構わないが、それなりの運用コストがかかることは容易に想像がつくので、 クラウドのマネージドデータベースサービスを利用した。 Amazon RDS（クラウドでのリレーショナルデータベースサービス） | AWS ApsaraDB for RDS - データベースホスティング | Alibaba Cloud 管理画面 管理画面のみを分離するアーキテクチャも考えられるが、ここではそうしないこととする。 管理画面へのログインセッションの保持は、別途KVS(RedisやMemcached)に保存してもいいと思う。 ですが、WordPress4.0以降ではデフォルトではMySQLへセッションを保存するので必須の対応ではないといえる。 github.com 記事で使うアップロード画像などの対応 管理画面から記事を投稿するとする。 記事のデータはデータベースに保存されるためどのWebサーバからも記事を参照できる。 しかし、記事に含まれる画像データはどうだろうか。 通常のWordpressでは管理画面サーバの/wp-content/uploads以下に画像を保存する。 複数台Webサーバがある状態で、たまたまアクセスしているサーバに画像を保存しても、他のサーバからは参照することができない。 これに対するソリューションはいくつかあるだろう。 例えば、rsyncなどを使って他のサーバと画像ファイルを同期するとか、画像用のストレージを用意しNFSで参照するとか。 冗長化の観点からもここはオブジェクトストレージのサービスを利用するのがいいだろう。 例えば、下記のような製品だ。 Amazon S3 (スケーラブルなクラウドストレージサービス ) | AWS Object Storage Service (OSS) - Alibaba Cloud
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">25 Dec 2016, 14:27</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/12/25/142744/" class="post-title">「嵐」 2016年振り返り</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-パブリッククラウド" href="https://blog.mosuke.tech/categories/%E3%83%91%E3%83%96%E3%83%AA%E3%83%83%E3%82%AF%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89">パブリッククラウド</a><a class="post-category post-category-Alibaba Cloud" href="https://blog.mosuke.tech/categories/alibaba-cloud">Alibaba Cloud</a><a class="post-category post-category-SBクラウド" href="https://blog.mosuke.tech/categories/sb%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89">SBクラウド</a><a class="post-category post-category-振り返り" href="https://blog.mosuke.tech/categories/%E6%8C%AF%E3%82%8A%E8%BF%94%E3%82%8A">振り返り</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        だいぶお久しぶりのブログ。 そして恒例の年振り返りブログ。ついに2016年も終わってしまう。 というわけで2016年を振り返りたいと思う。 一応このサイトは技術ブログのはずなんだけど、プライベートのことが大いに混ざったポエムになってしまった。 なんの変哲もないはじまり 2016年のはじめのほう。振り返ってもとくに振り返ることがあまりないくらい変哲もない日々だった。 嵐の前の静けさだったと今思う。 TDD研修、プロマネ研修 後述するが8月までは、社内システムのエンジニアとして活動していた。 いつもどおり、内製開発のチームをどう強くするかばかり考え働いていた。 そんななか、新しい開発チームの模索のために部署を代表としてTDD（テスト駆動開発）の研修や、 プロジェクトマネージャーの研修など受けさせてもらった。 そのなかでもTDD研修はとても印象深い。 なぜなら、私が気に入っていた「Rubyによるデザインパターン」の翻訳者の一人が講師だったからだ。 さらには、研修の受講生は2人しかおらず、徹底してTDDを実践できた。 こんな恵まれた外部研修があるもんかと、感心したのを思い出す。 Rubyによるデザインパターン 作者: Russ Olsen,ラス・オルセン,小林健一,菅野裕,吉野雅人,山岸夢人,小島努 出版社/メーカー: ピアソン桐原 発売日: 2009/04/01 メディア: 単行本 購入: 13人 クリック: 220回 この商品を含むブログ (67件) を見る Gem公開、ATP-stat開発 会社のとあるプロジェクトでRails使うことになり、 趣味がてらにRailsを使ってATP-statというサービスを開発していた。 正直、ほんとに趣味で作ったものでクオリティは全く高くないし、最近はメンテもできていない。 AtpStat また、このサービスに利用する仕組みをAtpScraperというGemにして公開した。 これは、せっかく受けたTDD研修を活かして、テスト駆動開発で行ったりしていた。 github.com 嵐 と、まあさほどいままでと変わらない感じの日々を送っていた。 だが、6月くらいから嵐が吹き始める。 プライベートでかなりショッキングなことがあった。ショッキングであると同時に生活がだいぶ変わるようなこと。 それだけでもショッキングではあるのだけれど、その出来事はなにかのトリガーを引いてしまったようだ。 世界線が変動したのかもしれない。 異動 まず、ショッキングな出来事からわずか1週間後に、社内転職の結果がでた。 詳しくは下記のブログを読んでほしいが、パブリッククラウドを提供する新規事業を行う会社に行くことになったのだ。 社内システム開発からパブリッククラウドの会社へジョインします - Goldstine研究所 仕事環境の変化 仕事の環境は劇的に変わった。正直何もかもが違うといっても過言ではない。 変わった項目をまとめてみた。 項目 前の仕事 今の仕事 システム種別 ネットワーク監視システム パブリッククラウド 職種 システムエンジニア セールスエンジニア？ 組織規模 大組織の中の１部署で100人程度 会社全体で数十人 チーム エンジニアのみ エンジニア、営業、マーケティングなど お客様 社内 社外 人 ほぼ100%日本人 半分くらい外国人 英語 利用しない 飛び交ってる 実際の仕事 セールスエンジニア 最初に断っておくが、今の職種をセールスエンジニアというと少し語弊はあるのだが、 そういう一面があることは確かなのでそういうことにしておく。 今までやってきた開発エンジニアとはまったく異なった難しさを感じている。 お客さんはシステムを開発運用する現場のエンジニアの方であり何かしらに課題点を感じている人たちだ。 その課題についてソリューションを提案する必要があるわけであり、実際に自分が経験したことのないレベルで語ることは難しい。 自分が売る製品に知っているのは当たり前であり、それ以上に運用現場のことについて精通していてこそ仕事になる感がある。 職種的には運用現場から離れることになるわけだが、そこに精通し続ける必要があるのはとても難しさを感じとともに、だからこその価値と感じる。 どうやって現場感覚も失わないでいるか、課題の１つである。 そういえばこんな記事ありましたね。 はてなの中でたった1人！Mackerelを支える「セールスエンジニア」って何だ!?｜転職ドラフトReport サービスローンチ 異動したときの会社のミッションはAlibaba Cloudの日本リージョンの開設だ。 とにかくそれに向けてもろもろの準備をしてきた。 まずは、リリースできたので宣伝しておきます(笑) jp.aliyun.com www.sbcloud.co.jp Gihyoデビュー 日本リージョンのリリースに伴って、Gihyoにデビューしました。 あとSoftwareDesignとWed+DB Pressに掲載されてます。みんなみてね。 gihyo.jp 英語 コメント省略します。がんばりゅ… ISUCON6 念願のISUCON6に参加した。圧倒的な力不足を痛感。 力不足を実感したこと自体とてもいいことだったし、またISUCON対策で得た知見は確実にいいものとなっているのでよし。 来年も出れたらリベンジしたいです。 ISUCON6予選で惨敗した.
+                    </div>
+                </section>
+                
+            </div>
+            
+<div class="pagination">
+  <nav role="pagination" class="post-list-pagination">
+      
+    <span class="post-list-pagination-item post-list-pagination-item-current">Page 1 of 8</span>
+    
+      <a href="/entry/page/2/" class="post-list-pagination-item pure-button post-list-pagination-item-next">
+        Older&nbsp;<i class="fa fa-angle-double-right"></i>
+      </a>
+    
+  </nav>
+</div>
+
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

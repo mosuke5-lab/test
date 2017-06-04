@@ -1,0 +1,1497 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goldstine研究所 &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Goldstine研究所 &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Goldstine研究所 &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                
+                <h1 class="content-subhead">02 Oct 2016, 21:24</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/10/02/212420/" class="post-title">三葉よ、サーバーレス、それもまた結び。</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-serverless" href="https://blog.mosuke.tech/categories/serverless">serverless</a><a class="post-category post-category-サーバレス" href="https://blog.mosuke.tech/categories/%E3%82%B5%E3%83%BC%E3%83%90%E3%83%AC%E3%82%B9">サーバレス</a><a class="post-category post-category-クラウド" href="https://blog.mosuke.tech/categories/%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89">クラウド</a><a class="post-category post-category-lamda" href="https://blog.mosuke.tech/categories/lamda">lamda</a><a class="post-category post-category-FaaS" href="https://blog.mosuke.tech/categories/faas">FaaS</a><a class="post-category post-category-ServerlessConf" href="https://blog.mosuke.tech/categories/serverlessconf">ServerlessConf</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>タイトルちょっとふざけました。  (が、半分本気。最後の方でわかる。)</p></p>
+
+<p><a href="http://tokyo.serverlessconf.io/">ServerlessConf Tokyo</a>に参加してきた。<br>
+今年8月から<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9">パブリッククラウド</a>の事業に異動していて、（<a href="https://blog.mosuke.tech/entry/2016/07/29/180000">異動ブログ</a>）<br>
+開発者の立場より<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9">クラウド</a>提供側の立場として参加してきたので、また面白かった。</p>
+
+<p>せっかくなので、自分なりにサーバレスについてまとめる。<br>
+新しいことというよりは、自分の中での整理した感じ。</p>
+
+<h1>1. サーバレスってなんだっけ</h1>
+
+<p>カンファレンスの中でもサーバレスの定義についてはいろいろな意見がでていた。<br>
+Martin Fowlerのブログではサーバレスの定義として下記２つが書いてある。</p>
+
+<ul>
+<li>BaaS (Backend as a Service) : ex) firebase</li>
+<li>FaaS (Function as a Service) : ex) <a class="keyword" href="http://d.hatena.ne.jp/keyword/AWS">AWS</a> Lambda</li>
+</ul>
+
+<p><iframe src="//hatenablog-parts.com/embed?url=http%3A%2F%2Fmartinfowler.com%2Farticles%2Fserverless.html" title="Serverless Architectures" class="embed-card embed-webcard" scrolling="no" frameborder="0" style="display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;"></iframe><cite class="hatena-citation"><a href="http://martinfowler.com/articles/serverless.html">martinfowler.com</a></cite></p>
+
+<p>ですが、ここでは焦点を絞って話すためにもFaaSということにしておく。<br>
+主にFaaSについて話したいのと、BaaSもいれてしまうと<a class="keyword" href="http://d.hatena.ne.jp/keyword/SaaS">SaaS</a>もサーバレスとかややこしいことになるので。</p>
+
+<h1>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/AWS">AWS</a> Lambda</h1>
+
+<p>なんといってもサーバレスの概念を推し進めたのは<a class="keyword" href="http://d.hatena.ne.jp/keyword/AWS">AWS</a> Lambdaでしょう。<br>
+説明はいまさら不要だと思うが、少しだけ。</p>
+
+<blockquote><p>コードを <a class="keyword" href="http://d.hatena.ne.jp/keyword/AWS">AWS</a> Lambda にアップロードすると、サービスが <a class="keyword" href="http://d.hatena.ne.jp/keyword/AWS">AWS</a> インフラストラクチャを使用してコードの実行を代行するコンピューティングサービスです。コードをアップロードして、Lambda 関数と呼ばれる関数を作成することで、<a class="keyword" href="http://d.hatena.ne.jp/keyword/AWS">AWS</a> Lambda がコードを実行するサーバーのプロビジョニングおよび管理を行います。(<a href="https://aws.amazon.com/jp/lambda/details/">https://aws.amazon.com/jp/lambda/details/</a>)</p></blockquote>
+
+<p>課金モデルは関数呼び出した回数、および実行に利用したコンピュートのスペックによって決まる。<br>
+また特徴的なことは、<a class="keyword" href="http://d.hatena.ne.jp/keyword/AWS">AWS</a>の他のサービスで発生したイベントをトリガーに実行できること。<br>
+例えば、<a class="keyword" href="http://d.hatena.ne.jp/keyword/Amazon%20S3">Amazon S3</a>にファイルアップロードされたことをトリガーにLambdaを実行できるのだ。</p>
+
+<h1>サーバレスの特徴</h1>
+
+<p>サーバレス自体そしてサーバレスで実装することの特徴しては下記がある。</p>
+
+<ol>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9">クラウド</a>上のイベントを契機に実行できる</li>
+<li>実行環境は、immutableで時間が立つと消える</li>
+<li>実行環境は独立していて、コードは基本的にstatelessである</li>
+<li>上記のようにimmutableでstatelessな構造につくるからこそスケールしやすい</li>
+</ol>
+
+<h1>2. どんな用途で利用しているか</h1>
+
+<h1>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9">クラウド</a>基盤のイベントをトリガーとして</h1>
+
+<p>個人的に一番強力だと思っている使い方。上で説明したとおりだが、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9">クラウド</a>上のプロダクトに対してのイベントをトリガーに処理を行うことができる。<br>
+例えばこんな場合を想定してみよう。</p>
+
+<p>ユーザが写真をアップロードするサービスで、アップロードした写真にたいして何かしらの画像解析をしてメタ情報を持ちたいとする。<br>
+ざっと従来のやりかただと２つくらいやり方が思い浮かぶ。</p>
+
+<h4>(1) アップロードするたびに<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%B5%A1%BC%A5%D0">アプリケーションサーバ</a>で画像解析をする</h4>
+
+<ul>
+<li>解析にほとんど時間がかからない場合などはこれでいいと思う</li>
+<li>時間がかかるようなだとユーザへのレスポンスが遅くなる</li>
+<li>速くしようと思うとスケールアップで対応するしかない（やばい）</li>
+</ul>
+
+<h4>(2) <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D0%A5%C3%A5%C1%BD%E8%CD%FD">バッチ処理</a>でやる</h4>
+
+<ul>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D0%A5%C3%A5%C1%BD%E8%CD%FD">バッチ処理</a>で画像解析はまとめてやる。一番よくあるのでは？</li>
+<li>例えば５分に一度の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D0%A5%C3%A5%C1%BD%E8%CD%FD">バッチ処理</a>で、５分間にたまった写真にたいしてまとめて処理する</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D0%A5%C3%A5%C1%BD%E8%CD%FD">バッチ処理</a>でまとめて処理した場合、どこかでコケたときが辛い</li>
+<li>この例ならそうでもないが、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D0%A5%C3%A5%C1%BD%E8%CD%FD">バッチ処理</a>ではたいていスケールアウトが辛い</li>
+</ul>
+
+<p>このケースに対してLambdaであればどうなるか。<br>
+1000件のアップロードに対して、1000回のLambda実行によって対応できる。<br>
+これは何万件きても同じことで、スケールの面で大変優れている。<br>
+また、1件ごとに処理するため、エラーが発生した場合に原因などとても追いやすい。</p>
+
+<h1>アプリの<a class="keyword" href="http://d.hatena.ne.jp/keyword/API">API</a>として</h1>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/AWS">AWS</a>でいうと、<a class="keyword" href="http://d.hatena.ne.jp/keyword/API">API</a> <a class="keyword" href="http://d.hatena.ne.jp/keyword/Gateway">Gateway</a>と組み合わせて、<a class="keyword" href="http://d.hatena.ne.jp/keyword/API">API</a>サーバとして利用するケース。<br>
+S3などのデータストアに直接アクセスできるように作ることもできるため、ファイルアップロードなどで使われることが多いとか。<br>
+個人的には今のところあまり魅力的には感じない使い方。</p>
+
+<h1>事例紹介</h1>
+
+<p>カンファレンスのなかで<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C6%FC%B7%D0%BF%B7%CA%B9">日経新聞</a>社さんののサーバレス<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3">アーキテクチャ</a>の事例が一番よかったのでぜひ目を通しほしい。</p>
+
+<p><iframe allowfullscreen="true" allowtransparency="true" frameborder="0" height="463" id="talk_frame_361815" mozallowfullscreen="true" src="//speakerdeck.com/player/b4286c46056c404cbd272e253033d0df" style="border:0; padding:0; margin:0; background:transparent;" webkitallowfullscreen="true" width="710"></iframe><cite class="hatena-citation"><a href="https://speakerdeck.com/ikait/serverless-architecture-supports-nikkeis-paper-viewer">speakerdeck.com</a></cite></p>
+
+<p>ポイントとしては下記。見事にLambdaの特徴を活かした利用をしている。</p>
+
+<ul>
+<li>新聞は基本的には朝刊と夕刊の２回で限られたときだけ処理する点
+
+<ul>
+<li>常時稼働させたくない。EC2立ち上げっぱなしにする必要がない。</li>
+</ul>
+</li>
+<li>しかし、号外や速報など臨時の場合もただあり、それにも備えられる点</li>
+<li>日によってニュースの量が異なるため、いつでもスケールできる必要がある点</li>
+</ul>
+
+<h1>3. <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9">クラウド</a>ベンダーからみたサーバレスの立ち位置</h1>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9">クラウド</a>ベンダーにとってサーバレスはどういう立ち位置なのだろうか。<br>
+ぼくは<span style="font-size: 150%">「各サービスの横串」</span>と考えています。<br>
+EC2、S3、RDSなどなどそれぞれのサービスは単体としてとてもよくできている。<br>
+しかし横の連携をしようと思うと別途様々な工夫が必要なのが現状だ。</p>
+
+<p>サーバレスはその横の連携を担うのだ。<br>
+各サービス間を紐で固く結びつけてしまう。<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9">クラウド</a>ロックインを加速させる役割も持つ。</p>
+
+<p><b>「三葉よ、サーバレス、それもまた結び。」</b></p>
+
+<p>そして、IoTへの布石。<br>
+IoTの世界ではリアルタイムなセンサーの情報のやりとりでデ<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D0%A5%A4">バイ</a>スとデータセンタ間の通信遅延が許容できないことがある。<br>
+そこでいま研究が進んでいるエッジコンピューティング（フォグコンピューティングとも）などがあるが、<br>
+LambdaのようにImmutable, Statelessが前提で作られる、どこの環境でも実行可能な状態はIoTと相性がいいようにみえる。</p>
+
+<p><p>今後どうなっていくかはわからないが、<br>
+デ<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D0%A5%A4">バイ</a>スに近いエッジコンピューティング側はLambdaでさばき、そのさばいたデータを中央のデータセンターへ、<br>
+なんていうことが主流になってくるかもしれない。と思うとFaaSの存在は見逃せない気がしてくる。</p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">19 Sep 2016, 17:20</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/09/19/172009/" class="post-title">ISUCON6予選で惨敗した. 足りなかったのは&#39;Courage&#39;</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-ISUCON" href="https://blog.mosuke.tech/categories/isucon">ISUCON</a><a class="post-category post-category-惨敗" href="https://blog.mosuke.tech/categories/%E6%83%A8%E6%95%97">惨敗</a><a class="post-category post-category-ISUCON6" href="https://blog.mosuke.tech/categories/isucon6">ISUCON6</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p><span style="font-size: 80%"><a class="keyword" href="http://d.hatena.ne.jp/keyword/Apple">Apple</a>の<a class="keyword" href="http://d.hatena.ne.jp/keyword/keynote">keynote</a>で話題の&rsquo;<a class="keyword" href="http://d.hatena.ne.jp/keyword/Courage">Courage</a>&lsquo;使ってみた笑</span></p></p>
+
+<p>ISUCON6予選で惨敗した。(18000点くらい)<br>
+端的に言って、とても未熟だった。</p>
+
+<p>とはいえ、とてもいい思い出になったのでまとめる。</p>
+
+<h1>メンバー</h1>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%EA%A1%BC%A5%A8%A5%E0">スリーエム</a>というチーム名で、@mogulla3と@mintsu123と一緒に出場した。<br>
+ふたりともぼくよりもアプリの改善などは10倍くらい優秀なエンジニアなので、<br>
+ぼくはインフラとか総務的な立ち回りをして、２人がチューニングに集中できるようにすることを心がけていた。</p>
+
+<h1>準備</h1>
+
+<p>準備は３週間の間に土日どちらかに集まってISUCONの過去問を解いたり戦略について事前に打ち合わせしてた。</p>
+
+<ul>
+<li>プライベートレポジトリの用意(Gitlab)</li>
+<li>チャットルームの用意(Slack)</li>
+<li>ISUCON4とISUCON5の予選の過去問解き
+
+<ul>
+<li>土日集まったときには戦略や振り返りを重視</li>
+<li>実際の過去問ときは平日に各々が空いた時間などにやってた</li>
+</ul>
+</li>
+<li>基本戦略を準備
+
+<ul>
+<li>なんの技術を主に使うか</li>
+<li>だれが何を担当するか</li>
+<li>定形作業の手順化</li>
+<li>その他ナレッジなど</li>
+</ul>
+</li>
+</ul>
+
+<h3>採用した技術</h3>
+
+<ul>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/PHP">PHP</a> 7.0</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>-fpm</li>
+<li>Openresty(nginx) 1.11</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a> 5.7</li>
+<li>Redis 3.2</li>
+</ul>
+
+<h1>当日</h1>
+
+<p>出だしはとても順調だった。<br>
+Azure担当だったぼくはすぐにサーバをデプロイし、OSバージョンを確認した。<br>
+予想通りの<a class="keyword" href="http://d.hatena.ne.jp/keyword/Ubuntu">Ubuntu</a> 16.04であったので、準備したとおり必要な<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%DF%A5%C9%A5%EB%A5%A6%A5%A7%A5%A2">ミドルウェア</a>のインストールをすませた。</p>
+
+<p>ほぼ定石と言える下記（定形作業と呼んでいた）もすぐにこなすことができた。</p>
+
+<ul>
+<li>調査のための各種ログ出力化</li>
+<li>Nginxでの静的ファイルの配信、キャッシュ化</li>
+<li>Kataribeインストールと実行</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>のインデックスの付与と設定見直し</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>-fpmの<a class="keyword" href="http://d.hatena.ne.jp/keyword/Unix">Unix</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3">ドメイン</a>ソケット化</li>
+<li>デプロイの仕組みの整理</li>
+<li>不要デーモンの停止</li>
+</ul>
+
+<p>この状態でもスコアは0のままであり、少し焦りを感じたが、<br>
+ここからが本番のチューニング開始である。<br>
+Kataribeの結果から、<code>GET /</code>が改善ポイントであることは明らかなのはわかっていた。</p>
+
+<pre><code>Top 20 Sort By Count
+Count    Total      Mean    Stddev     Min   P50.0   P90.0   P95.0   P99.0     Max  2xx  3xx  4xx  5xx  Request
+  326  366.105  1.123021  2.619395   0.000   0.000   6.188   7.418   9.827  10.207  326    0    0    0  GET / HTTP/1.0
+  326  366.154  1.123172  2.618228   0.000   0.001   6.190   7.418   9.778  10.207  326    0    0    0  GET / HTTP/1.1
+  240    0.000  0.000000  0.000000   0.000   0.000   0.000   0.000   0.000   0.000  240    0    0    0  GET /css/bootstrap.min.css HTTP/1.0
+  240    0.737  0.003071  0.002843   0.000   0.002   0.006   0.010   0.013   0.015  240    0    0    0  GET /css/bootstrap.min.css HTTP/1.1
+  120    0.101  0.000842  0.002078   0.000   0.000   0.002   0.003   0.015   0.015  120    0    0    0  GET /img/star.gif HTTP/1.1
+  120    0.000  0.000000  0.000000   0.000   0.000   0.000   0.000   0.000   0.000  120    0    0    0  GET /js/jquery.min.js HTTP/1.0
+  120    0.000  0.000000  0.000000   0.000   0.000   0.000   0.000   0.000   0.000  120    0    0    0  GET /img/star.gif HTTP/1.0
+  120    0.152  0.001267  0.001788   0.000   0.001   0.003   0.004   0.011   0.012  120    0    0    0  GET /css/bootstrap-responsive.min.css HTTP/1.1
+  120    0.000  0.000000  0.000000   0.000   0.000   0.000   0.000   0.000   0.000  120    0    0    0  GET /js/bootstrap.min.js HTTP/1.0
+  120    0.148  0.001233  0.001843   0.000   0.001   0.003   0.004   0.011   0.012  120    0    0    0  GET /favicon.ico HTTP/1.1
+  120    0.157  0.001308  0.001829   0.000   0.001   0.003   0.004   0.011   0.011  120    0    0    0  GET /js/bootstrap.min.js HTTP/1.1
+  120    0.379  0.003158  0.002890   0.000   0.002   0.007   0.010   0.013   0.015  120    0    0    0  GET /js/jquery.min.js HTTP/1.1
+  120    0.000  0.000000  0.000000   0.000   0.000   0.000   0.000   0.000   0.000  120    0    0    0  GET /favicon.ico HTTP/1.0
+  120    0.000  0.000000  0.000000   0.000   0.000   0.000   0.000   0.000   0.000  120    0    0    0  GET /css/bootstrap-responsive.min.css HTTP/1.0
+   67  116.697  1.741746  1.159447   0.020   1.760   2.999   3.000   3.001   3.001    0   42   25    0  POST /login HTTP/1.0
+   67  116.706  1.741881  1.159099   0.020   1.760   2.999   2.999   3.001   3.001    0   42   25    0  POST /login HTTP/1.1
+   35    0.857  0.024486  0.022147   0.000   0.026   0.040   0.085   0.096   0.096   35    0    0    0  GET /stars?keyword=%E5%86%85%E7%94%B0%E4%BF%AE%E5%B9%B3 HTTP/1.1
+   35    0.977  0.027914  0.020538   0.000   0.031   0.049   0.062   0.077   0.077   35    0    0    0  GET /stars?keyword=%E3%82%A6%E3%83%BC%E3%82%BA HTTP/1.1
+   34    0.867  0.025500  0.018035   0.000   0.028   0.044   0.059   0.071   0.071   34    0    0    0  GET /stars?keyword=%E5%8C%97%E6%B6%88%E9%98%B2%E7%BD%B2 HTTP/1.1
+   32    0.731  0.022844  0.015575   0.000   0.025   0.040   0.050   0.052   0.052   32    0    0    0  GET /stars?keyword=%E8%BC%AA%E7%8A%B6%E7%94%B2%E7%8A%B6%E7%AD%8B HTTP/1.1 
+</code></pre>
+
+<p>しかし、なかなか突破口が見いだせず、できるところからやっていく方針を取った。<br>
+アプリの改善を振り返ってみると、なにもしてねーなって感じがやばい。（何してたんだっけ…(・_・;)）</p>
+
+<ul>
+<li>isudaとisutarのfpmプロセスの調整</li>
+<li>isudaとisutar間のhttpによる<a class="keyword" href="http://d.hatena.ne.jp/keyword/API">API</a>呼び出しをなくし、DB接続とした</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/SQL">SQL</a>改善
+
+<ul>
+<li>htmlifyのkeyword取り出し<a class="keyword" href="http://d.hatena.ne.jp/keyword/SQL">SQL</a>
+</li>
+<li>load_starの<a class="keyword" href="http://d.hatena.ne.jp/keyword/SQL">SQL</a>
+</li>
+<li>など</li>
+</ul>
+</li>
+<li>keywordのlengthを予め持つように変更</li>
+<li>isudaとisutarの統合
+
+<ul>
+<li>効果の検証ができず、結局マージはできなかった</li>
+</ul>
+</li>
+</ul>
+
+<h1>反省</h1>
+
+<p><code>htmlify</code>の改善がなによりも効果がでることはわかっていた。<br>
+しかし、その改善についてのいい方法がすぐに思いつかなかったこともあり、<br>
+他のやれることを優先しすぎてしまったことが一番の反省点だ。</p>
+
+<p>時間がない、大きな変更したら怖いという思いが強くなり、<br>
+どちらかというとやれることをきちんとやればいける、というディフェンシブな思考になってしまっていた気がする。</p>
+
+<p>せっかくRedisやOpenrestyを準備していたが、<br>
+そのあたりを発揮せずにおわってしまい残念な感じではあった。<br>
+（ここは準備不足ポイントでもあった）</p>
+
+<p>根本の改善に勇気を持って切り込む"<a class="keyword" href="http://d.hatena.ne.jp/keyword/Courage">Courage</a>"を次は発揮したい。</p>
+
+<p>反省会の炙りしめ鯖うまかった。</p>
+
+<p><iframe src="//hatenablog-parts.com/embed?url=http%3A%2F%2Ftabelog.com%2Ftokyo%2FA1303%2FA130301%2F13003370%2F" title="BISTRO三十五段屋 (渋谷/居酒屋)" class="embed-card embed-webcard" scrolling="no" frameborder="0" style="display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;"></iframe><cite class="hatena-citation"><a href="http://tabelog.com/tokyo/A1303/A130301/13003370/">tabelog.com</a></cite></p>
+
+<h1>最後に</h1>
+
+<p>反省点は多かったものの、準備期間も含めてこの１ヶ月とても楽しかったし、<br>
+また自分の未熟さを実感できてとてもよかった。</p>
+
+<p>今まで、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B6%A5%B5%BB%A5%D7%A5%ED%A5%B0%A5%E9%A5%DF%A5%F3%A5%B0">競技プログラミング</a>などもしたこともなく、<br>
+技術面で「競う」ということはほとんどしたことがなかった。</p>
+
+<p><p>この敗北で、技術をきちんと理解し追求していきたいという想いが湧いてきた。<br>
+ISUCON主催者ありがとうございました。</p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">29 Jul 2016, 18:00</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/07/29/180000/" class="post-title">社内システム開発からパブリッククラウドの会社へジョインします</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-異動" href="https://blog.mosuke.tech/categories/%E7%95%B0%E5%8B%95">異動</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>本日、2016年7月29日をもって、新卒から３年４ヶ月働いてきた部署が最後となり、8月1日から異動（出向）する。<br>
+社内転職制度を使って、自らの希望で<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9">パブリッククラウド</a>事業の会社へジョインすることになった。<br>
+（新規事業を行う部署へ異動となり、そこから別会社へ出向という扱い）<br>
+グループ内の異動ではあるが、違う会社・事業で、職種も変わるので、今の部署でやってきたことをまとめて残しておこうと思う。</p></p>
+
+<p>私は通信会社のネットワーク運用部隊に所属している（いた）。<br>
+ネットワーク運用部隊なのだが、私の部署はネットワーク運用を自動化したり運用を楽にするための<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B7%A5%B9%A5%C6%A5%E0%B3%AB%C8%AF">システム開発</a>を担うところで、下記のような仕事をしてきた。</p>
+
+<h1>1. ベンダーコントロールという仕事</h1>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B7%A5%B9%A5%C6%A5%E0%B3%AB%C8%AF">システム開発</a>にはうちでは外注物も内製物（後述）もある。<br>
+業務の都合上、システムの種類によってはSIベンダーへ発注をして作ることがあった。<br>
+ベンダーコン<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A5%ED%A1%BC%A5%EB">トロール</a>なんて言ったりするが、発注での<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B7%A5%B9%A5%C6%A5%E0%B3%AB%C8%AF">システム開発</a>の業務では下記のようなことをしてきた。</p>
+
+<ul>
+<li>要求仕様の検討</li>
+<li>見積もり依頼と価格交渉</li>
+<li>発注、スケジュール調整</li>
+<li>社内での業務調整</li>
+<li>受入試験、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B8%A1%BC%FD">検収</a>
+</li>
+<li>運用</li>
+</ul>
+
+<p>仕事のほとんどは、社内外の人との調整（コミュニケーション）だ。<br>
+エンジニアとしては一見つまらなそうな仕事にみえるかもしれない。<br>
+しかし、この仕事から様々なコミュニケーションを学び、それはいろんな場面で役に立っている。<br>
+例えばだが、以下の様なコミュニケーションがあったりした。</p>
+
+<ul>
+<li>要求を他者にしっかり、わかりやすく伝える</li>
+<li>仕様や価格についての折衝をする</li>
+<li>システムの利用部門との業務調整をする</li>
+<li>作業の手順について精査し指摘する</li>
+<li>ミスなど良くないことが起きた際には、今後の対策はどうするか相手側に考えさせるよう導く</li>
+<li>場合によっては厳しく叱ることもする（感情的に怒るわけではない）</li>
+</ul>
+
+<p>特に価格の折衝などは、<a class="keyword" href="http://d.hatena.ne.jp/keyword/SIer">SIer</a>や購買部と激しく激突することもあり今でもとても印象に残っている。<br>
+こういった業務はビジネスマンとしてとても大事なことを学んだと思うし、内製での開発業務でもとても活きてきている。</p>
+
+<h4>外注はいいけど・・・</h4>
+
+<p>社内リソースが少なくても同時並行でいろんなシステムの開発ができるし外注はいい。<br>
+一方で外注開発について、もどかしさや非効率さなどもたくさん経験してきた。</p>
+
+<p>まず、なにをやるにもお金と時間がかかることだ。<br>
+一度納品されてしまったものについて、なんらかの改修をしたい場合、<br>
+その改修規模を問わず、見積もり→発注→開発・改修→納品のプロセスを通さなければならない。<br>
+if文を１行追加するだけだろ…って思うようなものでも数百万で数週間かかることだってあった。</p>
+
+<p>そして、プロセスの効率化が難しいことだ。<br>
+ベンダーが開発したシステムをリリースするには、発注側の会社に度々きてリリース作業を行う。<br>
+勝手に発注側のシステムをアップデートすることはありえないので、必ずリリース作業には社員が立ち会わなければいけない。<br>
+そのとき、リリース作業が自動化されていないことも多く（発注時の要求によってもちろん異なる）、<br>
+何時間もかけて数十台のサーバにデプロイしたりしなければいけなかったりするので大変だ。</p>
+
+<p>これは当たり前だがとても効率が悪いし時間の無駄だ。<br>
+だがこれを改善しようと思うとまたお金がかかるわけである。<br>
+扱っているシステムが、業務システムなのでアップデートの頻度がおおくないこともあるので、<br>
+はじめからデプロイの自動化などを要件にいれることは少ないのである。</p>
+
+<p>これらはSIの開発をディスっているわけではない。（要求も悪いのはわかる。）<br>
+これは仕方ないこととして、そのメリット・デメリットをきちんと理解した上で選択、要求をしなれけばいけないということだ。</p>
+
+<h1>2. 内製開発の仕事</h1>
+
+<p>外注開発とは別にシステムの内製での開発業務も多くおこなってきた。<br>
+社内的には外注開発から内製開発に徐々に切り替えの最中であった。<br>
+ちなみに開発言語は<a class="keyword" href="http://d.hatena.ne.jp/keyword/Ruby">Ruby</a>（<a class="keyword" href="http://d.hatena.ne.jp/keyword/Rails">Rails</a>やPadrino）や<a class="keyword" href="http://d.hatena.ne.jp/keyword/PHP">PHP</a>（<a class="keyword" href="http://d.hatena.ne.jp/keyword/FuelPHP">FuelPHP</a>）なんか使っていた。</p>
+
+<p>業務システムの他にもメールサーバやリバースプロキシサーバなど基盤システムも構築してきた。<br>
+2015年の振り返りブログに雑だが少し書いていた。</p>
+<a href="/entry/2015/12/28/150042/">2015年振り返り - Goldstine研究所</a>
+
+<h4>開発組織の改善活動</h4>
+
+<p>また、開発組織を改善するための活動をおおく行ってきた。<br>
+どこの組織でもある問題だと思うが、うちもまた「属人化」「秘伝のタレ」などといった類の悩みをたくさん抱えていた。</p>
+
+<p>うちはソフトウェア企業ではないし、システムを外注で作る部署も多い。<br>
+そのため、新卒や異動してくる人などがソフトウェアエンジニア思考の人ばかりではない。というかむしろ少数派。<br>
+だからこそ、よりいっそう「属人化」「秘伝のタレ」が弊害となる。<br>
+わかりやすいところでいうと下記のようなことをやったりして開発組織の改善をしてきた。</p>
+
+<ul>
+<li>gitlabを使った<a class="keyword" href="http://d.hatena.ne.jp/keyword/github">github</a>-flowの導入。レビュー必須化</li>
+<li>Ansibleを使ったインフラ環境のコード化、構築自動化</li>
+<li>またそういったツールの導入だけでなく講師としてワークショップの実施やサポート活動</li>
+<li>部署内の開発ルールの策定</li>
+<li>最低限身につけてほしいスキルや知識を習得できる環境や研修の準備</li>
+</ul>
+
+<p>ツールの導入や普及、組織改善活動について次の２つがとても重要だったと思う。</p>
+
+<ol>
+<li>キーパーソンを見方につける。</li>
+<li>ハンズオンを行う。サポートを手厚くする。</li>
+</ol>
+
+<p>どんなにいい試みをやっても、独断で行ってしまうと「勝手にやったことだよね？」ってやっぱり思われてしまう。<br>
+また、その試みを広めるのに苦労する。<br>
+試みに対して理解してくれる上の人、キーパーソンを見方につけて働くことがとても有効的だった。</p>
+
+<p>そして、ツール類はとくにそうだが、紹介したりするだけじゃなくて、<br>
+ハンズオン会をやったりサポートをし「軌道にのせる」ところまでやったのがとてもよかった。<br>
+サポートがないと、気が付くと昔のやりかたにもどってしまっていた、なんてこともあった。</p>
+
+<h1>3. データセンター、ネットワークの仕事</h1>
+
+<h4>データセンター系</h4>
+
+<p>サーバ環境はオンプレだった。<br>
+また、専任のサーバ・インフラ管理者がいるわけではなかったので、<br>
+データセンターへのサー<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D0%A5%E9%A5%C3%A5%AF">バラック</a>の立架工事やサーバ<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%E9%A5%C3%A5%AD%A5%F3%A5%B0">ラッキング</a>、配線などそういったことも業務の１つだった。<br>
+データセンタ系業務とそれで身につけたことなどは下記。</p>
+
+<ul>
+<li>データセンターへのサー<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D0%A5%E9%A5%C3%A5%AF">バラック</a>の立架工事やサーバ<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%E9%A5%C3%A5%AD%A5%F3%A5%B0">ラッキング</a>、配線をやった
+
+<ul>
+<li>ラックの立架工事や電源工事は当たり前だが外注</li>
+<li>工事の監督はさんざんやった</li>
+<li>サーバの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%E9%A5%C3%A5%AD%A5%F3%A5%B0">ラッキング</a>やLANケーブルの敷設は自前でもたくさんやった</li>
+<li>LANケーブル作るのはだいぶこなれた</li>
+<li>でもやっぱりプロの配線は神</li>
+</ul>
+</li>
+<li>安全に工事するための知恵をたくさん身につけた</li>
+<li>電源工事などに備え、電気的な知識を身につけた</li>
+<li>openstack（<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%A4%A5%D9%A1%BC%A5%C8%A5%AF%A5%E9%A5%A6%A5%C9">プライベートクラウド</a>）の検証などもした</li>
+</ul>
+
+<h4>ネットワーク系</h4>
+
+<p>バックボーンのネットワークは範囲外ではあるが、<br>
+システム内のネットワーク設計・構築・運用は自分たちの仕事だった。</p>
+
+<p>そういう組織体系が業務的によかったかどうかはわからないけど、<br>
+現代では特に触れる機会が少ないネットワークについて理解を深められたのはとてもプラスになっている。<br>
+下記あたりは自前でやってきた。</p>
+
+<ul>
+<li>システム内のネットワークの設計</li>
+<li>L2スイッチ、L3スイッチの設定
+
+<ul>
+<li>VLANとかNAT、<a class="keyword" href="http://d.hatena.ne.jp/keyword/ACL">ACL</a>とか</li>
+</ul>
+</li>
+<li>NW機器が故障した際の交換とか設定投入</li>
+</ul>
+
+<p>ネットワークは専門ではないけれど、オンプレでやっているとネットワーク系の仕事をやることや、<br>
+他部署とネットワークの話をしなければいけないことが多い。<br>
+ネットワークの知識は仮想サーバを構築するときなどにも役に立つし、ソフトウェア開発でも何かと役に立っている。<br>
+ちょうど最近、システムが調子悪い原因が<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B8%F7%A5%D5%A5%A1%A5%A4%A5%D0">光ファイバ</a>ーの不良ということを発見できてとてもスッキリした。</p>
+
+<h1>4. その他</h1>
+
+<p>その他にあったことを雑にまとめる</p>
+
+<ul>
+<li>たくさん出張にいった
+
+<ul>
+<li>大阪、北陸、名古屋、広島、四国など</li>
+</ul>
+</li>
+<li>社内での業務改善コンテストで賞をとった</li>
+<li>新卒の面倒をみたりした</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%BF%A1%BC%A5%F3">インターン</a>生も毎年きて面倒をみた</li>
+<li>採用リクルータをやって就活生とたくさん出会った</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%DE%A5%EA%A5%AA%A5%AB%A1%BC%A5%C8">マリオカート</a>大会企画した</li>
+<li>勤務地が変更になったりした</li>
+</ul>
+
+<h1>最後に</h1>
+
+<p>ほんとうに多岐にわたる仕事をさせてもらい、視野が広がった３年間だった。<br>
+アプリケーション開発しか知らなかった学生時代を振り返ると驚くほどの成長をしたと思う。</p>
+
+<p>部署や上司、メンバーへ、本当に感謝です（＾人＾）</p>
+
+<p>次は、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9">パブリッククラウド</a>の会社に行く。<br>
+（<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9">パブリッククラウド</a>を構築し運用するところなので、<a class="keyword" href="http://d.hatena.ne.jp/keyword/AWS">AWS</a>や<a class="keyword" href="http://d.hatena.ne.jp/keyword/GCP">GCP</a>が敵…）</p>
+
+<p>会社ではオンプレを使っていたし、また<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%A4%A5%D9%A1%BC%A5%C8%A5%AF%A5%E9%A5%A6%A5%C9">プライベートクラウド</a>の構築の検証にも携わった。<br>
+規模感や組織構造によるのはわかっているが、どうもシステムを維持することにばかり時間を費やし、本来やるべき<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B7%A5%B9%A5%C6%A5%E0%B3%AB%C8%AF">システム開発</a>による問題解決になかなかいたらなかった感じはあった。<br>
+一方、趣味開発では<a class="keyword" href="http://d.hatena.ne.jp/keyword/AWS">AWS</a>やHerokuなどの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9">クラウド</a>を使っていたので、本来やるべき問題解決に集中できることの価値を感じていた。<br>
+そういった経験から、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9">パブリッククラウド</a>をもっと多くの人が活用して<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B7%A5%B9%A5%C6%A5%E0%B3%AB%C8%AF">システム開発</a>の本質により注力できるように、と思うようになった。</p>
+
+<p>最後に…<br>
+この３年間で社内の仕事の質がかわった瞬間を目の当たりにした。<br>
+外注も内製もやってきたと書いたが、はじめは外注が多かったが徐々に内製開発の比率が増えてきた。<br>
+それに伴って、社員が行う仕事の質や求められるスキルが変化していったのを感じた。<br>
+きっと、次の３年間もなんらかで変化が起こるはずで、振り落とされないよう頑張りたい。</p>
+
+<p><span style="font-size: 80%">※次のところ英語話さなきゃいけなくてほんとにヤ<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D0%A5%A4">バイ</a>・・・</span></p>
+
+<p>とてもながめのいいオフィスでした。<br>
+<span itemscope itemtype="http://schema.org/Photograph"><a href="http://f.hatena.ne.jp/mosuke5/20160729160810" class="hatena-fotolife" itemprop="url"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160729/20160729160810.jpg" alt="f:id:mosuke5:20160729160810j:image" title="f:id:mosuke5:20160729160810j:image" class="hatena-fotolife" itemprop="image"></a></span></p>
+
+<p><p><span itemscope itemtype="http://schema.org/Photograph"><a href="http://f.hatena.ne.jp/mosuke5/20160729160817" class="hatena-fotolife" itemprop="url"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160729/20160729160817.jpg" alt="f:id:mosuke5:20160729160817j:image" title="f:id:mosuke5:20160729160817j:image" class="hatena-fotolife" itemprop="image"></a></span></p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">26 Jul 2016, 21:59</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/07/26/215939/" class="post-title">【めも】httpヘッダー、x-forwarded-forとか任意のヘッダーとか</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-httpヘッダー" href="https://blog.mosuke.tech/categories/http%E3%83%98%E3%83%83%E3%83%80%E3%83%BC">httpヘッダー</a><a class="post-category post-category-Nginx" href="https://blog.mosuke.tech/categories/nginx">Nginx</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>ただのめも。</p></p>
+
+<p>もともと<a class="keyword" href="http://d.hatena.ne.jp/keyword/Apache">Apache</a>+<a class="keyword" href="http://d.hatena.ne.jp/keyword/PHP">PHP</a>で動作していたシステムに、リバースプロキシ（Nginx）を前段に挟むことになった。（理由はここではどうでもいいので書かない）<br>
+つまり、Nginx-&gt;<a class="keyword" href="http://d.hatena.ne.jp/keyword/Apache">Apache</a>-&gt;<a class="keyword" href="http://d.hatena.ne.jp/keyword/PHP">PHP</a>という構成になった。<br>
+よくあることだが、<a class="keyword" href="http://d.hatena.ne.jp/keyword/Apache">Apache</a>からみるとすべてリバースプロキシから通信がきているので、
+接続元の<a class="keyword" href="http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9">IPアドレス</a>がすべてリバースプロキシのものになる。</p>
+
+<p>HTTPヘッダーに接続元の<a class="keyword" href="http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9">IPアドレス</a>を追加しアプリ側（<a class="keyword" href="http://d.hatena.ne.jp/keyword/PHP">PHP</a>）で受け取ろうとしたときのめも。</p>
+
+<h1>リバースプロキシ側でHTTPヘッダー追加</h1>
+
+<p>まず、そもそもデフォルトのNginxの設定では接続元の<a class="keyword" href="http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9">IPアドレス</a>をHTTPヘッダーに含まれない。<br>
+ググればすぐに設定方法自体はでてくる。<br>
+ X-Forwarded-Forというヘッダー名にNginxでもっている変数$proxy_add_x_forwarded_forをつっこむ。</p>
+
+<pre><code>proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; 
+
+</code></pre>
+
+<p>設定は簡単なんだけど、そもそもX-Forwarded-Forなんていうヘッダーあったっけ。。。？<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/Wikipedia">Wikipedia</a>でみる。</p>
+
+<blockquote><p>X-Forwarded-For (XFF) とは、HTTPヘッダフィールドの一つ。HTTPプロキシサーバまたは負荷分散装置（ロードバランサ）を経由してウェブサーバに接続するクライアントの送信元<a class="keyword" href="http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9">IPアドレス</a>を特定する際の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D5%A5%A1%A5%AF%A5%C8%A5%B9%A5%BF%A5%F3%A5%C0%A1%BC%A5%C9">デファクトスタンダード</a>である。
+（略）<a class="keyword" href="http://d.hatena.ne.jp/keyword/RFC">RFC</a>の標準的なヘッダフィールドではないが、<a class="keyword" href="http://d.hatena.ne.jp/keyword/IETF">IETF</a>のネットワーク作業部会 (Network Working Group) は2011年10月より同種のHTTPヘッダForwardedの標準化作業を開始した[1]。</p></blockquote>
+
+<p>なるほど、<a class="keyword" href="http://d.hatena.ne.jp/keyword/RFC">RFC</a>の標準ではないけど、一般的なものなんですね。</p>
+
+<h1>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>でX-Forwarded-Forを受け取る</h1>
+
+<p>というわけで、おりゃ！</p>
+
+<pre><code class="language-php">echo $_SERVER['X-Forwarded-For'];
+</code></pre>
+
+<p>エラー...<br>
+※普段<a class="keyword" href="http://d.hatena.ne.jp/keyword/PHP">PHP</a>使ってないのがバレますね。</p>
+
+<p>サーバ変数とりあえず、全部はきだす。</p>
+
+<pre><code class="language-php">&lt;?php
+var_dump($_SERVER);
+
+# array(x) { [&quot;HTTP_X_FORWARDED_FOR&quot;] =&gt; string(12) &quot;192.168.33.1&quot; ...... }
+</code></pre>
+
+<p>HTTP先頭についてて、大文字になってて、ハイフンがアンスコに変わっている。<br>
+あたりまえだけどこれは<a class="keyword" href="http://d.hatena.ne.jp/keyword/PHP">PHP</a>の仕様でいいんだよな...？</p>
+
+<pre><code class="language-php">&lt;?php
+var_dump(getallheaders());
+
+# array(x) { [&quot;X-Forwarded-For&quot;] =&gt; string(12) &quot;192.168.33.1&quot; ...... }
+</code></pre>
+
+<p>サーバ変数にいれるときに、変わるんだわ。</p>
+
+<h1>念のため<a class="keyword" href="http://d.hatena.ne.jp/keyword/tcpdump">tcpdump</a>で軽く確認してみる</h1>
+
+<pre><code>$ sudo yum install tcpdump
+$ tcpdump dst port 80 -X
+
+# ながいんで適当に端折りました
+11:04:01.883209 IP 10.0.2.15.43038 &gt; 192.168.0.10.54655: Flags [.], seq 802:1603, ack 1, win 14600, length 1460
+     (略)
+     0x0000:  4500 0355 c705 0000 3706 24ca adc2 265f  1.0..X-Forwarded
+     0x0010:  c0a8 000a 0050 d57f 51ad 1e62 e596 78a4  -For:.192.168.33
+     0x0020:  8018 0137 8dbe 0000 0101 080a d1dc c19e  .1..Host:.xxxxxx 
+
+</code></pre>
+
+<p>いたいた。<br>
+Nginxからプロキシされるときはちゃんとヘッダー名は"X-Forwarded-For "になっていること確認。</p>
+
+<h1>任意の適当なHTTPヘッダーつけてみた</h1>
+
+<pre><code>proxy_set_header my-header 'hogefugafoobar'; 
+</code></pre>
+
+<pre><code class="language-php">var_dump($_SERVER);
+
+# array(35) { [&quot;HTTP_MY_HEADER&quot;] =&gt; string(14) &quot;hogefugafoobar&quot; ...... }
+</code></pre>
+
+<p><p>ふーん、なるほどな&hellip;</p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">03 Jul 2016, 22:45</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/07/03/224531/" class="post-title">Vim::Factory、LTではなす</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-vimfactory" href="https://blog.mosuke.tech/categories/vimfactory">vimfactory</a><a class="post-category post-category-vim::factory" href="https://blog.mosuke.tech/categories/vimfactory">vim::factory</a><a class="post-category post-category-docker" href="https://blog.mosuke.tech/categories/docker">docker</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>7月6日の会社のエンジニアイベントでLTするやつ、先にあげておく。<br>
+自分の中でのネタとしては古いけど、話すのはなんだかんだ初。</p></p>
+
+<script async class="speakerdeck-embed" data-id="edf3569025fd4894867e772d5731a20f" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
+
+<p></body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">25 Jun 2016, 11:30</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/06/25/113009/" class="post-title">IkaLog環境整えた。画面が突然映らなくなる事象とかについて</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-スプラトゥーン" href="https://blog.mosuke.tech/categories/%E3%82%B9%E3%83%97%E3%83%A9%E3%83%88%E3%82%A5%E3%83%BC%E3%83%B3">スプラトゥーン</a><a class="post-category post-category-ikalog" href="https://blog.mosuke.tech/categories/ikalog">ikalog</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>昔まで、人の家で<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%D7%A5%E9%A5%C8%A5%A5%A1%BC%A5%F3">スプラトゥーン</a>をやったりたまに借りたりして楽しんでいたが、<br>
+ついにというか今更というか自宅用に買ってしまった。<br>
+ついでにという感じで、お金を注ぎ込んで、IkaLogを楽しめる環境も作った。</p></p>
+
+<p>IkaLogあるととても楽しい。</p>
+
+<p>IkaLog環境はほぼ下記ブログを参考にしたので、詳しいことはかかないが、<br>
+全体図やハマったポイントなどを中心にまとめておく。</p>
+
+<p><a href="http://uriku.hatenablog.com/entry/2015/12/05/134411" target="_blank">雑記：Mac + IkaLog + stat.inkで戦績管理 - 新人SEの学習記録</a></p>
+
+<h1>完成後写真</h1>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160625/20160625112118.png" alt="f:id:mosuke5:20160625112118p:plain" title="f:id:mosuke5:20160625112118p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<h1>図にしてわかりやすくすると</h1>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160625/20160625112128.png" alt="f:id:mosuke5:20160625112128p:plain" title="f:id:mosuke5:20160625112128p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<h1>突然画面が映らなくなることが起きた！！</h1>
+
+<p>ゲームを楽しんでいた時突然、ディスプレーに画面が映らなくなることが度々あった。<br>
+ケーブルを抜き差ししても直らない。<br>
+ただ時間が経つと映るようになる・・・</p>
+
+<p>原因が最初わからなかったのだが、<br>
+どうやら<a class="keyword" href="http://d.hatena.ne.jp/keyword/HDMI">HDMI</a>スプリッターの電源供給が追いつかなくなった時になっていた。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/HDMI">HDMI</a>スプリッターは<a class="keyword" href="http://d.hatena.ne.jp/keyword/HDMI">HDMI</a>からある程度給電することができるので、はじめはそのまま利用していた。<br>
+だが、IkaLogを回し始めるとどうやら給電が追いつかなくなるようであった。</p>
+
+<p>説明書にも下記のように書いてあって、「あっ」って感じだった</p>
+
+<blockquote><p>入力機器側の電力不足により正常に表示できない場合に使用します。</p></blockquote>
+
+<p>USB経由で別途電源供給をするようになってから事象が発生しなくなった！</p>
+
+<p><p>※画面が映らなくなってガチマッチ何度負けたことか・・・</p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">04 Jun 2016, 18:01</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/06/04/180122/" class="post-title">Nginxの仕組みについて入門</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Nginx" href="https://blog.mosuke.tech/categories/nginx">Nginx</a><a class="post-category post-category-webサーバ" href="https://blog.mosuke.tech/categories/web%E3%82%B5%E3%83%BC%E3%83%90">webサーバ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>普段Nginxを使ってはいるものの、その仕組やなぜNignxを使うべきなのかというところがあまりわかっていなかったので、
+改めてNginxを入門しその仕組などについて調べてみた。<br>
+勉強不足もあって、間違ってることもあるかもしれないがその際は教えて下さい。</p></p>
+
+<h1>1. C10K問題</h1>
+
+<p>まず、Nginxを理解する上でC10K問題について知る必要がある。<br>
+C10K問題とは下記の問題のことだ。</p>
+
+<blockquote><p>ハードウェアの性能上は問題がなくても、クライアント数があまりにも多くなるとサーバがパンクする問題のこと。
+C は「Client（クライアント）」の頭文字、10K は「1 万台」を意味する。「クライアント 1 万台問題」ともいわれる。<br>
+（<a href="http://d.hatena.ne.jp/keyword/C10K%20%CC%E4%C2%EA">C10K 問題とは - はてなキーワード</a> より引用）</p></blockquote>
+
+<h1>2. 従来のWebサーバの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3">アーキテクチャ</a>
+</h1>
+
+<h1>prefork</h1>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Apache">Apache</a>のデフォルトの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3">アーキテクチャ</a>などで採用されている。<br>
+特徴としては、１リクエストに対して１プロセスが処理する。<br>
+すなわち同時接続が 1000であれば 1000個のプロセスが必要となる。</p>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604171531.png" alt="f:id:mosuke5:20160604171531p:plain" title="f:id:mosuke5:20160604171531p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<h1>worker</h1>
+
+<p>リクエストはスレッドが処理する。<br>
+スレッドは１プロセスのなかで複数立ち上げることができる。<br>
+プロセス数は少なくて済むが、同時接続が1000であれば1000個のスレッドが必要となる。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/Apache">Apache</a>で指定可能な<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3">アーキテクチャ</a>の１つ。</p>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604171542.png" alt="f:id:mosuke5:20160604171542p:plain" title="f:id:mosuke5:20160604171542p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<p>いずれにしても、1000の同時接続があれば、1000のプロセスやスレッドが必要ということだ。<br>
+プロセス/スレッド数が多くなってくると「<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1">コンテキストスイッチ</a>」が多く発生し、処理が遅くなってしまう。</p>
+
+<h3>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1">コンテキストスイッチ</a>とは</h3>
+
+<blockquote><p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1">コンテキストスイッチ</a>とは、コンピュータの処理装置（CPU）が現在実行している処理の流れ（プロセス、スレッド）を一時停止し、別のものに切り替えて実行を再開すること。<br>
+（<a href="http://e-words.jp/w/%E3%82%B3%E3%83%B3%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81.html">コンテキストスイッチとは｜コンテキストスイッチング｜context switch - 意味/定義 ： IT用語辞典</a> より引用）</p></blockquote>
+
+<h1>3. Nginxの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3">アーキテクチャ</a>
+</h1>
+
+<p>Nginxが<a class="keyword" href="http://d.hatena.ne.jp/keyword/C10K%20%CC%E4%C2%EA">C10K 問題</a>を解決するために開発されたともいわれている。<br>
+上記のような課題を解決するような<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3">アーキテクチャ</a>を採用している。</p>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604171559.png" alt="f:id:mosuke5:20160604171559p:plain" title="f:id:mosuke5:20160604171559p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<p>ワーカプロセスがリクエストを処理する。<br>
+前述のpreforkやworkerと決定的に違うところは、１つのワーカプロセスが複数のリクエストを処理するということだ。</p>
+
+<p>また、マスタープロセスはワーカプロセスの立ち上げや、制御、管理などが主な仕事。<br>
+Nginxを終了あるいは再起動、設定ファイルを再読み込みして変更を反映するなど。</p>
+
+<p>下記のような仕組みがNginxの高速化（C10K問題対応）を可能としている。</p>
+
+<h1>シングルスレッド</h1>
+
+<p>接続ごとにプロセスやスレッドを立ち上げていては、C10K問題に対応できない。<br>
+そこで、Nginxは１つのスレッドで処理を行うようにしている。<br>
+それにより、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1">コンテキストスイッチ</a>と呼ばれるCPUの切り替え処理が発生しない。<br>
+正確に言うと、完全に１スレッドで処理するわけではなく図にあるようにワーカプロセス自体はマルチプロセス化できる。</p>
+
+<h1>イベント駆動</h1>
+
+<p>通常のプログラムは上から書かれた順に実行されますよね。<br>
+イベ ント駆動で動作するプログラムは何かしらのイベントが発生するまで待機し、発生したイベントの種類に応じて実行される。<br>
+ブラウザ上の<a class="keyword" href="http://d.hatena.ne.jp/keyword/JavaScript">JavaScript</a>の動きをイメージするとわかりやすいと思う。</p>
+
+<h1>非同期処理</h1>
+
+<p>一般的なwebサーバでは同期処理を行う。
+つまり、複数のリクエストがあったときに順番に処理していく。<br>
+そのため、１つのリクエストが遅いとそれに引きづられてあとのリクエストも遅くなる。<br>
+非同期処理では、リクエストがきたら他のリクエストの状況に関わらず処理を行う。</p>
+
+<h4>同期処理</h4>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604173212.png" alt="f:id:mosuke5:20160604173212p:plain" title="f:id:mosuke5:20160604173212p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<h4>非同期処理</h4>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604173226.png" alt="f:id:mosuke5:20160604173226p:plain" title="f:id:mosuke5:20160604173226p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<h1>向いていること / 向いていないこと</h1>
+
+<p>Nginxではイベント駆動で非同期的なIO処理によって、リクエストを完全に処理することを待たずに次から次へと処理を受け付けていきます。<br>
+そのため、１処理に時間のかかるものをNginx自身で行おうとするとキューがどんどん溜まってしまいます。<br>
+そのため、一般にアプリケーションの実行やデータベース処理などは向いていません。<br>
+一方で、軽量な静的データの配信やリバースプロキシなどに向いています。</p>
+
+<p>Nginxは、静的データの配信や、プロキシなどに特化させ、アプリケーションの実行などは別途<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%B5%A1%BC%A5%D0">アプリケーションサーバ</a>等で行わせることで有効活用できます。</p>
+
+<h2>向いていること</h2>
+
+<ul>
+<li>軽量データの大量配信</li>
+<li>ディスクI/Oの発生しないキャッシュ</li>
+<li>リバースプロキシ</li>
+<li>ロードバランサ</li>
+</ul>
+
+<h2>向いていないこと</h2>
+
+<ul>
+<li>アプリケーション実行</li>
+<li>データベース処理</li>
+<li>動画などの重たいデータの配信</li>
+</ul>
+
+<h1>4. 最後に</h1>
+
+<p>NginxやWebサーバについてより理解を深めるためには、<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/UNIX">UNIX</a>のプロセスやネットワーク<a class="keyword" href="http://d.hatena.ne.jp/keyword/API">API</a>についての知識が足りないと感じた。。。</p>
+
+<p>というわけでこれを買ってみたが、978ページもあってとりあえず挫折＼(^o^)／</p>
+
+<p></p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/4894712059/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/213B9PVJD1L._SL160_.jpg" class="hatena-asin-detail-image" alt="UNIXネットワークプログラミング〈Vol.1〉ネットワークAPI:ソケットとXTI" title="UNIXネットワークプログラミング〈Vol.1〉ネットワークAPI:ソケットとXTI"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/4894712059/hatena-blog-22/">UNIXネットワークプログラミング〈Vol.1〉ネットワークAPI:ソケットとXTI</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">作者:</span> W.リチャードスティーヴンス,W.Richard Stevens,篠田陽一</li>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> ピアソンエデュケーション</li>
+<li>
+<span class="hatena-asin-detail-label">発売日:</span> 1999/07</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> 単行本</li>
+<li>
+<span class="hatena-asin-detail-label">購入</span>: 8人 <span class="hatena-asin-detail-label">クリック</span>: 151回</li>
+<li><a href="http://d.hatena.ne.jp/asin/4894712059/hatena-blog-22" target="_blank">この商品を含むブログ (37件) を見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+
+<p>まずはこれからはじめようと思う。。。</p>
+
+<p><iframe src="//hatenablog-parts.com/embed?url=http%3A%2F%2Ftatsu-zine.com%2Fbooks%2Fnaruhounix" title="なるほどUnixプロセス ― Rubyで学ぶUnixの基礎" class="embed-card embed-webcard" scrolling="no" frameborder="0" style="display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;"></iframe><cite class="hatena-citation"><a href="http://tatsu-zine.com/books/naruhounix">tatsu-zine.com</a></cite></p>
+
+<h1>参考文献</h1>
+
+<ul>
+<li><a href="http://gihyo.jp/magazine/SD/archive/2014/201407">SoftwareDesign 2015年7月号</a></li>
+<li><a href="http://www.amazon.co.jp/nginx%E5%AE%9F%E8%B7%B5%E5%85%A5%E9%96%80-WEB-DB-PRESS-plus-%E4%B9%85%E4%BF%9D/dp/4774178667">Nginx実践入門</a></li>
+<li><a href="http://www.amazon.co.jp/24%E6%99%82%E9%96%93365%E6%97%A5-%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E3%82%92%E6%94%AF%E3%81%88%E3%82%8B%E6%8A%80%E8%A1%93-%E2%80%BE%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%A9%E3%83%93%E3%83%AA%E3%83%86%E3%82%A3%E3%80%81%E3%83%8F%E3%82%A4%E3%83%91%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%B3%E3%82%B9%E3%80%81%E7%9C%81%E5%8A%9B%E9%81%8B%E7%94%A8-PRESS-plus%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA/dp/4774135666/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1465030268&amp;sr=1-1&amp;keywords=%E3%82%B5%E3%83%BC%E3%83%90%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E3%82%92%E6%94%AF%E3%81%88%E3%82%8B">[サーバインフラを支える技術](https://gihyo.jp/magazine/wdpress/plus/978-4-7741-3566-3)</a></li>
+<li><a href="http://blog.yuuk.io/entry/2015-webserver-architecture">2015年Webサーバアーキテクチャ序論 - ゆううきブログ</a></li>
+</ul>
+
+<p></body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">15 Apr 2016, 00:20</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/04/15/002004/" class="post-title">今度こそ入門するtmux</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-tmux" href="https://blog.mosuke.tech/categories/tmux">tmux</a><a class="post-category post-category-入門" href="https://blog.mosuke.tech/categories/%E5%85%A5%E9%96%80">入門</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>tmuxの入門は何度目だろうか…<br>
+SoftwareDesignの2015年7月号を見ながら、何度目かの入門をしたのでメモする。<br>
+ブログに書いたので、これで運用にのりそうだ。</p></p>
+
+<h1>tmuxってなに？</h1>
+
+<p>公式ページ(<a href="http://tmux.github.io/">http://tmux.github.io/</a>)から引用すると。</p>
+
+<blockquote><p>tmux is a terminal multiplexer. What is a terminal multiplexer? It <a class="keyword" href="http://d.hatena.ne.jp/keyword/lets">lets</a> you switch easily between several programs in one terminal, detach them (they keep running in the background) and reattach them to a different terminal. And do a lot more.<br>
+（訳）tmuxはターミナルマルチプレクサです。ターミナルマルチプレクサは複数のプログラムを容易に1つのターミナル上で切り替えられるようにします。またそれらのプログラムをバックグラウンドで動かしながらデタッチしたり、別のターミナルにアタッチすることができます。さらにいろいろなことができます。</p></blockquote>
+
+<h1>tmuxを使ってみる</h1>
+
+<h1>インストール</h1>
+
+<p>今回<a class="keyword" href="http://d.hatena.ne.jp/keyword/Mac">Mac</a>の環境で行っています。<br>
+今日時点ではバージョン2.2まででていますが、<a class="keyword" href="http://d.hatena.ne.jp/keyword/brew">brew</a>では2.1がインストールされました。</p>
+
+<pre><code>$ brew install tmux
+$ tmux -V
+tmux 2.1 
+
+</code></pre>
+
+<h1>起動</h1>
+
+<p><code>$ tmux</code>と入力すると、tmuxが起動し<code>$ exit</code>で抜けることができます。<br>
+これから説明していきますが、tmuxの機能を利用するときプレフィックスキーを入力する必要があります。<br>
+デフォルトではプレフィックスキーは<code>Ctrl-b</code>になっています。</p>
+
+<h1>ウィンドウの作成、切り替え</h1>
+
+<p>１つのtmuxの中にウィンドウ（タブ機能と考えてください）を作って切り替えたりします。<br>
+<code>Ctrl-b</code>+<code>c</code>でウィンドウを作成できます。<br>
+ウィンドウを作成するとターミナルの下部分（ステータスバー）に表示されます。<br>
+*印があるのがいまいるウィンドウです。</p>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160414/20160414233836.png" alt="f:id:mosuke5:20160414233836p:plain" title="f:id:mosuke5:20160414233836p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<h1>ウィンドウ分割</h1>
+
+<p>ウィンドウの分割もできます。開発するときに便利ですよね！<br>
+分割された画面をペインと言います。<br>
+<code>Ctrl-b</code>+<code>%</code>で縦に分割、<code>Ctrl-b</code>+<code>"</code>で横に分割できます。<br>
+ペイン間の移動は<code>Ctrl-b</code>+<code>o</code>。</p>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160414/20160414230041.png" alt="f:id:mosuke5:20160414230041p:plain" title="f:id:mosuke5:20160414230041p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<h1>なにが嬉しいの？</h1>
+
+<p>まてまて、タブ機能もウィンドウ分割もiTerm2で全然できるよ？<br>
+ほら！？
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160414/20160414230301.png" alt="f:id:mosuke5:20160414230301p:plain" title="f:id:mosuke5:20160414230301p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<p>tmuxのいいところはデタッチとアタッチ機能やカスタマイズ性の高さだと思う。<br>
+カスタマイズ性についてはまだそんなにわかってませんが。。。</p>
+
+<h1>デタッチとアタッチ</h1>
+
+<p>tmuxはターミナルを仮想化します。その威力を発揮するのがデタッチとアタッチ機能です。<br>
+tmuxを起動した状態で<code>Ctrl-b</code>+<code>d</code>を押してみよう。<br>
+そうすると下のステータスバーも消え、元のターミナルに戻ってきたと思う。<br>
+これをデタッチといい、tmuxが終了したわけではない。</p>
+
+<p>プロセスを確認すると、tmuxがまだ存在してることがわかる。</p>
+
+<pre><code>$ ps -ef | grep tmux
+  501 16038     1   0  9:26PM ??         0:02.26 tmux
+  501 17800 13345   0 11:53PM ttys005    0:00.00 grep tmux 
+</code></pre>
+
+<p><code>tmux ls</code>で現在のtmuxのセッションの一覧がみれます。</p>
+
+<pre><code>$ tmux ls
+0: 1 windows (created Thu Apr 14 21:26:19 2016) [129x32] 
+
+</code></pre>
+
+<p>ではアタッチしてみよう。下記で元のtmuxに戻ってくるはずです。</p>
+
+<pre><code>$ tmux attach 
+</code></pre>
+
+<p>デタッチしている間もバックグラウンドでプログラムは動き続けています。<br>
+試しに、tmux上でvmstatなどを打ってデタッチしてアタッチすると動き続けていることがわかると思います。</p>
+
+<h1>pstree見るといい</h1>
+
+<p>tmuxの概念を理解するにはpstreeをみるといい。<br>
+tmuxを使わずにpstreeコマンドを打つと、<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>のプロセスの下でpstreeが動いているのがわかる。</p>
+
+<pre><code>$ pstree -p
+systemd(1)
+    ├─sshd(13589)─┬─sshd(15066)───sshd(15068)───bash(15069)───pstree(15115) 
+
+</code></pre>
+
+<p>一方、tmuxを起動し、tmux上でpstreeを実行すると、<a class="keyword" href="http://d.hatena.ne.jp/keyword/sshd">sshd</a>のプロセスの下にはtmuxが動いており、<br>
+pstreeコマンドはtmuxプロセスの下で動いている。</p>
+
+<pre><code>$ pstree -p
+systemd(1)
+    ├─sshd(13589)─┬─sshd(15066)───sshd(15068)───bash(15069)───tmux(15146)
+    └─tmux(15148)───bash(15149)───pstree(15168) 
+</code></pre>
+
+<p>なにがいいたいかというと、tmuxの上で動かすプロセスは<a class="keyword" href="http://d.hatena.ne.jp/keyword/sshd">sshd</a>とは別プロセスで動いているということ。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>が切れても動作し続けるとはまあそういうことです。</p>
+
+<h1>カスタマイズ</h1>
+
+<p>tmuxはカスタマイズ性に優れます（ようです）。<code>.tmux.conf</code>を修正することでカスタマイズ可能です。<br>
+今回は入門ということで、よく使いそうな基本設定だけしたが、これだけでも相当便利でした。</p>
+
+<ul>
+<li>プレフィックスキーを<code>Ctrl-t</code>とする</li>
+<li>ペインのサイズを<a class="keyword" href="http://d.hatena.ne.jp/keyword/vim">vim</a>の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AD%A1%BC%A5%D0%A5%A4%A5%F3%A5%C9">キーバインド</a>で調整できるようにする</li>
+<li>ウィンドウの分割を<code>|</code>と<code>-</code>でできるようにする</li>
+</ul>
+
+<pre><code># プレフィックスキー
+unbind C-b
+set-option -g prefix C-t
+
+# paneのサイズ変更（Vimerにはかかせない）
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
+
+# window分割（わかりやすくていいね！）
+bind | split-window -h
+bind - split-window -v 
+</code></pre>
+
+<p><p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Vim">Vim</a>の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AD%A1%BC%A5%D0%A5%A4%A5%F3%A5%C9">キーバインド</a>でペインのサイズ自由自在！
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160415/20160415000811.gif" alt="f:id:mosuke5:20160415000811g:plain" title="f:id:mosuke5:20160415000811g:plain" class="hatena-fotolife" itemprop="image"></span></p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">28 Mar 2016, 18:16</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/03/28/181636/" class="post-title">HerokuをRailsアプリのステージング環境として使う</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Rails" href="https://blog.mosuke.tech/categories/rails">Rails</a><a class="post-category post-category-heroku" href="https://blog.mosuke.tech/categories/heroku">heroku</a><a class="post-category post-category-ステージング" href="https://blog.mosuke.tech/categories/%E3%82%B9%E3%83%86%E3%83%BC%E3%82%B8%E3%83%B3%E3%82%B0">ステージング</a><a class="post-category post-category-staging" href="https://blog.mosuke.tech/categories/staging">staging</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>趣味で作っているアプリ(<a class="keyword" href="http://d.hatena.ne.jp/keyword/Rails">Rails</a>)があるのだが、はじめHerokuで運用しようと検討していたが、 <br>
+データ量が多いためすぐにHobbyプランでは対応できなくなってしまった。<br>
+仕方ないので、別のアプリで持っている<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPS">VPS</a>をProduction環境とすることにしたのだが、<br>
+せっかくなのでherokuもうまく使いたいなーと思ってステージング環境として使うことにした。</p></p>
+
+<p>そのときにやったことをメモする。</p>
+
+<h1>Staging環境の設定を作る</h1>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Rails">Rails</a>ではデフォルトではdevelopment, test, productionの環境を持っている。<br>
+そこに今回、stagingという環境を追加した。<br>
+そして、herokuではデフォルトではproductionを利用するようになっているのでstagingに切り替えるだけ。</p>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Rails">Rails</a>側はstaging環境追加。</p>
+
+<pre><code>$ vim config/database.yml
+# 下記を追加した
+staging:
+  &lt;&lt;: *default
+  adapter: postgresql
+  encoding: unicode
+  database:
+  pool: 5
+  username:
+  password:
+
+$ vim config/enviroments/staging.rb
+# 基本的にはproduction.rbをコピーし、必要に応じて設定を変更
+
+$ vim config/secrets.yml
+# 必要に応じてstagingを追加 
+</code></pre>
+
+<p>heroku側はステージングへの切り替え。</p>
+
+<pre><code>$ heroku config --app app-name    # デフォではproductionになってる
+RAILS_ENV:                production
+$ heroku config:set RAILS_ENV=staging --app app-name
+$ heroku config --app app-name
+RAILS_ENV:                staging 
+
+</code></pre>
+
+<h1><a class="keyword" href="http://d.hatena.ne.jp/keyword/Basic%C7%A7%BE%DA">Basic認証</a></h1>
+
+<p>ステージング環境なので、外部から簡単にアクセス出来ないように<a class="keyword" href="http://d.hatena.ne.jp/keyword/Basic%C7%A7%BE%DA">Basic認証</a>をかけた。<br>
+いくつかやり方があると思うが、<code>app/controllers/application_controller.rb</code>に設定を追加した。<br>
+ユーザ名とパスワードをベタ書きだと<a class="keyword" href="http://d.hatena.ne.jp/keyword/Github">Github</a>に上げてる場合は丸見えになってしまうので<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B4%C4%B6%AD%CA%D1%BF%F4">環境変数</a>でやりましょう。</p>
+
+<pre><code class="language-ruby">http_basic_authenticate_with :name =&gt; ENV['BASIC_AUTH_USERNAME'], :password =&gt; ENV['BASIC_AUTH_PASSWORD'] if Rails.env == &quot;staging&quot;
+</code></pre>
+
+<p>heroku側では<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B4%C4%B6%AD%CA%D1%BF%F4">環境変数</a>を設定してあげる。</p>
+
+<pre><code>$ heroku config:set BASIC_AUTH_USERNAME=&quot;xxxxx&quot; BASIC_AUTH_PASSWORD=&quot;xxxxx&quot; --app app-name
+$ heroku config --app app-name
+BASIC_AUTH_PASSWORD:      xxxxx
+BASIC_AUTH_USERNAME:      xxxxx 
+</code></pre>
+
+<h1>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/Github">Github</a>連携で自動デプロイ</h1>
+
+<p>今更ながら<a class="keyword" href="http://d.hatena.ne.jp/keyword/Github">Github</a>と連携した自動デプロイ機能があることを知った…<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/Github">Github</a>へ<code>git push origin master</code>すればheroku側にも反映される機能だ。<br>
+昔使った時には<code>git push origin master</code>と<code>git push heroku master</code>と２回コマンド打ってたのでめんどいなーと思ってた。<br>
+デプロイが楽なのでステージング環境としてはほんとに優秀だと思う。</p>
+
+<p><p><a href="http://kayakuguri.github.io/blog/2015/02/10/heroku-github-sync/">[heroku]githubから自動でherokuにデプロイ - KayaMemo</a></p>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+                
+                <h1 class="content-subhead">19 Mar 2016, 23:24</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/03/19/232437/" class="post-title">Github Pagesを今更作った話と、独自ドメイン適応時の通信のこと</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-github" href="https://blog.mosuke.tech/categories/github">github</a><a class="post-category post-category-github pages" href="https://blog.mosuke.tech/categories/github-pages">github pages</a><a class="post-category post-category-CDN" href="https://blog.mosuke.tech/categories/cdn">CDN</a><a class="post-category post-category-カスタムドメイン" href="https://blog.mosuke.tech/categories/%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3">カスタムドメイン</a><a class="post-category post-category-独自ドメイン" href="https://blog.mosuke.tech/categories/%E7%8B%AC%E8%87%AA%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3">独自ドメイン</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><body>
+<p>今更ながら<a class="keyword" href="http://d.hatena.ne.jp/keyword/github">github</a>ページでプロフィールサイトを作った。<br>
+(もう少しデザインブラッシュアップしたい…)</p></p>
+
+<p><a href="http://mosuke.tech/">mosuke tech</a></p>
+
+<p>また、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C6%C8%BC%AB%A5%C9%A5%E1%A5%A4%A5%F3">独自ドメイン</a>（カスタム<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3">ドメイン</a>）の設定やその仕組みをおっている時に、<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C6%C8%BC%AB%A5%C9%A5%E1%A5%A4%A5%F3">独自ドメイン</a>適応時の通信について面白いことがわかったのでかく。</p>
+
+<h1>求めていたもの</h1>
+
+<ul>
+<li>ブログとか作ったプロダクトをまとめたかった</li>
+<li>極力シンプルでメンテしやすいものがよかった</li>
+<li>でもレスポンシブなデザインがよかった</li>
+</ul>
+
+<h1>どのようにつくったか</h1>
+
+<p>上の条件を満たすために以下の２パターンのどっちで作ろうか迷った。</p>
+
+<ul>
+<li>Jekyllなどを使いテンプレートを使って作る</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D5%A5%EC%A1%BC%A5%E0%A5%EF%A1%BC%A5%AF">フレームワーク</a>のみ利用し、あとは自分で作る</li>
+</ul>
+
+<p>１ページだけのシンプルなプロフィールサイトがよかったので、<br>
+Jekyllとか複雑なものは利用したくないと考えた。</p>
+
+<p>また、<a class="keyword" href="http://d.hatena.ne.jp/keyword/CSS">CSS</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D5%A5%EC%A1%BC%A5%E0%A5%EF%A1%BC%A5%AF">フレームワーク</a>だが、いつもよくTwitterBootstrapを使っているので、<br>
+それ以外のものでやってみようと考えた。</p>
+
+<p>その結果、行き着いたのが<a href="http://getskeleton.com/">Skeleton</a>だった。<br>
+Skeletonは<b>"A dead simple, responsive boilerplate."</b>をうたっているものでよかった。</p>
+
+<h1>カスタム<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3">ドメイン</a>の設定</h1>
+
+<p>デフォルトだと<code>mosuke5.github.io</code>のURLが利用できる。<br>
+しかし、この前<code>mosuke.tech</code>といういい感じの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3">ドメイン</a>を安く手に入れてたので、カスタム<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3">ドメイン</a>の設定を行うことにした。</p>
+
+<p>カスタム<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3">ドメイン</a>の設定方法は以下のみだ。</p>
+
+<ol>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA">レポジトリ</a>にCNAMEファイルを作成する <code>$ echo mosuke.tech &gt; CNAME</code>
+</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/DNS">DNS</a>の設定：Aレコードに<code>192.30.252.153</code>と<code>192.30.252.154</code>を追加</li>
+</ol>
+
+<p>(本家ドキュメント)<br>
+<a href="https://help.github.com/articles/setting-up-an-apex-domain/">Setting up an apex domain - User Documentation</a></p>
+
+<h1>カスタム<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3">ドメイン</a>設定時の通信について</h1>
+
+<p>カスタム<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3">ドメイン</a>がどのような仕組みで実現されているのか気になって、<br>
+いろいろと調べている時にあることに気づいた。</p>
+
+<p>Aレコードに登録した<a class="keyword" href="http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9">IPアドレス</a>を逆引きで調べると、pages.<a class="keyword" href="http://d.hatena.ne.jp/keyword/github">github</a>.comが出てくるが、<br>
+pages.<a class="keyword" href="http://d.hatena.ne.jp/keyword/github">github</a>.comをdigすると違う結果が返ってくる。</p>
+
+<pre><code>$ dig -x 192.30.252.153
+;; ANSWER SECTION:
+153.252.30.192.in-addr.arpa. 3600 IN    PTR pages.github.com.
+
+$ dig pages.github.com
+;; ANSWER SECTION:
+pages.github.com.   900 IN  CNAME   github.map.fastly.net.
+github.map.fastly.net.  23  IN  A   103.245.222.133[f:id:mosuke5:20160319233634j:plain] 
+
+</code></pre>
+
+<p>後者のほうでは、fastly（CDN）の結果が返ってくる。<br>
+つまり、カスタム<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3">ドメイン</a>を設定しなければ、通常はCDN経由で通信されるが、<br>
+カスタム<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3">ドメイン</a>を割り当てるとCDNを利用できないのではないかということがわかった。</p>
+
+<p>実際に<a class="keyword" href="http://d.hatena.ne.jp/keyword/Ping">Ping</a>で確かめてみる。明らかに速度差がでている。</p>
+
+<pre><code>% ping mosuke5.github.io
+PING github.map.fastly.net (103.245.222.133): 56 data bytes
+64 bytes from 103.245.222.133: icmp_seq=0 ttl=58 time=18.485 ms
+64 bytes from 103.245.222.133: icmp_seq=1 ttl=58 time=19.108 ms
+64 bytes from 103.245.222.133: icmp_seq=2 ttl=58 time=18.709 ms
+64 bytes from 103.245.222.133: icmp_seq=3 ttl=58 time=19.161 ms
+64 bytes from 103.245.222.133: icmp_seq=4 ttl=58 time=20.574 ms
+
+
+% ping mosuke.tech
+PING mosuke.tech (192.30.252.154): 56 data bytes
+64 bytes from 192.30.252.154: icmp_seq=0 ttl=52 time=203.329 ms
+64 bytes from 192.30.252.154: icmp_seq=1 ttl=52 time=205.535 ms
+64 bytes from 192.30.252.154: icmp_seq=2 ttl=52 time=203.178 ms
+64 bytes from 192.30.252.154: icmp_seq=3 ttl=52 time=201.345 ms
+64 bytes from 192.30.252.154: icmp_seq=4 ttl=52 time=205.125 ms 
+</code></pre>
+
+<p>また、それぞれの<a class="keyword" href="http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9">IPアドレス</a>から場所も調べてみた。<br>
+CDN利用時がオーストラリア、そうでないとアメリカ西海岸ということがわかった。
+<iframe src="//hatenablog-parts.com/embed?url=http%3A%2F%2Fwww.iputilities.net%2F" title="IPアドレス所在地検索 IP Geolocation Search" class="embed-card embed-webcard" scrolling="no" frameborder="0" style="display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;"></iframe><cite class="hatena-citation"><a href="http://www.iputilities.net/">www.iputilities.net</a></cite></p>
+
+<p>以上のことをまとめつつ、地図に表した。
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160319/20160319233634.jpg" alt="f:id:mosuke5:20160319233634j:plain" title="f:id:mosuke5:20160319233634j:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<p>オーストラリアとアメリカ西海岸だとそんなに直線距離は変わらない気もするけど、<br>
+CDNの力なのかルート的な問題ないのか<a class="keyword" href="http://d.hatena.ne.jp/keyword/Ping">Ping</a>の応答速度は10倍ほどの差があった。</p>
+
+<p>カスタム<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3">ドメイン</a>を使うと遅くなる！？（まあ全然いいんだけど…）</p>
+
+<h1>最後に</h1>
+
+<p>CDNの仕組みとかいまいち忘れてしまったので、アカマイ本を読み返したい。</p>
+
+<p><p></p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00MIFE3BC/hatena-blog-22/"><img src="http://ecx.images-amazon.com/images/I/51T4L8K2yLL._SL160_.jpg" class="hatena-asin-detail-image" alt="アカマイ　知られざるインターネットの巨人&lt;アカマイ&gt; (角川ＥＰＵＢ選書)" title="アカマイ　知られざるインターネットの巨人&lt;アカマイ&gt; (角川ＥＰＵＢ選書)"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00MIFE3BC/hatena-blog-22/">アカマイ　知られざるインターネットの巨人 (角川ＥＰＵＢ選書)</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">作者:</span> 小川晃通</li>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> <a class="keyword" href="http://d.hatena.ne.jp/keyword/KADOKAWA">KADOKAWA</a> / <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%E1%A5%C7%A5%A3%A5%A2%A5%D5%A5%A1%A5%AF%A5%C8%A5%EA%A1%BC">メディアファクトリー</a>
+</li>
+<li>
+<span class="hatena-asin-detail-label">発売日:</span> 2014/08/11</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> <a class="keyword" href="http://d.hatena.ne.jp/keyword/Kindle">Kindle</a>版</li>
+<li><a href="http://d.hatena.ne.jp/asin/B00MIFE3BC/hatena-blog-22" target="_blank">この商品を含むブログ (5件) を見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+</body></p>
+
+                    </div>
+                </section>
+                
+                
+            </div>
+            
+<div class="pagination">
+  <nav role="pagination" class="post-list-pagination">
+      
+      <a href="/" class="post-list-pagination-item pure-button post-list-pagination-item-prev">
+        <i class="fa fa-angle-double-left"></i>&nbsp;Newer
+      </a>
+      
+    <span class="post-list-pagination-item post-list-pagination-item-current">Page 2 of 8</span>
+    
+      <a href="/page/3/" class="post-list-pagination-item pure-button post-list-pagination-item-next">
+        Older&nbsp;<i class="fa fa-angle-double-right"></i>
+      </a>
+    
+  </nav>
+</div>
+
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

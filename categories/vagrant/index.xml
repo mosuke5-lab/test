@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vagrant on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/vagrant/</link>
+    <description>Recent content in Vagrant on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 25 Jan 2016 22:21:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/vagrant/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Vagrant×Ansible環境の３つのスタイルとそのメリット・デメリットについて</title>
+      <link>https://blog.mosuke.tech/entry/2016/01/25/222150/</link>
+      <pubDate>Mon, 25 Jan 2016 22:21:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/01/25/222150/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;×Ansibleで開発環境を作っているみなさんは、
+どんなふうにそれを実現していますか？&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;きっといくつかのやり方、考え方があると思います。&lt;br&gt;
+例えば、ご自身のPCにAnsibleをインストールして&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;の仮想環境にプロビジョニングしているとか。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;で立てた仮想環境にAnsibleを入れて実行するとか。&lt;/p&gt;
+
+&lt;p&gt;本ブログでは下記３つの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;×Ansibleのやり方に注目し、&lt;br&gt;
+そのメリット・デメリットについて自分なりにまとめます。&lt;/p&gt; 
+&lt;ol&gt;
+&lt;li&gt;&lt;b&gt;ホストにAnsibleをインストールして利用する&lt;/b&gt;&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;ゲストにAnsibleをインストールして利用する&lt;/b&gt;&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;Ansible実行用のゲストを作って利用する&lt;/b&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;h1&gt;1. ホストにAnsibleをインストールして利用する&lt;/h1&gt;
+
+&lt;h2&gt;概要&lt;/h2&gt;
+
+&lt;p&gt;1番よくあるやり方だと思う。&lt;br&gt;
+ご自身のPCにAnsibleを入れて&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;で立ち上げたゲストにプロビジョニングを行う。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160125/20160125214934.png&#34; alt=&#34;f:id:mosuke5:20160125214934p:plain:w300&#34; title=&#34;f:id:mosuke5:20160125214934p:plain:w300&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:300px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;メリット&lt;/h2&gt;
+
+&lt;p&gt;なんといっても直感的でシンプル。&lt;br&gt;
+3.との比較になるが、Ansibleを実行する環境を別途用意する必要がないのでホストのリソースにも優しい。&lt;br&gt;
+また、2.との比較でゲストに無駄なものが入らない点でよい。&lt;/p&gt;
+
+&lt;h2&gt;デメリット&lt;/h2&gt;
+
+&lt;p&gt;ただ、そもそもwimdowsユーザはホストにAnsibleをインストールすることはできない。&lt;br&gt;
+つまり、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4%BF%CD&#34;&gt;複数人&lt;/a&gt;での開発をしていて、人によって端末が異なる場合には向いていない。&lt;br&gt;
+個人の端末の設定などにも大きく依存するため、チーム開発向きでないといえる。&lt;/p&gt;
+
+&lt;h1&gt;2. ゲストにAnsibleをインストールして利用する&lt;/h1&gt;
+
+&lt;h2&gt;概要&lt;/h2&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;で立ち上げたゲストの中にAnsibleをインストールし、自身へプロビジョニングするやりかた。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160125/20160125215405.png&#34; alt=&#34;f:id:mosuke5:20160125215405p:plain:w300&#34; title=&#34;f:id:mosuke5:20160125215405p:plain:w300&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:300px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;この方式はshin1x1さんもおすすめしている。&lt;/p&gt;
+&lt;a href=&#34;http://shin1x1.hatenablog.com/embed/ansible_local-provisioner-in-vagrant&#34; target=&#34;_blank&#34;&gt;Vagrant + Ansible で開発環境を作るなら ansible_local プロビジョナがいい！ - Shin x Hatena Blog&lt;/a&gt;
+
+&lt;h2&gt;メリット&lt;/h2&gt;
+
+&lt;p&gt;（詳しくは上のブログを読むといいと思う。）&lt;br&gt;
+1.のデメリットで述べた、端末への依存度をなくすことができる。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/vagrant&#34;&gt;vagrant&lt;/a&gt;の新機能であるansible_localも利用できるのでプロビジョニングが楽だ。&lt;br&gt;
+3.と比べてAnsible実行環境を用意しなくて済む。&lt;/p&gt;
+
+&lt;h2&gt;デメリット&lt;/h2&gt;
+
+&lt;p&gt;メリットだけみると1.の問題点を解決していて最高のようにみえる。&lt;br&gt;
+しかし、ゲストに&lt;b&gt;本来インストールされるべきものでないものがはいる&lt;/b&gt;点は忘れてはいけない。&lt;br&gt;
+Ansibleを使ってプロダクション環境にデプロイするユーザにとっては大きな問題だと思う。&lt;br&gt;
+開発環境とプロダクション環境での差分が広がってしまう。&lt;br&gt;
+また、Ansibleと並行してserverspecを使ってる人も多いと思うが、&lt;br&gt;
+そうなると今度はゲスト側に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;もいれるのか？など様々な疑問が湧いてくる。&lt;/p&gt;
+
+&lt;h1&gt;3. Ansible実行用のゲストを作って利用する&lt;/h1&gt;
+
+&lt;h2&gt;概要&lt;/h2&gt;
+
+&lt;p&gt;Ansible実行用のゲストを&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;で立ち上げて、開発用のゲストへプロビジョニングにする。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160125/20160125215618.png&#34; alt=&#34;f:id:mosuke5:20160125215618p:plain:w300&#34; title=&#34;f:id:mosuke5:20160125215618p:plain:w300&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:300px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;メリット&lt;/h2&gt;
+
+&lt;p&gt;2.のデメリットで述べた、ゲストへの不要なもののインストールを防ぐことが可能。&lt;br&gt;
+例えばserverspecで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;が必要な場合もAnsible実行用のゲストに入れればいい。&lt;br&gt;
+必要なものをインストールしたAnsible実行用のイメージファイルをチーム内で共有すれば端末依存もセットアップの手間も省ける。&lt;/p&gt;
+
+&lt;h2&gt;デメリット&lt;/h2&gt;
+
+&lt;p&gt;なんといっても、ゲストを二つは立ちあげる必要があること。&lt;br&gt;
+これは少し面倒だ。&lt;/p&gt;
+
+&lt;h1&gt;まとめ&lt;/h1&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160125/20160125220823.png&#34; alt=&#34;f:id:mosuke5:20160125220823p:plain:w500&#34; title=&#34;f:id:mosuke5:20160125220823p:plain:w500&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:500px&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;この見解は正直&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;やAnsibleの使いみち、用途によってだいぶ変わると思う。&lt;br&gt;
+なので絶対な評価ではないと思うが、私のいままでの経験上はこのような評価となったので参考にしてもらえればと思う。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>【VPS1台でインフラ勉強】多段SSH設定（おまけ）</title>
+      <link>https://blog.mosuke.tech/entry/2014/11/09/172745/</link>
+      <pubDate>Sun, 09 Nov 2014 17:27:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/11/09/172745/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;VPS1台でインフラ勉強の会で、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;のホストサーバ上に仮想でさらにいつくかのサーバを立てたが、&lt;br&gt;
+仮想のサーバにアクセスするには、ホストサーバにアクセスしてから更に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;をしなければならない。&lt;br&gt;
+これが面倒だったので多段&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;の設定をして、一発で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;接続できるようにした。&lt;/p&gt;
+&lt;p&gt;以下の図で言うと、web10, web11(192.168.33.&lt;sup&gt;10&lt;/sup&gt;&amp;frasl;&lt;sub&gt;11&lt;/sub&gt;)に一発で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;できるようにする。&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141109/20141109170337.png&#34; alt=&#34;f:id:mosuke5:20141109170337p:plain&#34; title=&#34;f:id:mosuke5:20141109170337p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;クライアントPC側に以下の設定をした。&lt;/p&gt;
+```
+$ vim ~/.ssh/config
+host gateway
+    HostName xxxxx.xxx
+    User username&lt;/p&gt;
+
+&lt;p&gt;Host web10
+    HostName 192.168.33.10
+    User vagrant
+    ProxyCommand ssh -W %h:%p gateway&lt;/p&gt;
+
+&lt;p&gt;Host web11
+    HostName 192.168.33.11
+    User vagrant
+    ProxyCommand ssh -W %h:%p gateway&lt;/p&gt;
+
+&lt;p&gt;##これで以下で接続可能
+$ ssh web10
+$ ssh  web11
+```
+&lt;p&gt;簡単でした。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>【VPS1台でインフラ勉強】HAProxyでロードバランサーを構築</title>
+      <link>https://blog.mosuke.tech/entry/2014/11/09/171436/</link>
+      <pubDate>Sun, 09 Nov 2014 17:14:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/11/09/171436/</guid>
+      <description>
+
+&lt;p&gt;&lt;body&gt;
+&lt;p&gt;前回の&lt;a href=&#34;https://blog.mosuke.tech/entry/2014/10/09/230555&#34;&gt;【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築&lt;/a&gt;に続き、同様の環境を用いて、ロードバランサ構築を行った。&lt;br&gt;
+ロードバランサの構築にはHAProxyを利用した。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;1. 環境&lt;/h3&gt;
+    &lt;p&gt;前回同様で、さくら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;の1GBのプラン1台のみ。&lt;br&gt;
+・メモリ：１GB&lt;br&gt;
+・CPU：仮想２コア&lt;br&gt;
+・HDD：100GB&lt;br&gt;
+・OS：CentOS7&lt;br&gt;
+・サーバ仮想化：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;(Utuntu13)&lt;br&gt;
+・ロードバランサ：&lt;a href=&#34;http://www.haproxy.org/&#34;&gt;HAProxy - The Reliable, High Performance TCP/HTTP Load Balancer&lt;/a&gt;&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;2. 構成図&lt;/h3&gt;
+    &lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141109/20141109170337.png&#34; alt=&#34;f:id:mosuke5:20141109170337p:plain&#34; title=&#34;f:id:mosuke5:20141109170337p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;3. ロードバランサの構築&lt;/h3&gt;
+    &lt;p&gt;■ホストサーバ側の設定&lt;/p&gt;
+```
+#HAProxyインストール
+$ sudo yum install haproxy&lt;/p&gt;
+
+&lt;p&gt;#設定はすごく簡単で以下のファイルのみ。実際に
+$ sudo vim /etc/haproxy/haproxy.cfg&lt;/p&gt;
+
+&lt;p&gt;#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/p&gt;
+
+&lt;h1 id=&#34;example-configuration-for-a-possible-web-application-see-the:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;Example configuration for a possible web application.  See the&lt;/h1&gt;
+
+&lt;h1 id=&#34;full-configuration-options-online:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;full configuration options online.&lt;/h1&gt;
+
+&lt;p&gt;#&lt;/p&gt;
+
+&lt;h1 id=&#34;http-haproxy-1wt-eu-download-1-4-doc-configuration-txt:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;&lt;a href=&#34;http://haproxy.1wt.eu/download/1.4/doc/configuration.txt&#34;&gt;http://haproxy.1wt.eu/download/1.4/doc/configuration.txt&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;#
+#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/p&gt;
+
+&lt;p&gt;#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/p&gt;
+
+&lt;h1 id=&#34;global-settings:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;Global settings&lt;/h1&gt;
+
+&lt;p&gt;#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;
+global&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;log         127.0.0.1 local6 debug
+
+chroot      /var/lib/haproxy
+pidfile     /var/run/haproxy.pid
+maxconn     4000
+user        haproxy
+group       haproxy
+daemon
+
+# turn on stats unix socket
+stats socket /var/lib/haproxy/stats
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/p&gt;
+
+&lt;h1 id=&#34;common-defaults-that-all-the-listen-and-backend-sections-will:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;common defaults that all the &amp;lsquo;listen&amp;rsquo; and &amp;lsquo;backend&amp;rsquo; sections will&lt;/h1&gt;
+
+&lt;h1 id=&#34;use-if-not-designated-in-their-block:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;use if not designated in their block&lt;/h1&gt;
+
+&lt;p&gt;#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;
+defaults&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;##ロードバランサの動作モード。tcpにするとL4ロードバランサになる。httpにするとL7ロードバランサ。
+mode                    http
+log                     global
+option              log-health-checks
+option                  httplog
+option                  dontlognull
+
+##ヘルスチェック用のhtmlファイルをWebサーバ側に設置している。設置については後述。
+option httpchk GET /health_check.html HTTP/1.0\r\nUser-agent:\ Proxy-Check
+
+option http-server-close
+option forwardfor       except 127.0.0.0/8
+option                  redispatch
+retries                 3
+timeout http-request    10s
+timeout queue           1m
+timeout connect         10s
+timeout client          1m
+timeout server          1m
+timeout http-keep-alive 10s
+timeout check           10s
+maxconn                 3000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/p&gt;
+
+&lt;h1 id=&#34;main-frontend-which-proxys-to-the-backends:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;main frontend which proxys to the backends&lt;/h1&gt;
+
+&lt;p&gt;#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;
+frontend  main *:80
+    default_backend             hoge&lt;/p&gt;
+
+&lt;p&gt;#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/p&gt;
+
+&lt;h1 id=&#34;round-robin-balancing-between-the-various-backends:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;round robin balancing between the various backends&lt;/h1&gt;
+
+&lt;p&gt;#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;
+backend hoge
+    balance     roundrobin
+    server      web10 192.168.33.10:80 check inter 3000 fall 2 rise 2
+    server      web11 192.168.33.11:80 check inter 3000 fall 2 rise 2&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;L4, L7のロードバランサについては以下参照。&amp;lt;br&amp;gt;
+&amp;lt;a href=&amp;quot;http://www.atmarkit.co.jp/ait/articles/0302/05/news001.html&amp;quot;&amp;gt;ロードバランサの本質（1）：パケットフローから負荷分散の基本を理解する - ＠IT&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;ロードバランサ側でhttpのリクエストを返していないことを意味づけるために&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/apache&amp;quot;&amp;gt;apache&amp;lt;/a&amp;gt;, nginxを停止しておく。&amp;lt;br&amp;gt;
+（特に意味は無いが念押し確認のため）&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ sudo systemctl stop nginx
+$ sudo systemctl stop httpd
+&lt;code&gt;
+&amp;lt;p&amp;gt;HAProxyのログをsyslogに残すように設定する。&amp;lt;br&amp;gt;
+ただしメインのmessageではなく、独自のファイルに書くために以下の設定。&amp;lt;/p&amp;gt;
+&lt;/code&gt;
+##ログの格納場所作成
+$ sudo mkdir /var/log/haproxy&lt;/p&gt;
+
+&lt;p&gt;##syslogの設定変更
+$ vim /etc/rsyslog.d/haproxy.conf
+   $ModLoad imudp
+   $UDPServerRun 514
+   $template Haproxy,&amp;ldquo;%msg%\n&amp;rdquo;
+   local6.* -/var/log/haproxy/haproxy.log;Haproxy&lt;/p&gt;
+
+&lt;p&gt;$ vim /etc/sysconfig/rsyslog
+以下を追加
+SYSLOGD_OPTIONS=&amp;ldquo;-r&amp;rdquo;&lt;/p&gt;
+
+&lt;h2 id=&#34;haproxyの起動:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;haproxyの起動&lt;/h2&gt;
+
+&lt;p&gt;$ sudo systemctl start haproxy&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;&amp;lt;br&amp;gt;
+■Webサーバの設定&amp;lt;br&amp;gt;
+仮想でのWebサーバ構築は省くが、Apache2をインストールしただけである。&amp;lt;br&amp;gt;
+仮想でのサーバ構築は前回を参照。&amp;lt;br&amp;gt;
+&amp;lt;a href=&amp;quot;https://blog.mosuke.tech/entry/2014/10/09/230555&amp;quot;&amp;gt;【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築&amp;lt;/a&amp;gt;&amp;lt;br&amp;gt;
+&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;var-www-html配下にヘルスチェック用のhtml設置:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;/var/www/html配下にヘルスチェック用のhtml設置&lt;/h2&gt;
+
+&lt;p&gt;$ sudo touch health_check.html
+&lt;code&gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;div class=&amp;quot;section&amp;quot;&amp;gt;
+    &amp;lt;h3&amp;gt;4. 動作試験&amp;lt;/h3&amp;gt;
+    &amp;lt;p&amp;gt;ブラウザよりホストサーバへアクセス。&amp;lt;br&amp;gt;
+きちんとロードバランスされていることを確認。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;HAProxy側のログは以下のとおり。&amp;lt;/p&amp;gt;
+&lt;/code&gt;
+$ sudo tail -f /var/log/haproxy/haproxy.conf&lt;/p&gt;
+
+&lt;p&gt;##起動した時。L7のhealt checkが走っている
+Proxy main started.
+Proxy hoge started.
+Health check for server hoge/web10 succeeded, reason: Layer7 check passed, code: 200, info: &amp;ldquo;OK&amp;rdquo;, check duration: 33ms, status: &lt;sup&gt;2&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; UP.
+Health check for server hoge/web11 succeeded, reason: Layer7 check passed, code: 200, info: &amp;ldquo;OK&amp;rdquo;, check duration: 12ms, status: &lt;sup&gt;2&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; UP.&lt;/p&gt;
+
+&lt;p&gt;##webサーバ側でapacheを停止
+Health check for server hoge/web11 failed, reason: Layer7 wrong status, code: 404, info: &amp;ldquo;Not Found&amp;rdquo;, check duration: 13ms, status: &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; UP.
+Health check for server hoge/web11 failed, reason: Layer7 wrong status, code: 404, info: &amp;ldquo;Not Found&amp;rdquo;, check duration: 8ms, status: 0/2 DOWN.&lt;/p&gt;
+
+&lt;p&gt;##webサーバ側でhealth_check.htmlを削除した時も同様に
+Health check for server hoge/web11 failed, reason: Layer7 wrong status, code: 404, info: &amp;ldquo;Not Found&amp;rdquo;, check duration: 13ms, status: &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; UP.
+Health check for server hoge/web11 failed, reason: Layer7 wrong status, code: 404, info: &amp;ldquo;Not Found&amp;rdquo;, check duration: 8ms, status: 0/2 DOWN.&lt;/p&gt;
+
+&lt;p&gt;##webサーバ側でhealth_check.htmlを復活させた時
+Health check for server hoge/web11 succeeded, reason: Layer7 check passed, code: 200, info: &amp;ldquo;OK&amp;rdquo;, check duration: 8ms, status: &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; DOWN.
+Health check for server hoge/web11 succeeded, reason: Layer7 check passed, code: 200, info: &amp;ldquo;OK&amp;rdquo;, check duration: 6ms, status: &lt;sup&gt;2&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; UP.
+Server hoge/web11 is UP. 2 active and 0 backup servers online. 0 sessions requeued, 0 total in queue.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;Webサーバ側の&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/Apache&amp;quot;&amp;gt;Apache&amp;lt;/a&amp;gt;ログを見てみると。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ sudo tail -f /var/log/apache2/access.log&lt;/p&gt;
+
+&lt;p&gt;##ロードバランサからのヘルスチェックが来ていることがわかる。
+192.168.33.1 - - [09/Nov/2014:08:07:43 +0000] &amp;ldquo;GET /health_check.html HTTP/1.0&amp;rdquo; 200 276 &amp;ldquo;-&amp;rdquo; &amp;ldquo;Proxy-Check&amp;rdquo;
+192.168.33.1 - - [09/Nov/2014:08:07:46 +0000] &amp;ldquo;GET /health_check.html HTTP/1.0&amp;rdquo; 200 276 &amp;ldquo;-&amp;rdquo; &amp;ldquo;Proxy-Check&amp;rdquo;
+192.168.33.1 - - [09/Nov/2014:08:07:49 +0000] &amp;ldquo;GET /health_check.html HTTP/1.0&amp;rdquo; 200 276 &amp;ldquo;-&amp;rdquo; &amp;ldquo;Proxy-Check&amp;rdquo;
+192.168.33.1 - - [09/Nov/2014:08:07:52 +0000] &amp;ldquo;GET /health_check.html HTTP/1.0&amp;rdquo; 200 276 &amp;ldquo;-&amp;rdquo; &amp;ldquo;Proxy-Check&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;##Webからのアクセスが来た場合
+##SorceのIPはロードバランサにIPになっているが、UserAgentなど書き込まれていることを確認。
+192.168.33.1 - - [09/Nov/2014:08:10:06 +0000] &amp;ldquo;GET / HTTP/1.1&amp;rdquo; 200 488 &amp;ldquo;-&amp;rdquo; &amp;ldquo;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10) AppleWebKit/600.1.25 (KHTML, like Gecko) Version/8.0 Safari/600.1.25&amp;rdquo;
+```
+&lt;/div&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築</title>
+      <link>https://blog.mosuke.tech/entry/2014/10/09/230555/</link>
+      <pubDate>Thu, 09 Oct 2014 23:05:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/10/09/230555/</guid>
+      <description>
+
+&lt;p&gt;&lt;body&gt;
+&lt;p&gt;ロードバランシングとか&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%B9%A5%BF%A5%EA%A5%F3%A5%B0&#34;&gt;クラスタリング&lt;/a&gt;とかリバースプロキシとか、&lt;br&gt;
+業務でも使っているし、概念とかはわかってるけど、自分で構築したことはやっぱりない。&lt;/p&gt;
+&lt;p&gt;自分で構築してみたいなーと思いつつもあたりまえだけど、サーバやネットワーク機器をそう簡単に調達もできない。&lt;br&gt;
+お金も当然ない。&lt;/p&gt;
+&lt;p&gt;というわけで、さくら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;で仮想化つかってロードバランシングとか&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%B9%A5%BF%A5%EA%A5%F3%A5%B0&#34;&gt;クラスタリング&lt;/a&gt;とかリバースプロキシとか勉強しましょうという「サーバインフラ会」を友人と始めた。&lt;br&gt;
+その第１回目のメモ。&lt;/p&gt;
+&lt;p&gt;第1回 サーバ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4&#34;&gt;複数&lt;/a&gt;台構成、Nginxでリバースプロキシ構築&lt;br&gt;
+第2回 &lt;a href=&#34;https://blog.mosuke.tech/entry/2014/11/09/171436&#34;&gt;HAProxyでロードバランサ構築&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div style=&#34;border: solid 1px #dddddd;&#34;&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;1. 使用した環境&lt;/h2&gt;
+    &lt;p&gt;まず今回利用した環境は以下のとおり。&lt;br&gt;
+さくら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;の1GBのプラン。&lt;br&gt;
+・メモリ：１GB&lt;br&gt;
+・CPU：仮想２コア&lt;br&gt;
+・HDD：100GB&lt;br&gt;
+・OS：CentOS7&lt;br&gt;
+・仮想化：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;&lt;br&gt;
+　→dockerなどもはじめ検討していたが、コンテナ型仮想化だとサーバ感がでないので、よりサーバとして意識できる&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;を採用&lt;/p&gt;
+&lt;p&gt;【参考】&lt;br&gt;
+&lt;a href=&#34;http://vps.sakura.ad.jp/specification.html&#34;&gt;料金・サービス仕様 | VPS（仮想専用サーバ）は「さくらのVPS」&lt;/a&gt;&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;2. 完成イメージ・物理イメージ&lt;/h2&gt;
+    &lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140930/20140930210924.png&#34; alt=&#34;f:id:mosuke5:20140930210924p:plain&#34; title=&#34;f:id:mosuke5:20140930210924p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div style=&#34;border: solid 1px #dddddd;&#34;&gt;&lt;/div&gt;
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140930/20140930210914.png&#34; alt=&#34;f:id:mosuke5:20140930210914p:plain&#34; title=&#34;f:id:mosuke5:20140930210914p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;3. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;でWebサーバ２台分を構築する&lt;/h2&gt;
+    &lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;の詳細な利用方法は公式ドキュメントをみてもらうとするが、セットアップまでのひととおりの流れと注意点のみ記載する。&lt;br&gt;
+&lt;a href=&#34;https://docs.vagrantup.com/v2/&#34;&gt;Vagrant Documentation&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;今回はWebサーバ２台を仮想で実現するので、それぞれweb1, web2とする。&lt;br&gt;
+それぞれのディレクトリを作成。&lt;/p&gt;
+```&lt;/p&gt;
+
+&lt;h2 id=&#34;web1-web2のディレクトリ作成:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;web1, web2のディレクトリ作成&lt;/h2&gt;
+
+&lt;p&gt;$ pwd
+/home/vagrant
+$ mkdir web1
+$ mkdir web2&lt;/p&gt;
+
+&lt;h2 id=&#34;仮想化で利用するosイメージをダウンロード:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;仮想化で利用するOSイメージをダウンロード&lt;/h2&gt;
+
+&lt;p&gt;$ vagrant box add ubuntu1310 ¥
+&lt;a href=&#34;http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box&#34;&gt;http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;web1サーバ構築:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;web1サーバ構築&lt;/h2&gt;
+
+&lt;p&gt;$ cd web1
+$ vagrant init ubuntu1310&lt;/p&gt;
+
+&lt;h2 id=&#34;ほぼほぼデフォルトの設定だが以下２つだけは設定を行った:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;ほぼほぼデフォルトの設定だが以下２つだけは設定を行った。&lt;/h2&gt;
+
+&lt;p&gt;$ vim Vagrantfile&lt;/p&gt;
+
+&lt;h1 id=&#34;1-プライベートアドレスの割り当て:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;(1)プライベートアドレスの割り当て。&lt;/h1&gt;
+
+&lt;p&gt;config.vm.network &amp;ldquo;private_network&amp;rdquo;, ip: &amp;ldquo;192.168.33.10&amp;rdquo;&lt;/p&gt;
+
+&lt;h1 id=&#34;2-1gbしかメモリがないのでこの設定をしないと２つ仮想化するとだいぶ大変なことになりました:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;(2)1GBしかメモリがないのでこの設定をしないと２つ仮想化するとだいぶ大変なことになりました。&lt;/h1&gt;
+
+&lt;p&gt;config.vm.provider &amp;ldquo;virtualbox&amp;rdquo; do |vb|
+     vb.customize [&amp;ldquo;modifyvm&amp;rdquo;, :id, &amp;ldquo;&amp;ndash;memory&amp;rdquo;, &amp;ldquo;128&amp;rdquo;]
+end&lt;/p&gt;
+
+&lt;p&gt;$ vagrant ssh&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;同様にweb2においても同じことを行った。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;また、&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/vagrant&amp;quot;&amp;gt;vagrant&amp;lt;/a&amp;gt;では一般的に対象のディレクトリで&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/vagrant&amp;quot;&amp;gt;vagrant&amp;lt;/a&amp;gt; &amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/ssh&amp;quot;&amp;gt;ssh&amp;lt;/a&amp;gt;を利用してサーバに入るが、&amp;lt;br&amp;gt;
+今回はプライベートアドレスも振ってあるし、物理サーバとしてイメージしているので以下のようにしてサーバにはいるようにした。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ ssh vagrant@192.168.33.10  # web1への接続
+$ ssh vagrant@192.168.33.11  # web2への接続
+&lt;code&gt;
+&amp;lt;p&amp;gt;ホストサーバ側の&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%BF%A1%BC%A5%D5%A5%A7%A5%A4%A5%B9&amp;quot;&amp;gt;インターフェイス&amp;lt;/a&amp;gt;情報をみると。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;cent7なので以下コマンドだがifconfig-aのこと:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;cent7なので以下コマンドだがifconfig -aのこと&lt;/h1&gt;
+
+&lt;p&gt;$ ip a
+(中略)
+5: vboxnet0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UNKNOWN qlen 1000
+    link/ether 0a:00:27:00:00:00 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.33.&lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;24&lt;/sub&gt; brd 192.168.33.255 scope global vboxnet0
+       valid_lft forever preferred_lft forever
+    inet 192.168.56.&lt;sup&gt;101&lt;/sup&gt;&amp;frasl;&lt;sub&gt;24&lt;/sub&gt; brd 192.168.56.255 scope global dynamic vboxnet0
+       valid_lft 839sec preferred_lft 839sec
+    inet6 fe80::800:27ff:fe00:0/64 scope link
+       valid_lft forever preferred_lft forever&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;vboxnet0という仮想の&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%BF%A1%BC%A5%D5%A5%A7%A5%A4%A5%B9&amp;quot;&amp;gt;インターフェイス&amp;lt;/a&amp;gt;が作成され、&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&amp;quot;&amp;gt;IPアドレス&amp;lt;/a&amp;gt;も192.168.33.1が振られていることを確認。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;ルーティングテーブルも確認しておくと&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ netstat -rn
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+0.0.0.0         153.120.2.1     0.0.0.0         UG        0 0          0 eth0
+153.120.2.0     0.0.0.0         255.255.254.0   U         0 0          0 eth0
+192.168.33.0    0.0.0.0         255.255.255.0   U         0 0          0 vboxnet0
+&lt;code&gt;
+&amp;lt;p&amp;gt;192.168.33.0/24行はvboxnet0から出るように設定されている。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;上の物理イメージに詳細書き込むと以下。&amp;lt;br&amp;gt;
+&amp;lt;span itemscope itemtype=&amp;quot;http://schema.org/Photograph&amp;quot;&amp;gt;&amp;lt;img src=&amp;quot;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141006/20141006000246.png&amp;quot; alt=&amp;quot;f:id:mosuke5:20141006000246p:plain&amp;quot; title=&amp;quot;f:id:mosuke5:20141006000246p:plain&amp;quot; class=&amp;quot;hatena-fotolife&amp;quot; itemprop=&amp;quot;image&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;div style=&amp;quot;border: solid 1px #dddddd;&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;p&amp;gt;&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/Apache&amp;quot;&amp;gt;Apache&amp;lt;/a&amp;gt;のみインスールする必要があるので、&amp;lt;br&amp;gt;
+web1, web2で以下を実施。（プロビジョニングしたほうが後々楽です。）&amp;lt;/p&amp;gt;
+&lt;/code&gt;
+$ sudo apt-get apache2&lt;/p&gt;
+
+&lt;p&gt;##どちらがweb1でどちらがweb2か区別するために以下ファイルは変えておきます。
+$ sudo vim /var/www/index.html
+#Web1とかWeb2とかわかりやすい文言を入れておきます。&lt;/p&gt;
+
+&lt;p&gt;##Apache起動
+$ sudo service apache2 start&lt;/p&gt;
+
+&lt;p&gt;##Apache起動確認
+$ curl localhost
+　上記で変更したindex.htmlの内容が表示されること&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;これでWebサーバの準備は完了。&amp;lt;/p&amp;gt;
+
+&amp;lt;/div&amp;gt;
+&amp;lt;div class=&amp;quot;section&amp;quot;&amp;gt;
+    &amp;lt;h2&amp;gt;4, Nginxでリバースプロキシサーバを構築する&amp;lt;/h2&amp;gt;
+    &amp;lt;p&amp;gt;Nginx初めて触ったがとてもシンプル。&amp;lt;br&amp;gt;
+今回はNginxをリバースプロキシとして利用したので、proxy.confを作成するだけ。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;##インスール
+$ sudo yum install nginx&lt;/p&gt;
+
+&lt;h2 id=&#34;etc-nginx以下に設定ファイルなどあること確認:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;/etc/nginx以下に設定ファイルなどあること確認&lt;/h2&gt;
+
+&lt;p&gt;$ ls /etc/nginx&lt;/p&gt;
+
+&lt;h2 id=&#34;プロキシ構築のための設定ファイル作成:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;プロキシ構築のための設定ファイル作成&lt;/h2&gt;
+
+&lt;p&gt;$ cd /etc/nginx/conf.d
+$ sudo vim proxy.conf
+server {&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# /web1にアクセスが来た時
+location /web1 {
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;	proxy_http_version 1.1;&lt;/p&gt;
+
+&lt;p&gt;	#受け渡す際のヘッダ情報を指定
+	proxy_set_header Host $host:$server_port;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header X-Forwarded_Proto http;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    # 飛ばす先のURL(Web1サーバ)
+    proxy_pass http://192.168.33.10/;
+}
+
+# /web2にアクセスが来た時
+location /web2 {
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;	proxy_http_version 1.1;&lt;/p&gt;
+
+&lt;p&gt;	#受け渡す際のヘッダ情報を指定
+	proxy_set_header Host $host:$server_port;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header X-Forwarded_Proto http;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    # 飛ばす先のURL(Web2サーバ)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;	proxy_pass &lt;a href=&#34;http://192.168.33.11/&#34;&gt;http://192.168.33.11/&lt;/a&gt;;
+    }
+}&lt;/p&gt;
+
+&lt;h2 id=&#34;あとは起動させるのみ:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;あとは起動させるのみ&lt;/h2&gt;
+
+&lt;p&gt;$ sudo systemctl enable nginx
+$ sudo systemctl start nginx
+```
+&lt;/div&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

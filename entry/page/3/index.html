@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entries &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Entries &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Entries &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">16 Mar 2016, 17:54</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/03/16/175431/" class="post-title">DBのViewの使いどころの検討</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-データベース" href="https://blog.mosuke.tech/categories/%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9">データベース</a><a class="post-category post-category-DB" href="https://blog.mosuke.tech/categories/db">DB</a><a class="post-category post-category-ビュー" href="https://blog.mosuke.tech/categories/%E3%83%93%E3%83%A5%E3%83%BC">ビュー</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        ある実装についてどのように実装するか悩んだ。 その悩んだ過程や実装案をメモする。似たようなケースの実装案として参考になればと思う。 状況 ある申請に対して、検査Aと検査Bを行い、その検査状態・検査日時を管理・閲覧するシステムがあるとする。 申請のテーブルは下記とする。 id: int name: varchar(20) # どうでもいいので無視していい check_a: datetime # 検査すると実施した日時がはいる check_b: datetime # 検査すると実施した日時がはいる UIとして下記のように表示したいと考えている。 番号 状態 名前 検査A 検査B 1 検査完了 xxxxxx 2016/03/01 10:00 2016/03/01 12:00 2 検査未完了 xxxxxx - - 3 検査途中 xxxxxx 2016/03/01 13:00 - 4 検査途中 xxxxxx - 2016/03/01 15:00 ※SQLアンチパターンだろ！？ そもそもSQLアンチパターンの「マルチカラムアトリビュート」じゃないの？と思うかもしれない。 この場合は、この設計が一番という前提でお願いしたい。 www.amazon.co.jp 実装の検討 いくつかの実装パターンを検討した。 結果的に今回は実装案４のViewを使うのがいいのではないかと考えた。 が、Viewにもデメリットがある。必ずしもViewがいいというものではないことは留意。 (実装案１) SQL側で頑張る まず、データを取り出す際にSQLで頑張ることを思いつくはずだ。 例えば以下みたいに。 select id, name, case when check_a is null and check_b is null then '検査未完了' when check_a is not null and check_b is not null then '検査完了 ' else '検査途中' end as check_status from request これが悪いとはいわない。 だが、例えば同じような表示方法で他の条件式で取得したい時があるだろう。 select id, name, case when check_a is null and check_b is null then '検査未完了' when check_a is not null and check_b is not null then '検査完了 ' else '検査途中' end as check_status from request where name = 'xxxxx' もし、ソースコードの中に同じ形なのに条件だけがことなるSQLが出てきてしまったら、 ヤバイと感じてくるはずだ。 そして、ActiveRecordのようなORマッパーを使っている場合、 case文などを利用し始めた時点で、生SQLを書かなければいけなくなる。 これも不吉な感じがしてくる。 (実装案２) 受け取った側で頑張る SQLが複雑になるのがいやなら、プログラミング言語側で頑張ることもできる。 とりあえずデータは全部生でもらっておいて select * from request; HTML出力の時に頑張る。(下記はRubyのERB想定で記述) &lt;% if(request.check_a.nil?
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">06 Mar 2016, 14:05</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/03/06/140531/" class="post-title">【錦織圭も分析】ATP TennisのデータスクレイパーGem作った</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ruby" href="https://blog.mosuke.tech/categories/ruby">Ruby</a><a class="post-category post-category-Gem" href="https://blog.mosuke.tech/categories/gem">Gem</a><a class="post-category post-category-ATP" href="https://blog.mosuke.tech/categories/atp">ATP</a><a class="post-category post-category-テニス" href="https://blog.mosuke.tech/categories/%E3%83%86%E3%83%8B%E3%82%B9">テニス</a><a class="post-category post-category-ATP Tennis" href="https://blog.mosuke.tech/categories/atp-tennis">ATP Tennis</a><a class="post-category post-category-スクレイピング" href="https://blog.mosuke.tech/categories/%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%94%E3%83%B3%E3%82%B0">スクレイピング</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        背景 このブログは基本的に技術ブログとしてやっているので、 テニスの話題ははじめてだが、テニスがすごく好きだ。 特に、プロの試合の観戦はとても好きだ。 2005年からずーっと見てて、欠かさずすべての試合結果はチェックしている。 数年前から、テニス選手をある指標から分析したいなと思っていた。 例えば、 ランキングは高くないけど、爆発するとトップ選手に勝つ力を持っているかどうか 自分より格下の選手に負けることが少ないかどうか 小さい大会ではあまり勝てないけど、大舞台で勝てる選手かどうか これから伸びそうな選手かどうかなどをデータ的にみたかった。 ATPの公式サイトにもいくつか統計情報が載っているが、自分が大事と思う指標で分析したいと思っていた。 まずは、データを取得しなければいけないので、それでスクレイピングのライブラリを作るにいたった。 AtpScraper AtpScraperは男子のプロテニスの公式サイトである、ATPのサイトから情報をスクレイピングしてくれるRubyライブラリだ。 github.com 現時点では、ぼくが今欲している機能しか実装していないが、下記ができる。 シングルスのランキングの取得 プレイヤーの対戦レコードの取得 一例だが、どんなふうに利用できるかのせる。 シングルスのランキング取得 デフォルトだとトップ100のランキングを取得する。 pry(main)&gt; AtpScraper::Get.singles_ranking =&gt; [{:ranking=&gt;&quot;1&quot;, :player_name=&gt;&quot;Novak Djokovic&quot;, :player_url_name=&gt;&quot;novak-djokovic&quot;, :player_id=&gt;&quot;d643&quot;, :points=&gt;&quot;16580&quot;}, {:ranking=&gt;&quot;2&quot;, :player_name=&gt;&quot;Andy Murray&quot;, :player_url_name=&gt;&quot;andy-murray&quot;, :player_id=&gt;&quot;mc10&quot;, :points=&gt;&quot;8765&quot;}, {:ranking=&gt;&quot;3&quot;, :player_name=&gt;&quot;Roger Federer&quot;, :player_url_name=&gt;&quot;roger-federer&quot;, :player_id=&gt;&quot;f324&quot;, :points=&gt;&quot;8295&quot;}, (略) 下記のようにすれば、50位から60位のランキングを取得できる。 （※引数の指定の仕方がアレなのは突っ込まないこと） pry(main)&gt; AtpScraper::Get.singles_ranking(&quot;50-60&quot;) =&gt; [{:ranking=&gt;&quot;50&quot;, :player_name=&gt;&quot;Lukas Rosol&quot;, :player_url_name=&gt;&quot;lukas-rosol&quot;, :player_id=&gt;&quot;r685&quot;, :points=&gt;&quot;897&quot;}, {:ranking=&gt;&quot;51&quot;, :player_name=&gt;&quot;Federico Delbonis&quot;, :player_url_name=&gt;&quot;federico-delbonis&quot;, :player_id=&gt;&quot;d874&quot;, :points=&gt;&quot;895&quot;}, (略) 錦織圭の対戦レコード取得 錦織圭の2016年の対戦レコードを見たいと思えば下記のように取得できる。 （第一引数のn552は選手のIDのようなもので、これは上のランキングの取得時に手に入るのでそこで確認しなければいけない） pry(main)&gt; AtpScraper::Get.player_activity(&quot;n552&quot;, 2016) =&gt; [{:year=&gt;&quot;2016&quot;, :player_name=&gt;&quot;Kei Nishikori&quot;, :player_rank=&gt;&quot;6&quot;, :opponent_name=&gt;&quot;Sam Querrey&quot;, :opponent_rank=&gt;&quot;43&quot;, :round=&gt;&quot;Round of 16&quot;, :score=&gt;&quot;46 36&quot;, :win_loss=&gt;&quot;L&quot;, :tournament_name=&gt;&quot;Abierto Mexicano Telcel&quot;, :tournament_category=&gt;&quot;500&quot;, :tournament_location=&gt;&quot;Acapulco, Mexico&quot;, :tournament_start_date=&gt;&quot;2016.02.22&quot;, :tournament_end_date=&gt;&quot;2016.02.27&quot;, :tournament_surface=&gt;&quot;Hard&quot;, :tournament_surface_inout=&gt;&quot;Outdoor&quot;}, {:year=&gt;&quot;2016&quot;, :player_name=&gt;&quot;Kei Nishikori&quot;, :player_rank=&gt;&quot;6&quot;, :opponent_name=&gt;&quot;Thiemo de Bakker&quot;, :opponent_rank=&gt;&quot;105&quot;, :round=&gt;&quot;Round of 32&quot;, :score=&gt;&quot;60 63&quot;, :win_loss=&gt;&quot;W&quot;, :tournament_name=&gt;&quot;Abierto Mexicano Telcel&quot;, :tournament_category=&gt;&quot;500&quot;, :tournament_location=&gt;&quot;Acapulco, Mexico&quot;, :tournament_start_date=&gt;&quot;2016.02.22&quot;, :tournament_end_date=&gt;&quot;2016.02.27&quot;, :tournament_surface=&gt;&quot;Hard&quot;, :tournament_surface_inout=&gt;&quot;Outdoor&quot;}, (略) もし、過去のすべての錦織圭の対戦レコードを取得したければ下記で取得できる。 pry(main)&gt; AtpScraper::Get.player_activity(&quot;n552&quot;, &quot;all&quot;) 対戦レコードは１対戦ごとのレコードになっている。 トーナメントごとにまとめたりはしていない。 これから データ取得ライブラリを作ったので、これからこれを使った分析をしていこうと思っている。 分析結果が見れるサービスを作るかもしれないし作らないかもしれない。 また、データ取得について要望があれば受け付けるし、プルリクをしてくれてもOKです。 GitHub - mosuke5/atp_scraper: atp_scraper is a tool scraping tennis data from atpworldtour.com.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">07 Feb 2016, 21:03</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/02/07/210300/" class="post-title">社内マリカー大会やりました！運営の工夫どころとかまとめ</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-マリオカート" href="https://blog.mosuke.tech/categories/%E3%83%9E%E3%83%AA%E3%82%AA%E3%82%AB%E3%83%BC%E3%83%88">マリオカート</a><a class="post-category post-category-マリカー" href="https://blog.mosuke.tech/categories/%E3%83%9E%E3%83%AA%E3%82%AB%E3%83%BC">マリカー</a><a class="post-category post-category-マリカー大会" href="https://blog.mosuke.tech/categories/%E3%83%9E%E3%83%AA%E3%82%AB%E3%83%BC%E5%A4%A7%E4%BC%9A">マリカー大会</a><a class="post-category post-category-マリオカート大会" href="https://blog.mosuke.tech/categories/%E3%83%9E%E3%83%AA%E3%82%AA%E3%82%AB%E3%83%BC%E3%83%88%E5%A4%A7%E4%BC%9A">マリオカート大会</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        弊社では、年に一度、社内のコミュニケーション促進で、いろんな部署が集まって行う懇親会がある。 そこでは、恒例行事として何かしらのゲームを行っている。 そのゲームにて今年マリカー大会を行ったので、その報告と工夫した点などまとめておく。 マリオカートを選んだ理由 パーティとか懇親会のゲームイベントというと、 ビンゴ大会だったりクイズ大会、ジェスチャーゲームだったり行うのが一般的かと思う。 ですが、今回そういう場でマリオカート大会を選ぶに至ったのには下記のような理由があった。 準備が楽なものがよかった！ 順位が決められるものが良かった（景品の都合上） 楽しさに進行役の力量が影響しないものがよかった… まず、はじめはクイズ大会などを行おうかと検討していましたが、 そのクイズの問題を考えるのが結構たいへんであることに気づき、準備が楽なものがいいなと思った。 そして、運営的な理由だが、ゲームの結果を順位を簡単に決められる必要があった。 最後に、なんといっても自分が進行役だったので、 自分の笑いを取る力や進行技術で楽しさが左右されたらこまるなーとおもっていた。 これらを満たすことができると思ったのが「マリカー」だった！ 環境 参加者 ８つのチームから合計200人程度参加。 年齢層も結構バラバラ。若手からお偉いさんまでいる。 映像 WiiUの画像は、HDMIを使ってプロジェクターで大型スクリーンに投影した。 ルール 200人全員にマリオカートに参加してもらうことは難しかったので、 各チームで６人のゲーム参加者を事前に選んで頂いて、チームを代表として参加してもらうこととした。 （マリカー大会をやることは事前には言いませんでした。） WiiUでは４人対戦までしかできないので、下記のような形式で対戦を進めた。 8チームを4チーム×２分けて予選 下位２チームが下位決定戦 上位２チームが決勝戦 またなるべく多くの人がゲームに参加して欲しかったので、 特別ルールとして、コースを１周したらチームのほかの人に交代するというリレー形式とした。 準備したもの WiiU本体(ゲームパッド含む) マリオカート8のソフト Wiiリモコン 4つ www.amazon.co.jp 運営上の工夫 運営上幾つかの工夫を行ったので紹介する。 キャラクターについて 利用するキャラクターや乗り物は、予めこちらでチームごとにランダムで割り振った。 そうすることで、当日にキャラを選ぶ時間を短縮できるし、マリカーの知識の差がなくなる。 キャラクターは運ということにした。 コントローラについて ４人対戦だと画面が４つに分割される。 自分がどの画面を操作すべきかわからなくなるので、画面位置がわかるようにコントローラにシールを貼った。 この対応は必須です。 アイテムや操作など CPUなしで４人対戦で行った。 ４人対戦で普通のアイテム設定だと、「コイン」とか「バナナ」とか良いアイテムが出づらくつまらない。 アイテムの設定は「ダイナミック」にすることで、４人でも強力アイテムがでてバトルが白熱する。 カートの操作方法（曲がり方）は十字キーではなくハンドル操作とした。 普段ゲームに慣れている人でも、ハンドル操作だと不慣れなことも多くみんなうまい具合に下手になって白熱した。 初心者への対応 アイテムの細かい使い方などいちいち説明できないので、 初心者へは「アクセル」と「曲がること」のみ教えた。 一見、経験者と不公平のようにみえるが、今回のルールだと１週しか同じ人が回らないので、 心配するほどのことにはならなかったです。 トラブル時への備え こういう企画ではトラブルはつきもの。 トラブルに対しての対応を用意した。 コントローラの電池切れ対策で電池は買っておきました コントローラが故障した場合は、WiiUのゲームパッドで代用できるようにした 一応プロジェクターも２つ用意しておいた 進行役 進行役は２人でやったのだが、雰囲気をだすために赤と緑のマントをまといました。 こういうのもいいっすね。 www.amazon.co.jp 実況について
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">25 Jan 2016, 22:21</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/01/25/222150/" class="post-title">Vagrant×Ansible環境の３つのスタイルとそのメリット・デメリットについて</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-Vagrant" href="https://blog.mosuke.tech/categories/vagrant">Vagrant</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        Vagrant×Ansibleで開発環境を作っているみなさんは、 どんなふうにそれを実現していますか？ きっといくつかのやり方、考え方があると思います。 例えば、ご自身のPCにAnsibleをインストールしてVagrantの仮想環境にプロビジョニングしているとか。 Vagrantで立てた仮想環境にAnsibleを入れて実行するとか。 本ブログでは下記３つのVagrant×Ansibleのやり方に注目し、 そのメリット・デメリットについて自分なりにまとめます。 ホストにAnsibleをインストールして利用する ゲストにAnsibleをインストールして利用する Ansible実行用のゲストを作って利用する 1. ホストにAnsibleをインストールして利用する 概要 1番よくあるやり方だと思う。 ご自身のPCにAnsibleを入れてVagrantで立ち上げたゲストにプロビジョニングを行う。 メリット なんといっても直感的でシンプル。 3.との比較になるが、Ansibleを実行する環境を別途用意する必要がないのでホストのリソースにも優しい。 また、2.との比較でゲストに無駄なものが入らない点でよい。 デメリット ただ、そもそもwimdowsユーザはホストにAnsibleをインストールすることはできない。 つまり、複数人での開発をしていて、人によって端末が異なる場合には向いていない。 個人の端末の設定などにも大きく依存するため、チーム開発向きでないといえる。 2. ゲストにAnsibleをインストールして利用する 概要 Vagrantで立ち上げたゲストの中にAnsibleをインストールし、自身へプロビジョニングするやりかた。 この方式はshin1x1さんもおすすめしている。 Vagrant + Ansible で開発環境を作るなら ansible_local プロビジョナがいい！ - Shin x Hatena Blog メリット （詳しくは上のブログを読むといいと思う。） 1.のデメリットで述べた、端末への依存度をなくすことができる。 vagrantの新機能であるansible_localも利用できるのでプロビジョニングが楽だ。 3.と比べてAnsible実行環境を用意しなくて済む。 デメリット メリットだけみると1.の問題点を解決していて最高のようにみえる。 しかし、ゲストに本来インストールされるべきものでないものがはいる点は忘れてはいけない。 Ansibleを使ってプロダクション環境にデプロイするユーザにとっては大きな問題だと思う。 開発環境とプロダクション環境での差分が広がってしまう。 また、Ansibleと並行してserverspecを使ってる人も多いと思うが、 そうなると今度はゲスト側にRubyもいれるのか？など様々な疑問が湧いてくる。 3. Ansible実行用のゲストを作って利用する 概要 Ansible実行用のゲストをVagrantで立ち上げて、開発用のゲストへプロビジョニングにする。 メリット 2.のデメリットで述べた、ゲストへの不要なもののインストールを防ぐことが可能。 例えばserverspecでRubyが必要な場合もAnsible実行用のゲストに入れればいい。 必要なものをインストールしたAnsible実行用のイメージファイルをチーム内で共有すれば端末依存もセットアップの手間も省ける。 デメリット なんといっても、ゲストを二つは立ちあげる必要があること。 これは少し面倒だ。 まとめ この見解は正直VagrantやAnsibleの使いみち、用途によってだいぶ変わると思う。 なので絶対な評価ではないと思うが、私のいままでの経験上はこのような評価となったので参考にしてもらえればと思う。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">28 Dec 2015, 15:00</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/12/28/150042/" class="post-title">2015年振り返り</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-vim::factory" href="https://blog.mosuke.tech/categories/vimfactory">vim::factory</a><a class="post-category post-category-vimfactory" href="https://blog.mosuke.tech/categories/vimfactory">vimfactory</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        去年に続き、2015年で技術分野でなにがあったか簡単に振り返りました。 2014年を思い返して… - Goldstine研究所 1. Vim::Factoryの開発と公開 2014年の秋から@mogulla3と定期的にインフラ関連技術の勉強会をやってきていて、 はじめはインプットの勉強会だけを主にやってきていたのですが、 サービスを作る中でインフラ関連技術を駆使し勉強したいと思うようなっていました。 そこで、今年は「vimの設定をブラウザ上で即体感できるサービス Vim::Factory」の開発をしました。 DockerとWebSocketを使って、vimの設定をブラウザで即体感できるサービスを作った - Goldstine研究所 良かった点 新しい技術などを組み合わせながら学習しがいのあるサービスを作れたこと サービスの実現技術を公開しそれなりの反響を得られたこと 悪かった点 内部的なアーキテクチャの変更ばかりに時間を取られサービスそのものの改良ができなかったこと 2. インフラ関連の構築や運用、仕組みづくり 主に仕事の話になりますが、今年はインフラ関連の構築や運用に多く携わった気がします。 （結構、雑な感じに書き残します。） (1) メールサーバの構築と運用 Postfixを使ったメールサーバの構築と運用に携わりました。 そもそもメールサーバってなんだっけってところからはじまったのを思い出します。 とにかく運用を楽にしたかったので、その部分に多くの工夫をしました。 Ansibleを使って設定の変更などのリリース作業も簡単することや Zabbixのログ監視もいい感じに機能して、不正なメール送信とかもすぐ検知できるようにしました。 KVMの仮想環境上なので、環境の作りなおしも容易にしました。 冗長性のために２つのリージョンに分散させたりもしました。 目新しいことはないですが、わりと運用が楽な感じに作れたのでほんとによかったなと振り返って思います。 (2) インターネットから社内NWへの入口としてのリバプロサーバ構築 インターネットから社内NWにあるシステムを利用できるようにするために、 リバースプロキシサーバを構築しました。（運用はこれから） いわゆるDMZ構成におけるリバプロです。 技術的なところで言うと、corosync+pacemakerを使ってクラスタリングを組みました。 クラスタリングは思ったより奥が深く、どのようなクラスタを組むかかなり苦労しました。 障害時に相手側サーバの電源を落とす、いわゆるフェンシングなどをどう適切に使うかなど。 運用が始まってからそのあたりの実用性が確認できそうです。 ちなみにNginxでリバースプロキシたてました。 (3) 仮想環境構築とか 仮想環境というと、今までVagrantなどのツールとして、AWS、VPSなどのIaaSとして使うばかりでした。 今年は、KVMを利用してプロダクションの仮想基盤を作るなどやりました。 仮想化ってそもそもなんだっけ？というもう少し基礎よりの知識と向き合う機会がありました。 また、主に来年の話になるがOpenStackなどを使ったクラウド環境を「作る・運用する」にも携わっていきそうです。 すこしづつOpenStackをかじり始めました。 (4) Ansibleの活用と布教活動 Ansibleの利用は去年から始めていたことですが、 今年はより活用することと、社内での布教活動を行いました。 活用でいうと、サーバの構築はAnsibleで行ってアプリケーションのデプロイは 別の方法でやる（手動とか…）というふうになっていたので、 Ansibleを使ってアプリケーションのデプロイまですべて行うようにしてきました。 また、こういった取り組みを社内（部内）で広めて他のチームにも活用してもらおうと、 布教活動してしたりしてきました。 まとめ。来年の抱負的な Vim::Factoryを自分が使いたいと思うようなサービスにする Vim::Factoryをベースにより自分たちが学習できる環境を作る 引き続き、インフラ系エンジニア？っぽい感じで邁進する OpenStackの運用とかやりたい ツールなどに踊らされない基礎力中心で学習したい ISUCONにでます（あれば…） では良いお年を。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">17 Dec 2015, 19:25</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/12/17/192554/" class="post-title">インフラのデプロイとテストを同時実行できるようにしてHappyになった</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-serverspec" href="https://blog.mosuke.tech/categories/serverspec">serverspec</a><a class="post-category post-category-raketask" href="https://blog.mosuke.tech/categories/raketask">raketask</a><a class="post-category post-category-インフラテスト" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E3%83%86%E3%82%B9%E3%83%88">インフラテスト</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        はじめに 私が開発しているシステムでは、Ansibleでサーバ構築からアプリケーションのデプロイまですべて実行できるようにしています。 そして、serverspecを使って、インフラテストも行っています。 しかし、その運用にいくつか課題点がありました。 その課題点についてと、課題点へ対策したことについて書きます。 課題だったこと (課題1) デプロイとテストをそれぞれ実行していた Ansibleでのデプロイとserverspecのテストはそれぞれ別のコマンドで実行していました。 $ ansible-playbook site.yml -i $ bundle exec rake serverspec 2つ実行することが面倒であり、面倒であるがゆえにserverspecの実行を怠ったりしていました。 これではテストの効果があまり発揮できませんね。 (課題2) sudoパスワードをうまく管理できなかった 上のような課題1について、真っ先に以下の様にコマンドを続けることを思いつきました。 $ ansible -playbook site.yml -i ; bundle exec rake serverspec ですが、これだとansible実行終了後にserverspecを実行する際にsudoパスワードが再度聞かれるため、 コマンドを打ったまま「放置」ができませんでした。 ※もちろん、sudoパスワードを要求しないようにユーザ設定をすればできますが、多くの場合ではセキュリティ上難しかったりすると思います。ssh接続は鍵認証、sudoには必ずパスワードを要求するようにしています。 Ansibleもserverspecにもコマンド実行時にsudoパスワードを記述する方法があります。 Ansibleでは、ansible.cfgにsudo_passwordを記述、あるいはコマンド実行時に--extra-argsでsudoパスワードを指定できます。 serverspecでも環境変数でSUDO_PASSWORDが指定できます。 例 ） ansible -playbook site.yml -i --extra-args='ansible_sudo_pass=xxxxxxxx' bundle exec rake serverspec SUDO_PASSWORD=xxxxxxxx ですが、おわかりの通り、コマンドの履歴にもパスワードが残ります。 なのであまり良い方法ではないと思っています。 (課題3) タスクの実行方法がバラバラ デプロイはansibleコマンドで実行、テストはrakeで実行、他のタスクはシェルスクリプト。。。 といったように、タスクによって実行方法が異なってしまう状況になっていました。 運用的にとても不便でしたので、１つに統一したいと思っていました。 いい感じに同時に実行してくれるRakeタスクを作った 上で述べたような課題点をクリアするように、下記の要件を満たすように工夫をしました。 デプロイ、テストが同じ形式で実行できる sudoパスワードをベタ書きすることなく実行できる sudoパスワードの入力を一回だけにする 結論は、すべてRakeタスクで実行できるようにしました。 タスク一覧を見ると以下の様な感じになりました。（※実行結果は例であり実際の内容とは少し異なる。） $ bundle exec rake -T
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">01 Dec 2015, 18:13</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/12/01/181304/" class="post-title">Ansible、実行速度高速化の実験。ControlMasterとPipeliningについて</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-SSH" href="https://blog.mosuke.tech/categories/ssh">SSH</a><a class="post-category post-category-高速化" href="https://blog.mosuke.tech/categories/%E9%AB%98%E9%80%9F%E5%8C%96">高速化</a><a class="post-category post-category-ControlMaster" href="https://blog.mosuke.tech/categories/controlmaster">ControlMaster</a><a class="post-category post-category-pipelining" href="https://blog.mosuke.tech/categories/pipelining">pipelining</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        1. はじめに Vim::Factoryの開発や、仕事などでAnsibleを使うことが多いのだが、 その実行速度があまりでないことに不満をもっていて、どうしたら早くできるか考えていました。 調べると、ControlMasterを利用してSSHのコネクションを再利用するとか、pipelineの機能を利用するとかでてくる。 が、それによってどのくらいの効果が得られるのかよくわからないし、仕組みもよくわかっていなかったので、仕組みの理解と実行速度の実験をした。 もう少し余談をすると、 ControlMasterを有効にすれば早くなることは前から知っていたが、 最近MacをEl Capitanに変えてから「なんか最近Ansibleはやいな〜」とか思っていて、 「OpenSSHのバージョンもあがったし、まさか。。。」と思って今にいきついている。 ControlMasterについて OpenSSH は、1 つの接続で複数のセッションを共有する(束ねる)「コントロール マスター」と呼ばれる機能を持っています。コントロールマスターを使用すると、 リモートホストに接続する最初のセッションは制御用のセッション(マスターセッショ ンと呼ばれます)として利用され、制御用のソケットを作成します。セッションを 共有する SSH クライアントは、この制御用のソケットを通じてリモートホストと 接続し通信を行います。 出典：「OpenSSH実践入門」 上記のように、１つの接続で複数のセッションを共有するため、 Ansibleのようにタスク実行ごとにSSH接続するような場合には大きな効果を得ることができる。 Pipeliningについて Pipelining機能の説明の前に、軽くAnsibleの実行までの流れを説明する。 Ansibleは対象サーバにSSHログインしたあと実行するタスクのモジュールをファイルとして転送しそれを実行する。 Pipelining機能をなしの状態だと、このファイル転送とファイルの削除を１タスクごとに行う。 ansibleを-vvvvオプションをつけて実行するとわかるが、 ４行目でファイルのPUT（転送）を、５行目の最後の方にrm -rfでディレクトリ・ファイルの削除を行っている。 &lt;192.168.33.100&gt; ESTABLISH CONNECTION FOR USER: deploy &lt;192.168.33.100&gt; REMOTE_MODULE command ls -l /root &lt;192.168.33.100&gt; EXEC ssh -C -tt -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=user -o ConnectTimeout=10 192.168.33.100 /bin/sh -c 'mkdir -p $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321 &amp;&amp; chmod a+rx $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321 &amp;&amp; echo $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321' &lt;192.168.33.100&gt; PUT /var/folders/7_/d_dwdlcx1m95mn_846x30xb40000gn/T/tmpc8amAw TO /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/command &lt;192.168.33.100&gt; EXEC ssh -C -tt -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=user -o ConnectTimeout=10 192.168.33.100 /bin/sh -c 'sudo -k &amp;&amp; sudo -E -S -p &quot;[sudo via ansible, key=koibtlgpbiprbaihcqxiqgcnnreofxuo] password: &quot; -u root /bin/sh -c '&quot;'&quot;'echo BECOME-SUCCESS-koibtlgpbiprbaihcqxiqgcnnreofxuo; LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8 /usr/bin/python /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/command; rm -rf /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/ &gt;/dev/null 2&gt;&amp;1'&quot;'&quot;'' Pipiliningの機能を有効にすると、タスク実行ごとのモジュールファイルの転送と削除をしなくなる。 そのため、実効速度があがるのです。 下記はPipeliningを有効にした際の出力。SSHでタスクを実行しているだけなのがわかる。 &lt;192.168.33.100&gt; ESTABLISH CONNECTION FOR USER: deploy &lt;192.168.33.100&gt; REMOTE_MODULE command ls -l /root &lt;192.168.33.100&gt; EXEC ssh -C -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=deploy -o ConnectTimeout=10 192.168.33.100 /bin/sh -c 'sudo -k &amp;&amp; sudo -E -S -p &quot;[sudo via ansible, key=kjtoopnjepksibiitumqfycsoldadiws] password: &quot; -u root /bin/sh -c '&quot;'&quot;'echo BECOME-SUCCESS-kjtoopnjepksibiitumqfycsoldadiws; LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8 /usr/bin/python'&quot;'&quot;'' Configuration file — Ansible Documentation 2.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">02 Nov 2015, 16:17</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/11/02/161744/" class="post-title">インフラテスト(serverspec)はじめました</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-serverspec" href="https://blog.mosuke.tech/categories/serverspec">serverspec</a><a class="post-category post-category-インフラテスト" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E3%83%86%E3%82%B9%E3%83%88">インフラテスト</a><a class="post-category post-category-vim::factory" href="https://blog.mosuke.tech/categories/vimfactory">vim::factory</a><a class="post-category post-category-vimfactory" href="https://blog.mosuke.tech/categories/vimfactory">vimfactory</a><a class="post-category post-category-インフラCI" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9ci">インフラCI</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        ※執筆後、業務でもserverspecを利用し始めたのもあり、業務レベルでの実践例も追記している。 運営中のVim::Factoryでserverspecを使ったインフラテストを導入したので、 導入理由や工夫している点、悩んでいる点について記述します。 Vim::Factoryについてはこっちみてね。 DockerとWebSocketを使って、vimの設定をブラウザで即体感できるサービスを作った - Goldstine研究所 1. serverspecってなによ 詳しくは公式サイトや書籍などを参考にして欲しいですが、 「サーバの状態をコードで自動的にテスト・確認するためのツール」です。 Serverspec - Home 例えば、ApacheでWebサーバを組んでいるサーバがあったとして、下記の要件で動いているとします。 apacheがインストールされていること apacheが起動していること、自動起動する設定であること ポート80があいていること この要件をサーバが満たしているかコードでテストします。 上記の例だとこんなコードを書きます。 describe package('httpd') do it { should be_installed } end describe service('httpd') do it { should be_enabled } it { should be_running } end describe port(80) do it { should be_listening } end 各種テストの立ち位置 serverspecは、サーバの状態（正しく設定されたか）を確認するためのテストツールです サーバの振る舞いのテストは別のツールを使うことをおすすめします また、監視も一種のテストと言えます 一般的には監視はその実行頻度の高さから、振る舞いを監視することが多い 監視ツールで、Configファイルが正しいかは見ない 2. なんで導入したの？ serverspecを導入したのには大きく2つの理由があります。 (その１) インフラのテスト駆動開発を支えるため Vim::Factoryは趣味で開発・運用しているサービスで、まだ作りたての発展途上のサービスです。 （作って公開してからは日が経っている気もしますが、週1の開発なので…） そのため、今後もインフラコードをガンガン修正していくことを想定しています。 ですので、その開発、リファクタリングを支えるべく、テスト駆動開発で行えるようにするためです。 (その２) インフラテストの必要性を深く理解するため 「インフラテストの必要性を深く理解するため」です。 必要性があるから導入したんじゃにないの？と思われるかもしれませんが、 ぼくはまだインフラテストの本当の必要性を理解できていないと思っています。 実は、はじめこんな風に思っていましたし、今でも少し思う部分もある。 ansibleやchefで実行結果がOKならそれでテストも兼ねているのでは？ 実際にどんな項目をテストすればいいか、考えてみた時にピンと来ない… 実際に試してみないと、その本質が見えてこないと思っているので、 導入してみて自分の肌で感じようと思っています。 個人的なお話なのでみなさんには関係のない話ではありますが、 Vim::Factoryの開発は企業でもなければ営利目的でもありません。 「週末にインフラ技術のインプット勉強をしていたが、それだけでは飽きてきて、 サービスを開発・運用していくなかでインフラ技術を磨いていきたい」 というものだったので、こういった実験も大歓迎だったのです。 3.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">25 Sep 2015, 23:27</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/09/25/232751/" class="post-title">Ansibleを踏み台サーバ越しに実行する</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-SSH" href="https://blog.mosuke.tech/categories/ssh">SSH</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        タイトルの通りで、なにも特別なことはない内容。 そして、9月も終わりなのに今月はひとつも記事を書いていなかった。 KVMを使って仮想のゲストサーバを立てたが、 ゲストサーバはホストサーバと通信する用の（外に出る場合にはNAT通信で）IPアドレスしか持っていない状況で、 Ansibleの実行対象としたかったのが背景。 ホストサーバにAnsibleをいれるわけにもいかず、ホストサーバを踏み台にして、 Ansibleを打ちたかったというもの。 SSHの設定ファイルを作る "Ansibleで" と書いたが要はSSHです。 まずはSSHで踏み台サーバを経由してAnsible実行対象サーバへ接続できるように準備しました。 これはいわゆる「多段SSH」というやつで、以前にもブログに書いたので復習です。 【VPS1台でインフラ勉強】多段SSH設定（おまけ） - Goldstine研究所 一般的には~/.ssh/configにこういった設定は書いたりもしますが、 Ansible実行の場合、端末に依存したくなかったので、 Ansibleレポジトリに別途ファイルを作ることにした。 ## sshconfigという名前のファイルにした Host ansible-target HostName 192.168.33.10 User xxxxx ProxyCommand ssh -W %h:%p yyyyy@hostserver 上記のファイルを使って多段SSHできることを確認します。 $ ssh -F sshconfig ansible-target Ansible実行時にSSH設定ファイルを利用する ここまで来たらとても簡単で、 ansible.cfgに下記を追記し、ansible実行時に上記のsshconfigを読み込まれるようにしました。 ansible.cfg [ssh_connection] ssh_args = -F sshconfig
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">22 Aug 2015, 22:30</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/08/22/223025/" class="post-title">(個人的) YAPC::Asia 2015ふりかえり</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-YAPC" href="https://blog.mosuke.tech/categories/yapc">YAPC</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        「ブログを書くまでがYAPC」 というわけで、8/21, 22とYAPCに参加したので、そこでの学んだこと、気になったことなどを振り返ります。 しかし、YAPCで聞いた公演内容を淡々とまとめるなどはしません。 単なる内容のまとめであれば、公開されているスライドなどをみるのが一番だと思いますので。 以下３点を中心に振り返ってみます。 インフラ関連セッションについて 発表を聞いてよかった、今の自分に一番必要だったことについて 興味を持ったことについて（CONBU） インフラ関連セッションについて 意図的も半分くらいあるんだけど、なんとなくセッションを選んでいたら、インフラ関連のものが多くなりました。 世界展開する大規模ウェブサービスのデプロイを支える技術 - YAPC::Asia Tokyo 2015 Consulと自作OSSを活用した100台規模のWebサービス運用 - YAPC::Asia Tokyo 2015 3分でサービスのOSを入れ替える技術 - YAPC::Asia Tokyo 2015 我々はどのように冗長化を失敗したのか - YAPC::Asia Tokyo 2015 デプロイについて 大規模サービスでのデプロイにおいて、一台一台のホストがgit cloneして、bundle installやらせてーとかやると、 時間もかかるし、並列的にgit cloneした際などgitサーバが負荷的に危なくなってくる。 なので、予めライブラリとかすべてインストールされたものをターボールなどにまとめておいて、 それをプルしてくる形式のデプロイについて多くの発表がありました。 このデプロイ方法、並列で数百MBのファイルをダウンロードしても落ちないストーレジ（ようはAWSのS3）を前提に構築されている感がありました。 （というかそう言っていた） 相変わらずAWSはせこいなーと思っています（笑） うちの環境では真似するのは難しいなーと思う部分もありますが、 それ以前にシステムの規模や用途によってデプロイのあり方も多種多様になることを改めて考えさせられました。 自分の環境にあった最適なデプロイ形態を探す日々がまた始まりそうですが、良いヒントになりそうなのはまちがいなしです。 式年遷宮インフラストラクチャ Kenjiさんの式年遷宮インフラストラクチャ。 この考え方、ぼくも一度考えたことはありますが、ここまで実践してみた経験談がきけたのは面白かった。 いざというときに切り替わらない、切り替えられないという問題に対して、 自動ではないが、「切替訓練」ということで、定期的に冗長化の系を切り替えることはしてもいいのかなーと思ったりしています。 consulについて 実は、上であげた４つのセッション全てで共通していたのがconsulを使っていた。 Consul by HashiCorpwww.consul.io 正直、consulについて、名前くらいしかしらなかったのに、ここまで利用されていたので、時代に乗り遅れている感を感じた。 でも利用用途をみていくと、iaas環境で力を発揮するっぽいので、概要と用途だけ押さえておくか…といったところ。 今月中の課題です。 発表を聞いてよかった、今の自分に一番必要だったことについて たくさん学びのあったなかで、なんだかんだいっても、koemuさんの発表が今の自分が一番考えていてることであり、 一番必要なことであったように感じた。 辛いことをやめる！から始まる業務改善とInfrastructure as Code - YAPC::Asia Tokyo 2015yapcasia.org 実はkoemuさんのブログをたまにみていて、 いちど話を聞いてみたいなーと思っていた人であったので、とてもいい機会であった。
+                    </div>
+                </section>
+                
+            </div>
+            
+<div class="pagination">
+  <nav role="pagination" class="post-list-pagination">
+      
+      <a href="/entry/page/2/" class="post-list-pagination-item pure-button post-list-pagination-item-prev">
+        <i class="fa fa-angle-double-left"></i>&nbsp;Newer
+      </a>
+      
+    <span class="post-list-pagination-item post-list-pagination-item-current">Page 3 of 8</span>
+    
+      <a href="/entry/page/4/" class="post-list-pagination-item pure-button post-list-pagination-item-next">
+        Older&nbsp;<i class="fa fa-angle-double-right"></i>
+      </a>
+    
+  </nav>
+</div>
+
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

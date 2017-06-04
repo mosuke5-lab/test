@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>入門 on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/%E5%85%A5%E9%96%80/</link>
+    <description>Recent content in 入門 on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Fri, 15 Apr 2016 00:20:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/%E5%85%A5%E9%96%80/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>今度こそ入門するtmux</title>
+      <link>https://blog.mosuke.tech/entry/2016/04/15/002004/</link>
+      <pubDate>Fri, 15 Apr 2016 00:20:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/04/15/002004/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;tmuxの入門は何度目だろうか…&lt;br&gt;
+SoftwareDesignの2015年7月号を見ながら、何度目かの入門をしたのでメモする。&lt;br&gt;
+ブログに書いたので、これで運用にのりそうだ。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;tmuxってなに？&lt;/h1&gt;
+
+&lt;p&gt;公式ページ(&lt;a href=&#34;http://tmux.github.io/&#34;&gt;http://tmux.github.io/&lt;/a&gt;)から引用すると。&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;tmux is a terminal multiplexer. What is a terminal multiplexer? It &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/lets&#34;&gt;lets&lt;/a&gt; you switch easily between several programs in one terminal, detach them (they keep running in the background) and reattach them to a different terminal. And do a lot more.&lt;br&gt;
+（訳）tmuxはターミナルマルチプレクサです。ターミナルマルチプレクサは複数のプログラムを容易に1つのターミナル上で切り替えられるようにします。またそれらのプログラムをバックグラウンドで動かしながらデタッチしたり、別のターミナルにアタッチすることができます。さらにいろいろなことができます。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h1&gt;tmuxを使ってみる&lt;/h1&gt;
+
+&lt;h1&gt;インストール&lt;/h1&gt;
+
+&lt;p&gt;今回&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Mac&#34;&gt;Mac&lt;/a&gt;の環境で行っています。&lt;br&gt;
+今日時点ではバージョン2.2まででていますが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/brew&#34;&gt;brew&lt;/a&gt;では2.1がインストールされました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ brew install tmux
+$ tmux -V
+tmux 2.1 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;起動&lt;/h1&gt;
+
+&lt;p&gt;&lt;code&gt;$ tmux&lt;/code&gt;と入力すると、tmuxが起動し&lt;code&gt;$ exit&lt;/code&gt;で抜けることができます。&lt;br&gt;
+これから説明していきますが、tmuxの機能を利用するときプレフィックスキーを入力する必要があります。&lt;br&gt;
+デフォルトではプレフィックスキーは&lt;code&gt;Ctrl-b&lt;/code&gt;になっています。&lt;/p&gt;
+
+&lt;h1&gt;ウィンドウの作成、切り替え&lt;/h1&gt;
+
+&lt;p&gt;１つのtmuxの中にウィンドウ（タブ機能と考えてください）を作って切り替えたりします。&lt;br&gt;
+&lt;code&gt;Ctrl-b&lt;/code&gt;+&lt;code&gt;c&lt;/code&gt;でウィンドウを作成できます。&lt;br&gt;
+ウィンドウを作成するとターミナルの下部分（ステータスバー）に表示されます。&lt;br&gt;
+*印があるのがいまいるウィンドウです。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160414/20160414233836.png&#34; alt=&#34;f:id:mosuke5:20160414233836p:plain&#34; title=&#34;f:id:mosuke5:20160414233836p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;ウィンドウ分割&lt;/h1&gt;
+
+&lt;p&gt;ウィンドウの分割もできます。開発するときに便利ですよね！&lt;br&gt;
+分割された画面をペインと言います。&lt;br&gt;
+&lt;code&gt;Ctrl-b&lt;/code&gt;+&lt;code&gt;%&lt;/code&gt;で縦に分割、&lt;code&gt;Ctrl-b&lt;/code&gt;+&lt;code&gt;&#34;&lt;/code&gt;で横に分割できます。&lt;br&gt;
+ペイン間の移動は&lt;code&gt;Ctrl-b&lt;/code&gt;+&lt;code&gt;o&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160414/20160414230041.png&#34; alt=&#34;f:id:mosuke5:20160414230041p:plain&#34; title=&#34;f:id:mosuke5:20160414230041p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;なにが嬉しいの？&lt;/h1&gt;
+
+&lt;p&gt;まてまて、タブ機能もウィンドウ分割もiTerm2で全然できるよ？&lt;br&gt;
+ほら！？
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160414/20160414230301.png&#34; alt=&#34;f:id:mosuke5:20160414230301p:plain&#34; title=&#34;f:id:mosuke5:20160414230301p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;tmuxのいいところはデタッチとアタッチ機能やカスタマイズ性の高さだと思う。&lt;br&gt;
+カスタマイズ性についてはまだそんなにわかってませんが。。。&lt;/p&gt;
+
+&lt;h1&gt;デタッチとアタッチ&lt;/h1&gt;
+
+&lt;p&gt;tmuxはターミナルを仮想化します。その威力を発揮するのがデタッチとアタッチ機能です。&lt;br&gt;
+tmuxを起動した状態で&lt;code&gt;Ctrl-b&lt;/code&gt;+&lt;code&gt;d&lt;/code&gt;を押してみよう。&lt;br&gt;
+そうすると下のステータスバーも消え、元のターミナルに戻ってきたと思う。&lt;br&gt;
+これをデタッチといい、tmuxが終了したわけではない。&lt;/p&gt;
+
+&lt;p&gt;プロセスを確認すると、tmuxがまだ存在してることがわかる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ps -ef | grep tmux
+  501 16038     1   0  9:26PM ??         0:02.26 tmux
+  501 17800 13345   0 11:53PM ttys005    0:00.00 grep tmux 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;tmux ls&lt;/code&gt;で現在のtmuxのセッションの一覧がみれます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ tmux ls
+0: 1 windows (created Thu Apr 14 21:26:19 2016) [129x32] 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ではアタッチしてみよう。下記で元のtmuxに戻ってくるはずです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ tmux attach 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;デタッチしている間もバックグラウンドでプログラムは動き続けています。&lt;br&gt;
+試しに、tmux上でvmstatなどを打ってデタッチしてアタッチすると動き続けていることがわかると思います。&lt;/p&gt;
+
+&lt;h1&gt;pstree見るといい&lt;/h1&gt;
+
+&lt;p&gt;tmuxの概念を理解するにはpstreeをみるといい。&lt;br&gt;
+tmuxを使わずにpstreeコマンドを打つと、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;のプロセスの下でpstreeが動いているのがわかる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ pstree -p
+systemd(1)
+    ├─sshd(13589)─┬─sshd(15066)───sshd(15068)───bash(15069)───pstree(15115) 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;一方、tmuxを起動し、tmux上でpstreeを実行すると、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/sshd&#34;&gt;sshd&lt;/a&gt;のプロセスの下にはtmuxが動いており、&lt;br&gt;
+pstreeコマンドはtmuxプロセスの下で動いている。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ pstree -p
+systemd(1)
+    ├─sshd(13589)─┬─sshd(15066)───sshd(15068)───bash(15069)───tmux(15146)
+    └─tmux(15148)───bash(15149)───pstree(15168) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なにがいいたいかというと、tmuxの上で動かすプロセスは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/sshd&#34;&gt;sshd&lt;/a&gt;とは別プロセスで動いているということ。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;が切れても動作し続けるとはまあそういうことです。&lt;/p&gt;
+
+&lt;h1&gt;カスタマイズ&lt;/h1&gt;
+
+&lt;p&gt;tmuxはカスタマイズ性に優れます（ようです）。&lt;code&gt;.tmux.conf&lt;/code&gt;を修正することでカスタマイズ可能です。&lt;br&gt;
+今回は入門ということで、よく使いそうな基本設定だけしたが、これだけでも相当便利でした。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;プレフィックスキーを&lt;code&gt;Ctrl-t&lt;/code&gt;とする&lt;/li&gt;
+&lt;li&gt;ペインのサイズを&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/vim&#34;&gt;vim&lt;/a&gt;の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AD%A1%BC%A5%D0%A5%A4%A5%F3%A5%C9&#34;&gt;キーバインド&lt;/a&gt;で調整できるようにする&lt;/li&gt;
+&lt;li&gt;ウィンドウの分割を&lt;code&gt;|&lt;/code&gt;と&lt;code&gt;-&lt;/code&gt;でできるようにする&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# プレフィックスキー
+unbind C-b
+set-option -g prefix C-t
+
+# paneのサイズ変更（Vimerにはかかせない）
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
+
+# window分割（わかりやすくていいね！）
+bind | split-window -h
+bind - split-window -v 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AD%A1%BC%A5%D0%A5%A4%A5%F3%A5%C9&#34;&gt;キーバインド&lt;/a&gt;でペインのサイズ自由自在！
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160415/20160415000811.gif&#34; alt=&#34;f:id:mosuke5:20160415000811g:plain&#34; title=&#34;f:id:mosuke5:20160415000811g:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

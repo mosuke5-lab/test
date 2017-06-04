@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Summit2017 Day2のぞいてきた。 ネットワーク設計入門メモ &middot; Goldstine研究所</title>
+
+    <meta name="description" content="AWS Summit2017に行ってみた。雰囲気などの簡単感想とAWSのネットワーク設計入門セッションのメモ">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="AWS Summit2017 Day2のぞいてきた。 ネットワーク設計入門メモ &middot; Goldstine研究所">
+    <meta name="twitter:description" content="AWS Summit2017に行ってみた。雰囲気などの簡単感想とAWSのネットワーク設計入門セッションのメモ">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="AWS Summit2017 Day2のぞいてきた。 ネットワーク設計入門メモ &middot; Goldstine研究所">
+    <meta property="og:description" content="AWS Summit2017に行ってみた。雰囲気などの簡単感想とAWSのネットワーク設計入門セッションのメモ">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">31 May 2017, 19:25</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2017/05/31/aws_summit_network/" class="post-title">AWS Summit2017 Day2のぞいてきた。 ネットワーク設計入門メモ</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-クラウド" href="https://blog.mosuke.tech/categories/%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89">クラウド</a><a class="post-category post-category-AWS" href="https://blog.mosuke.tech/categories/aws">AWS</a><a class="post-category post-category-AWS Summit" href="https://blog.mosuke.tech/categories/aws-summit">AWS Summit</a><a class="post-category post-category-ネットワーク" href="https://blog.mosuke.tech/categories/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF">ネットワーク</a>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        
+
+<h1 id="はじめに:eabb2dedb01933710faf4225c45744d2">はじめに</h1>
+
+<p>弊社はプレミアムフライデー導入企業なのだが、最終金曜日に早く帰る必要はなく、月内でどこか1日15時に帰りましょうという制度になっている。<br />
+金曜日が仕事の都合上取れなかったので、今月は5/31にプレミアムフライデー（プレミアムウェンズデー）を使った。<br />
+ちょうどAWS Summit開催中だったのでのぞきにいった。</p>
+
+<h1 id="雰囲気:eabb2dedb01933710faf4225c45744d2">雰囲気</h1>
+
+<p>想像していた雰囲気とはだいぶ異なっていたというのが第一印象。<br />
+想像以上にスーツの年齢層の高い人が多かった。それだけ、AWSもエンタープライズでも注目されるようになったということだろう。<br />
+以前に、JAWS2015に参加したことある。もちろんJAWSとAWS Summitでは参加者の層が違う。<br />
+が、あれから2年たちAWSに興味を持つ層も大きく変わってきたのを感じた。</p>
+
+<p>セッションも非IT企業への導入事例や、思ったより入門セッションも多かった。<br />
+登壇者の話しぶりも「オンプレからの移行」を意識したように感じた。</p>
+
+<h1 id="ブース:eabb2dedb01933710faf4225c45744d2">ブース</h1>
+
+<p>セッションだけではなく、AWSに関連するサービスを提供している企業がたくさんブースをだしている。<br />
+ここでのコミュニケーションが案外一番楽しい。お酒も用意されていて楽しくおしゃべりできた。</p>
+
+<p>Heroku+AWSの組み合わせで利用するケースの話を聞いて、あーなるほどねって感じだった。<br />
+HerokuはAWS上で動作しているし、インターネット経由してもそこまで遅くはならない。<br />
+そんな利点を使って組み合わせて使う事例なんかきいた。</p>
+
+<p>そのほかは、やっぱりどこもかしこもコンテナ。<br />
+コンテナをどう扱うか、どう監視するか、そんなところの話が多かった。</p>
+
+<h1 id="セッション-ネットワーク設計入門:eabb2dedb01933710faf4225c45744d2">セッション「ネットワーク設計入門」</h1>
+
+<p>セッションは１つだけ「<a href="http://www.awssummit.tokyo/summit/index.html#D2T3-5">ネットワーク設計入門</a>」を聞いた。<br />
+普段ならネットワーク設計入門のセッションは聞かないと思っているのだが、<br />
+どんなことを話すのか興味あって聞いてみた。</p>
+
+<h2 id="1-クラウド上のnwの特徴:eabb2dedb01933710faf4225c45744d2">(1)クラウド上のNWの特徴</h2>
+
+<ol>
+<li>物理設計はいらない</li>
+<li>可用性はすでにセット(VRRPなど気にしなくてよい）</li>
+<li>プロフラマブルに操作可能</li>
+</ol>
+
+<h2 id="2-nwサービス:eabb2dedb01933710faf4225c45744d2">(2)NWサービス</h2>
+
+<p>NWサービスは意外とすくない。VPCがほぼすべて。<br />
+VPCが本質であり、ここが理解できればほぼ問題ない。</p>
+
+<ol>
+<li>VPC</li>
+<li>Direct Connect</li>
+<li>Route53</li>
+</ol>
+
+<h2 id="3-前提知識:eabb2dedb01933710faf4225c45744d2">(3)前提知識</h2>
+
+<h3 id="vpc:eabb2dedb01933710faf4225c45744d2">VPC</h3>
+
+<p>物理設計はいらないんだけど、<br />
+やっぱり物理知っていることがアドバンテージになる。
+VPCはリージョンの中のみ。ゾーンはまたぐことができる。</p>
+
+<h3 id="専用線:eabb2dedb01933710faf4225c45744d2">専用線</h3>
+
+<p>当たり前だがDCの場所は公開していない。<br />
+じゃどうやって接続するか？<br />
+相互接続接続ポイントを用意しているからそこにつなぎに来てね、という考え方。</p>
+
+<h3 id="エッジロケーション:eabb2dedb01933710faf4225c45744d2">エッジロケーション</h3>
+
+<p>CDNノードやRoute53が動作しているところ。<br />
+リージョンとはまた別にある。</p>
+
+<h2 id="4-設計をはじめよう:eabb2dedb01933710faf4225c45744d2">(4)設計をはじめよう</h2>
+
+<p>AWSのどのサービスを使いたいかでNWの設計方針はかわる。<br />
+まずはVPCの中で利用するサービスとVPCの外で使うものがあるのでその区別。</p>
+
+<ul>
+<li>VPCの中で使うもの
+
+<ul>
+<li>EC2とかRDSとかRedshift、EMR</li>
+</ul></li>
+<li>VPCの外で使うもの
+
+<ul>
+<li>S3、LamdaとかDynamoDB、CloudWatch</li>
+</ul></li>
+</ul>
+
+<p>次に、外部通信の設計</p>
+
+<ul>
+<li>VPCと外部を接続する場合
+
+<ul>
+<li>専用線orインターネットVPNorパブリック(ssh/https)</li>
+</ul></li>
+<li>VPCがないけど外部から利用したい場合
+
+<ul>
+<li>httpsでまかなう場合が多い。</li>
+<li>実は、VPCがなくてもDicrectConnectは使えるよ。
+
+<ul>
+<li>DirectConnectのパブリック接続</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h2 id="5-プライベートnw設計のステップ:eabb2dedb01933710faf4225c45744d2">(5)プライベートNW設計のステップ</h2>
+
+<ol>
+<li>VPCの作成
+
+<ol>
+<li>VPCのCIDRレンジは変えられないから大きくとっておこう</li>
+<li>オンプレミスとのレンジも被らないように</li>
+<li>/16がおすすめ</li>
+</ol></li>
+<li>サブネット作成
+
+<ol>
+<li>インターネットに接続するものとしないもの。ここでサブネット分けよう</li>
+<li>AZが落ちてもいいように設計しよう。サブネットは２つずつ</li>
+<li>サブネットサイズは24がおすすめ</li>
+</ol></li>
+<li>VPCコンポーネントの作成
+
+<ol>
+<li>カスタマーGW</li>
+<li>インターネットGW</li>
+<li>VPC単位、サブネット単位、インスタンス単位で配置できるコンポーネントがあるよ</li>
+</ol></li>
+<li>インスタンスの配置
+
+<ol>
+<li>セキュリティポリシーを考えよう</li>
+<li>セキュリティグループとネットワークACLがあるよ</li>
+<li>セキュリティグループのほうが柔軟</li>
+</ol></li>
+<li>名前解決の検討</li>
+</ol>
+
+<h2 id="6-ユースケースごとのnw設計:eabb2dedb01933710faf4225c45744d2">(6)ユースケースごとのNW設計</h2>
+
+<h3 id="公開サービスの場合:eabb2dedb01933710faf4225c45744d2">公開サービスの場合</h3>
+
+<ul>
+<li>インターネットから接続でいるのはロードバランサーだけにしよう
+
+<ul>
+<li>あるいはあとはメンテナンス用の踏み台サーバだけ</li>
+</ul></li>
+<li>S3を活用するときは、VPCエンドポイントつかえばVPC内部から接続できるよ</li>
+<li>管理拠点とはVPNでつなぐことをおすすめするよ</li>
+<li>管理拠点とのルーティングはルートテーブル</li>
+<li>DNSはRoute53使うと便利だよ
+
+<ul>
+<li>ALIASレコードという独自機能</li>
+<li>DNSのフェイルオーバー機能
+
+<ul>
+<li>ソーリーページへの転送が可能</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h3 id="社内システム基盤の場合:eabb2dedb01933710faf4225c45744d2">社内システム基盤の場合</h3>
+
+<ul>
+<li>DirectConnectを使おう
+
+<ul>
+<li>パートナーがたくさんいるので連絡してみよう</li>
+</ul></li>
+<li>Route53はプライベートゾーン、オンプレからVPC内の名前解決にも使えるよ</li>
+<li>DirectConnect体験ラボあるからつかってみて
+
+<ul>
+<li><a href="https://aws.amazon.com/jp/dx_labo/">https://aws.amazon.com/jp/dx_labo/</a></li>
+</ul></li>
+</ul>
+
+<h2 id="7-vpc間のピア接続:eabb2dedb01933710faf4225c45744d2">(7)VPC間のピア接続</h2>
+
+<ul>
+<li>異なるVPC間をピア接続することもできるよ</li>
+<li>VPC間でルーティングの設定が必要</li>
+<li>マルチホップルーティングはできないので注意</li>
+<li>サブネットは重複しないように注意</li>
+</ul>
+
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label-counter" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+                            <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3a%2f%2fblog.mosuke.tech%2fentry%2f2017%2f05%2f31%2faws_summit_network%2f&layout=button_count&size=small&mobile_iframe=true&appId=1383467145023614&width=90&height=20" width="90" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

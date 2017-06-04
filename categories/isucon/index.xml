@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Isucon on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/isucon/</link>
+    <description>Recent content in Isucon on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 19 Sep 2016 17:20:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/isucon/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ISUCON6予選で惨敗した. 足りなかったのは&#39;Courage&#39;</title>
+      <link>https://blog.mosuke.tech/entry/2016/09/19/172009/</link>
+      <pubDate>Mon, 19 Sep 2016 17:20:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/09/19/172009/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;span style=&#34;font-size: 80%&#34;&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apple&#34;&gt;Apple&lt;/a&gt;の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/keynote&#34;&gt;keynote&lt;/a&gt;で話題の&amp;rsquo;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Courage&#34;&gt;Courage&lt;/a&gt;&amp;lsquo;使ってみた笑&lt;/span&gt;&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;ISUCON6予選で惨敗した。(18000点くらい)&lt;br&gt;
+端的に言って、とても未熟だった。&lt;/p&gt;
+
+&lt;p&gt;とはいえ、とてもいい思い出になったのでまとめる。&lt;/p&gt;
+
+&lt;h1&gt;メンバー&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%EA%A1%BC%A5%A8%A5%E0&#34;&gt;スリーエム&lt;/a&gt;というチーム名で、@mogulla3と@mintsu123と一緒に出場した。&lt;br&gt;
+ふたりともぼくよりもアプリの改善などは10倍くらい優秀なエンジニアなので、&lt;br&gt;
+ぼくはインフラとか総務的な立ち回りをして、２人がチューニングに集中できるようにすることを心がけていた。&lt;/p&gt;
+
+&lt;h1&gt;準備&lt;/h1&gt;
+
+&lt;p&gt;準備は３週間の間に土日どちらかに集まってISUCONの過去問を解いたり戦略について事前に打ち合わせしてた。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;プライベートレポジトリの用意(Gitlab)&lt;/li&gt;
+&lt;li&gt;チャットルームの用意(Slack)&lt;/li&gt;
+&lt;li&gt;ISUCON4とISUCON5の予選の過去問解き
+
+&lt;ul&gt;
+&lt;li&gt;土日集まったときには戦略や振り返りを重視&lt;/li&gt;
+&lt;li&gt;実際の過去問ときは平日に各々が空いた時間などにやってた&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;基本戦略を準備
+
+&lt;ul&gt;
+&lt;li&gt;なんの技術を主に使うか&lt;/li&gt;
+&lt;li&gt;だれが何を担当するか&lt;/li&gt;
+&lt;li&gt;定形作業の手順化&lt;/li&gt;
+&lt;li&gt;その他ナレッジなど&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;採用した技術&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/PHP&#34;&gt;PHP&lt;/a&gt; 7.0&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/php&#34;&gt;php&lt;/a&gt;-fpm&lt;/li&gt;
+&lt;li&gt;Openresty(nginx) 1.11&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt; 5.7&lt;/li&gt;
+&lt;li&gt;Redis 3.2&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;当日&lt;/h1&gt;
+
+&lt;p&gt;出だしはとても順調だった。&lt;br&gt;
+Azure担当だったぼくはすぐにサーバをデプロイし、OSバージョンを確認した。&lt;br&gt;
+予想通りの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ubuntu&#34;&gt;Ubuntu&lt;/a&gt; 16.04であったので、準備したとおり必要な&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DF%A5%C9%A5%EB%A5%A6%A5%A7%A5%A2&#34;&gt;ミドルウェア&lt;/a&gt;のインストールをすませた。&lt;/p&gt;
+
+&lt;p&gt;ほぼ定石と言える下記（定形作業と呼んでいた）もすぐにこなすことができた。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;調査のための各種ログ出力化&lt;/li&gt;
+&lt;li&gt;Nginxでの静的ファイルの配信、キャッシュ化&lt;/li&gt;
+&lt;li&gt;Kataribeインストールと実行&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;のインデックスの付与と設定見直し&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/php&#34;&gt;php&lt;/a&gt;-fpmの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Unix&#34;&gt;Unix&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C9%A5%E1%A5%A4%A5%F3&#34;&gt;ドメイン&lt;/a&gt;ソケット化&lt;/li&gt;
+&lt;li&gt;デプロイの仕組みの整理&lt;/li&gt;
+&lt;li&gt;不要デーモンの停止&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;この状態でもスコアは0のままであり、少し焦りを感じたが、&lt;br&gt;
+ここからが本番のチューニング開始である。&lt;br&gt;
+Kataribeの結果から、&lt;code&gt;GET /&lt;/code&gt;が改善ポイントであることは明らかなのはわかっていた。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Top 20 Sort By Count
+Count    Total      Mean    Stddev     Min   P50.0   P90.0   P95.0   P99.0     Max  2xx  3xx  4xx  5xx  Request
+  326  366.105  1.123021  2.619395   0.000   0.000   6.188   7.418   9.827  10.207  326    0    0    0  GET / HTTP/1.0
+  326  366.154  1.123172  2.618228   0.000   0.001   6.190   7.418   9.778  10.207  326    0    0    0  GET / HTTP/1.1
+  240    0.000  0.000000  0.000000   0.000   0.000   0.000   0.000   0.000   0.000  240    0    0    0  GET /css/bootstrap.min.css HTTP/1.0
+  240    0.737  0.003071  0.002843   0.000   0.002   0.006   0.010   0.013   0.015  240    0    0    0  GET /css/bootstrap.min.css HTTP/1.1
+  120    0.101  0.000842  0.002078   0.000   0.000   0.002   0.003   0.015   0.015  120    0    0    0  GET /img/star.gif HTTP/1.1
+  120    0.000  0.000000  0.000000   0.000   0.000   0.000   0.000   0.000   0.000  120    0    0    0  GET /js/jquery.min.js HTTP/1.0
+  120    0.000  0.000000  0.000000   0.000   0.000   0.000   0.000   0.000   0.000  120    0    0    0  GET /img/star.gif HTTP/1.0
+  120    0.152  0.001267  0.001788   0.000   0.001   0.003   0.004   0.011   0.012  120    0    0    0  GET /css/bootstrap-responsive.min.css HTTP/1.1
+  120    0.000  0.000000  0.000000   0.000   0.000   0.000   0.000   0.000   0.000  120    0    0    0  GET /js/bootstrap.min.js HTTP/1.0
+  120    0.148  0.001233  0.001843   0.000   0.001   0.003   0.004   0.011   0.012  120    0    0    0  GET /favicon.ico HTTP/1.1
+  120    0.157  0.001308  0.001829   0.000   0.001   0.003   0.004   0.011   0.011  120    0    0    0  GET /js/bootstrap.min.js HTTP/1.1
+  120    0.379  0.003158  0.002890   0.000   0.002   0.007   0.010   0.013   0.015  120    0    0    0  GET /js/jquery.min.js HTTP/1.1
+  120    0.000  0.000000  0.000000   0.000   0.000   0.000   0.000   0.000   0.000  120    0    0    0  GET /favicon.ico HTTP/1.0
+  120    0.000  0.000000  0.000000   0.000   0.000   0.000   0.000   0.000   0.000  120    0    0    0  GET /css/bootstrap-responsive.min.css HTTP/1.0
+   67  116.697  1.741746  1.159447   0.020   1.760   2.999   3.000   3.001   3.001    0   42   25    0  POST /login HTTP/1.0
+   67  116.706  1.741881  1.159099   0.020   1.760   2.999   2.999   3.001   3.001    0   42   25    0  POST /login HTTP/1.1
+   35    0.857  0.024486  0.022147   0.000   0.026   0.040   0.085   0.096   0.096   35    0    0    0  GET /stars?keyword=%E5%86%85%E7%94%B0%E4%BF%AE%E5%B9%B3 HTTP/1.1
+   35    0.977  0.027914  0.020538   0.000   0.031   0.049   0.062   0.077   0.077   35    0    0    0  GET /stars?keyword=%E3%82%A6%E3%83%BC%E3%82%BA HTTP/1.1
+   34    0.867  0.025500  0.018035   0.000   0.028   0.044   0.059   0.071   0.071   34    0    0    0  GET /stars?keyword=%E5%8C%97%E6%B6%88%E9%98%B2%E7%BD%B2 HTTP/1.1
+   32    0.731  0.022844  0.015575   0.000   0.025   0.040   0.050   0.052   0.052   32    0    0    0  GET /stars?keyword=%E8%BC%AA%E7%8A%B6%E7%94%B2%E7%8A%B6%E7%AD%8B HTTP/1.1 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;しかし、なかなか突破口が見いだせず、できるところからやっていく方針を取った。&lt;br&gt;
+アプリの改善を振り返ってみると、なにもしてねーなって感じがやばい。（何してたんだっけ…(・_・;)）&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;isudaとisutarのfpmプロセスの調整&lt;/li&gt;
+&lt;li&gt;isudaとisutar間のhttpによる&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/API&#34;&gt;API&lt;/a&gt;呼び出しをなくし、DB接続とした&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;改善
+
+&lt;ul&gt;
+&lt;li&gt;htmlifyのkeyword取り出し&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;load_starの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;など&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;keywordのlengthを予め持つように変更&lt;/li&gt;
+&lt;li&gt;isudaとisutarの統合
+
+&lt;ul&gt;
+&lt;li&gt;効果の検証ができず、結局マージはできなかった&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;反省&lt;/h1&gt;
+
+&lt;p&gt;&lt;code&gt;htmlify&lt;/code&gt;の改善がなによりも効果がでることはわかっていた。&lt;br&gt;
+しかし、その改善についてのいい方法がすぐに思いつかなかったこともあり、&lt;br&gt;
+他のやれることを優先しすぎてしまったことが一番の反省点だ。&lt;/p&gt;
+
+&lt;p&gt;時間がない、大きな変更したら怖いという思いが強くなり、&lt;br&gt;
+どちらかというとやれることをきちんとやればいける、というディフェンシブな思考になってしまっていた気がする。&lt;/p&gt;
+
+&lt;p&gt;せっかくRedisやOpenrestyを準備していたが、&lt;br&gt;
+そのあたりを発揮せずにおわってしまい残念な感じではあった。&lt;br&gt;
+（ここは準備不足ポイントでもあった）&lt;/p&gt;
+
+&lt;p&gt;根本の改善に勇気を持って切り込む&#34;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Courage&#34;&gt;Courage&lt;/a&gt;&#34;を次は発揮したい。&lt;/p&gt;
+
+&lt;p&gt;反省会の炙りしめ鯖うまかった。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Ftabelog.com%2Ftokyo%2FA1303%2FA130301%2F13003370%2F&#34; title=&#34;BISTRO三十五段屋 (渋谷/居酒屋)&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://tabelog.com/tokyo/A1303/A130301/13003370/&#34;&gt;tabelog.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;最後に&lt;/h1&gt;
+
+&lt;p&gt;反省点は多かったものの、準備期間も含めてこの１ヶ月とても楽しかったし、&lt;br&gt;
+また自分の未熟さを実感できてとてもよかった。&lt;/p&gt;
+
+&lt;p&gt;今まで、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B6%A5%B5%BB%A5%D7%A5%ED%A5%B0%A5%E9%A5%DF%A5%F3%A5%B0&#34;&gt;競技プログラミング&lt;/a&gt;などもしたこともなく、&lt;br&gt;
+技術面で「競う」ということはほとんどしたことがなかった。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;この敗北で、技術をきちんと理解し追求していきたいという想いが湧いてきた。&lt;br&gt;
+ISUCON主催者ありがとうございました。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

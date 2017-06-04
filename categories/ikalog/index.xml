@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ikalog on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/ikalog/</link>
+    <description>Recent content in Ikalog on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sat, 25 Jun 2016 11:30:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/ikalog/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>IkaLog環境整えた。画面が突然映らなくなる事象とかについて</title>
+      <link>https://blog.mosuke.tech/entry/2016/06/25/113009/</link>
+      <pubDate>Sat, 25 Jun 2016 11:30:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/06/25/113009/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;昔まで、人の家で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%D7%A5%E9%A5%C8%A5%A5%A1%BC%A5%F3&#34;&gt;スプラトゥーン&lt;/a&gt;をやったりたまに借りたりして楽しんでいたが、&lt;br&gt;
+ついにというか今更というか自宅用に買ってしまった。&lt;br&gt;
+ついでにという感じで、お金を注ぎ込んで、IkaLogを楽しめる環境も作った。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;IkaLogあるととても楽しい。&lt;/p&gt;
+
+&lt;p&gt;IkaLog環境はほぼ下記ブログを参考にしたので、詳しいことはかかないが、&lt;br&gt;
+全体図やハマったポイントなどを中心にまとめておく。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://uriku.hatenablog.com/entry/2015/12/05/134411&#34; target=&#34;_blank&#34;&gt;雑記：Mac + IkaLog + stat.inkで戦績管理 - 新人SEの学習記録&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;完成後写真&lt;/h1&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160625/20160625112118.png&#34; alt=&#34;f:id:mosuke5:20160625112118p:plain&#34; title=&#34;f:id:mosuke5:20160625112118p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;図にしてわかりやすくすると&lt;/h1&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160625/20160625112128.png&#34; alt=&#34;f:id:mosuke5:20160625112128p:plain&#34; title=&#34;f:id:mosuke5:20160625112128p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;突然画面が映らなくなることが起きた！！&lt;/h1&gt;
+
+&lt;p&gt;ゲームを楽しんでいた時突然、ディスプレーに画面が映らなくなることが度々あった。&lt;br&gt;
+ケーブルを抜き差ししても直らない。&lt;br&gt;
+ただ時間が経つと映るようになる・・・&lt;/p&gt;
+
+&lt;p&gt;原因が最初わからなかったのだが、&lt;br&gt;
+どうやら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/HDMI&#34;&gt;HDMI&lt;/a&gt;スプリッターの電源供給が追いつかなくなった時になっていた。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/HDMI&#34;&gt;HDMI&lt;/a&gt;スプリッターは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/HDMI&#34;&gt;HDMI&lt;/a&gt;からある程度給電することができるので、はじめはそのまま利用していた。&lt;br&gt;
+だが、IkaLogを回し始めるとどうやら給電が追いつかなくなるようであった。&lt;/p&gt;
+
+&lt;p&gt;説明書にも下記のように書いてあって、「あっ」って感じだった&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;入力機器側の電力不足により正常に表示できない場合に使用します。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;USB経由で別途電源供給をするようになってから事象が発生しなくなった！&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;※画面が映らなくなってガチマッチ何度負けたことか・・・&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CentOS7, iptables設定でハマった &middot; Goldstine研究所</title>
+
+    <meta name="description" content=" 最近VPSのOSをcentos7にしたのだが、なかなか手付かずでiptablesの設定も放置していた… （sshの最低限の設定はしていたが、ほんとうに良くない…）  久しぶりに手が空いたので設定するかーと思いきや まず/etc/sysco">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="CentOS7, iptables設定でハマった &middot; Goldstine研究所">
+    <meta name="twitter:description" content=" 最近VPSのOSをcentos7にしたのだが、なかなか手付かずでiptablesの設定も放置していた… （sshの最低限の設定はしていたが、ほんとうに良くない…）  久しぶりに手が空いたので設定するかーと思いきや まず/etc/sysco">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="CentOS7, iptables設定でハマった &middot; Goldstine研究所">
+    <meta property="og:description" content=" 最近VPSのOSをcentos7にしたのだが、なかなか手付かずでiptablesの設定も放置していた… （sshの最低限の設定はしていたが、ほんとうに良くない…）  久しぶりに手が空いたので設定するかーと思いきや まず/etc/sysco">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">20 Sep 2014, 18:03</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/09/20/180326/" class="post-title">CentOS7, iptables設定でハマった</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-CentOS7" href="https://blog.mosuke.tech/categories/centos7">CentOS7</a><a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p><body>
+<p>最近<a class="keyword" href="http://d.hatena.ne.jp/keyword/VPS">VPS</a>のOSをcentos7にしたのだが、なかなか手付かずで<a class="keyword" href="http://d.hatena.ne.jp/keyword/iptables">iptables</a>の設定も放置していた…<br>
+（<a class="keyword" href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>の最低限の設定はしていたが、ほんとうに良くない…）</p>
+<p>久しぶりに手が空いたので設定するかーと思いきや<br>
+まず/etc/sysconfig/<a class="keyword" href="http://d.hatena.ne.jp/keyword/iptables">iptables</a>がないし&hellip;</p>
+<p>Cent7からのsystemctlで<a class="keyword" href="http://d.hatena.ne.jp/keyword/iptables">iptables</a>のサービスを確認してもでてこないし…</p></p>
+
+<pre><code># systemctl status iptables
+iptables.service
+   Loaded: not-found (Reason: No such file or directory)
+   Active: inactive (dead)
+</code></pre>
+
+<p>というわけで、調べてみると、まず<a class="keyword" href="http://d.hatena.ne.jp/keyword/iptables">iptables</a>.serviceをインスールしないといけないとのこと。<br>
+そして、centos7からはfirewalldがデフォルトでオンになっているからオフにしないといけない。<br>
+（いけないわけではないけど両方使う意味が無いので。）</p>
+<br>
+<p>まずは<a class="keyword" href="http://d.hatena.ne.jp/keyword/iptables">iptables</a>-serviceをインスールし、firewalldをオフ、<a class="keyword" href="http://d.hatena.ne.jp/keyword/iptables">iptables</a>をオンとした。</p>
+
+<pre><code># yum install iptables-services
+# systemctl status firewalld
+   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled)
+   Active: active (running) since Sat 2014-09-20 17:47:11 JST; 4s ago
+ Main PID: 11162 (firewalld)
+   CGroup: /system.slice/firewalld.service
+           └─11162 /usr/bin/python -Es /usr/sbin/firewalld --nofork --nopid
+
+#
+# systemctl stop firewalld
+#
+# systemctl status firewalld
+   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled)
+   Active: inactive (dead)
+
+#
+#systemctl disable firewalld
+#
+#systemctl enable iptables
+#systemctl start iptables
+#
+#systemctl status iptables
+   Loaded: loaded (/usr/lib/systemd/system/iptables.service; enabled)
+   Active: inactive (dead) since Sat 2014-09-20 17:47:10 JST; 2min 48s ago
+  Process: 11139 ExecStop=/usr/libexec/iptables/iptables.init stop (code=exited, status=0/SUCCESS)
+  Process: 10096 ExecStart=/usr/libexec/iptables/iptables.init start (code=exited, status=0/SUCCESS)
+ Main PID: 10096 (code=exited, status=0/SUCCESS)
+....
+
+# 
+</code></pre>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/iptables">iptables</a>の設定はいつもどおり。<br>
+CentOS7の新しいコマンドに戸惑ったので一部メモ。</p>
+<p></p>
+<h2>service, chkconfigコマンドはsystemctlコマンドへ</h2>service, chkconfigコマンドは推奨されずsystemctlコマンドへ切り替わった。<br>
+試しにchkconfigコマンドを利用すると…
+
+```
+# chkconfig --list
+Note: This output shows SysV services only and does not include native
+      systemd services. SysV configuration data might be overridden by native
+      systemd configuration.
+
+      If you want to list systemd services use 'systemctl list-unit-files'.
+      To see services enabled on particular target use
+      'systemctl list-dependencies [target]'.
+
+iprdump        	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+iprinit        	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+iprupdate      	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+netconsole     	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+network        	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+pmcd           	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+pmie           	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+pmlogger       	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+pmmgr          	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+pmproxy        	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+pmwebd         	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+```
+
+<blockquote>
+    <p>"If you want to list systemd services use 'systemctl list-unit-files'."</p>
+</blockquote>
+<p>systemdのサービスを表示したければ、systemctl list-unit-filesを利用せよとのこと。<br>
+試しに打つと以下のように表示される</p>
+
+<pre><code># systemctl list-unit-files
+UNIT FILE                                   STATE
+proc-sys-fs-binfmt_misc.automount           static
+dev-hugepages.mount                         static
+dev-mqueue.mount                            static
+proc-fs-nfsd.mount                          static
+proc-sys-fs-binfmt_misc.mount               static
+sys-fs-fuse-connections.mount               static
+sys-kernel-config.mount                     static
+sys-kernel-debug.mount                      static
+tmp.mount                                   disabled
+var-lib-nfs-rpc_pipefs.mount                static
+brandbot.path                               disabled
+....
+ 
+</code></pre>
+
+<p>また、サービスの起動・停止・状態確認などは</p>
+
+<pre><code># service &lt;service name&gt; &lt;start/stop/restart/status&gt;
+　↓
+# systemctl &lt;start/stop/restart/status&gt; &lt;service name&gt;
+</code></pre>
+
+<p>そして、サービスの起動オプションの設定は</p>
+
+<pre><code># chkconfig &lt;service name&gt; &lt;on/off&gt;
+   ↓
+# systemctl &lt;enable/disable&gt; &lt;service name&gt;
+</code></pre>
+
+<p><p>まずはこんなところ。</p>
+</body></p>
+
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label-counter" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+                            <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3a%2f%2fblog.mosuke.tech%2fentry%2f2014%2f09%2f20%2f180326%2f&layout=button_count&size=small&mobile_iframe=true&appId=1383467145023614&width=90&height=20" width="90" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

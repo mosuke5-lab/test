@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yapc &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Yapc &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Yapc &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">22 Aug 2015, 22:30</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/08/22/223025/" class="post-title">(個人的) YAPC::Asia 2015ふりかえり</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-YAPC" href="https://blog.mosuke.tech/categories/yapc">YAPC</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        「ブログを書くまでがYAPC」 というわけで、8/21, 22とYAPCに参加したので、そこでの学んだこと、気になったことなどを振り返ります。 しかし、YAPCで聞いた公演内容を淡々とまとめるなどはしません。 単なる内容のまとめであれば、公開されているスライドなどをみるのが一番だと思いますので。 以下３点を中心に振り返ってみます。 インフラ関連セッションについて 発表を聞いてよかった、今の自分に一番必要だったことについて 興味を持ったことについて（CONBU） インフラ関連セッションについて 意図的も半分くらいあるんだけど、なんとなくセッションを選んでいたら、インフラ関連のものが多くなりました。 世界展開する大規模ウェブサービスのデプロイを支える技術 - YAPC::Asia Tokyo 2015 Consulと自作OSSを活用した100台規模のWebサービス運用 - YAPC::Asia Tokyo 2015 3分でサービスのOSを入れ替える技術 - YAPC::Asia Tokyo 2015 我々はどのように冗長化を失敗したのか - YAPC::Asia Tokyo 2015 デプロイについて 大規模サービスでのデプロイにおいて、一台一台のホストがgit cloneして、bundle installやらせてーとかやると、 時間もかかるし、並列的にgit cloneした際などgitサーバが負荷的に危なくなってくる。 なので、予めライブラリとかすべてインストールされたものをターボールなどにまとめておいて、 それをプルしてくる形式のデプロイについて多くの発表がありました。 このデプロイ方法、並列で数百MBのファイルをダウンロードしても落ちないストーレジ（ようはAWSのS3）を前提に構築されている感がありました。 （というかそう言っていた） 相変わらずAWSはせこいなーと思っています（笑） うちの環境では真似するのは難しいなーと思う部分もありますが、 それ以前にシステムの規模や用途によってデプロイのあり方も多種多様になることを改めて考えさせられました。 自分の環境にあった最適なデプロイ形態を探す日々がまた始まりそうですが、良いヒントになりそうなのはまちがいなしです。 式年遷宮インフラストラクチャ Kenjiさんの式年遷宮インフラストラクチャ。 この考え方、ぼくも一度考えたことはありますが、ここまで実践してみた経験談がきけたのは面白かった。 いざというときに切り替わらない、切り替えられないという問題に対して、 自動ではないが、「切替訓練」ということで、定期的に冗長化の系を切り替えることはしてもいいのかなーと思ったりしています。 consulについて 実は、上であげた４つのセッション全てで共通していたのがconsulを使っていた。 Consul by HashiCorpwww.consul.io 正直、consulについて、名前くらいしかしらなかったのに、ここまで利用されていたので、時代に乗り遅れている感を感じた。 でも利用用途をみていくと、iaas環境で力を発揮するっぽいので、概要と用途だけ押さえておくか…といったところ。 今月中の課題です。 発表を聞いてよかった、今の自分に一番必要だったことについて たくさん学びのあったなかで、なんだかんだいっても、koemuさんの発表が今の自分が一番考えていてることであり、 一番必要なことであったように感じた。 辛いことをやめる！から始まる業務改善とInfrastructure as Code - YAPC::Asia Tokyo 2015yapcasia.org 実はkoemuさんのブログをたまにみていて、 いちど話を聞いてみたいなーと思っていた人であったので、とてもいい機会であった。
+                    </div>
+                </section>
+                
+            </div>
+            
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Webサーバ on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/web%E3%82%B5%E3%83%BC%E3%83%90/</link>
+    <description>Recent content in Webサーバ on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sat, 04 Jun 2016 18:01:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/web%E3%82%B5%E3%83%BC%E3%83%90/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Nginxの仕組みについて入門</title>
+      <link>https://blog.mosuke.tech/entry/2016/06/04/180122/</link>
+      <pubDate>Sat, 04 Jun 2016 18:01:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/06/04/180122/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;普段Nginxを使ってはいるものの、その仕組やなぜNignxを使うべきなのかというところがあまりわかっていなかったので、
+改めてNginxを入門しその仕組などについて調べてみた。&lt;br&gt;
+勉強不足もあって、間違ってることもあるかもしれないがその際は教えて下さい。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;1. C10K問題&lt;/h1&gt;
+
+&lt;p&gt;まず、Nginxを理解する上でC10K問題について知る必要がある。&lt;br&gt;
+C10K問題とは下記の問題のことだ。&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;ハードウェアの性能上は問題がなくても、クライアント数があまりにも多くなるとサーバがパンクする問題のこと。
+C は「Client（クライアント）」の頭文字、10K は「1 万台」を意味する。「クライアント 1 万台問題」ともいわれる。&lt;br&gt;
+（&lt;a href=&#34;http://d.hatena.ne.jp/keyword/C10K%20%CC%E4%C2%EA&#34;&gt;C10K 問題とは - はてなキーワード&lt;/a&gt; より引用）&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h1&gt;2. 従来のWebサーバの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;
+&lt;/h1&gt;
+
+&lt;h1&gt;prefork&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;のデフォルトの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;などで採用されている。&lt;br&gt;
+特徴としては、１リクエストに対して１プロセスが処理する。&lt;br&gt;
+すなわち同時接続が 1000であれば 1000個のプロセスが必要となる。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604171531.png&#34; alt=&#34;f:id:mosuke5:20160604171531p:plain&#34; title=&#34;f:id:mosuke5:20160604171531p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;worker&lt;/h1&gt;
+
+&lt;p&gt;リクエストはスレッドが処理する。&lt;br&gt;
+スレッドは１プロセスのなかで複数立ち上げることができる。&lt;br&gt;
+プロセス数は少なくて済むが、同時接続が1000であれば1000個のスレッドが必要となる。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;で指定可能な&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;の１つ。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604171542.png&#34; alt=&#34;f:id:mosuke5:20160604171542p:plain&#34; title=&#34;f:id:mosuke5:20160604171542p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;いずれにしても、1000の同時接続があれば、1000のプロセスやスレッドが必要ということだ。&lt;br&gt;
+プロセス/スレッド数が多くなってくると「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1&#34;&gt;コンテキストスイッチ&lt;/a&gt;」が多く発生し、処理が遅くなってしまう。&lt;/p&gt;
+
+&lt;h3&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1&#34;&gt;コンテキストスイッチ&lt;/a&gt;とは&lt;/h3&gt;
+
+&lt;blockquote&gt;&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1&#34;&gt;コンテキストスイッチ&lt;/a&gt;とは、コンピュータの処理装置（CPU）が現在実行している処理の流れ（プロセス、スレッド）を一時停止し、別のものに切り替えて実行を再開すること。&lt;br&gt;
+（&lt;a href=&#34;http://e-words.jp/w/%E3%82%B3%E3%83%B3%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81.html&#34;&gt;コンテキストスイッチとは｜コンテキストスイッチング｜context switch - 意味/定義 ： IT用語辞典&lt;/a&gt; より引用）&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h1&gt;3. Nginxの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;
+&lt;/h1&gt;
+
+&lt;p&gt;Nginxが&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/C10K%20%CC%E4%C2%EA&#34;&gt;C10K 問題&lt;/a&gt;を解決するために開発されたともいわれている。&lt;br&gt;
+上記のような課題を解決するような&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;を採用している。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604171559.png&#34; alt=&#34;f:id:mosuke5:20160604171559p:plain&#34; title=&#34;f:id:mosuke5:20160604171559p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;ワーカプロセスがリクエストを処理する。&lt;br&gt;
+前述のpreforkやworkerと決定的に違うところは、１つのワーカプロセスが複数のリクエストを処理するということだ。&lt;/p&gt;
+
+&lt;p&gt;また、マスタープロセスはワーカプロセスの立ち上げや、制御、管理などが主な仕事。&lt;br&gt;
+Nginxを終了あるいは再起動、設定ファイルを再読み込みして変更を反映するなど。&lt;/p&gt;
+
+&lt;p&gt;下記のような仕組みがNginxの高速化（C10K問題対応）を可能としている。&lt;/p&gt;
+
+&lt;h1&gt;シングルスレッド&lt;/h1&gt;
+
+&lt;p&gt;接続ごとにプロセスやスレッドを立ち上げていては、C10K問題に対応できない。&lt;br&gt;
+そこで、Nginxは１つのスレッドで処理を行うようにしている。&lt;br&gt;
+それにより、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1&#34;&gt;コンテキストスイッチ&lt;/a&gt;と呼ばれるCPUの切り替え処理が発生しない。&lt;br&gt;
+正確に言うと、完全に１スレッドで処理するわけではなく図にあるようにワーカプロセス自体はマルチプロセス化できる。&lt;/p&gt;
+
+&lt;h1&gt;イベント駆動&lt;/h1&gt;
+
+&lt;p&gt;通常のプログラムは上から書かれた順に実行されますよね。&lt;br&gt;
+イベ ント駆動で動作するプログラムは何かしらのイベントが発生するまで待機し、発生したイベントの種類に応じて実行される。&lt;br&gt;
+ブラウザ上の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/JavaScript&#34;&gt;JavaScript&lt;/a&gt;の動きをイメージするとわかりやすいと思う。&lt;/p&gt;
+
+&lt;h1&gt;非同期処理&lt;/h1&gt;
+
+&lt;p&gt;一般的なwebサーバでは同期処理を行う。
+つまり、複数のリクエストがあったときに順番に処理していく。&lt;br&gt;
+そのため、１つのリクエストが遅いとそれに引きづられてあとのリクエストも遅くなる。&lt;br&gt;
+非同期処理では、リクエストがきたら他のリクエストの状況に関わらず処理を行う。&lt;/p&gt;
+
+&lt;h4&gt;同期処理&lt;/h4&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604173212.png&#34; alt=&#34;f:id:mosuke5:20160604173212p:plain&#34; title=&#34;f:id:mosuke5:20160604173212p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h4&gt;非同期処理&lt;/h4&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604173226.png&#34; alt=&#34;f:id:mosuke5:20160604173226p:plain&#34; title=&#34;f:id:mosuke5:20160604173226p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;向いていること / 向いていないこと&lt;/h1&gt;
+
+&lt;p&gt;Nginxではイベント駆動で非同期的なIO処理によって、リクエストを完全に処理することを待たずに次から次へと処理を受け付けていきます。&lt;br&gt;
+そのため、１処理に時間のかかるものをNginx自身で行おうとするとキューがどんどん溜まってしまいます。&lt;br&gt;
+そのため、一般にアプリケーションの実行やデータベース処理などは向いていません。&lt;br&gt;
+一方で、軽量な静的データの配信やリバースプロキシなどに向いています。&lt;/p&gt;
+
+&lt;p&gt;Nginxは、静的データの配信や、プロキシなどに特化させ、アプリケーションの実行などは別途&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%B5%A1%BC%A5%D0&#34;&gt;アプリケーションサーバ&lt;/a&gt;等で行わせることで有効活用できます。&lt;/p&gt;
+
+&lt;h2&gt;向いていること&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;軽量データの大量配信&lt;/li&gt;
+&lt;li&gt;ディスクI/Oの発生しないキャッシュ&lt;/li&gt;
+&lt;li&gt;リバースプロキシ&lt;/li&gt;
+&lt;li&gt;ロードバランサ&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;向いていないこと&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;アプリケーション実行&lt;/li&gt;
+&lt;li&gt;データベース処理&lt;/li&gt;
+&lt;li&gt;動画などの重たいデータの配信&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;4. 最後に&lt;/h1&gt;
+
+&lt;p&gt;NginxやWebサーバについてより理解を深めるためには、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/UNIX&#34;&gt;UNIX&lt;/a&gt;のプロセスやネットワーク&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/API&#34;&gt;API&lt;/a&gt;についての知識が足りないと感じた。。。&lt;/p&gt;
+
+&lt;p&gt;というわけでこれを買ってみたが、978ページもあってとりあえず挫折＼(^o^)／&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4894712059/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/213B9PVJD1L._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;UNIXネットワークプログラミング〈Vol.1〉ネットワークAPI:ソケットとXTI&#34; title=&#34;UNIXネットワークプログラミング〈Vol.1〉ネットワークAPI:ソケットとXTI&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4894712059/hatena-blog-22/&#34;&gt;UNIXネットワークプログラミング〈Vol.1〉ネットワークAPI:ソケットとXTI&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;作者:&lt;/span&gt; W.リチャードスティーヴンス,W.Richard Stevens,篠田陽一&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; ピアソンエデュケーション&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 1999/07&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; 単行本&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;購入&lt;/span&gt;: 8人 &lt;span class=&#34;hatena-asin-detail-label&#34;&gt;クリック&lt;/span&gt;: 151回&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/4894712059/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログ (37件) を見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;まずはこれからはじめようと思う。。。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Ftatsu-zine.com%2Fbooks%2Fnaruhounix&#34; title=&#34;なるほどUnixプロセス ― Rubyで学ぶUnixの基礎&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://tatsu-zine.com/books/naruhounix&#34;&gt;tatsu-zine.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;参考文献&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://gihyo.jp/magazine/SD/archive/2014/201407&#34;&gt;SoftwareDesign 2015年7月号&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.amazon.co.jp/nginx%E5%AE%9F%E8%B7%B5%E5%85%A5%E9%96%80-WEB-DB-PRESS-plus-%E4%B9%85%E4%BF%9D/dp/4774178667&#34;&gt;Nginx実践入門&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.amazon.co.jp/24%E6%99%82%E9%96%93365%E6%97%A5-%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E3%82%92%E6%94%AF%E3%81%88%E3%82%8B%E6%8A%80%E8%A1%93-%E2%80%BE%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%A9%E3%83%93%E3%83%AA%E3%83%86%E3%82%A3%E3%80%81%E3%83%8F%E3%82%A4%E3%83%91%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%B3%E3%82%B9%E3%80%81%E7%9C%81%E5%8A%9B%E9%81%8B%E7%94%A8-PRESS-plus%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA/dp/4774135666/ref=sr_1_1?s=books&amp;amp;ie=UTF8&amp;amp;qid=1465030268&amp;amp;sr=1-1&amp;amp;keywords=%E3%82%B5%E3%83%BC%E3%83%90%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E3%82%92%E6%94%AF%E3%81%88%E3%82%8B&#34;&gt;[サーバインフラを支える技術](https://gihyo.jp/magazine/wdpress/plus/978-4-7741-3566-3)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.yuuk.io/entry/2015-webserver-architecture&#34;&gt;2015年Webサーバアーキテクチャ序論 - ゆううきブログ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

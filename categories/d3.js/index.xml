@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>D3.Js on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/d3/index.js/</link>
+    <description>Recent content in D3.Js on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 15 Sep 2014 13:56:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/d3.js/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>D3.js、DBからのデータ連携方法の検討</title>
+      <link>https://blog.mosuke.tech/entry/2014/09/15/135611/</link>
+      <pubDate>Mon, 15 Sep 2014 13:56:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/09/15/135611/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;最近D3.jsを使う機会があり、DBのデータを読み込ませる方法についていくつか検討した。&lt;br&gt;
+例えば以下の状況を考える。&lt;br&gt;
+【やりたいこと】&lt;br&gt;
+「DBに格納されているデータを使って、D3.jsで折れ線グラフを描く」&lt;/p&gt;
+&lt;p&gt;【DBの構造】&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AB%A5%E9%A5%E0%CC%BE&#34;&gt;カラム名&lt;/a&gt;：型&lt;br&gt;
+　date : datetime&lt;br&gt;
+　value : int&lt;/p&gt;
+&lt;p&gt;※また、下記では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Sinatra&#34;&gt;Sinatra&lt;/a&gt;上で行っているが、他の言語でも同様のことがいえる。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;(1) 簡単な&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/API&#34;&gt;API&lt;/a&gt;のようなものを利用する&lt;/h3&gt;
+    &lt;p&gt;先に結論から書くと、今まで次の(2)(3)のようなやりかたをやっていたのだけれど、&lt;br&gt;
+これが一番複雑にならずに良いと思ったということ。&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Sinatra&#34;&gt;Sinatra&lt;/a&gt;側で/&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/csv&#34;&gt;csv&lt;/a&gt;にアクセスすると&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/csv&#34;&gt;csv&lt;/a&gt;ファイルをダウンロードできるようにする。&lt;/p&gt;
+```ruby
+#Sinatra側
+get &amp;lsquo;/csv&amp;rsquo; do
+    content_type &amp;lsquo;application/csv&amp;rsquo;
+    attachment &amp;lsquo;download.csv&amp;rsquo;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#DBからデータ取得(Activerecord利用)
+@data   = Model.all()
+
+#出力するCSVデータの変数。csvヘッダーを先につけている。
+@csv = &amp;quot;date,value\n&amp;quot;
+
+#DBのデータをCSVの形にして格納
+@data.each do |d|
+    @csv += d.date.to_s + &amp;quot;,&amp;quot; + d.value.to_s + &amp;quot;\n&amp;quot;
+end
+
+#csvtest.erbというビューに出力
+erb :csvtest, :layout =&amp;gt; false
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;end&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;csvtest.erb&amp;lt;/p&amp;gt;
+```ruby
+&amp;lt;%= @csv %&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こうすることで&#34;&lt;a href=&#34;http://*****/csv&#34;&gt;http://*****/csv&lt;/a&gt;&#34;にアクセスすると&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/csv&#34;&gt;csv&lt;/a&gt;ファイルとしてダウンロードできる状態になる。&lt;br&gt;
+条件指定をしてデータをダウンロードできるようにしたい場合はGETでパラメータ指定できるようにすれば良いと思う。&lt;br&gt;
+（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Sinatra&#34;&gt;Sinatra&lt;/a&gt;で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/CSV&#34;&gt;CSV&lt;/a&gt;ファイルを生成するところのコードがナンセンスだと思っているので、もっといい方法があるはず…）&lt;/p&gt;
+&lt;p&gt;また、今回は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/csv&#34;&gt;csv&lt;/a&gt;にしているが&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/json&#34;&gt;json&lt;/a&gt;などの他の形式でも同様のことがいえる。&lt;/p&gt;
+&lt;p&gt;これをD3.js側で以下のように読み込ませる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;d3.csv(&amp;quot;/csv&amp;quot;, function(error, data) {
+    (中略)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;d3.jsの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/csv&#34;&gt;csv&lt;/a&gt;を読み込ませる関数の引数にURLを指定してあげればそれで終了。&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;(2) &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/javascript&#34;&gt;javascript&lt;/a&gt;コードの中で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;変数を展開させる&lt;/h3&gt;
+    &lt;p&gt;d3.jsのdatasetの中で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;の変数を展開させる。ビューに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Javascript&#34;&gt;Javascript&lt;/a&gt;を書いているので、ビューの中で変数展開するのと同じ要領。&lt;br&gt;
+しかし、jsコードに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;コードも交じるので複雑になりがち。&lt;/p&gt;
+```javascript
+var dataset = [
+&amp;lt;% @data.each do |d| %&amp;gt;
+    {date:&amp;lt;%= d.date%&amp;gt;, value:&amp;lt;%= d.value %&amp;gt;},
+&amp;lt;% end %&amp;gt;
+];&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;/div&amp;gt;
+&amp;lt;div class=&amp;quot;section&amp;quot;&amp;gt;
+    &amp;lt;h3&amp;gt;(3) &amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/CSV&amp;quot;&amp;gt;CSV&amp;lt;/a&amp;gt;ファイルをおいておく&amp;lt;/h3&amp;gt;
+    &amp;lt;p&amp;gt;こちらはリアルタイムな更新でなれけばこれはこれでありだと思う。&amp;lt;br&amp;gt;
+publicのフォルダに予め&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/csv&amp;quot;&amp;gt;csv&amp;lt;/a&amp;gt;ファイルを設置しておき、以下のようにd3.jsで読み込ませる。&amp;lt;/p&amp;gt;
+
+```javascript
+d3.csv(&amp;quot;test.csv&amp;quot;, function(error, data) {
+    (中略)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2015 &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="2015 &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="2015 &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">28 Dec 2015, 15:00</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/12/28/150042/" class="post-title">2015年振り返り</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-vim::factory" href="https://blog.mosuke.tech/categories/vimfactory">vim::factory</a><a class="post-category post-category-vimfactory" href="https://blog.mosuke.tech/categories/vimfactory">vimfactory</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        去年に続き、2015年で技術分野でなにがあったか簡単に振り返りました。 2014年を思い返して… - Goldstine研究所 1. Vim::Factoryの開発と公開 2014年の秋から@mogulla3と定期的にインフラ関連技術の勉強会をやってきていて、 はじめはインプットの勉強会だけを主にやってきていたのですが、 サービスを作る中でインフラ関連技術を駆使し勉強したいと思うようなっていました。 そこで、今年は「vimの設定をブラウザ上で即体感できるサービス Vim::Factory」の開発をしました。 DockerとWebSocketを使って、vimの設定をブラウザで即体感できるサービスを作った - Goldstine研究所 良かった点 新しい技術などを組み合わせながら学習しがいのあるサービスを作れたこと サービスの実現技術を公開しそれなりの反響を得られたこと 悪かった点 内部的なアーキテクチャの変更ばかりに時間を取られサービスそのものの改良ができなかったこと 2. インフラ関連の構築や運用、仕組みづくり 主に仕事の話になりますが、今年はインフラ関連の構築や運用に多く携わった気がします。 （結構、雑な感じに書き残します。） (1) メールサーバの構築と運用 Postfixを使ったメールサーバの構築と運用に携わりました。 そもそもメールサーバってなんだっけってところからはじまったのを思い出します。 とにかく運用を楽にしたかったので、その部分に多くの工夫をしました。 Ansibleを使って設定の変更などのリリース作業も簡単することや Zabbixのログ監視もいい感じに機能して、不正なメール送信とかもすぐ検知できるようにしました。 KVMの仮想環境上なので、環境の作りなおしも容易にしました。 冗長性のために２つのリージョンに分散させたりもしました。 目新しいことはないですが、わりと運用が楽な感じに作れたのでほんとによかったなと振り返って思います。 (2) インターネットから社内NWへの入口としてのリバプロサーバ構築 インターネットから社内NWにあるシステムを利用できるようにするために、 リバースプロキシサーバを構築しました。（運用はこれから） いわゆるDMZ構成におけるリバプロです。 技術的なところで言うと、corosync+pacemakerを使ってクラスタリングを組みました。 クラスタリングは思ったより奥が深く、どのようなクラスタを組むかかなり苦労しました。 障害時に相手側サーバの電源を落とす、いわゆるフェンシングなどをどう適切に使うかなど。 運用が始まってからそのあたりの実用性が確認できそうです。 ちなみにNginxでリバースプロキシたてました。 (3) 仮想環境構築とか 仮想環境というと、今までVagrantなどのツールとして、AWS、VPSなどのIaaSとして使うばかりでした。 今年は、KVMを利用してプロダクションの仮想基盤を作るなどやりました。 仮想化ってそもそもなんだっけ？というもう少し基礎よりの知識と向き合う機会がありました。 また、主に来年の話になるがOpenStackなどを使ったクラウド環境を「作る・運用する」にも携わっていきそうです。 すこしづつOpenStackをかじり始めました。 (4) Ansibleの活用と布教活動 Ansibleの利用は去年から始めていたことですが、 今年はより活用することと、社内での布教活動を行いました。 活用でいうと、サーバの構築はAnsibleで行ってアプリケーションのデプロイは 別の方法でやる（手動とか…）というふうになっていたので、 Ansibleを使ってアプリケーションのデプロイまですべて行うようにしてきました。 また、こういった取り組みを社内（部内）で広めて他のチームにも活用してもらおうと、 布教活動してしたりしてきました。 まとめ。来年の抱負的な Vim::Factoryを自分が使いたいと思うようなサービスにする Vim::Factoryをベースにより自分たちが学習できる環境を作る 引き続き、インフラ系エンジニア？っぽい感じで邁進する OpenStackの運用とかやりたい ツールなどに踊らされない基礎力中心で学習したい ISUCONにでます（あれば…） では良いお年を。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">17 Dec 2015, 19:25</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/12/17/192554/" class="post-title">インフラのデプロイとテストを同時実行できるようにしてHappyになった</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-serverspec" href="https://blog.mosuke.tech/categories/serverspec">serverspec</a><a class="post-category post-category-raketask" href="https://blog.mosuke.tech/categories/raketask">raketask</a><a class="post-category post-category-インフラテスト" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E3%83%86%E3%82%B9%E3%83%88">インフラテスト</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        はじめに 私が開発しているシステムでは、Ansibleでサーバ構築からアプリケーションのデプロイまですべて実行できるようにしています。 そして、serverspecを使って、インフラテストも行っています。 しかし、その運用にいくつか課題点がありました。 その課題点についてと、課題点へ対策したことについて書きます。 課題だったこと (課題1) デプロイとテストをそれぞれ実行していた Ansibleでのデプロイとserverspecのテストはそれぞれ別のコマンドで実行していました。 $ ansible-playbook site.yml -i $ bundle exec rake serverspec 2つ実行することが面倒であり、面倒であるがゆえにserverspecの実行を怠ったりしていました。 これではテストの効果があまり発揮できませんね。 (課題2) sudoパスワードをうまく管理できなかった 上のような課題1について、真っ先に以下の様にコマンドを続けることを思いつきました。 $ ansible -playbook site.yml -i ; bundle exec rake serverspec ですが、これだとansible実行終了後にserverspecを実行する際にsudoパスワードが再度聞かれるため、 コマンドを打ったまま「放置」ができませんでした。 ※もちろん、sudoパスワードを要求しないようにユーザ設定をすればできますが、多くの場合ではセキュリティ上難しかったりすると思います。ssh接続は鍵認証、sudoには必ずパスワードを要求するようにしています。 Ansibleもserverspecにもコマンド実行時にsudoパスワードを記述する方法があります。 Ansibleでは、ansible.cfgにsudo_passwordを記述、あるいはコマンド実行時に--extra-argsでsudoパスワードを指定できます。 serverspecでも環境変数でSUDO_PASSWORDが指定できます。 例 ） ansible -playbook site.yml -i --extra-args='ansible_sudo_pass=xxxxxxxx' bundle exec rake serverspec SUDO_PASSWORD=xxxxxxxx ですが、おわかりの通り、コマンドの履歴にもパスワードが残ります。 なのであまり良い方法ではないと思っています。 (課題3) タスクの実行方法がバラバラ デプロイはansibleコマンドで実行、テストはrakeで実行、他のタスクはシェルスクリプト。。。 といったように、タスクによって実行方法が異なってしまう状況になっていました。 運用的にとても不便でしたので、１つに統一したいと思っていました。 いい感じに同時に実行してくれるRakeタスクを作った 上で述べたような課題点をクリアするように、下記の要件を満たすように工夫をしました。 デプロイ、テストが同じ形式で実行できる sudoパスワードをベタ書きすることなく実行できる sudoパスワードの入力を一回だけにする 結論は、すべてRakeタスクで実行できるようにしました。 タスク一覧を見ると以下の様な感じになりました。（※実行結果は例であり実際の内容とは少し異なる。） $ bundle exec rake -T
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">01 Dec 2015, 18:13</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/12/01/181304/" class="post-title">Ansible、実行速度高速化の実験。ControlMasterとPipeliningについて</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-SSH" href="https://blog.mosuke.tech/categories/ssh">SSH</a><a class="post-category post-category-高速化" href="https://blog.mosuke.tech/categories/%E9%AB%98%E9%80%9F%E5%8C%96">高速化</a><a class="post-category post-category-ControlMaster" href="https://blog.mosuke.tech/categories/controlmaster">ControlMaster</a><a class="post-category post-category-pipelining" href="https://blog.mosuke.tech/categories/pipelining">pipelining</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        1. はじめに Vim::Factoryの開発や、仕事などでAnsibleを使うことが多いのだが、 その実行速度があまりでないことに不満をもっていて、どうしたら早くできるか考えていました。 調べると、ControlMasterを利用してSSHのコネクションを再利用するとか、pipelineの機能を利用するとかでてくる。 が、それによってどのくらいの効果が得られるのかよくわからないし、仕組みもよくわかっていなかったので、仕組みの理解と実行速度の実験をした。 もう少し余談をすると、 ControlMasterを有効にすれば早くなることは前から知っていたが、 最近MacをEl Capitanに変えてから「なんか最近Ansibleはやいな〜」とか思っていて、 「OpenSSHのバージョンもあがったし、まさか。。。」と思って今にいきついている。 ControlMasterについて OpenSSH は、1 つの接続で複数のセッションを共有する(束ねる)「コントロール マスター」と呼ばれる機能を持っています。コントロールマスターを使用すると、 リモートホストに接続する最初のセッションは制御用のセッション(マスターセッショ ンと呼ばれます)として利用され、制御用のソケットを作成します。セッションを 共有する SSH クライアントは、この制御用のソケットを通じてリモートホストと 接続し通信を行います。 出典：「OpenSSH実践入門」 上記のように、１つの接続で複数のセッションを共有するため、 Ansibleのようにタスク実行ごとにSSH接続するような場合には大きな効果を得ることができる。 Pipeliningについて Pipelining機能の説明の前に、軽くAnsibleの実行までの流れを説明する。 Ansibleは対象サーバにSSHログインしたあと実行するタスクのモジュールをファイルとして転送しそれを実行する。 Pipelining機能をなしの状態だと、このファイル転送とファイルの削除を１タスクごとに行う。 ansibleを-vvvvオプションをつけて実行するとわかるが、 ４行目でファイルのPUT（転送）を、５行目の最後の方にrm -rfでディレクトリ・ファイルの削除を行っている。 &lt;192.168.33.100&gt; ESTABLISH CONNECTION FOR USER: deploy &lt;192.168.33.100&gt; REMOTE_MODULE command ls -l /root &lt;192.168.33.100&gt; EXEC ssh -C -tt -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=user -o ConnectTimeout=10 192.168.33.100 /bin/sh -c 'mkdir -p $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321 &amp;&amp; chmod a+rx $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321 &amp;&amp; echo $HOME/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321' &lt;192.168.33.100&gt; PUT /var/folders/7_/d_dwdlcx1m95mn_846x30xb40000gn/T/tmpc8amAw TO /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/command &lt;192.168.33.100&gt; EXEC ssh -C -tt -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=user -o ConnectTimeout=10 192.168.33.100 /bin/sh -c 'sudo -k &amp;&amp; sudo -E -S -p &quot;[sudo via ansible, key=koibtlgpbiprbaihcqxiqgcnnreofxuo] password: &quot; -u root /bin/sh -c '&quot;'&quot;'echo BECOME-SUCCESS-koibtlgpbiprbaihcqxiqgcnnreofxuo; LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8 /usr/bin/python /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/command; rm -rf /home/user/.ansible/tmp/ansible-tmp-1448959936.93-272271942952321/ &gt;/dev/null 2&gt;&amp;1'&quot;'&quot;'' Pipiliningの機能を有効にすると、タスク実行ごとのモジュールファイルの転送と削除をしなくなる。 そのため、実効速度があがるのです。 下記はPipeliningを有効にした際の出力。SSHでタスクを実行しているだけなのがわかる。 &lt;192.168.33.100&gt; ESTABLISH CONNECTION FOR USER: deploy &lt;192.168.33.100&gt; REMOTE_MODULE command ls -l /root &lt;192.168.33.100&gt; EXEC ssh -C -vvv -o ControlMaster=auto -o ControlPersist=300s -o ControlPath=&quot;/Users/xxxxx/.ansible/cp/ansible-ssh-%h-%p-%r&quot; -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o User=deploy -o ConnectTimeout=10 192.168.33.100 /bin/sh -c 'sudo -k &amp;&amp; sudo -E -S -p &quot;[sudo via ansible, key=kjtoopnjepksibiitumqfycsoldadiws] password: &quot; -u root /bin/sh -c '&quot;'&quot;'echo BECOME-SUCCESS-kjtoopnjepksibiitumqfycsoldadiws; LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8 /usr/bin/python'&quot;'&quot;'' Configuration file — Ansible Documentation 2.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">02 Nov 2015, 16:17</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/11/02/161744/" class="post-title">インフラテスト(serverspec)はじめました</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-serverspec" href="https://blog.mosuke.tech/categories/serverspec">serverspec</a><a class="post-category post-category-インフラテスト" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E3%83%86%E3%82%B9%E3%83%88">インフラテスト</a><a class="post-category post-category-vim::factory" href="https://blog.mosuke.tech/categories/vimfactory">vim::factory</a><a class="post-category post-category-vimfactory" href="https://blog.mosuke.tech/categories/vimfactory">vimfactory</a><a class="post-category post-category-インフラCI" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9ci">インフラCI</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        ※執筆後、業務でもserverspecを利用し始めたのもあり、業務レベルでの実践例も追記している。 運営中のVim::Factoryでserverspecを使ったインフラテストを導入したので、 導入理由や工夫している点、悩んでいる点について記述します。 Vim::Factoryについてはこっちみてね。 DockerとWebSocketを使って、vimの設定をブラウザで即体感できるサービスを作った - Goldstine研究所 1. serverspecってなによ 詳しくは公式サイトや書籍などを参考にして欲しいですが、 「サーバの状態をコードで自動的にテスト・確認するためのツール」です。 Serverspec - Home 例えば、ApacheでWebサーバを組んでいるサーバがあったとして、下記の要件で動いているとします。 apacheがインストールされていること apacheが起動していること、自動起動する設定であること ポート80があいていること この要件をサーバが満たしているかコードでテストします。 上記の例だとこんなコードを書きます。 describe package('httpd') do it { should be_installed } end describe service('httpd') do it { should be_enabled } it { should be_running } end describe port(80) do it { should be_listening } end 各種テストの立ち位置 serverspecは、サーバの状態（正しく設定されたか）を確認するためのテストツールです サーバの振る舞いのテストは別のツールを使うことをおすすめします また、監視も一種のテストと言えます 一般的には監視はその実行頻度の高さから、振る舞いを監視することが多い 監視ツールで、Configファイルが正しいかは見ない 2. なんで導入したの？ serverspecを導入したのには大きく2つの理由があります。 (その１) インフラのテスト駆動開発を支えるため Vim::Factoryは趣味で開発・運用しているサービスで、まだ作りたての発展途上のサービスです。 （作って公開してからは日が経っている気もしますが、週1の開発なので…） そのため、今後もインフラコードをガンガン修正していくことを想定しています。 ですので、その開発、リファクタリングを支えるべく、テスト駆動開発で行えるようにするためです。 (その２) インフラテストの必要性を深く理解するため 「インフラテストの必要性を深く理解するため」です。 必要性があるから導入したんじゃにないの？と思われるかもしれませんが、 ぼくはまだインフラテストの本当の必要性を理解できていないと思っています。 実は、はじめこんな風に思っていましたし、今でも少し思う部分もある。 ansibleやchefで実行結果がOKならそれでテストも兼ねているのでは？ 実際にどんな項目をテストすればいいか、考えてみた時にピンと来ない… 実際に試してみないと、その本質が見えてこないと思っているので、 導入してみて自分の肌で感じようと思っています。 個人的なお話なのでみなさんには関係のない話ではありますが、 Vim::Factoryの開発は企業でもなければ営利目的でもありません。 「週末にインフラ技術のインプット勉強をしていたが、それだけでは飽きてきて、 サービスを開発・運用していくなかでインフラ技術を磨いていきたい」 というものだったので、こういった実験も大歓迎だったのです。 3.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">25 Sep 2015, 23:27</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/09/25/232751/" class="post-title">Ansibleを踏み台サーバ越しに実行する</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ansible" href="https://blog.mosuke.tech/categories/ansible">Ansible</a><a class="post-category post-category-SSH" href="https://blog.mosuke.tech/categories/ssh">SSH</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        タイトルの通りで、なにも特別なことはない内容。 そして、9月も終わりなのに今月はひとつも記事を書いていなかった。 KVMを使って仮想のゲストサーバを立てたが、 ゲストサーバはホストサーバと通信する用の（外に出る場合にはNAT通信で）IPアドレスしか持っていない状況で、 Ansibleの実行対象としたかったのが背景。 ホストサーバにAnsibleをいれるわけにもいかず、ホストサーバを踏み台にして、 Ansibleを打ちたかったというもの。 SSHの設定ファイルを作る "Ansibleで" と書いたが要はSSHです。 まずはSSHで踏み台サーバを経由してAnsible実行対象サーバへ接続できるように準備しました。 これはいわゆる「多段SSH」というやつで、以前にもブログに書いたので復習です。 【VPS1台でインフラ勉強】多段SSH設定（おまけ） - Goldstine研究所 一般的には~/.ssh/configにこういった設定は書いたりもしますが、 Ansible実行の場合、端末に依存したくなかったので、 Ansibleレポジトリに別途ファイルを作ることにした。 ## sshconfigという名前のファイルにした Host ansible-target HostName 192.168.33.10 User xxxxx ProxyCommand ssh -W %h:%p yyyyy@hostserver 上記のファイルを使って多段SSHできることを確認します。 $ ssh -F sshconfig ansible-target Ansible実行時にSSH設定ファイルを利用する ここまで来たらとても簡単で、 ansible.cfgに下記を追記し、ansible実行時に上記のsshconfigを読み込まれるようにしました。 ansible.cfg [ssh_connection] ssh_args = -F sshconfig
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">22 Aug 2015, 22:30</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/08/22/223025/" class="post-title">(個人的) YAPC::Asia 2015ふりかえり</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-YAPC" href="https://blog.mosuke.tech/categories/yapc">YAPC</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        「ブログを書くまでがYAPC」 というわけで、8/21, 22とYAPCに参加したので、そこでの学んだこと、気になったことなどを振り返ります。 しかし、YAPCで聞いた公演内容を淡々とまとめるなどはしません。 単なる内容のまとめであれば、公開されているスライドなどをみるのが一番だと思いますので。 以下３点を中心に振り返ってみます。 インフラ関連セッションについて 発表を聞いてよかった、今の自分に一番必要だったことについて 興味を持ったことについて（CONBU） インフラ関連セッションについて 意図的も半分くらいあるんだけど、なんとなくセッションを選んでいたら、インフラ関連のものが多くなりました。 世界展開する大規模ウェブサービスのデプロイを支える技術 - YAPC::Asia Tokyo 2015 Consulと自作OSSを活用した100台規模のWebサービス運用 - YAPC::Asia Tokyo 2015 3分でサービスのOSを入れ替える技術 - YAPC::Asia Tokyo 2015 我々はどのように冗長化を失敗したのか - YAPC::Asia Tokyo 2015 デプロイについて 大規模サービスでのデプロイにおいて、一台一台のホストがgit cloneして、bundle installやらせてーとかやると、 時間もかかるし、並列的にgit cloneした際などgitサーバが負荷的に危なくなってくる。 なので、予めライブラリとかすべてインストールされたものをターボールなどにまとめておいて、 それをプルしてくる形式のデプロイについて多くの発表がありました。 このデプロイ方法、並列で数百MBのファイルをダウンロードしても落ちないストーレジ（ようはAWSのS3）を前提に構築されている感がありました。 （というかそう言っていた） 相変わらずAWSはせこいなーと思っています（笑） うちの環境では真似するのは難しいなーと思う部分もありますが、 それ以前にシステムの規模や用途によってデプロイのあり方も多種多様になることを改めて考えさせられました。 自分の環境にあった最適なデプロイ形態を探す日々がまた始まりそうですが、良いヒントになりそうなのはまちがいなしです。 式年遷宮インフラストラクチャ Kenjiさんの式年遷宮インフラストラクチャ。 この考え方、ぼくも一度考えたことはありますが、ここまで実践してみた経験談がきけたのは面白かった。 いざというときに切り替わらない、切り替えられないという問題に対して、 自動ではないが、「切替訓練」ということで、定期的に冗長化の系を切り替えることはしてもいいのかなーと思ったりしています。 consulについて 実は、上であげた４つのセッション全てで共通していたのがconsulを使っていた。 Consul by HashiCorpwww.consul.io 正直、consulについて、名前くらいしかしらなかったのに、ここまで利用されていたので、時代に乗り遅れている感を感じた。 でも利用用途をみていくと、iaas環境で力を発揮するっぽいので、概要と用途だけ押さえておくか…といったところ。 今月中の課題です。 発表を聞いてよかった、今の自分に一番必要だったことについて たくさん学びのあったなかで、なんだかんだいっても、koemuさんの発表が今の自分が一番考えていてることであり、 一番必要なことであったように感じた。 辛いことをやめる！から始まる業務改善とInfrastructure as Code - YAPC::Asia Tokyo 2015yapcasia.org 実はkoemuさんのブログをたまにみていて、 いちど話を聞いてみたいなーと思っていた人であったので、とてもいい機会であった。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">13 Aug 2015, 00:04</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/08/13/000440/" class="post-title">デスクトップUbuntuにVNC接続。ついでにSSHローカルポートフォワードの復習。</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ubuntu" href="https://blog.mosuke.tech/categories/ubuntu">Ubuntu</a><a class="post-category post-category-vnc" href="https://blog.mosuke.tech/categories/vnc">vnc</a><a class="post-category post-category-ポートフォワード" href="https://blog.mosuke.tech/categories/%E3%83%9D%E3%83%BC%E3%83%88%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89">ポートフォワード</a><a class="post-category post-category-SSH" href="https://blog.mosuke.tech/categories/ssh">SSH</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        完全に自分のための備忘録。内容はわりと薄め。 やったこと 最近、自作したPCにUbuntuをいれて使っているのだけど、 デスクトップPCなので、部屋でしか操作することができません。 他の部屋からノートPCでUbuntuを触れたらいいなーと思いその環境を整えることをしました。 主にやったことは以下の通りです。 VNCサーバ構築について ノートPC（Mac）からのVNC接続について SSHローカルポートフォワードを使ってのセキュアな接続について UbuntuでのVNCサーバ構築について 今回利用しているUbuntuは「Ubuntu Desktop 14.04」です。 また、VNCの実現は標準でインストールされているvinoを使って行いました。 ご存知の方も多くいるかもしれませんが、vinoでのVNCは簡易的なもので、サーバ側のユーザがログアウトしていると使えません。 ですので、会社などでの利用には耐えないと思います。 ユーザーをログアウトせずにロック状態にしていれば使えます。 まずはデスクトップ共有の設定をします。 「デスクトップの共有」のアプリケーションを起動します。 接続毎に要求するようにすると、サーバ側で毎度許可が必要なので、オフにします。 パスワードの設定はしておきましょう。 同じLANをつかんでる人に簡単に奪われてしまいますので。 ちょっと詳細な意味を把握していないのですが、 下記を実行しないとMacで接続すると「互換性のないバージョンです」的なこといわれました…すいません。 $ gsettings set org.gnome.Vino require-encryption false 設定ができたら、きちんとサーバとしてVNC接続を待ち受けているか確認します。 % sudo lsof -i:5900 COMMAND PID USER FD TYPE DEVICE SIZE/OFF NODE NAME vino-serv 24414 mosuke5 13u IPv6 156661 0t0 TCP *:5900 (LISTEN) vino-serv 24414 mosuke5 14u IPv4 156662 0t0 TCP *:5900 (LISTEN) % ps -ef | grep vino mosuke5 24414 24226 0 12:30 ?
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">31 Jul 2015, 21:15</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/07/31/211542/" class="post-title">Packerやる前にKickstartはじめよう</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Linux" href="https://blog.mosuke.tech/categories/linux">Linux</a><a class="post-category post-category-kickstart" href="https://blog.mosuke.tech/categories/kickstart">kickstart</a><a class="post-category post-category-virtualbox" href="https://blog.mosuke.tech/categories/virtualbox">virtualbox</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        1.はじめに 開発環境はVirualboxを使ったVagrantを利用しているが、 本番環境はAWSだったりKVMだったり違う仮想化機構で動作しているなんてことよくあると思います。 そういう環境下でどのように開発環境と本番環境の差分をなくしていますか？ わたしの場合、基本的にAnsibleを使ってプロビジョニングをしていますが、 そのプロビジョニング前のベースが異なってしまって困ることがよくあります。 一般に公開されているVagrantBox使ったら余計な設定が入っていたとか、すでにパッケージが入っていたとか… そんな問題を解決しようとPackerを使おう！って考えました。 ですが、Packerも当たり前だけど魔法ではなく、Kickstartなどの自動インストールが前提なので、 Packerをやる前にKickstartを学習せよ、、、ということに気づきました。 ということでKickstartをはじめたよってことです。 2.kickstartってなに kickstartはOSのインストールを自動化する仕組みです。 anaconda社が提供するインストールの仕組みでRedhat系のOSが採用しているものです。 ですのでUbuntuだとPreseedっていう別の仕組みだそうです。（詳しくありませんっ） で、Kickstartでなにができるかというと... OSのインストールをしたことがある方ならわかるかと思いますが、 普通にDVDなどからインストールすると、 言語はなににしますかー？ ホスト名なににしますかー？ パッケージはなにをいれますかー？ とか、聞かれて選択していく必要があります。 この作業を自動化できるのがkickstartです。 URLのようなもの。 はじめての自宅サーバ構築 - Fedora/CentOS - CentOS6 のインストール手順kajuhome.com (おまけ)Ansible, Chef, Puppetとの違い？ kickstartにはプロビジョニング機能もついているため、 AnsibleとかChefとかPuppetとの違いは？住み分けは？と思うかもしれません。 明確に、住み分けが決まっているわけではありませんが、 個人的にはAnsibleやChefを実行する前の最低限の設定をkickstartにやらせようと思っています。 （一般的かとは思いますが…？） Lee ThompsonのProvisioning Toolchainを参考にKiskstarのやる範囲をまとめると。 Provisioning Toolchain: Web Performance and Operations - Velocity Online Conference - March 17, 2010 - O'Reilly Mediaen.oreilly.com 3.Hello Kickstart!! Virtualboxを使ってKickstartを試しました。 3-1.用意したもの Virtualbox 自分の環境はMacで、バージョンは5.0 OSのisoファイル CentOS Mirror ここからダウンロードしました kickstartファイル ネットワーク上においてhttpでアクセスできるようにしておきました 利用したkickstartファイル。自分の学習のためコメントを多く残しました。 # アップグレードするかインストールするか install # インストールタイプの設定 # CD-ROM経由かネットワーク経由かとか cdrom # 言語設定 lang ja_JP.UTF-8 # キーボード設定 keyboard jp106 # ネットワーク設定 # /etc/sysconfig/network-scripts/ifcfg-xxxx 部分 network --onboot yes --device eth0 --bootproto dhcp --noipv6 # rootのパスワード # xxxxxx部分はopensslコマンドで作成するといい # $openssl passwd -1 rootpw --iscrypted xxxxxxxxxxxxxxxxxxxxxxxxxxx # iptablesの設定 # プロビジョニングで設定するのでここでは無効にしておく firewall --disabled # 認証オプション authconfig --enableshadow --passalgo=sha512 # SELinuxの設定 # こちらも詳細はプロビジョニングで設定するので無効にしておく selinux --disabled # タイムゾーン timezone --utc Asia/Tokyo # ブートローダのインストール方法 bootloader --location=mbr --driveorder=sda --append=&quot;nomodeset crashkernel=auto rhgb quiet&quot; # 設定後にリブート reboot # パーティション設定 clearpart --linux --drives=sda autopart # インストールパッケージ選択 %packages --nobase @core %end 参考になったもの Redhat社のインストールガイドがよくまとまっていた。 特にkickstartファイルについては下記あたりが役立ちます。 32.4.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">19 Jul 2015, 13:58</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/07/19/135844/" class="post-title">DockerとWebSocketを使って、vimの設定をブラウザで即体感できるサービスを作った</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-vim" href="https://blog.mosuke.tech/categories/vim">vim</a><a class="post-category post-category-vim::factory" href="https://blog.mosuke.tech/categories/vimfactory">vim::factory</a><a class="post-category post-category-vimfactory" href="https://blog.mosuke.tech/categories/vimfactory">vimfactory</a><a class="post-category post-category-docker" href="https://blog.mosuke.tech/categories/docker">docker</a><a class="post-category post-category-websocket" href="https://blog.mosuke.tech/categories/websocket">websocket</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        2014年の秋から@mogulla3と定期的にインフラ関連技術の勉強会をやってきましたが、 インプットの勉強会だけでは飽き足らず、いつしかサービスを作る中でインフラ関連技術を駆使し勉強したいと思うように… そして、普段使っているVimを題材に、 vimの設定をブラウザ上で即体感できるサービス Vim::Factory を開発しました。 本記事はVim::Factoryの簡単な紹介と技術的な仕組みについて記述しています。 Vim::Factoryはこちら。 http://vimfactory.com/ 1. Vim::Factoryについて 1-1. Vim::Factoryってなに？？ Vim::Factoryは、選択したVimの設定を、ブラウザ上で「即体感」できるサービスです。 数多くあり複雑なVimの設定を容易にし、お気に入りのVim探しをサポートすることを目指しています。 1-2. なんで作ったの？ Vimの設定ってたくさんあってどれを選んでいいかわからなかったり、 設定したもののどう変わったかイマイチわからなかったりしませんか？ Vimの設定がどのように反映されるか、もっと簡単に体験したいと考えたからです。 あと、例えばGithubで100star以上をつける人のVimをブラウザ上で体験できたらいいなと思っていて、 それを実現のための第一歩としてこのサービスを作りました。 1-3. このサービスの最大の特徴は？ このサービスの最大の特徴はなんといっても「ブラウザ上でVimが体感できること」です。 今まではVimの設定を試そうと思ったら、ネットで調べて自分のVimに反映させて…という作業が必要でしたが、 ブラウザ上で設定を即体感するという新しい体験を提供するために力を注いできました。 その実現方法については、後述しています。 1-4. 紹介動画 詳しくは、実際に試してもらうのが早いと思いますが、簡単な操作動画を用意してみました。 モバイルからこのサービスはちょっと使えないので、モバイルで読んでいる方は動画でお楽しみください(笑) www.youtube.com 2. Vim::Factoryの技術について ここからVim::Factoryの技術について一部ではありますがご紹介します。 2-1. ブラウザ上でのVimを実現した技術 ブラウザ上でVimを実現しようと思うと、ぱっと思いつくのはJavaScriptでVimそのものを実装してしまおうというものかもしれません。 ですが、JSでVimを実装することってどれくらい難しいでしょうか？ 少なくともぼくにはそんなことはできませんし、できたとして質の悪いものになってしまうと思います。 そこで思いついたのが、一般的なターミナルソフトと同様にサーバ上でvimを起動し、 そのターミナル情報をブラウザ上で表示するという方法です。 この方法であれば自らVimを実装せずともVimを再現できます。イメージは下記のとおりです。 また、サービスとして上記を行うには、接続してきたユーザごとにVimを用意する必要があります。 これらを実現するために利用したのがDockerとWebSocketです。 dockerコンテナ上でVimを起動し、そのターミナル情報をWebSocketでブラウザに送信するようにしました。 dockerはコンテナ型の仮想化なので起動がとてもはやく、 httpのリクエストが来てからdockerコンテナを立ち上げても十分なほどのはやさをもっています。 2-2. 全体構成 システムの全体構成は以下のような感じです。 ※実際の役割は図のとおりですが、サーバはこんなに多くありません。 2-3. 利用した技術とかツールのまとめ 振り返りも兼ねて利用した技術・ツールを一覧にまとめておきます。 Ruby Sinatra thin node.js Websocket memcached docker nginx centos7 Ansible Vagrant gitlab mackerel slack esa.io(ドキュメント管理) 3.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">17 Jun 2015, 21:28</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/06/17/212852/" class="post-title">PostgreSQL環境でFuelPHPのDBマイグレーションを使う</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-php" href="https://blog.mosuke.tech/categories/php">php</a><a class="post-category post-category-fuelphp" href="https://blog.mosuke.tech/categories/fuelphp">fuelphp</a><a class="post-category post-category-DBマイグレーション" href="https://blog.mosuke.tech/categories/db%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3">DBマイグレーション</a><a class="post-category post-category-PostgreSQL" href="https://blog.mosuke.tech/categories/postgresql">PostgreSQL</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        今更FuelPHP感はあるのだが、 postgresql利用時のFuelPHPのmigration導入について、注意点をまとめた。 でも、結論は納得がいっていない。 0. 前提 下記の環境で行ったものです。 PHP: 5.5.7 FuelPHP: 1.7 Postgresql: 9.4 1. テーブル文字コードの問題 事象 公式サイトのサンプルの通りはじめにapp/migrations/001_example.phpを作り、migrationを実行した。 app/migrations/001_example.phpの作成 &lt;?php namespace Fuel\Migrations; class Example { function up() { \DBUtil::create_table('posts', array( 'id' =&gt; array('type' =&gt; 'int', 'constraint' =&gt; 5), 'title' =&gt; array('type' =&gt; 'varchar', 'constraint' =&gt; 100), 'body' =&gt; array('type' =&gt; 'text'), ), array('id')); } function down() { \DBUtil::drop_table('posts'); } } マイグレーション実行すると以下のエラーに襲われた。 $ php oil refine migrate Uncaught exception Fuel\Core\Database_Exception: SQLSTATE[42601]: Syntax error: 7 ERROR: syntax error at or near &quot;DEFAULT&quot; LINE 5: )DEFAULT CHARACTER SET utf8; ^ with query: &quot;CREATE TABLE IF NOT EXISTS &quot;migration&quot; ( &quot;type&quot; varchar(25) NOT NULL, &quot;name&quot; varchar(50) NOT NULL, &quot;migration&quot; varchar(100) DEFAULT '' NOT NULL )DEFAULT CHARACTER SET utf8;&quot; 理由 しょっぱなから躓くわけだが… 初めてマイグレーションを実行する際にはマイグレーション管理用のテーブルを作る。 そのテーブルを作るSQLが下記の通り発行されている。 CREATE TABLE IF NOT EXISTS &quot;migration&quot; ( &quot;type&quot; varchar(25) NOT NULL, &quot;name&quot; varchar(50) NOT NULL, &quot;migration&quot; varchar(100) DEFAULT '' NOT NULL )DEFAULT CHARACTER SET utf8; 理由は単純で、postgresqlのcreate tableでは次のdefault構文は利用できないから。 create table xxxx ( ) default character set xxx; なぜ、利用できない構文のSQLが発行されたのか？ それは単にFuelPHPの問題です。次期バージョンでは解決されることを祈る。 解決方法 解決方法は下記の記事がわかりやすかった。 FuelPHP で PDOによるPostgreSQL接続の罠 - Qiitaqiita.com 簡単に言うとdbのコンフィグで、charsetをnullにするとDEFAULT CHARACTER SET xxx部分が発行されない。 'charset' =&gt; NULL, 2.
+                    </div>
+                </section>
+                
+            </div>
+            
+<div class="pagination">
+  <nav role="pagination" class="post-list-pagination">
+      
+    <span class="post-list-pagination-item post-list-pagination-item-current">Page 1 of 3</span>
+    
+      <a href="/archive/2015/page/2/" class="post-list-pagination-item pure-button post-list-pagination-item-next">
+        Older&nbsp;<i class="fa fa-angle-double-right"></i>
+      </a>
+    
+  </nav>
+</div>
+
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

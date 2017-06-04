@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Aws Summit on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/aws-summit/</link>
+    <description>Recent content in Aws Summit on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 31 May 2017 19:25:20 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/aws-summit/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>AWS Summit2017 Day2のぞいてきた。 ネットワーク設計入門メモ</title>
+      <link>https://blog.mosuke.tech/entry/2017/05/31/aws_summit_network/</link>
+      <pubDate>Wed, 31 May 2017 19:25:20 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2017/05/31/aws_summit_network/</guid>
+      <description>
+
+&lt;h1 id=&#34;はじめに:eabb2dedb01933710faf4225c45744d2&#34;&gt;はじめに&lt;/h1&gt;
+
+&lt;p&gt;弊社はプレミアムフライデー導入企業なのだが、最終金曜日に早く帰る必要はなく、月内でどこか1日15時に帰りましょうという制度になっている。&lt;br /&gt;
+金曜日が仕事の都合上取れなかったので、今月は5/31にプレミアムフライデー（プレミアムウェンズデー）を使った。&lt;br /&gt;
+ちょうどAWS Summit開催中だったのでのぞきにいった。&lt;/p&gt;
+
+&lt;h1 id=&#34;雰囲気:eabb2dedb01933710faf4225c45744d2&#34;&gt;雰囲気&lt;/h1&gt;
+
+&lt;p&gt;想像していた雰囲気とはだいぶ異なっていたというのが第一印象。&lt;br /&gt;
+想像以上にスーツの年齢層の高い人が多かった。それだけ、AWSもエンタープライズでも注目されるようになったということだろう。&lt;br /&gt;
+以前に、JAWS2015に参加したことある。もちろんJAWSとAWS Summitでは参加者の層が違う。&lt;br /&gt;
+が、あれから2年たちAWSに興味を持つ層も大きく変わってきたのを感じた。&lt;/p&gt;
+
+&lt;p&gt;セッションも非IT企業への導入事例や、思ったより入門セッションも多かった。&lt;br /&gt;
+登壇者の話しぶりも「オンプレからの移行」を意識したように感じた。&lt;/p&gt;
+
+&lt;h1 id=&#34;ブース:eabb2dedb01933710faf4225c45744d2&#34;&gt;ブース&lt;/h1&gt;
+
+&lt;p&gt;セッションだけではなく、AWSに関連するサービスを提供している企業がたくさんブースをだしている。&lt;br /&gt;
+ここでのコミュニケーションが案外一番楽しい。お酒も用意されていて楽しくおしゃべりできた。&lt;/p&gt;
+
+&lt;p&gt;Heroku+AWSの組み合わせで利用するケースの話を聞いて、あーなるほどねって感じだった。&lt;br /&gt;
+HerokuはAWS上で動作しているし、インターネット経由してもそこまで遅くはならない。&lt;br /&gt;
+そんな利点を使って組み合わせて使う事例なんかきいた。&lt;/p&gt;
+
+&lt;p&gt;そのほかは、やっぱりどこもかしこもコンテナ。&lt;br /&gt;
+コンテナをどう扱うか、どう監視するか、そんなところの話が多かった。&lt;/p&gt;
+
+&lt;h1 id=&#34;セッション-ネットワーク設計入門:eabb2dedb01933710faf4225c45744d2&#34;&gt;セッション「ネットワーク設計入門」&lt;/h1&gt;
+
+&lt;p&gt;セッションは１つだけ「&lt;a href=&#34;http://www.awssummit.tokyo/summit/index.html#D2T3-5&#34;&gt;ネットワーク設計入門&lt;/a&gt;」を聞いた。&lt;br /&gt;
+普段ならネットワーク設計入門のセッションは聞かないと思っているのだが、&lt;br /&gt;
+どんなことを話すのか興味あって聞いてみた。&lt;/p&gt;
+
+&lt;h2 id=&#34;1-クラウド上のnwの特徴:eabb2dedb01933710faf4225c45744d2&#34;&gt;(1)クラウド上のNWの特徴&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;物理設計はいらない&lt;/li&gt;
+&lt;li&gt;可用性はすでにセット(VRRPなど気にしなくてよい）&lt;/li&gt;
+&lt;li&gt;プロフラマブルに操作可能&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;2-nwサービス:eabb2dedb01933710faf4225c45744d2&#34;&gt;(2)NWサービス&lt;/h2&gt;
+
+&lt;p&gt;NWサービスは意外とすくない。VPCがほぼすべて。&lt;br /&gt;
+VPCが本質であり、ここが理解できればほぼ問題ない。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;VPC&lt;/li&gt;
+&lt;li&gt;Direct Connect&lt;/li&gt;
+&lt;li&gt;Route53&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;3-前提知識:eabb2dedb01933710faf4225c45744d2&#34;&gt;(3)前提知識&lt;/h2&gt;
+
+&lt;h3 id=&#34;vpc:eabb2dedb01933710faf4225c45744d2&#34;&gt;VPC&lt;/h3&gt;
+
+&lt;p&gt;物理設計はいらないんだけど、&lt;br /&gt;
+やっぱり物理知っていることがアドバンテージになる。
+VPCはリージョンの中のみ。ゾーンはまたぐことができる。&lt;/p&gt;
+
+&lt;h3 id=&#34;専用線:eabb2dedb01933710faf4225c45744d2&#34;&gt;専用線&lt;/h3&gt;
+
+&lt;p&gt;当たり前だがDCの場所は公開していない。&lt;br /&gt;
+じゃどうやって接続するか？&lt;br /&gt;
+相互接続接続ポイントを用意しているからそこにつなぎに来てね、という考え方。&lt;/p&gt;
+
+&lt;h3 id=&#34;エッジロケーション:eabb2dedb01933710faf4225c45744d2&#34;&gt;エッジロケーション&lt;/h3&gt;
+
+&lt;p&gt;CDNノードやRoute53が動作しているところ。&lt;br /&gt;
+リージョンとはまた別にある。&lt;/p&gt;
+
+&lt;h2 id=&#34;4-設計をはじめよう:eabb2dedb01933710faf4225c45744d2&#34;&gt;(4)設計をはじめよう&lt;/h2&gt;
+
+&lt;p&gt;AWSのどのサービスを使いたいかでNWの設計方針はかわる。&lt;br /&gt;
+まずはVPCの中で利用するサービスとVPCの外で使うものがあるのでその区別。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;VPCの中で使うもの
+
+&lt;ul&gt;
+&lt;li&gt;EC2とかRDSとかRedshift、EMR&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;VPCの外で使うもの
+
+&lt;ul&gt;
+&lt;li&gt;S3、LamdaとかDynamoDB、CloudWatch&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;次に、外部通信の設計&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;VPCと外部を接続する場合
+
+&lt;ul&gt;
+&lt;li&gt;専用線orインターネットVPNorパブリック(ssh/https)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;VPCがないけど外部から利用したい場合
+
+&lt;ul&gt;
+&lt;li&gt;httpsでまかなう場合が多い。&lt;/li&gt;
+&lt;li&gt;実は、VPCがなくてもDicrectConnectは使えるよ。
+
+&lt;ul&gt;
+&lt;li&gt;DirectConnectのパブリック接続&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;5-プライベートnw設計のステップ:eabb2dedb01933710faf4225c45744d2&#34;&gt;(5)プライベートNW設計のステップ&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;VPCの作成
+
+&lt;ol&gt;
+&lt;li&gt;VPCのCIDRレンジは変えられないから大きくとっておこう&lt;/li&gt;
+&lt;li&gt;オンプレミスとのレンジも被らないように&lt;/li&gt;
+&lt;li&gt;/16がおすすめ&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;サブネット作成
+
+&lt;ol&gt;
+&lt;li&gt;インターネットに接続するものとしないもの。ここでサブネット分けよう&lt;/li&gt;
+&lt;li&gt;AZが落ちてもいいように設計しよう。サブネットは２つずつ&lt;/li&gt;
+&lt;li&gt;サブネットサイズは24がおすすめ&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;VPCコンポーネントの作成
+
+&lt;ol&gt;
+&lt;li&gt;カスタマーGW&lt;/li&gt;
+&lt;li&gt;インターネットGW&lt;/li&gt;
+&lt;li&gt;VPC単位、サブネット単位、インスタンス単位で配置できるコンポーネントがあるよ&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;インスタンスの配置
+
+&lt;ol&gt;
+&lt;li&gt;セキュリティポリシーを考えよう&lt;/li&gt;
+&lt;li&gt;セキュリティグループとネットワークACLがあるよ&lt;/li&gt;
+&lt;li&gt;セキュリティグループのほうが柔軟&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;名前解決の検討&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;6-ユースケースごとのnw設計:eabb2dedb01933710faf4225c45744d2&#34;&gt;(6)ユースケースごとのNW設計&lt;/h2&gt;
+
+&lt;h3 id=&#34;公開サービスの場合:eabb2dedb01933710faf4225c45744d2&#34;&gt;公開サービスの場合&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;インターネットから接続でいるのはロードバランサーだけにしよう
+
+&lt;ul&gt;
+&lt;li&gt;あるいはあとはメンテナンス用の踏み台サーバだけ&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;S3を活用するときは、VPCエンドポイントつかえばVPC内部から接続できるよ&lt;/li&gt;
+&lt;li&gt;管理拠点とはVPNでつなぐことをおすすめするよ&lt;/li&gt;
+&lt;li&gt;管理拠点とのルーティングはルートテーブル&lt;/li&gt;
+&lt;li&gt;DNSはRoute53使うと便利だよ
+
+&lt;ul&gt;
+&lt;li&gt;ALIASレコードという独自機能&lt;/li&gt;
+&lt;li&gt;DNSのフェイルオーバー機能
+
+&lt;ul&gt;
+&lt;li&gt;ソーリーページへの転送が可能&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;社内システム基盤の場合:eabb2dedb01933710faf4225c45744d2&#34;&gt;社内システム基盤の場合&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;DirectConnectを使おう
+
+&lt;ul&gt;
+&lt;li&gt;パートナーがたくさんいるので連絡してみよう&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Route53はプライベートゾーン、オンプレからVPC内の名前解決にも使えるよ&lt;/li&gt;
+&lt;li&gt;DirectConnect体験ラボあるからつかってみて
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://aws.amazon.com/jp/dx_labo/&#34;&gt;https://aws.amazon.com/jp/dx_labo/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;7-vpc間のピア接続:eabb2dedb01933710faf4225c45744d2&#34;&gt;(7)VPC間のピア接続&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;異なるVPC間をピア接続することもできるよ&lt;/li&gt;
+&lt;li&gt;VPC間でルーティングの設定が必要&lt;/li&gt;
+&lt;li&gt;マルチホップルーティングはできないので注意&lt;/li&gt;
+&lt;li&gt;サブネットは重複しないように注意&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

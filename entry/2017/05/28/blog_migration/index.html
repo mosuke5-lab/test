@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>はてなブログからHugoに移行。その際に行ったあれこれ。 &middot; Goldstine研究所</title>
+
+    <meta name="description" content="はてなブログからHugoに移行した。移行した理由は移行に際して行ったことをご紹介します。例えば、Hugoを運用するアーキテクチャや移行時に利用したスクリプトや注意事項など。">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="はてなブログからHugoに移行。その際に行ったあれこれ。 &middot; Goldstine研究所">
+    <meta name="twitter:description" content="はてなブログからHugoに移行した。移行した理由は移行に際して行ったことをご紹介します。例えば、Hugoを運用するアーキテクチャや移行時に利用したスクリプトや注意事項など。">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="はてなブログからHugoに移行。その際に行ったあれこれ。 &middot; Goldstine研究所">
+    <meta property="og:description" content="はてなブログからHugoに移行した。移行した理由は移行に際して行ったことをご紹介します。例えば、Hugoを運用するアーキテクチャや移行時に利用したスクリプトや注意事項など。">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">28 May 2017, 13:02</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2017/05/28/blog_migration/" class="post-title">はてなブログからHugoに移行。その際に行ったあれこれ。</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Hugo" href="https://blog.mosuke.tech/categories/hugo">Hugo</a><a class="post-category post-category-はてなブログ" href="https://blog.mosuke.tech/categories/%E3%81%AF%E3%81%A6%E3%81%AA%E3%83%96%E3%83%AD%E3%82%B0">はてなブログ</a><a class="post-category post-category-常時SSL" href="https://blog.mosuke.tech/categories/%E5%B8%B8%E6%99%82ssl">常時SSL</a><a class="post-category post-category-HTTP2" href="https://blog.mosuke.tech/categories/http2">HTTP2</a><a class="post-category post-category-CloudFlare" href="https://blog.mosuke.tech/categories/cloudflare">CloudFlare</a><a class="post-category post-category-移行" href="https://blog.mosuke.tech/categories/%E7%A7%BB%E8%A1%8C">移行</a>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        
+
+<h1 id="1-はじめに:a42d734d96400169bf761303cfe99adf">1.はじめに</h1>
+
+<p>2017年5月27日に2014年2月から約3年3ヶ月程度使ってきたはてなブログからHugoを使ったブログへ移行をした。<br />
+長らく使いやすいブログを提供してきたはてなさんにはとても感謝している。<br />
+はてなブログはとても魅力なブログプラットフォームであると感じているし、いまでもそう思うのだけれどいくつかの判断をした結果Hugoへの移行を決めた。<br />
+本記事では、移行を決めた理由や移行する際に行ったこと、Hugoの実行環境などを紹介する。</p>
+
+<h1 id="2-hugoに移行した理由:a42d734d96400169bf761303cfe99adf">2.Hugoに移行した理由</h1>
+
+<p>Hugoに移行した理由というか、はてなブログから別のところに移行しようとした理由になるのだが、<br />
+端的に言うと以下のとおりだ。</p>
+
+<ul>
+<li>常時SSL化したかった</li>
+<li>HTTP/2に対応したかった</li>
+<li>独自ドメイン(mosuke.tech)を利用したかった</li>
+</ul>
+
+<p>Hugo以外にももちろん他のツールやサイトも検討を行った。</p>
+
+<ul>
+<li>はてなブログPro</li>
+<li>jekyll</li>
+<li>medium</li>
+</ul>
+
+<p>まず、はてなブログProだが、もっとも手間がかからず独自ドメイン利用もできてよかったのだが、<br />
+SSL化とHTTP/2化はやはり難しかったので外部を検討した。</p>
+
+<p>次にGithub製のJelyllだが、Github Pagesとの相性もよくはじめに検討はじめたものだった。<br />
+Ruby製ということもあり、自分に馴染みのあるツールで最有力候補だった。<br />
+しかし、後発のHugoの完成度の高さ、コンパイルの速さ、気に入ったテンプレートがあった、という理由でHugoに劣った。</p>
+
+<p>最後にmediumだが、自前で構築することなくやりたいことのすべてを実現していた。<br />
+正直一番いいのではないかとも思う（笑）<br />
+最終的には、よりカスタマイズ度の高いHugoを選んだ。特にこれといった理由はない。<br />
+ちょうどGo言語をやってみたいモチベーションがあったので、これをきっかけに勉強がはかどればいいなぁくらいの気持ちはあった。</p>
+
+<h1 id="3-移行に際して行ったこと:a42d734d96400169bf761303cfe99adf">3.移行に際して行ったこと</h1>
+
+<h2 id="3-1-hugoでのサイト構築-アーキテクチャ:a42d734d96400169bf761303cfe99adf">3-1.Hugoでのサイト構築、アーキテクチャ</h2>
+
+<p>Github上でHugoを管理し、コンパイルしてできたPublicファイルを、Github Pages対応の別のレポジトリで管理。<br />
+独自ドメイン利用、SSL対応、HTTP/2対応するためにフロントにCloudFlareを利用した。<br />
+後述するが、CloudFlareはとても便利なツールだが、キャッシュの扱いは気をつけてなければいけない。<br />
+図にすると以下のとおりだ。</p>
+
+<p><img src="/image/hugo-architecture.png" alt="hugo-architecture" />
+</p>
+
+<h2 id="3-2-記事の移行:a42d734d96400169bf761303cfe99adf">3-2.記事の移行</h2>
+
+<p>はてなブログはそのままのこし、新規に書くブログからHugoへ移行することも検討したが、<br />
+せっかくなのではてなブログ時代に書いた記事もすべて移行することを決めた。</p>
+
+<p>はてなブログからデータのエクスポートができる。<br />
+<img src="/image/hatena-blog-entry-export.png" alt="hatena-blog-entry-export" />
+</p>
+
+<p>エクスポートしたファイルを簡単なスクリプトを作ってHugoファイルへの変換を行った。（<a href="https://github.com/mosuke5/hatena-blog-parser">Github mosuke5/hatena-blog-parser</a>）<br />
+正直このツールは汎用的なものではない。このスクリプトだけではうまく行かない部分も多数ある。<br />
+いくぶんかsedなど使って（たまに手動編集・・・）して整えた。。</p>
+
+<h3 id="はてなブログのエクスポートファイルのフォーマット:a42d734d96400169bf761303cfe99adf">はてなブログのエクスポートファイルのフォーマット</h3>
+
+<pre><code>--------
+AUTHOR: mosuke5
+TITLE: 万能じゃない。オブジェクトストレージの仕組みと利用を正しく理解する
+BASENAME: 2017/03/18/182252
+STATUS: Publish
+ALLOW COMMENTS: 1
+CONVERT BREAKS: 0
+DATE: 03/18/2017 18:22:52
+CATEGORY: オブジェクトストレージ
+CATEGORY: ObjectStorage
+CATEGORY: クラウド
+CATEGORY: S3
+IMAGE: https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170318/20170318164020.jpg
+-----
+BODY:
+&lt;h2&gt;1.はじめに&lt;/h2&gt;
+
+&lt;p&gt;&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/Amazon%20S3&quot;&gt;Amazon S3&lt;/a&gt;をはじめとして、オブジェクトストレージが身近になってきています。&lt;br/&gt;
+各&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&quot;&gt;クラウド&lt;/a&gt;ベンダーはオブジェクトストレージサービスを提供しています。&lt;/p&gt;
+</code></pre>
+
+<h3 id="変換後のhugoファイルフォーマット:a42d734d96400169bf761303cfe99adf">変換後のHugoファイルフォーマット</h3>
+
+<pre><code>+++
+Categories = [&quot;オブジェクトストレージ&quot;, &quot;ObjectStorage&quot;, &quot;クラウド&quot;, &quot;S3&quot;]
+Description = &quot; 1.はじめに  Amazon S3をはじめとして、オブジェクトストレージが身近になってきています。 各クラウドベンダーはオブジェクトストレージサービスを提供しています。   Amazon S3  Azure Blob Storage  G&quot;
+Tags = [&quot;オブジェクトストレージ&quot;, &quot;ObjectStorage&quot;, &quot;クラウド&quot;, &quot;S3&quot;]
+date = &quot;2017-03-18T18:22:00+9:00&quot;
+title = &quot;万能じゃない。オブジェクトストレージの仕組みと利用を正しく理解する&quot;
+author = &quot;m通知osuke5&quot;
+archive = [&quot;2017&quot;]
++++
+
+&lt;h2&gt;1.はじめに&lt;/h2&gt;
+
+&lt;p&gt;&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/Amazon%20S3&quot;&gt;Amazon S3&lt;/a&gt;をはじめとして、オブジェクトストレージが身近になってきています。&lt;br/&gt;
+各&lt;a class=&quot;keyword&quot; href=&quot;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&quot;&gt;クラウド&lt;/a&gt;ベンダーはオブジェクトストレージサービスを提供しています。&lt;/p&gt;
+</code></pre>
+
+<h2 id="3-3-リダイレクト関連:a42d734d96400169bf761303cfe99adf">3-3.リダイレクト関連</h2>
+
+<h3 id="1-リダイレクト処理:a42d734d96400169bf761303cfe99adf">(1)リダイレクト処理</h3>
+
+<p>はてなブログのデザイン設定から「ヘッダー」→「タイトル下」に、ブログ移転をお知らせする文言とリダイレクト処理を書いた。<br />
+これですべてのページのタイトル下に「ブログ移転しました。5秒後にリダイレクトします。（リンク先URL）」が表示し、5秒後にリダイレクトするようにした。</p>
+
+<pre><code class="language-javascript">&lt;p&gt;&lt;span style=&quot;font-size: 150%; color: blue;&quot;&gt;ブログ移転しました。5秒後にリダイレクトします。&lt;/span&gt;&lt;br /&gt;
+&lt;script type=&quot;text/javascript&quot; language=&quot;javascript&quot;&gt;
+// 新urlの作成
+var domain = &quot;https://blog.mosuke.tech&quot;;
+var path = location.pathname; // パスの整形
+var url = domain + path; 
+
+// リンクhtmlの出力
+document.write(&quot;&lt;a href=\&quot;&quot; + url + &quot;\&quot;&gt;&quot; + url + &quot;&lt;/a&gt;&lt;/p&gt;&quot;);
+
+// リダイレクト
+setTimeout(&quot;redirect()&quot;, 5000);  // 5 sec
+function redirect(){
+   location.href = url; 
+}
+&lt;/script&gt;
+</code></pre>
+
+<h3 id="2-スマホサイトでのリダイレクト:a42d734d96400169bf761303cfe99adf">(2)スマホサイトでのリダイレクト</h3>
+
+<p>スマホで開いた時にも同様の動作をして欲しかったのだが、私の設定ではもともと、<br />
+スマホは別デザインとなっていて、うえで設定したJSが実行されない。<br />
+スマホ用でHTML/JSを埋め込むのは有料プランでしかできず、<br />
+「詳細設定」の「レスポンシブデザイン」にチェックを入れることで、スマホで表示した場合もPCと同じ画面を出すようにして対応した。</p>
+
+<pre><code>[x] レスポンシブデザイン
+スマートフォンでもPCと同じデザイン設定でブログを表示します。レスポンシブデザインのテーマを設定しているときのみ使用してください。
+</code></pre>
+
+<h3 id="3-googleへのアドレス変更通知:a42d734d96400169bf761303cfe99adf">(3)Googleへのアドレス変更通知</h3>
+
+<p>一般的にブログのドメイン変更を行った場合は、<br />
+変更元のサイトで301リダイレクトを行ってGoogleに恒久的にサイトが移動したことを伝える。<br />
+しかし、はてなブログを利用しているとWebサーバレベルでの変更はできず、301リダイレクトができない。<br />
+Canonicalを変更したりしたが、うまくGoogle Search Consoleに変更を読み取らせることができなかった。<br />
+（いい方法あったら教えてください…）</p>
+
+<p>なので結局、移行時の手順は以下で進めた。</p>
+
+<ol>
+<li>新サイト(blog.mosuke.tech)を公開</li>
+<li>はてなブログにJavaScriptによるリダイレクト処理追加</li>
+<li>はてなブログへのクローリングを拒否</li>
+</ol>
+
+<h2 id="3-4-cloudflareのキャッシュ削除:a42d734d96400169bf761303cfe99adf">3-4.CloudFlareのキャッシュ削除</h2>
+
+<p>フロントにCloudFlareを利用していると書いた。<br />
+Hugoは静的ブログサイトなので、基本的にCloudFlare側で全てキャッシュする。<br />
+そのため、ブログ記事の更新やデザインの本番への反映が時間かかる。</p>
+
+<p>CloudFlareは便利なものでapiを用意している。<br />
+簡単だが、以下のようなキャッシュ全削除スクリプトを用意した。</p>
+
+<pre><code class="language-shell">#!/bin/sh
+curl -X DELETE &quot;https://api.cloudflare.com/client/v4/zones/$1/purge_cache&quot; \
+     -H &quot;X-Auth-Email: $2&quot; \
+     -H &quot;X-Auth-Key: $3&quot; \
+     -H &quot;Content-Type: application/json&quot; \
+     --data '{&quot;purge_everything&quot;:true}'
+</code></pre>
+
+<h1 id="4-今後の課題:a42d734d96400169bf761303cfe99adf">4.今後の課題</h1>
+
+<p>まずは新しいHugoの環境でブログを書いて、課題点など洗いだしていく必要がある。<br />
+あとは、はてなブログからの移行でだいぶSEOあたり下がったと思う。<br />
+そのあたりの挽回をどうするかはこれからの検討課題。<br />
+あとは、デプロイからCloudFlareのキャッシュ削除の流れはぜひ自動化していきたい。</p>
+
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label-counter" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+                            <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3a%2f%2fblog.mosuke.tech%2fentry%2f2017%2f05%2f28%2fblog_migration%2f&layout=button_count&size=small&mobile_iframe=true&appId=1383467145023614&width=90&height=20" width="90" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

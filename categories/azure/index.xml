@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Azure on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/azure/</link>
+    <description>Recent content in Azure on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 20 Feb 2017 18:42:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/azure/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>参加してきた、MSPJマイグレーションコンペ2017winter</title>
+      <link>https://blog.mosuke.tech/entry/2017/02/20/184220/</link>
+      <pubDate>Mon, 20 Feb 2017 18:42:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2017/02/20/184220/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;先日、2017年2月18日に「MSPJ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%A4%A5%B0%A5%EC%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;マイグレーション&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%DA%A5%C6%A5%A3%A5%B7%A5%E7%A5%F3&#34;&gt;コンペティション&lt;/a&gt;2017winter」に参加してきた。&lt;br&gt;
+MSPJ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%A4%A5%B0%A5%EC%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;マイグレーション&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%DA%A5%C6%A5%A3%A5%B7%A5%E7%A5%F3&#34;&gt;コンペティション&lt;/a&gt;2017winterとは、&lt;br&gt;
+日本MSP協会&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%DA%A5%C6%A5%A3%A5%B7%A5%E7%A5%F3&#34;&gt;コンペティション&lt;/a&gt;グループが主催する、
+次代を担う若手運用技術者同士の交流・競争を通して日本のMSP事業者における運用技術の向上を目指した&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%DA%A5%C6%A5%A3%A5%B7%A5%E7%A5%F3&#34;&gt;コンペティション&lt;/a&gt;。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;もう少し平たく言うと、MSP事業者の本当の業務に近い形でのコンペを通じて、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%AD%A5%EB%A5%A2%A5%C3%A5%D7&#34;&gt;スキルアップ&lt;/a&gt;を図りましょうというものだ。&lt;br&gt;
+自分はMSPの人じゃないけど参加は全然できた。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fconnpass.com%2Fevent%2F47825%2F&#34; title=&#34;MSPJマイグレーションコンペティション2017winter (2017/02/18 09:30〜)&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://connpass.com/event/47825/&#34;&gt;connpass.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;競技ルール&lt;/h1&gt;
+
+&lt;p&gt;今回の競技のお題は、&lt;br&gt;
+&lt;b&gt;「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;上で動作しているレガシーな&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Redmine&#34;&gt;Redmine&lt;/a&gt;をAzure上に移行する」&lt;/b&gt;というものだ。&lt;/p&gt;
+
+&lt;p&gt;このコンペの特徴としては、実際にMSPでの業務に則し、お客さんから曖昧な要望を受けている部分や、&lt;br&gt;
+お客さん側にしかない権限については、お客さんと調整する必要があること。&lt;br&gt;
+例えば、環境の移行する際には&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/DNS&#34;&gt;DNS&lt;/a&gt;の切り替えが必要だったのですが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/DNS&#34;&gt;DNS&lt;/a&gt;の設定権限は我々にはなくて、&lt;br&gt;
+Slackを利用して、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/DNS&#34;&gt;DNS&lt;/a&gt;設定変更依頼や作業周知を出さなければいけなかった。&lt;br&gt;
+このあたりはとてもユニークなポイント。&lt;/p&gt;
+
+&lt;p&gt;お客さんからは移行について以下のような曖昧な要望をもらっていた。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;要望&amp;gt;
+- 今の環境を新しい環境に完全移行して欲しいです。
+- 実施した内容と結果については報告が欲しいです。
+- システムを止めるときは利用者に告知が必要なので連絡が欲しいです。
+- 昔から使っている古い環境なので、バージョンアップして欲しいです。
+- できれば利用者に影響を出さないように切り替えたいです。
+- できればサーバに関する資料があるとありがたいです。
+- できれば今はまったくバックアップを取っていないのでバックアップを取れるようにしたいです
+- できれば今後は利用者が増えるのでシステムを冗長化したいです。
+- できれば新しいインフラエンジニアに引継ぎするために必要な情報がまとまっていると嬉しいです。
+
+&amp;lt;担当者のコメント&amp;gt;
+- 前任のインフラエンジニアが辞めちゃったのでこのシステムもう分かる人がいなくって。
+- 結構前から使っているので環境も古くなっているみたいで、OSのサポートがもうすぐ切れるって話を聞いたものですから、セキュリティとか色々心配で何とかしたいんです。
+- みんなこのシステムを結構便利に使っていてくれているようだから、システムを切り替えるときは連絡しないとなぁ。
+- そうそう、近々新しいインフラエンジニアが入社予定だから、その方に引き継げるようになっていると嬉しいですね。 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ちなみにチームについては、当日の参加者で適当に3人チームを作って行った。&lt;br&gt;
+一緒の参加者が同じチームにならないように調整された。&lt;/p&gt;
+
+&lt;h1&gt;構成把握&lt;/h1&gt;
+
+&lt;p&gt;開始後、まずやったことが環境・構成の把握。&lt;br&gt;
+ざっと下記のような感じ。ログインしてすぐに、&lt;code&gt;pstree&lt;/code&gt; みて大体の構成を把握した。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;インフラ: &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;(EC2)&lt;/li&gt;
+&lt;li&gt;OS: CentOS5.2&lt;/li&gt;
+&lt;li&gt;Webサーバ: Apache2.0 + Passenger&lt;/li&gt;
+&lt;li&gt;DB: MySQL5.1&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;: 1.9&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Redmine&#34;&gt;Redmine&lt;/a&gt;: 2.3&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/DNS&#34;&gt;DNS&lt;/a&gt;; Route53で管理。権限はお客さんのみ&lt;/li&gt;
+&lt;li&gt;サーバ構成: サーバ1台のシングル構成&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;移行作戦&lt;/h1&gt;
+
+&lt;p&gt;細かなバージョンはおいておいて、最終的に目指す構成は下記のようにした。&lt;br&gt;
+これに至った考え方とかは下に書く。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170220/20170220165739.jpg&#34; alt=&#34;f:id:mosuke5:20170220165739j:plain&#34; title=&#34;f:id:mosuke5:20170220165739j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;の観点&lt;/h2&gt;
+
+&lt;p&gt;まず、Webサーバをロードバランサを利用して負荷分散と冗長性を確保した。&lt;br&gt;
+Azureでは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC&#34;&gt;ロードバランサー&lt;/a&gt;のフルマネージドサービスがあるので、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC&#34;&gt;ロードバランサー&lt;/a&gt;自体の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;については考える必要がなかった。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://docs.microsoft.com/ja-jp/azure/load-balancer/load-balancer-overview&#34;&gt;Azure Load Balancer の概要 | Microsoft Docs&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;次にデータベースだが、当初ロードバランサと同様にマネージドサービスがあればそちらで対応しようと検討していた。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt; Databaseというサービスがあるのだが、「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Microsoft&#34;&gt;Microsoft&lt;/a&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL%20Server&#34;&gt;SQL Server&lt;/a&gt; エンジン」のみの対応とのことで、&lt;br&gt;
+今回の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Redmine&#34;&gt;Redmine&lt;/a&gt;移行には適切ではなかった。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://docs.microsoft.com/ja-jp/azure/sql-database/sql-database-technical-overview&#34;&gt;SQL Database とは SQL Database の概要 | Microsoft Docs&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ということで、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EC%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;レプリケーション&lt;/a&gt;を使ったデータベースを作ることにしたのだが、&lt;br&gt;
+自前で作っている余裕はとてもなかったので、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A1%BC%A5%B1%A5%C3%A5%C8%A5%D7%A5%EC%A5%A4%A5%B9&#34;&gt;マーケットプレイス&lt;/a&gt;から&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt; with replicationというイメージを見つけて対応することとした。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://azuremarketplace.microsoft.com/ja-jp/marketplace/apps/bitnami.mysql-cluster?tab=Overview&#34;&gt;Microsoft Azure Marketplace&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;最後に、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Redmine&#34;&gt;Redmine&lt;/a&gt;では添付ファイルのアップロードなどをすることがある。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC&#34;&gt;ロードバランサー&lt;/a&gt;で負荷分散環境においては、添付ファイルを共有する必要がある。&lt;br&gt;
+手っ取り早く&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rsync&#34;&gt;Rsync&lt;/a&gt;での同期をする方向にした。&lt;/p&gt;
+
+&lt;h2&gt;バージョン関連&lt;/h2&gt;
+
+&lt;p&gt;移行先の各種バージョンは下記とした。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OS: CentOS7.2&lt;/li&gt;
+&lt;li&gt;Webサーバ: Nginx&lt;/li&gt;
+&lt;li&gt;DB: MySQL5.7&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;: 2.2(アプリケーション実行はthin)&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Redmine&#34;&gt;Redmine&lt;/a&gt;: 2.6&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;はじめRuby2.4で検証していたのだが、&lt;br&gt;
+さすがにRails3はRuby2.4では動かずRuby2.2まで下げた。&lt;/p&gt;
+
+&lt;h2&gt;Webサーバ、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%B5%A1%BC%A5%D0&#34;&gt;アプリケーションサーバ&lt;/a&gt;関連&lt;/h2&gt;
+
+&lt;p&gt;移行元の環境では、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Redmine&#34;&gt;Redmine&lt;/a&gt;が&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;+Passengerで動作していた。&lt;br&gt;
+余談になるが、Passengerはmod_&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/rails&#34;&gt;rails&lt;/a&gt;なんて呼ばれることもあって、いわゆるmod_&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/php&#34;&gt;php&lt;/a&gt;, &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/mod_perl&#34;&gt;mod_perl&lt;/a&gt;と同じ方式での動作方法。&lt;/p&gt;
+
+&lt;p&gt;昔にPassengerインス&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C8%A1%BC%A5%EB&#34;&gt;トール&lt;/a&gt;でハマった記憶もあるし、特にPassengerである必要性はなかったので、&lt;br&gt;
+馴染みのあるNginx+Thinの構成で動かすこととした。&lt;br&gt;
+&lt;span style=&#34;font-size: 80%&#34;&gt;※Thin部分はpumaでも&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/unicorn&#34;&gt;unicorn&lt;/a&gt;でもお好きなものをどうぞ。&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;この構成はWebサーバと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%B5%A1%BC%A5%D0&#34;&gt;アプリケーションサーバ&lt;/a&gt;を分離する&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;。&lt;br&gt;
+Thin単体でも動作させることが可能。Nginxはリバースプロキシや静的ファイルの配信に特化し、&lt;br&gt;
+アプリケーションの実行はThin側に任せる。&lt;/p&gt;
+
+&lt;p&gt;正直どちらでもかまわないのだが、Passengerを利用する場合、&lt;br&gt;
+アプリケーションとインフラ(&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;部分)が密な関係になってしまうのが煩わしいと個人的に思う。&lt;br&gt;
+まあケースバイケースでしょうが。&lt;/p&gt;
+
+&lt;p&gt;※あと最近&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;触ってなさすぎて忘れた…&lt;/p&gt;
+
+&lt;h1&gt;移行作業&lt;/h1&gt;
+
+&lt;p&gt;作戦が決まったところで、さっそく移行作業なのだが、&lt;br&gt;
+いきなり完成形に持っていくことは難しいと考えいくつかのステップに分けて移行作業を進めた。&lt;/p&gt;
+
+&lt;h4&gt;Step1：まずはAzure環境へ&lt;/h4&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170220/20170220173855.jpg&#34; alt=&#34;f:id:mosuke5:20170220173855j:plain&#34; title=&#34;f:id:mosuke5:20170220173855j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h4&gt;Step2：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;とか&lt;/h4&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170220/20170220173905.jpg&#34; alt=&#34;f:id:mosuke5:20170220173905j:plain&#34; title=&#34;f:id:mosuke5:20170220173905j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h4&gt;Step3：最後の仕上げ&lt;/h4&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170220/20170220173915.jpg&#34; alt=&#34;f:id:mosuke5:20170220173915j:plain&#34; title=&#34;f:id:mosuke5:20170220173915j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;Azureのここがよくわからなかった&lt;/h2&gt;
+
+&lt;p&gt;限られた時間内で、ほぼ初めてAzureをまともに使ったわけだが、&lt;br&gt;
+いくつか概念の理解や操作方法がわかりづらいなと感じた。&lt;br&gt;
+（IsuconでもAzure触ったが、あれは本当にサーバ起動するだけなので…）&lt;/p&gt;
+
+&lt;h4&gt;ネットワーク概念&lt;/h4&gt;
+
+&lt;p&gt;Virtual Private Networkの概念がとてもわかりづらかった印象。&lt;br&gt;
+買ったリソースをどうやって、指定のネットワークにデプロイするのかなど。&lt;br&gt;
+慣れの問題も大きいとは思うが、当日はほんとにわからなかった。&lt;/p&gt;
+
+&lt;h4&gt;サーバのイメージ作成&lt;/h4&gt;
+
+&lt;p&gt;すごい初歩的なことだが、構築したサーバのイメージを作成して、複製することがとても難しかった。 &lt;br&gt;
+メンバーがいろいろ躓いていたので、最終的に普通にもう1台構築するという強行手段を取った。&lt;br&gt;
+この点は、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;に携わるものとして仕様確認しておきたい。&lt;/p&gt;
+
+&lt;p&gt;仕事で使っている&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;が&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;的なため、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;の考え方にFitするものはすぐに理解できたが、Azureはまた独特の概念が多い印象。&lt;br&gt;
+これだけ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;が使われている現代に、「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;的」であることは価値がある！？？&lt;/p&gt;
+
+&lt;h1&gt;結果、懇親会とか&lt;/h1&gt;
+
+&lt;p&gt;んー。結果は優勝・準優勝ではなかったんですが、&lt;br&gt;
+きっとテストをちゃんとしないで移行したので、きっと触るとなにか抜け漏れがあったのでしょう(笑)&lt;br&gt;
+また来年あれば参加したいなと思える楽しいコンテストだったことは間違いない。&lt;br&gt;
+ISUCONに続き悔しい結果。&lt;/p&gt;
+
+&lt;p&gt;参加者の中には、MSP業界の方がもちろんたくさんいた。&lt;br&gt;
+懇親会でいろいろ話をしたけどざっくりこんな課題を抱えている人が多かった。&lt;/p&gt;
+
+&lt;h4&gt;アプリが悪い問題&lt;/h4&gt;
+
+&lt;p&gt;MSPなのでお客さんのシステムの運用を請け負います。&lt;br&gt;
+その業務の中には障害対応や監視設定、デプロイとか様々あるわけですが、&lt;br&gt;
+アプリの作りにより、監視設定できないことや自動化できないことが多数あるそうです。&lt;br&gt;
+お客さんのせいにしてはいけないのだけど、その点が一番しんどそうだった。&lt;/p&gt;
+
+&lt;h4&gt;自動化・コード化&lt;/h4&gt;
+
+&lt;p&gt;MSPの方々も本当は監視やデプロイなどの自動化するコードやツールを作ることに力を入れたいけど、&lt;br&gt;
+単純な手順書作業や日々の障害対応に追われてなかなかできないとか。&lt;br&gt;
+そもそも普段コードを書く仕事ではないので、そのメンテするチーム体制が取れないという問題も。&lt;br&gt;
+（それは前の仕事でもよく聞いた話だなぁ～）&lt;/p&gt;
+
+&lt;h4&gt;オンプレ&lt;/h4&gt;
+
+&lt;p&gt;まだまだオンプレ環境の運用も多く、&lt;br&gt;
+ハードウェア交換やハードウェアによる障害には悩まされているとのこと。&lt;br&gt;
+聞いてる話だと、あえてオンプレにしているというよりはレガシーで残っているのが多いっぽい。&lt;/p&gt;
+
+&lt;h4&gt;夜勤&lt;/h4&gt;
+
+&lt;p&gt;夜勤の週は、5日間夜勤をする。そういう運用らしいです。&lt;br&gt;
+前の仕事では身近にネットワークの運用部隊がいたので夜勤事情はよく聞いていますが、
+まったく考え方が違くてびっくり。&lt;br&gt;
+でも意外と、週ごとに別れている方が辛くないらしいよ？&lt;/p&gt;
+
+&lt;h1&gt;最後に&lt;/h1&gt;
+
+&lt;p&gt;一緒に戦ってくれたチームメンバーありがとうございました。&lt;/p&gt;
+
+&lt;p&gt;去年のお題は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;から&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;への移行だったらしいですが、今回は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;から&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;への移行。&lt;br&gt;
+このあたり、そういう時代のフェーズに入ってきているということなんでしょうか。&lt;br&gt;
+きっとそういうことでしょう。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;特定の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;独自の機能を使っていなければ、移行自体は簡単で、&lt;br&gt;
+それよりももともとの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EC%A5%AC%A5%B7%A1%BC%A5%B7%A5%B9%A5%C6%A5%E0&#34;&gt;レガシーシステム&lt;/a&gt;をバージョンアップするほうがしんどい印象。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;ロックインとどう向き合っていくか、考えなければ。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

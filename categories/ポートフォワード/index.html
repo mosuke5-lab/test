@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ポートフォワード &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="ポートフォワード &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ポートフォワード &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">13 Aug 2015, 00:04</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/08/13/000440/" class="post-title">デスクトップUbuntuにVNC接続。ついでにSSHローカルポートフォワードの復習。</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Ubuntu" href="https://blog.mosuke.tech/categories/ubuntu">Ubuntu</a><a class="post-category post-category-vnc" href="https://blog.mosuke.tech/categories/vnc">vnc</a><a class="post-category post-category-ポートフォワード" href="https://blog.mosuke.tech/categories/%E3%83%9D%E3%83%BC%E3%83%88%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89">ポートフォワード</a><a class="post-category post-category-SSH" href="https://blog.mosuke.tech/categories/ssh">SSH</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        完全に自分のための備忘録。内容はわりと薄め。 やったこと 最近、自作したPCにUbuntuをいれて使っているのだけど、 デスクトップPCなので、部屋でしか操作することができません。 他の部屋からノートPCでUbuntuを触れたらいいなーと思いその環境を整えることをしました。 主にやったことは以下の通りです。 VNCサーバ構築について ノートPC（Mac）からのVNC接続について SSHローカルポートフォワードを使ってのセキュアな接続について UbuntuでのVNCサーバ構築について 今回利用しているUbuntuは「Ubuntu Desktop 14.04」です。 また、VNCの実現は標準でインストールされているvinoを使って行いました。 ご存知の方も多くいるかもしれませんが、vinoでのVNCは簡易的なもので、サーバ側のユーザがログアウトしていると使えません。 ですので、会社などでの利用には耐えないと思います。 ユーザーをログアウトせずにロック状態にしていれば使えます。 まずはデスクトップ共有の設定をします。 「デスクトップの共有」のアプリケーションを起動します。 接続毎に要求するようにすると、サーバ側で毎度許可が必要なので、オフにします。 パスワードの設定はしておきましょう。 同じLANをつかんでる人に簡単に奪われてしまいますので。 ちょっと詳細な意味を把握していないのですが、 下記を実行しないとMacで接続すると「互換性のないバージョンです」的なこといわれました…すいません。 $ gsettings set org.gnome.Vino require-encryption false 設定ができたら、きちんとサーバとしてVNC接続を待ち受けているか確認します。 % sudo lsof -i:5900 COMMAND PID USER FD TYPE DEVICE SIZE/OFF NODE NAME vino-serv 24414 mosuke5 13u IPv6 156661 0t0 TCP *:5900 (LISTEN) vino-serv 24414 mosuke5 14u IPv4 156662 0t0 TCP *:5900 (LISTEN) % ps -ef | grep vino mosuke5 24414 24226 0 12:30 ?
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">11 Feb 2015, 17:21</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/02/11/172123/" class="post-title">SSHポートフォワード、https接続をするときに間違えやすいこと</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-SSH" href="https://blog.mosuke.tech/categories/ssh">SSH</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-ポートフォワード" href="https://blog.mosuke.tech/categories/%E3%83%9D%E3%83%BC%E3%83%88%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89">ポートフォワード</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        SSHローカルフォワードの話。 前回は簡単に実践してみたというのを書いたのだが、今度は実際に使ってみてハマった部分があったのでメモ。 SSHでローカルポートフォワードを実際に試す - Goldstine研究所 1. やりたいこと httpsでしか接続を許可していないサーバへ、SSHローカルフォワーディングを使って接続しようした。 （直接疎通性がないためにポートフォワーディングする必要があった。） 2. 行ったこと httpsでしか接続ができないので、ローカル端末のポート5000を接続したいサーバのポート443に飛ばせばおっけーと思って、 下記のようにssh接続とブラウザから接続を行った。 ssh -L5000:web-host:443 user@ssh-host ※web-host: 今回httpsで接続したサーバ ※ssh-host: ssh接続先サーバ これでローカルフォワーディングの設定は終わったので、ブラウザから以下に接続するだけで終わりだと思っていた。 http://localhost:5000 が、接続不可…なぜでしょう？ 3. 何が間違いだったか 正しくは以下で接続をしなければいけない。httpsが必要。 https://localhost:5000 よーく考えればアタリマエのこと。 URLのはじめの&lt;http(s)&gt;の部分はプロトコルで最後の&lt;:5000&gt;の部分はポート番号。 httpsは443のポートを一般的に使うが、ポート443がhttpsというわけではない。 あたりまえのことだし知っていることなんだけど、見落としがちかもしれない。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">31 Dec 2014, 17:05</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/12/31/170545/" class="post-title">SSHでローカルポートフォワードを実際に試す</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-SSH" href="https://blog.mosuke.tech/categories/ssh">SSH</a><a class="post-category post-category-ポートフォワード" href="https://blog.mosuke.tech/categories/%E3%83%9D%E3%83%BC%E3%83%88%E3%83%95%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%89">ポートフォワード</a><a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        SSH・・・ いろんなことができる&rdquo;らしい&rdquo;ということは知っていたし、 例えばポートフォワーディングなんていうこともできるのも知っている。 でもそれがどんなものなのか自分の手で試したことはないし、 なんとなくただのサーバログインツールとして利用していた。 サーバインフラ技術に興味を持つようになっていろんなことを勉強していると、 ポートフォワーディングは必須な技術であることも感じ、 年末の持て余す時間を使ってSSHのローカルポートフォワードを試してみたのでメモする。 環境とやりたいこと ローカルPCからexample.jpは以下で接続できる状態。 [local pc] $ ssh username@example.jp またWebサーバのポート番号は80で、VPSのホストサーバからはWebサーバへ接続できる。 CUIなのでわかりづらいがcurlを打つとHello Worldが返ってきている。 [example.jp] $ curl 192.168.33.10 &lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello World! Virtual Web Server&lt;/h1&gt; &lt;/body&gt;&lt;/html&gt; ローカルポートフォワードの実行 ローカルPCから以下を実行する。 以下のコマンドは、 ローカルPCのポート8888での接続はexample.jpからみて「192.168.33.10のポート80」に飛ばす といったもの。 [local pc] $ ssh -L8888:192.168.33.10:80 username@example.jp この状態でブラウザからhttp://localhost:8888にアクセスすると なんと、ローカルホストにつないだはずが、example.jp上の仮想Webサーバのhtmlがうつっているではないか… セキュリティはどうなの？ ローカルの端末からhttpで仮想のWebサーバに接続しているけど、セキュリティはだいじょうぶなのだろうか？ http通信だから暗号化はされていないのだろうか？ なんて疑問もあるが、それは問題ない。 SSHでローカルPCからリモートホスト(example.jp)までトンネルをはり、 そのなかをhttpで通信しているから全く問題なしといえる。 ローカルポートフォワードを利用する場合は、おそらく表には出したくないけど、 ローカルから接続したいなどの要件の時に使うと思うけど、SSHできちんと暗号化しているので安心。 最後に SSHでできることはこの他にもたくさんある。 ポートフォワードだけみても他にも「リモートポートフォワード」や「ダイナミックポートフォワード」などがある。 リモートポートなどはいまぱっと試せる環境がなかったのでおいおい実践してみる… SSHをただのログインツールだけに留めるのは今年で終わりにしよう…
+                    </div>
+                </section>
+                
+            </div>
+            
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

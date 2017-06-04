@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>分散 on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/%E5%88%86%E6%95%A3/</link>
+    <description>Recent content in 分散 on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 04 Jan 2017 22:35:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/%E5%88%86%E6%95%A3/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>クラウド上でのWordPressのスケールアウトを考える</title>
+      <link>https://blog.mosuke.tech/entry/2017/01/04/223544/</link>
+      <pubDate>Wed, 04 Jan 2017 22:35:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2017/01/04/223544/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;複数台サーバでの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WordPress&#34;&gt;WordPress&lt;/a&gt;の構築・運用について考える。&lt;br&gt;
+実際に、とある&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;で分散環境の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WordPress&#34;&gt;WordPress&lt;/a&gt;を構築したのでその知見をまとめる。&lt;br&gt;
+なるべく特定の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;に特価しないものとして記載したい。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;やりたいこと&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;スケールアウトできる&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WordPress&#34;&gt;WordPress&lt;/a&gt;環境を作る&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSL&#34;&gt;SSL&lt;/a&gt;に対応する&lt;/li&gt;
+&lt;li&gt;HTTP/2に対応する&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;などの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;環境で構築する&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;まず先に全体の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;図から示す。&lt;br&gt;
+これから各項目について解説していく。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170104/20170104185455.png&#34; alt=&#34;f:id:mosuke5:20170104185455p:plain&#34; title=&#34;f:id:mosuke5:20170104185455p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSL&#34;&gt;SSL&lt;/a&gt;・HTTP/2への対応&lt;/h1&gt;
+
+&lt;p&gt;まず&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSL&#34;&gt;SSL&lt;/a&gt;への対応だが、通常ならばロードバランサを&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSL&#34;&gt;SSL&lt;/a&gt;の終端とし下記のような構成にすることが多いだろう。&lt;br&gt;
+この場合はロードバランサをL7のものとして稼働させる。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170104/20170104190001.png&#34; alt=&#34;f:id:mosuke5:20170104190001p:plain&#34; title=&#34;f:id:mosuke5:20170104190001p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;しかし、HTTP/2に対応しようと思うと事情は異なってくる。&lt;br&gt;
+（もちろん、最近では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;のALBのようにHTTP/2に対応する製品がでてきているのは承知だが。）&lt;br&gt;
+現在の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;で利用できるロードバランサの多くはまだHTTP/2に対応していない。&lt;br&gt;
+そのため、ロードバランサをL4として稼働させ、配下のWebサーバにてHTTP/2を処理する必要がでてくる。&lt;br&gt;
+この場合、ロードバランサは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/TCP&#34;&gt;TCP&lt;/a&gt;でポート443を待ち受けるようにし、配下のWebサーバへポート443のままでフォワードすればいい。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170104/20170104185953.png&#34; alt=&#34;f:id:mosuke5:20170104185953p:plain&#34; title=&#34;f:id:mosuke5:20170104185953p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;環境ではWebサーバがスケールすることは前提にいれることがおおい。&lt;br&gt;
+そのため、この場合の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSL%BE%DA%CC%C0%BD%F1&#34;&gt;SSL証明書&lt;/a&gt;はN台に対応した製品を買う必要がある。&lt;br&gt;
+例えば以下のような製品など。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.cybertrust.ne.jp/sureserver/productinfo/cloud.html&#34;&gt;SureServer for クラウド｜Cybertrust.ne.jp&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;データベースの分離&lt;/h1&gt;
+
+&lt;p&gt;分散環境での&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Wordpress&#34;&gt;Wordpress&lt;/a&gt;では共通したコンテンツを配信するため、データベースはもちろんWebサーバとは分離したほうがいい。&lt;br&gt;
+それぞれのWebサーバは共通のデータベースを見に行くべきだ。&lt;br&gt;
+データベースを自前で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;しても構わないが、それなりの運用コストがかかることは容易に想像がつくので、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;のマネージドデータベースサービスを利用した。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://aws.amazon.com/jp/rds/&#34;&gt;Amazon RDS（クラウドでのリレーショナルデータベースサービス） | AWS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://jp.aliyun.com/product/apsaradb-for-rds&#34;&gt;ApsaraDB for RDS - データベースホスティング | Alibaba Cloud&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;管理画面&lt;/h1&gt;
+
+&lt;p&gt;管理画面のみを分離する&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;も考えられるが、ここではそうしないこととする。&lt;br&gt;
+管理画面へのログインセッションの保持は、別途KVS(Redisや&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Memcached&#34;&gt;Memcached&lt;/a&gt;)に保存してもいいと思う。&lt;br&gt;
+ですが、WordPress4.0以降ではデフォルトでは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;へセッションを保存するので必須の対応ではないといえる。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fgithub.com%2FWordPress%2FWordPress%2Fblob%2Fdd6da701b286579819cd6aa518aa2d7018efd759%2Fwp-includes%2Fclass-wp-user-meta-session-tokens.php&#34; title=&#34;WordPress/WordPress&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://github.com/WordPress/WordPress/blob/dd6da701b286579819cd6aa518aa2d7018efd759/wp-includes/class-wp-user-meta-session-tokens.php&#34;&gt;github.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;記事で使うアップロード画像などの対応&lt;/h1&gt;
+
+&lt;p&gt;管理画面から記事を投稿するとする。&lt;br&gt;
+記事のデータはデータベースに保存されるためどのWebサーバからも記事を参照できる。&lt;br&gt;
+しかし、記事に含まれる画像データはどうだろうか。&lt;/p&gt;
+
+&lt;p&gt;通常の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Wordpress&#34;&gt;Wordpress&lt;/a&gt;では管理画面サーバの&lt;code&gt;/wp-content/uploads&lt;/code&gt;以下に画像を保存する。&lt;br&gt;
+複数台Webサーバがある状態で、たまたまアクセスしているサーバに画像を保存しても、他のサーバからは参照することができない。&lt;/p&gt;
+
+&lt;p&gt;これに対するソリューションはいくつかあるだろう。&lt;br&gt;
+例えば、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/rsync&#34;&gt;rsync&lt;/a&gt;などを使って他のサーバと画像ファイルを同期するとか、画像用のストレージを用意し&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/NFS&#34;&gt;NFS&lt;/a&gt;で参照するとか。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;の観点からもここはオブジェクトストレージのサービスを利用するのがいいだろう。&lt;/p&gt;
+
+&lt;p&gt;例えば、下記のような製品だ。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://aws.amazon.com/jp/s3/&#34;&gt;Amazon S3 (スケーラブルなクラウドストレージサービス ) | AWS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://jp.aliyun.com/product/oss&#34;&gt;Object Storage Service (OSS) - Alibaba Cloud の拡張性に優れた安全なクラウドストレージ | Alibaba Cloud&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;のオブジェクトストレージと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WordPress&#34;&gt;WordPress&lt;/a&gt;を連携する&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%B0%A5%A4%A5%F3&#34;&gt;プラグイン&lt;/a&gt;は多く出ている。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://wordpress.org/plugins/nephila-clavata/&#34;&gt;Nephila clavata — WordPress Plugins&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;デプロイへの対応&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Wordpress&#34;&gt;Wordpress&lt;/a&gt;のコードのデプロイ、Webサーバの設定変更などにどう対応するか。&lt;br&gt;
+ツールはなんでもいいが（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%A7%A5%EB%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8&#34;&gt;シェルスクリプト&lt;/a&gt;でもいいし、Ansible,Chefなどでも）、&lt;br&gt;
+デプロイツールなど用いて全台サーバにデプロイできるようにしておくといいだろう。あたりまえ。&lt;br&gt;
+影響の大きいデプロイをするときは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC&#34;&gt;ロードバランサー&lt;/a&gt;から切り離してデプロイ、テストとやるといいと思う。&lt;br&gt;
+あるいは、新しく構築（デプロイ）した別のWebサー&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%A4&#34;&gt;バイ&lt;/a&gt;ンスタンスを用意し、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC&#34;&gt;ロードバランサー&lt;/a&gt;で向き先を変更してもいい。&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%C9%A5%D0%A5%E9%A5%F3%A5%B5%A1%BC&#34;&gt;ロードバランサー&lt;/a&gt;配下のWebサーバはプライベートネットワークに配置しておりインターネットから直接アクセスできない。&lt;br&gt;
+そのため、デプロイサーバを用意することでデプロイできるようにした。&lt;br&gt;
+あるいは、踏み台サーバを用意して、多段&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;を使ってもいいかもしれない。&lt;/p&gt;
+
+&lt;h1&gt;さいごに&lt;/h1&gt;
+
+&lt;p&gt;&lt;p&gt;他にも、工夫した点などはあるが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WordPress&#34;&gt;WordPress&lt;/a&gt;のスケールアウトという点に絞って簡単にまとめた。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/OSS&#34;&gt;OSS&lt;/a&gt;の利用は簡単だが、そのスケールや&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;は毎度悩まさせると感じる。&lt;br&gt;
+以前もGitlabを運用してた時に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;をどうするか考えていたのを思い出す。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sftp on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/sftp/</link>
+    <description>Recent content in Sftp on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 17 Feb 2015 22:05:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/sftp/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>勘違いしやすいFTPとSFTPの転送モードの話</title>
+      <link>https://blog.mosuke.tech/entry/2015/02/17/220526/</link>
+      <pubDate>Tue, 17 Feb 2015 22:05:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/02/17/220526/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;やSFTPでの転送モードの話。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;ついこの前、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WinSCP&#34;&gt;WinSCP&lt;/a&gt;を利用している人が転送モードを選んでいて、&lt;br&gt;
+「SFTPには転送モードはないと思っていたのに、転送モードを選んでいる！？」&lt;br&gt;
+と疑問に思ったのでその辺りまとめた。&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;のバイナリーモードと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%B9%A5%AD%A1%BC&#34;&gt;アスキー&lt;/a&gt;モード&lt;/h1&gt;
+
+&lt;p&gt;入社しはじめの頃、それまでSFTPしかほとんど使ったことなかったので、&lt;br&gt;
+先輩に「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;ではバイナリーモードを使って…」と言われて、意味が理解できなかったときがあったのを思い出す。&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;にはファイル転送モードが２つあって、ちゃんと理解していないと思わぬところで痛い目にあう。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;バイナリーモード：ファイルの改行コードを変換せず転送する。&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%B9%A5%AD%A1%BC&#34;&gt;アスキー&lt;/a&gt;モード：OS側で異なる改行コードを自動的に修正して転送する。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;では標準では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%B9%A5%AD%A1%BC&#34;&gt;アスキー&lt;/a&gt;モードのため、なにも考えずにファイルを送るとファイルが壊れてしまったりする。&lt;br&gt;
+昔にミスしたのは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Windows&#34;&gt;Windows&lt;/a&gt;から&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Linux&#34;&gt;Linux&lt;/a&gt;へtar.gzファイルを&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%B9%A5%AD%A1%BC&#34;&gt;アスキー&lt;/a&gt;モードで送って、解凍したらファイルが壊れていたが、&lt;br&gt;
+それに気付かず壊れたファイルをサーバへ設置してしまったとか。&lt;/p&gt;
+
+&lt;h1&gt;SFTPには転送モードはあるのか？&lt;/h1&gt;
+
+&lt;p&gt;SFTPを普段から使ってる人は転送モードなんて気にしたことあまりないと思う。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;では気にしなければいけない転送モード、SFTPでは気にしなくていいのだろうか？&lt;/p&gt;
+
+&lt;p&gt;結論から言うと、SFTPには転送モードはないので、気にする必要はない。&lt;br&gt;
+SFTPでは、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;でいうバイナリーモードでファイル転送をするようだ。&lt;/p&gt;
+
+&lt;p&gt;sftpコマンドのマニュアルにも特に転送モードについては記述がないのがわかる。&lt;br&gt;
+&lt;a href=&#34;http://www.unixuser.org/~euske/doc/openssh/jman/sftp.html&#34;&gt;http://www.unixuser.org/~euske/doc/openssh/jman/sftp.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;SFTPでも転送モードを選択できる場合がある！？&lt;/h1&gt;
+
+&lt;p&gt;ここで、SFTPにも転送モードはあるぞ！？と疑問を思った人もいるかもしれない。&lt;br&gt;
+確かに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WinSCP&#34;&gt;WinSCP&lt;/a&gt;などファイル転送ソフトを使っていると転送モードを選ぶことができる場合もある。&lt;/p&gt;
+
+&lt;p&gt;しかし、勘違いしてはいけないのが、&lt;br&gt;
+転送モードを選ぶことができるのはSFTPの機能ではなくて&lt;b&gt;ファイル転送ソフトの機能&lt;/b&gt;であるということだ。&lt;/p&gt;
+
+&lt;h1&gt;まとめ&lt;/h1&gt;
+
+&lt;p&gt;&lt;p&gt;ファイル転送でよく使われる&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FTP&#34;&gt;FTP&lt;/a&gt;やSFTP。&lt;br&gt;
+それぞれに違いはあるし、それを利用するソフトウェアによっても違いがある。&lt;br&gt;
+何が何を行っているか把握し、思わぬミスを減らしましょう。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

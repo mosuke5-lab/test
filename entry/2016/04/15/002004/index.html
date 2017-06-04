@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今度こそ入門するtmux &middot; Goldstine研究所</title>
+
+    <meta name="description" content=" tmuxの入門は何度目だろうか… SoftwareDesignの2015年7月号を見ながら、何度目かの入門をしたのでメモする。 ブログに書いたので、これで運用にのりそうだ。  tmuxってなに？  公式ページ(http://tmux.gi">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="今度こそ入門するtmux &middot; Goldstine研究所">
+    <meta name="twitter:description" content=" tmuxの入門は何度目だろうか… SoftwareDesignの2015年7月号を見ながら、何度目かの入門をしたのでメモする。 ブログに書いたので、これで運用にのりそうだ。  tmuxってなに？  公式ページ(http://tmux.gi">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="今度こそ入門するtmux &middot; Goldstine研究所">
+    <meta property="og:description" content=" tmuxの入門は何度目だろうか… SoftwareDesignの2015年7月号を見ながら、何度目かの入門をしたのでメモする。 ブログに書いたので、これで運用にのりそうだ。  tmuxってなに？  公式ページ(http://tmux.gi">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">15 Apr 2016, 00:20</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2016/04/15/002004/" class="post-title">今度こそ入門するtmux</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-tmux" href="https://blog.mosuke.tech/categories/tmux">tmux</a><a class="post-category post-category-入門" href="https://blog.mosuke.tech/categories/%E5%85%A5%E9%96%80">入門</a>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p><body>
+<p>tmuxの入門は何度目だろうか…<br>
+SoftwareDesignの2015年7月号を見ながら、何度目かの入門をしたのでメモする。<br>
+ブログに書いたので、これで運用にのりそうだ。</p></p>
+
+<h1>tmuxってなに？</h1>
+
+<p>公式ページ(<a href="http://tmux.github.io/">http://tmux.github.io/</a>)から引用すると。</p>
+
+<blockquote><p>tmux is a terminal multiplexer. What is a terminal multiplexer? It <a class="keyword" href="http://d.hatena.ne.jp/keyword/lets">lets</a> you switch easily between several programs in one terminal, detach them (they keep running in the background) and reattach them to a different terminal. And do a lot more.<br>
+（訳）tmuxはターミナルマルチプレクサです。ターミナルマルチプレクサは複数のプログラムを容易に1つのターミナル上で切り替えられるようにします。またそれらのプログラムをバックグラウンドで動かしながらデタッチしたり、別のターミナルにアタッチすることができます。さらにいろいろなことができます。</p></blockquote>
+
+<h1>tmuxを使ってみる</h1>
+
+<h1>インストール</h1>
+
+<p>今回<a class="keyword" href="http://d.hatena.ne.jp/keyword/Mac">Mac</a>の環境で行っています。<br>
+今日時点ではバージョン2.2まででていますが、<a class="keyword" href="http://d.hatena.ne.jp/keyword/brew">brew</a>では2.1がインストールされました。</p>
+
+<pre><code>$ brew install tmux
+$ tmux -V
+tmux 2.1 
+
+</code></pre>
+
+<h1>起動</h1>
+
+<p><code>$ tmux</code>と入力すると、tmuxが起動し<code>$ exit</code>で抜けることができます。<br>
+これから説明していきますが、tmuxの機能を利用するときプレフィックスキーを入力する必要があります。<br>
+デフォルトではプレフィックスキーは<code>Ctrl-b</code>になっています。</p>
+
+<h1>ウィンドウの作成、切り替え</h1>
+
+<p>１つのtmuxの中にウィンドウ（タブ機能と考えてください）を作って切り替えたりします。<br>
+<code>Ctrl-b</code>+<code>c</code>でウィンドウを作成できます。<br>
+ウィンドウを作成するとターミナルの下部分（ステータスバー）に表示されます。<br>
+*印があるのがいまいるウィンドウです。</p>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160414/20160414233836.png" alt="f:id:mosuke5:20160414233836p:plain" title="f:id:mosuke5:20160414233836p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<h1>ウィンドウ分割</h1>
+
+<p>ウィンドウの分割もできます。開発するときに便利ですよね！<br>
+分割された画面をペインと言います。<br>
+<code>Ctrl-b</code>+<code>%</code>で縦に分割、<code>Ctrl-b</code>+<code>"</code>で横に分割できます。<br>
+ペイン間の移動は<code>Ctrl-b</code>+<code>o</code>。</p>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160414/20160414230041.png" alt="f:id:mosuke5:20160414230041p:plain" title="f:id:mosuke5:20160414230041p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<h1>なにが嬉しいの？</h1>
+
+<p>まてまて、タブ機能もウィンドウ分割もiTerm2で全然できるよ？<br>
+ほら！？
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160414/20160414230301.png" alt="f:id:mosuke5:20160414230301p:plain" title="f:id:mosuke5:20160414230301p:plain" class="hatena-fotolife" itemprop="image"></span></p>
+
+<p>tmuxのいいところはデタッチとアタッチ機能やカスタマイズ性の高さだと思う。<br>
+カスタマイズ性についてはまだそんなにわかってませんが。。。</p>
+
+<h1>デタッチとアタッチ</h1>
+
+<p>tmuxはターミナルを仮想化します。その威力を発揮するのがデタッチとアタッチ機能です。<br>
+tmuxを起動した状態で<code>Ctrl-b</code>+<code>d</code>を押してみよう。<br>
+そうすると下のステータスバーも消え、元のターミナルに戻ってきたと思う。<br>
+これをデタッチといい、tmuxが終了したわけではない。</p>
+
+<p>プロセスを確認すると、tmuxがまだ存在してることがわかる。</p>
+
+<pre><code>$ ps -ef | grep tmux
+  501 16038     1   0  9:26PM ??         0:02.26 tmux
+  501 17800 13345   0 11:53PM ttys005    0:00.00 grep tmux 
+</code></pre>
+
+<p><code>tmux ls</code>で現在のtmuxのセッションの一覧がみれます。</p>
+
+<pre><code>$ tmux ls
+0: 1 windows (created Thu Apr 14 21:26:19 2016) [129x32] 
+
+</code></pre>
+
+<p>ではアタッチしてみよう。下記で元のtmuxに戻ってくるはずです。</p>
+
+<pre><code>$ tmux attach 
+</code></pre>
+
+<p>デタッチしている間もバックグラウンドでプログラムは動き続けています。<br>
+試しに、tmux上でvmstatなどを打ってデタッチしてアタッチすると動き続けていることがわかると思います。</p>
+
+<h1>pstree見るといい</h1>
+
+<p>tmuxの概念を理解するにはpstreeをみるといい。<br>
+tmuxを使わずにpstreeコマンドを打つと、<a class="keyword" href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>のプロセスの下でpstreeが動いているのがわかる。</p>
+
+<pre><code>$ pstree -p
+systemd(1)
+    ├─sshd(13589)─┬─sshd(15066)───sshd(15068)───bash(15069)───pstree(15115) 
+
+</code></pre>
+
+<p>一方、tmuxを起動し、tmux上でpstreeを実行すると、<a class="keyword" href="http://d.hatena.ne.jp/keyword/sshd">sshd</a>のプロセスの下にはtmuxが動いており、<br>
+pstreeコマンドはtmuxプロセスの下で動いている。</p>
+
+<pre><code>$ pstree -p
+systemd(1)
+    ├─sshd(13589)─┬─sshd(15066)───sshd(15068)───bash(15069)───tmux(15146)
+    └─tmux(15148)───bash(15149)───pstree(15168) 
+</code></pre>
+
+<p>なにがいいたいかというと、tmuxの上で動かすプロセスは<a class="keyword" href="http://d.hatena.ne.jp/keyword/sshd">sshd</a>とは別プロセスで動いているということ。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>が切れても動作し続けるとはまあそういうことです。</p>
+
+<h1>カスタマイズ</h1>
+
+<p>tmuxはカスタマイズ性に優れます（ようです）。<code>.tmux.conf</code>を修正することでカスタマイズ可能です。<br>
+今回は入門ということで、よく使いそうな基本設定だけしたが、これだけでも相当便利でした。</p>
+
+<ul>
+<li>プレフィックスキーを<code>Ctrl-t</code>とする</li>
+<li>ペインのサイズを<a class="keyword" href="http://d.hatena.ne.jp/keyword/vim">vim</a>の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AD%A1%BC%A5%D0%A5%A4%A5%F3%A5%C9">キーバインド</a>で調整できるようにする</li>
+<li>ウィンドウの分割を<code>|</code>と<code>-</code>でできるようにする</li>
+</ul>
+
+<pre><code># プレフィックスキー
+unbind C-b
+set-option -g prefix C-t
+
+# paneのサイズ変更（Vimerにはかかせない）
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
+
+# window分割（わかりやすくていいね！）
+bind | split-window -h
+bind - split-window -v 
+</code></pre>
+
+<p><p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Vim">Vim</a>の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AD%A1%BC%A5%D0%A5%A4%A5%F3%A5%C9">キーバインド</a>でペインのサイズ自由自在！
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160415/20160415000811.gif" alt="f:id:mosuke5:20160415000811g:plain" title="f:id:mosuke5:20160415000811g:plain" class="hatena-fotolife" itemprop="image"></span></p>
+</body></p>
+
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label-counter" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+                            <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3a%2f%2fblog.mosuke.tech%2fentry%2f2016%2f04%2f15%2f002004%2f&layout=button_count&size=small&mobile_iframe=true&appId=1383467145023614&width=90&height=20" width="90" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

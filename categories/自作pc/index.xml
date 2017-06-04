@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>自作pc on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/%E8%87%AA%E4%BD%9Cpc/</link>
+    <description>Recent content in 自作pc on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 29 Dec 2014 15:42:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/%E8%87%AA%E4%BD%9Cpc/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>【年末遊び】秋葉原で自作PCパーツ集めて作った</title>
+      <link>https://blog.mosuke.tech/entry/2014/12/29/154251/</link>
+      <pubDate>Mon, 29 Dec 2014 15:42:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/12/29/154251/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BC%AB%BA%EEPC&#34;&gt;自作PC&lt;/a&gt;を作ったのでその材料と参考資料などを簡単にまとめる。&lt;br&gt;
+すべての部品は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BD%A9%CD%D5%B8%B6&#34;&gt;秋葉原&lt;/a&gt;の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C4%A5%AF%A5%E2&#34;&gt;ツクモ&lt;/a&gt;で揃えた。&lt;br&gt;
+&lt;a href=&#34;http://shop.tsukumo.co.jp/&#34; target=&#34;_blank&#34;&gt;パソコン・ゲームPC・自作パソコンなら【TSUKUMO】&lt;/a&gt;
+&lt;p&gt;わけがあって荷物はすべて手で運んだのだが、かなり重くなるので郵送をおすすめする。&lt;br&gt;
+以下買ったパーツ一式や用意した道具。&lt;br&gt;
+ちなみに全部で54000円程度でした。（お店で買うとセット割などがあったため）&lt;/p&gt;&lt;/p&gt;
+
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;材料・パーツ一式&lt;/h2&gt;
+    
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%B6%A1%BC%A5%DC%A1%BC%A5%C9&#34;&gt;マザーボード&lt;/a&gt;&lt;/h3&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00KD6RZIG/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/61rM4AVJ3yL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;ASUSTeK Intel H97チップセット搭載マザーボード H97-PRO 【ATX】&#34; title=&#34;ASUSTeK Intel H97チップセット搭載マザーボード H97-PRO 【ATX】&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00KD6RZIG/hatena-blog-22/&#34;&gt;ASUSTeK Intel H97チップセット搭載マザーボード H97-PRO 【ATX】&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Asustek&#34;&gt;Asustek&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2014/05/17&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; Personal Computers&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/B00KD6RZIG/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログを見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;CPU&lt;/h3&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00LV8U0VE/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/51R95kYLwCL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;Intel CPU Core-i3-4160 3.60GHz 3Mキャッシュ LGA1150 BX80646I34160 【BOX】&#34; title=&#34;Intel CPU Core-i3-4160 3.60GHz 3Mキャッシュ LGA1150 BX80646I34160 【BOX】&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00LV8U0VE/hatena-blog-22/&#34;&gt;Intel CPU Core-i3-4160 3.60GHz 3Mキャッシュ LGA1150 BX80646I34160 【BOX】&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%C6%A5%EB&#34;&gt;インテル&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2014/07/27&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; Personal Computers&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/B00LV8U0VE/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログを見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;メモリ&lt;/h3&gt;
+    &lt;a href=&#34;http://kakaku.com/item/K0000290991/&#34;&gt;価格.com - Team TED38192M1600C11DC [DDR3 PC3-12800 4GB 2枚組] 価格比較&lt;/a&gt;&lt;br&gt;
+&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;HDD&lt;/h3&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B009QWUF9E/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/51XtnFUCHHL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;【Amazon.co.jp限定】WD Blue 3.5inch 7,200rpm 1.0TB 64MBキャッシュ SATA3.0 WD10EZEX/N 【フラストレーションフリーパッケージ(FFP)】&#34; title=&#34;【Amazon.co.jp限定】WD Blue 3.5inch 7,200rpm 1.0TB 64MBキャッシュ SATA3.0 WD10EZEX/N 【フラストレーションフリーパッケージ(FFP)】&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B009QWUF9E/hatena-blog-22/&#34;&gt;【Amazon.co.jp限定】WD Blue 3.5inch 7,200rpm 1.0TB 64MBキャッシュ SATA3.0 WD10EZEX/N 【フラストレーションフリーパッケージ(FFP)】&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Western%20Digital&#34;&gt;Western Digital&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; Personal Computers&lt;/li&gt;
+&lt;li&gt; &lt;span class=&#34;hatena-asin-detail-label&#34;&gt;クリック&lt;/span&gt;: 5回&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/B009QWUF9E/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログを見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;光学式ドライブ&lt;/h3&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00OYQTP48/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/11PYvtXkVFL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;ASUSTeK CyberLink Power2Go 8、E-Greenソフト付き内蔵ドライブ&#34; title=&#34;ASUSTeK CyberLink Power2Go 8、E-Greenソフト付き内蔵ドライブ&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00OYQTP48/hatena-blog-22/&#34;&gt;ASUSTeK CyberLink Power2Go 8、E-Greenソフト付き内蔵ドライブ&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Asustek&#34;&gt;Asustek&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2014/11/12&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; Personal Computers&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/B00OYQTP48/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログを見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;電源ユニット&lt;/h3&gt;
+    &lt;p&gt;グラフィックボードも積んでいないし、ゲームとかもやる予定はないので430Wで十分。&lt;br&gt;
+また、PCケースも大きめのものを選ぶ予定だったので大きさも気にしなくてオッケーでした。&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00FSFA566/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/51-UWNSkHAL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;ENERMAX エナーマックス PC電源 Revolution X&#39;t 430W ERX430AWT&#34; title=&#34;ENERMAX エナーマックス PC電源 Revolution X&#39;t 430W ERX430AWT&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00FSFA566/hatena-blog-22/&#34;&gt;ENERMAX エナーマックス PC電源 Revolution X&amp;rsquo;t 430W ERX430AWT&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; ENERMAX&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2014/08/02&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; 付属品&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/B00FSFA566/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログを見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;ケース&lt;/h3&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00E6GZL7Q/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/51SRInEw4oL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;SharkoonミドルタワーPCケース サイドクリアウィンドウ グリーン SHA-T28-G-V3/A&#34; title=&#34;SharkoonミドルタワーPCケース サイドクリアウィンドウ グリーン SHA-T28-G-V3/A&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00E6GZL7Q/hatena-blog-22/&#34;&gt;SharkoonミドルタワーPCケース サイドクリアウィンドウ グリーン SHA-T28-G-V3/A&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; Sharkoon&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; Personal Computers&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/B00E6GZL7Q/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログ (1件) を見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;参考にした書籍&lt;/h3&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4822269973/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/618HZCdKnkL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;PC自作の鉄則! 2015 (日経BPパソコンベストムック)&#34; title=&#34;PC自作の鉄則! 2015 (日経BPパソコンベストムック)&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4822269973/hatena-blog-22/&#34;&gt;PC自作の鉄則! 2015 (日経BPパソコンベストムック)&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;作者:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%C6%FC%B7%D0WinPC&#34;&gt;日経WinPC&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%C6%FC%B7%D0BP&#34;&gt;日経BP&lt;/a&gt;社&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2014/11/17&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; 単行本&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/4822269973/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログを見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;利用した道具など&lt;/h3&gt;
+    &lt;p&gt;&lt;b&gt;・プラスドライバー&lt;/b&gt;&lt;br&gt;
+　⇒PCケースと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%B6%A1%BC%A5%DC%A1%BC%A5%C9&#34;&gt;マザーボード&lt;/a&gt;などを固定したりするのにドライバーは必須&lt;br&gt;
+&lt;b&gt;・インシュロック（結束バンド）&lt;/b&gt;&lt;br&gt;
+　⇒PCケースに何本かついてくるが、綺麗に配線しようと思うと何度かやり直したりするので用意しておいた方が無難。&lt;br&gt;
+&lt;b&gt;・ニッパー&lt;/b&gt;&lt;br&gt;
+　⇒インシュロックを切ったりするのに必要なので準備しておきましょう。&lt;br&gt;
+&lt;b&gt;・LANケーブル&lt;/b&gt;&lt;br&gt;
+　⇒今回&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN&#34;&gt;無線LAN&lt;/a&gt;モジュールは搭載していないので、家のネットワークにつなぐには優先が必要。&lt;br&gt;
+　　&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BD%A9%CD%D5%B8%B6&#34;&gt;秋葉原&lt;/a&gt;のジャンクショップでカテゴリ6の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%C8%A5%EC%A1%BC%A5%C8%A5%B1%A1%BC%A5%D6%A5%EB&#34;&gt;ストレートケーブル&lt;/a&gt;5mで200円でした。（すごいお買い得）&lt;br&gt;
+&lt;b&gt;・OSインストールディスク&lt;/b&gt;&lt;br&gt;
+　⇒作ったPCには&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ubuntu&#34;&gt;Ubuntu&lt;/a&gt;を入れたかったので予め、イメージをDVDに焼いておきました。&lt;/p&gt;
+&lt;p&gt;以下は当然だがないと、セットアップできないので要注意。&lt;br&gt;
+・ディプレイ&lt;br&gt;
+・マウス&lt;br&gt;
+・キーボード&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;完成ものと苦労したこと&lt;/h2&gt;
+    &lt;p&gt;作るだけならとても簡単なのだが、そのなかでも一番苦労したのはやはり「配線」。&lt;br&gt;
+はじめはなにも考えずに配線してたら、蓋が閉まらなくなるわ、ファンに線がぶつかるわ…でやり直した。&lt;br&gt;
+配線を綺麗にするには上であげた「インシュロック」を追加で買っておくといいと思います。&lt;/p&gt;
+&lt;p&gt;表面&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141229/20141229154205.jpg&#34; alt=&#34;f:id:mosuke5:20141229154205j:plain&#34; title=&#34;f:id:mosuke5:20141229154205j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;裏面の配線&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141229/20141229154214.jpg&#34; alt=&#34;f:id:mosuke5:20141229154214j:plain&#34; title=&#34;f:id:mosuke5:20141229154214j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;【おまけ】昼飯&lt;/h2&gt;
+    &lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%E5%A5%BF%A5%A4%A5%F3%A5%BA%A5%B2%A1%BC%A5%C8&#34;&gt;シュタインズゲート&lt;/a&gt;のまゆしぃおすすめのメンチカツ屋にいきました。&lt;br&gt;
+ご飯を大盛りにするとすごい量出てくるので注意(笑)&lt;br&gt;
+&lt;a href=&#34;http://tabelog.com/tokyo/A1310/A131001/13000352/&#34;&gt;キッチン ジロー 外神田店 （kitichen JIRO） - 秋葉原/洋食 [食べログ]&lt;/a&gt;&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

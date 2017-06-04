@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ネットワーク &middot; Goldstine研究所</title>
+
+    <meta name="description" content="mosuke5&#39;s blog">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="ネットワーク &middot; Goldstine研究所">
+    <meta name="twitter:description" content="mosuke5&#39;s blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ネットワーク &middot; Goldstine研究所">
+    <meta property="og:description" content="mosuke5&#39;s blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">31 May 2017, 19:25</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2017/05/31/aws_summit_network/" class="post-title">AWS Summit2017 Day2のぞいてきた。 ネットワーク設計入門メモ</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-クラウド" href="https://blog.mosuke.tech/categories/%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89">クラウド</a><a class="post-category post-category-AWS" href="https://blog.mosuke.tech/categories/aws">AWS</a><a class="post-category post-category-AWS Summit" href="https://blog.mosuke.tech/categories/aws-summit">AWS Summit</a><a class="post-category post-category-ネットワーク" href="https://blog.mosuke.tech/categories/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF">ネットワーク</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        はじめに 弊社はプレミアムフライデー導入企業なのだが、最終金曜日に早く帰る必要はなく、月内でどこか1日15時に帰りましょうという制度になっている。 金曜日が仕事の都合上取れなかったので、今月は5/31にプレミアムフライデー（プレミアムウェンズデー）を使った。 ちょうどAWS Summit開催中だったのでのぞきにいった。 雰囲気 想像していた雰囲気とはだいぶ異なっていたというのが第一印象。 想像以上にスーツの年齢層の高い人が多かった。それだけ、AWSもエンタープライズでも注目されるようになったということだろう。 以前に、JAWS2015に参加したことある。もちろんJAWSとAWS Summitでは参加者の層が違う。 が、あれから2年たちAWSに興味を持つ層も大きく変わってきたのを感じた。 セッションも非IT企業への導入事例や、思ったより入門セッションも多かった。 登壇者の話しぶりも「オンプレからの移行」を意識したように感じた。 ブース セッションだけではなく、AWSに関連するサービスを提供している企業がたくさんブースをだしている。 ここでのコミュニケーションが案外一番楽しい。お酒も用意されていて楽しくおしゃべりできた。 Heroku+AWSの組み合わせで利用するケースの話を聞いて、あーなるほどねって感じだった。 HerokuはAWS上で動作しているし、インターネット経由してもそこまで遅くはならない。 そんな利点を使って組み合わせて使う事例なんかきいた。 そのほかは、やっぱりどこもかしこもコンテナ。 コンテナをどう扱うか、どう監視するか、そんなところの話が多かった。 セッション「ネットワーク設計入門」 セッションは１つだけ「ネットワーク設計入門」を聞いた。 普段ならネットワーク設計入門のセッションは聞かないと思っているのだが、 どんなことを話すのか興味あって聞いてみた。 (1)クラウド上のNWの特徴 物理設計はいらない 可用性はすでにセット(VRRPなど気にしなくてよい） プロフラマブルに操作可能 (2)NWサービス NWサービスは意外とすくない。VPCがほぼすべて。 VPCが本質であり、ここが理解できればほぼ問題ない。 VPC Direct Connect Route53 (3)前提知識 VPC 物理設計はいらないんだけど、 やっぱり物理知っていることがアドバンテージになる。 VPCはリージョンの中のみ。ゾーンはまたぐことができる。 専用線 当たり前だがDCの場所は公開していない。 じゃどうやって接続するか？ 相互接続接続ポイントを用意しているからそこにつなぎに来てね、という考え方。 エッジロケーション CDNノードやRoute53が動作しているところ。 リージョンとはまた別にある。 (4)設計をはじめよう AWSのどのサービスを使いたいかでNWの設計方針はかわる。 まずはVPCの中で利用するサービスとVPCの外で使うものがあるのでその区別。 VPCの中で使うもの EC2とかRDSとかRedshift、EMR VPCの外で使うもの S3、LamdaとかDynamoDB、CloudWatch 次に、外部通信の設計 VPCと外部を接続する場合 専用線orインターネットVPNorパブリック(ssh/https) VPCがないけど外部から利用したい場合 httpsでまかなう場合が多い。 実は、VPCがなくてもDicrectConnectは使えるよ。 DirectConnectのパブリック接続 (5)プライベートNW設計のステップ VPCの作成 VPCのCIDRレンジは変えられないから大きくとっておこう オンプレミスとのレンジも被らないように /16がおすすめ サブネット作成 インターネットに接続するものとしないもの。ここでサブネット分けよう AZが落ちてもいいように設計しよう。サブネットは２つずつ
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">24 May 2015, 22:02</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/05/24/220226/" class="post-title">他人の家のインターネットを環境を整えて分かった無線LANルータのこと</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-ネットワーク" href="https://blog.mosuke.tech/categories/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF">ネットワーク</a><a class="post-category post-category-無線LANルーター" href="https://blog.mosuke.tech/categories/%E7%84%A1%E7%B7%9Alan%E3%83%AB%E3%83%BC%E3%82%BF%E3%83%BC">無線LANルーター</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        他人の家のインターネットを環境を整えて分かった無線LANルータのことがあったのでまとめる。 我が家のインターネット環境は以下のような構成になっている。 この構成では無線LANルータはL3とL2の両方の機器として働いている。 グローバルIPとプライベートIPの両方を持っており、 プライベートIPからの通信をグローバル側へルーティングする機能と、 LAN内の複数の端末に接続する機能として。 一方、この前、他の人の家のインターネット環境を整えたのだが、 以下のような構成だった。 １つめの構成と決定的に違うところは、VDSLモデムにルータ機能もついていること。 この場合は無線LANルーターはL2の機器として働いている。 無線LANルーター自体にはIPアドレスはなく、DHCPでIPアドレス管理を行っているのも上位のルータだ。 この構成になるときは、一般的に光IP電話を利用するケースのようだ。 というのも、一般的な無線LANルーターには光IP電話につなぐことができず、 通信会社から貸与されるモデムルータを利用するため。 余談だが、今家では実は下記のような構成にしている。 というのも、家の構造上、VDSLがでているところが納戸のようなところで、 無線LANルーターを設置しても壁が多すぎるために電波が弱くなってしまう。 そのため、リビング側へ無線LANルーターを設置したかったからだ。 とても単純な話だが、 いろんなケースの家庭内インターネットの設定をすることで、 いろいろと気づくこともあった。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">07 Dec 2014, 21:21</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/12/07/212156/" class="post-title">【VPS1台でインフラ勉強】SoftEtherを使ってVPN構築</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-VPN" href="https://blog.mosuke.tech/categories/vpn">VPN</a><a class="post-category post-category-SoftEther" href="https://blog.mosuke.tech/categories/softether">SoftEther</a><a class="post-category post-category-ネットワーク" href="https://blog.mosuke.tech/categories/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF">ネットワーク</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        VPS1台でインフラ勉強シリーズでVPN構築を行ったのでそのメモ。 1. 実施したこと VPSのホストサーバをVPSサーバとし、その上で仮想で立ち上げたサーバ(ローカルネットワーク)に外部から接続できるようにすること。 2. 環境 ・VPNソフトウェア：SoftEther VPN プロジェクト - SoftEther VPN プロジェクト ・メモリ：１GB ・CPU：仮想２コア ・HDD：100GB ・OS：CentOS7 ・サーバ仮想化：Vagrant(Utuntu13) 3. SoftEtherのインストール インストール手順は公式ドキュメント通りなので簡単にコマンドのみ記述しておく。 7.3 Linux へのインストールと初期設定 - SoftEther VPN プロジェクト 【ダウンロードしたもの】 ここから環境に応じて対象のソフトウェアを選ぶ SoftEther ダウンロード センター ・コンポーネント：SoftEther VPN Server ・プラットフォーム：Linux ・CPU：Intel x86 / AMD64(64bit) ## ダウンロード $ wget ttp://jp.softether-download.com/files/softether/v4.08-9449-rtm-2014.06.08-tree/Linux/SoftEther%20VPN%20Server/64bit%20-%20Intel%20x64%20or%20AMD64/softether-vpnserver-v4.08-9449-rtm-2014.06.08-linux-x64-64bit.tar.gz ## 解凍 $ tar zxvf softether-vpnserver-v4.08-9449-rtm-2014.06.08-linux-x64-64bit.tar.gz ## 実行可能ファイル作成 $ cd vpnserver/ $ sudo make ## /usr/localへ配置 $ sudo mv vpnserver /usr/local ## パーミッション変更 ### 基本的には600。実行ファイルのみ700 $ cd /usr/local/vpnserver $ sudo chown root:root ./* $ sudo chmod 600 ./* $ sudo chmod 700 ./vpncmd $ sudo chmod 700 ./vpnserver ## 動作チェック $ sudo ./vpncmd 1.
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">19 Oct 2014, 17:08</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/10/19/170854/" class="post-title">自宅サーバ公開時などのDDNS、固定IPについて整理</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-インフラ" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9">インフラ</a><a class="post-category post-category-ネットワーク" href="https://blog.mosuke.tech/categories/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF">ネットワーク</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        自宅サーバを公開するときに使うDDNSや固定IP。 それが必要な理由について図解的にまとめ。それだけ。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">17 May 2014, 22:18</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/05/17/221824/" class="post-title">ロードバランサをロードバランスする</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-ネットワーク" href="https://blog.mosuke.tech/categories/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF">ネットワーク</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        ぼくはネットワーク構成については素人です。 大量のトラフィックをさばくためにロードバランサを使うがロードバランサが耐えられない量のトラフィックにはどうするか。 ちょっと疑問に思ったので素人なりにちょろっと考えてみた。
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">09 Mar 2014, 21:25</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2014/03/09/212520/" class="post-title">VLAN、Trunkを使った実践的な構成のメモ</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-ネットワーク" href="https://blog.mosuke.tech/categories/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF">ネットワーク</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        VLAN、Trunkそれぞれを一部分的に切り出した説明はよくあるが、 それらが組み合わさった実践的な構成についてあまり書いてないので、例を考えて載せてみる。 (1) L2スイッチに２つのシステムのサーバ（それぞれが冗長構成）がある。 (2) それぞれのシステムはVLANで切られている (3) L2-L2間、L3-L2間はTrunkを使用(Vlan100,200) (4) L3インターフェースはサブインタフェース利用 (5) L3の冗長はHSRPを利用 ほかにいろいろ思いついたら、付け加えます。
+                    </div>
+                </section>
+                
+            </div>
+            
+
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

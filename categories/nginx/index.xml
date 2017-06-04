@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nginx on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/nginx/</link>
+    <description>Recent content in Nginx on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Tue, 26 Jul 2016 21:59:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/nginx/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>【めも】httpヘッダー、x-forwarded-forとか任意のヘッダーとか</title>
+      <link>https://blog.mosuke.tech/entry/2016/07/26/215939/</link>
+      <pubDate>Tue, 26 Jul 2016 21:59:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/07/26/215939/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;ただのめも。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;もともと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/PHP&#34;&gt;PHP&lt;/a&gt;で動作していたシステムに、リバースプロキシ（Nginx）を前段に挟むことになった。（理由はここではどうでもいいので書かない）&lt;br&gt;
+つまり、Nginx-&amp;gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;-&amp;gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/PHP&#34;&gt;PHP&lt;/a&gt;という構成になった。&lt;br&gt;
+よくあることだが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;からみるとすべてリバースプロキシから通信がきているので、
+接続元の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;がすべてリバースプロキシのものになる。&lt;/p&gt;
+
+&lt;p&gt;HTTPヘッダーに接続元の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;を追加しアプリ側（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/PHP&#34;&gt;PHP&lt;/a&gt;）で受け取ろうとしたときのめも。&lt;/p&gt;
+
+&lt;h1&gt;リバースプロキシ側でHTTPヘッダー追加&lt;/h1&gt;
+
+&lt;p&gt;まず、そもそもデフォルトのNginxの設定では接続元の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;をHTTPヘッダーに含まれない。&lt;br&gt;
+ググればすぐに設定方法自体はでてくる。&lt;br&gt;
+ X-Forwarded-Forというヘッダー名にNginxでもっている変数$proxy_add_x_forwarded_forをつっこむ。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;設定は簡単なんだけど、そもそもX-Forwarded-Forなんていうヘッダーあったっけ。。。？&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Wikipedia&#34;&gt;Wikipedia&lt;/a&gt;でみる。&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;X-Forwarded-For (XFF) とは、HTTPヘッダフィールドの一つ。HTTPプロキシサーバまたは負荷分散装置（ロードバランサ）を経由してウェブサーバに接続するクライアントの送信元&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;を特定する際の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C7%A5%D5%A5%A1%A5%AF%A5%C8%A5%B9%A5%BF%A5%F3%A5%C0%A1%BC%A5%C9&#34;&gt;デファクトスタンダード&lt;/a&gt;である。
+（略）&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/RFC&#34;&gt;RFC&lt;/a&gt;の標準的なヘッダフィールドではないが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IETF&#34;&gt;IETF&lt;/a&gt;のネットワーク作業部会 (Network Working Group) は2011年10月より同種のHTTPヘッダForwardedの標準化作業を開始した[1]。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;なるほど、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/RFC&#34;&gt;RFC&lt;/a&gt;の標準ではないけど、一般的なものなんですね。&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/php&#34;&gt;php&lt;/a&gt;でX-Forwarded-Forを受け取る&lt;/h1&gt;
+
+&lt;p&gt;というわけで、おりゃ！&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;echo $_SERVER[&#39;X-Forwarded-For&#39;];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;エラー...&lt;br&gt;
+※普段&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/PHP&#34;&gt;PHP&lt;/a&gt;使ってないのがバレますね。&lt;/p&gt;
+
+&lt;p&gt;サーバ変数とりあえず、全部はきだす。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;&amp;lt;?php
+var_dump($_SERVER);
+
+# array(x) { [&amp;quot;HTTP_X_FORWARDED_FOR&amp;quot;] =&amp;gt; string(12) &amp;quot;192.168.33.1&amp;quot; ...... }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;HTTP先頭についてて、大文字になってて、ハイフンがアンスコに変わっている。&lt;br&gt;
+あたりまえだけどこれは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/PHP&#34;&gt;PHP&lt;/a&gt;の仕様でいいんだよな...？&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;&amp;lt;?php
+var_dump(getallheaders());
+
+# array(x) { [&amp;quot;X-Forwarded-For&amp;quot;] =&amp;gt; string(12) &amp;quot;192.168.33.1&amp;quot; ...... }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;サーバ変数にいれるときに、変わるんだわ。&lt;/p&gt;
+
+&lt;h1&gt;念のため&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/tcpdump&#34;&gt;tcpdump&lt;/a&gt;で軽く確認してみる&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo yum install tcpdump
+$ tcpdump dst port 80 -X
+
+# ながいんで適当に端折りました
+11:04:01.883209 IP 10.0.2.15.43038 &amp;gt; 192.168.0.10.54655: Flags [.], seq 802:1603, ack 1, win 14600, length 1460
+     (略)
+     0x0000:  4500 0355 c705 0000 3706 24ca adc2 265f  1.0..X-Forwarded
+     0x0010:  c0a8 000a 0050 d57f 51ad 1e62 e596 78a4  -For:.192.168.33
+     0x0020:  8018 0137 8dbe 0000 0101 080a d1dc c19e  .1..Host:.xxxxxx 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;いたいた。&lt;br&gt;
+Nginxからプロキシされるときはちゃんとヘッダー名は&#34;X-Forwarded-For &#34;になっていること確認。&lt;/p&gt;
+
+&lt;h1&gt;任意の適当なHTTPヘッダーつけてみた&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;proxy_set_header my-header &#39;hogefugafoobar&#39;; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;var_dump($_SERVER);
+
+# array(35) { [&amp;quot;HTTP_MY_HEADER&amp;quot;] =&amp;gt; string(14) &amp;quot;hogefugafoobar&amp;quot; ...... }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;p&gt;ふーん、なるほどな&amp;hellip;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Nginxの仕組みについて入門</title>
+      <link>https://blog.mosuke.tech/entry/2016/06/04/180122/</link>
+      <pubDate>Sat, 04 Jun 2016 18:01:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/06/04/180122/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;普段Nginxを使ってはいるものの、その仕組やなぜNignxを使うべきなのかというところがあまりわかっていなかったので、
+改めてNginxを入門しその仕組などについて調べてみた。&lt;br&gt;
+勉強不足もあって、間違ってることもあるかもしれないがその際は教えて下さい。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;1. C10K問題&lt;/h1&gt;
+
+&lt;p&gt;まず、Nginxを理解する上でC10K問題について知る必要がある。&lt;br&gt;
+C10K問題とは下記の問題のことだ。&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;ハードウェアの性能上は問題がなくても、クライアント数があまりにも多くなるとサーバがパンクする問題のこと。
+C は「Client（クライアント）」の頭文字、10K は「1 万台」を意味する。「クライアント 1 万台問題」ともいわれる。&lt;br&gt;
+（&lt;a href=&#34;http://d.hatena.ne.jp/keyword/C10K%20%CC%E4%C2%EA&#34;&gt;C10K 問題とは - はてなキーワード&lt;/a&gt; より引用）&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h1&gt;2. 従来のWebサーバの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;
+&lt;/h1&gt;
+
+&lt;h1&gt;prefork&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;のデフォルトの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;などで採用されている。&lt;br&gt;
+特徴としては、１リクエストに対して１プロセスが処理する。&lt;br&gt;
+すなわち同時接続が 1000であれば 1000個のプロセスが必要となる。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604171531.png&#34; alt=&#34;f:id:mosuke5:20160604171531p:plain&#34; title=&#34;f:id:mosuke5:20160604171531p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;worker&lt;/h1&gt;
+
+&lt;p&gt;リクエストはスレッドが処理する。&lt;br&gt;
+スレッドは１プロセスのなかで複数立ち上げることができる。&lt;br&gt;
+プロセス数は少なくて済むが、同時接続が1000であれば1000個のスレッドが必要となる。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;で指定可能な&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;の１つ。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604171542.png&#34; alt=&#34;f:id:mosuke5:20160604171542p:plain&#34; title=&#34;f:id:mosuke5:20160604171542p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;いずれにしても、1000の同時接続があれば、1000のプロセスやスレッドが必要ということだ。&lt;br&gt;
+プロセス/スレッド数が多くなってくると「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1&#34;&gt;コンテキストスイッチ&lt;/a&gt;」が多く発生し、処理が遅くなってしまう。&lt;/p&gt;
+
+&lt;h3&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1&#34;&gt;コンテキストスイッチ&lt;/a&gt;とは&lt;/h3&gt;
+
+&lt;blockquote&gt;&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1&#34;&gt;コンテキストスイッチ&lt;/a&gt;とは、コンピュータの処理装置（CPU）が現在実行している処理の流れ（プロセス、スレッド）を一時停止し、別のものに切り替えて実行を再開すること。&lt;br&gt;
+（&lt;a href=&#34;http://e-words.jp/w/%E3%82%B3%E3%83%B3%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81.html&#34;&gt;コンテキストスイッチとは｜コンテキストスイッチング｜context switch - 意味/定義 ： IT用語辞典&lt;/a&gt; より引用）&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h1&gt;3. Nginxの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;
+&lt;/h1&gt;
+
+&lt;p&gt;Nginxが&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/C10K%20%CC%E4%C2%EA&#34;&gt;C10K 問題&lt;/a&gt;を解決するために開発されたともいわれている。&lt;br&gt;
+上記のような課題を解決するような&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A1%BC%A5%AD%A5%C6%A5%AF%A5%C1%A5%E3&#34;&gt;アーキテクチャ&lt;/a&gt;を採用している。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604171559.png&#34; alt=&#34;f:id:mosuke5:20160604171559p:plain&#34; title=&#34;f:id:mosuke5:20160604171559p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;ワーカプロセスがリクエストを処理する。&lt;br&gt;
+前述のpreforkやworkerと決定的に違うところは、１つのワーカプロセスが複数のリクエストを処理するということだ。&lt;/p&gt;
+
+&lt;p&gt;また、マスタープロセスはワーカプロセスの立ち上げや、制御、管理などが主な仕事。&lt;br&gt;
+Nginxを終了あるいは再起動、設定ファイルを再読み込みして変更を反映するなど。&lt;/p&gt;
+
+&lt;p&gt;下記のような仕組みがNginxの高速化（C10K問題対応）を可能としている。&lt;/p&gt;
+
+&lt;h1&gt;シングルスレッド&lt;/h1&gt;
+
+&lt;p&gt;接続ごとにプロセスやスレッドを立ち上げていては、C10K問題に対応できない。&lt;br&gt;
+そこで、Nginxは１つのスレッドで処理を行うようにしている。&lt;br&gt;
+それにより、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%C6%A5%AD%A5%B9%A5%C8%A5%B9%A5%A4%A5%C3%A5%C1&#34;&gt;コンテキストスイッチ&lt;/a&gt;と呼ばれるCPUの切り替え処理が発生しない。&lt;br&gt;
+正確に言うと、完全に１スレッドで処理するわけではなく図にあるようにワーカプロセス自体はマルチプロセス化できる。&lt;/p&gt;
+
+&lt;h1&gt;イベント駆動&lt;/h1&gt;
+
+&lt;p&gt;通常のプログラムは上から書かれた順に実行されますよね。&lt;br&gt;
+イベ ント駆動で動作するプログラムは何かしらのイベントが発生するまで待機し、発生したイベントの種類に応じて実行される。&lt;br&gt;
+ブラウザ上の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/JavaScript&#34;&gt;JavaScript&lt;/a&gt;の動きをイメージするとわかりやすいと思う。&lt;/p&gt;
+
+&lt;h1&gt;非同期処理&lt;/h1&gt;
+
+&lt;p&gt;一般的なwebサーバでは同期処理を行う。
+つまり、複数のリクエストがあったときに順番に処理していく。&lt;br&gt;
+そのため、１つのリクエストが遅いとそれに引きづられてあとのリクエストも遅くなる。&lt;br&gt;
+非同期処理では、リクエストがきたら他のリクエストの状況に関わらず処理を行う。&lt;/p&gt;
+
+&lt;h4&gt;同期処理&lt;/h4&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604173212.png&#34; alt=&#34;f:id:mosuke5:20160604173212p:plain&#34; title=&#34;f:id:mosuke5:20160604173212p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h4&gt;非同期処理&lt;/h4&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160604/20160604173226.png&#34; alt=&#34;f:id:mosuke5:20160604173226p:plain&#34; title=&#34;f:id:mosuke5:20160604173226p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;向いていること / 向いていないこと&lt;/h1&gt;
+
+&lt;p&gt;Nginxではイベント駆動で非同期的なIO処理によって、リクエストを完全に処理することを待たずに次から次へと処理を受け付けていきます。&lt;br&gt;
+そのため、１処理に時間のかかるものをNginx自身で行おうとするとキューがどんどん溜まってしまいます。&lt;br&gt;
+そのため、一般にアプリケーションの実行やデータベース処理などは向いていません。&lt;br&gt;
+一方で、軽量な静的データの配信やリバースプロキシなどに向いています。&lt;/p&gt;
+
+&lt;p&gt;Nginxは、静的データの配信や、プロキシなどに特化させ、アプリケーションの実行などは別途&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%B5%A1%BC%A5%D0&#34;&gt;アプリケーションサーバ&lt;/a&gt;等で行わせることで有効活用できます。&lt;/p&gt;
+
+&lt;h2&gt;向いていること&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;軽量データの大量配信&lt;/li&gt;
+&lt;li&gt;ディスクI/Oの発生しないキャッシュ&lt;/li&gt;
+&lt;li&gt;リバースプロキシ&lt;/li&gt;
+&lt;li&gt;ロードバランサ&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;向いていないこと&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;アプリケーション実行&lt;/li&gt;
+&lt;li&gt;データベース処理&lt;/li&gt;
+&lt;li&gt;動画などの重たいデータの配信&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;4. 最後に&lt;/h1&gt;
+
+&lt;p&gt;NginxやWebサーバについてより理解を深めるためには、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/UNIX&#34;&gt;UNIX&lt;/a&gt;のプロセスやネットワーク&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/API&#34;&gt;API&lt;/a&gt;についての知識が足りないと感じた。。。&lt;/p&gt;
+
+&lt;p&gt;というわけでこれを買ってみたが、978ページもあってとりあえず挫折＼(^o^)／&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4894712059/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/213B9PVJD1L._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;UNIXネットワークプログラミング〈Vol.1〉ネットワークAPI:ソケットとXTI&#34; title=&#34;UNIXネットワークプログラミング〈Vol.1〉ネットワークAPI:ソケットとXTI&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4894712059/hatena-blog-22/&#34;&gt;UNIXネットワークプログラミング〈Vol.1〉ネットワークAPI:ソケットとXTI&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;作者:&lt;/span&gt; W.リチャードスティーヴンス,W.Richard Stevens,篠田陽一&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; ピアソンエデュケーション&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 1999/07&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; 単行本&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;購入&lt;/span&gt;: 8人 &lt;span class=&#34;hatena-asin-detail-label&#34;&gt;クリック&lt;/span&gt;: 151回&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/4894712059/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログ (37件) を見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;まずはこれからはじめようと思う。。。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Ftatsu-zine.com%2Fbooks%2Fnaruhounix&#34; title=&#34;なるほどUnixプロセス ― Rubyで学ぶUnixの基礎&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://tatsu-zine.com/books/naruhounix&#34;&gt;tatsu-zine.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;参考文献&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://gihyo.jp/magazine/SD/archive/2014/201407&#34;&gt;SoftwareDesign 2015年7月号&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.amazon.co.jp/nginx%E5%AE%9F%E8%B7%B5%E5%85%A5%E9%96%80-WEB-DB-PRESS-plus-%E4%B9%85%E4%BF%9D/dp/4774178667&#34;&gt;Nginx実践入門&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.amazon.co.jp/24%E6%99%82%E9%96%93365%E6%97%A5-%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E3%82%92%E6%94%AF%E3%81%88%E3%82%8B%E6%8A%80%E8%A1%93-%E2%80%BE%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%A9%E3%83%93%E3%83%AA%E3%83%86%E3%82%A3%E3%80%81%E3%83%8F%E3%82%A4%E3%83%91%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%B3%E3%82%B9%E3%80%81%E7%9C%81%E5%8A%9B%E9%81%8B%E7%94%A8-PRESS-plus%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA/dp/4774135666/ref=sr_1_1?s=books&amp;amp;ie=UTF8&amp;amp;qid=1465030268&amp;amp;sr=1-1&amp;amp;keywords=%E3%82%B5%E3%83%BC%E3%83%90%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E3%82%92%E6%94%AF%E3%81%88%E3%82%8B&#34;&gt;[サーバインフラを支える技術](https://gihyo.jp/magazine/wdpress/plus/978-4-7741-3566-3)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.yuuk.io/entry/2015-webserver-architecture&#34;&gt;2015年Webサーバアーキテクチャ序論 - ゆううきブログ&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築</title>
+      <link>https://blog.mosuke.tech/entry/2014/10/09/230555/</link>
+      <pubDate>Thu, 09 Oct 2014 23:05:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/10/09/230555/</guid>
+      <description>
+
+&lt;p&gt;&lt;body&gt;
+&lt;p&gt;ロードバランシングとか&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%B9%A5%BF%A5%EA%A5%F3%A5%B0&#34;&gt;クラスタリング&lt;/a&gt;とかリバースプロキシとか、&lt;br&gt;
+業務でも使っているし、概念とかはわかってるけど、自分で構築したことはやっぱりない。&lt;/p&gt;
+&lt;p&gt;自分で構築してみたいなーと思いつつもあたりまえだけど、サーバやネットワーク機器をそう簡単に調達もできない。&lt;br&gt;
+お金も当然ない。&lt;/p&gt;
+&lt;p&gt;というわけで、さくら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;で仮想化つかってロードバランシングとか&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%B9%A5%BF%A5%EA%A5%F3%A5%B0&#34;&gt;クラスタリング&lt;/a&gt;とかリバースプロキシとか勉強しましょうという「サーバインフラ会」を友人と始めた。&lt;br&gt;
+その第１回目のメモ。&lt;/p&gt;
+&lt;p&gt;第1回 サーバ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4&#34;&gt;複数&lt;/a&gt;台構成、Nginxでリバースプロキシ構築&lt;br&gt;
+第2回 &lt;a href=&#34;https://blog.mosuke.tech/entry/2014/11/09/171436&#34;&gt;HAProxyでロードバランサ構築&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div style=&#34;border: solid 1px #dddddd;&#34;&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;1. 使用した環境&lt;/h2&gt;
+    &lt;p&gt;まず今回利用した環境は以下のとおり。&lt;br&gt;
+さくら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;の1GBのプラン。&lt;br&gt;
+・メモリ：１GB&lt;br&gt;
+・CPU：仮想２コア&lt;br&gt;
+・HDD：100GB&lt;br&gt;
+・OS：CentOS7&lt;br&gt;
+・仮想化：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;&lt;br&gt;
+　→dockerなどもはじめ検討していたが、コンテナ型仮想化だとサーバ感がでないので、よりサーバとして意識できる&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;を採用&lt;/p&gt;
+&lt;p&gt;【参考】&lt;br&gt;
+&lt;a href=&#34;http://vps.sakura.ad.jp/specification.html&#34;&gt;料金・サービス仕様 | VPS（仮想専用サーバ）は「さくらのVPS」&lt;/a&gt;&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;2. 完成イメージ・物理イメージ&lt;/h2&gt;
+    &lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140930/20140930210924.png&#34; alt=&#34;f:id:mosuke5:20140930210924p:plain&#34; title=&#34;f:id:mosuke5:20140930210924p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div style=&#34;border: solid 1px #dddddd;&#34;&gt;&lt;/div&gt;
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140930/20140930210914.png&#34; alt=&#34;f:id:mosuke5:20140930210914p:plain&#34; title=&#34;f:id:mosuke5:20140930210914p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;3. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;でWebサーバ２台分を構築する&lt;/h2&gt;
+    &lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;の詳細な利用方法は公式ドキュメントをみてもらうとするが、セットアップまでのひととおりの流れと注意点のみ記載する。&lt;br&gt;
+&lt;a href=&#34;https://docs.vagrantup.com/v2/&#34;&gt;Vagrant Documentation&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;今回はWebサーバ２台を仮想で実現するので、それぞれweb1, web2とする。&lt;br&gt;
+それぞれのディレクトリを作成。&lt;/p&gt;
+```&lt;/p&gt;
+
+&lt;h2 id=&#34;web1-web2のディレクトリ作成:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;web1, web2のディレクトリ作成&lt;/h2&gt;
+
+&lt;p&gt;$ pwd
+/home/vagrant
+$ mkdir web1
+$ mkdir web2&lt;/p&gt;
+
+&lt;h2 id=&#34;仮想化で利用するosイメージをダウンロード:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;仮想化で利用するOSイメージをダウンロード&lt;/h2&gt;
+
+&lt;p&gt;$ vagrant box add ubuntu1310 ¥
+&lt;a href=&#34;http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box&#34;&gt;http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;web1サーバ構築:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;web1サーバ構築&lt;/h2&gt;
+
+&lt;p&gt;$ cd web1
+$ vagrant init ubuntu1310&lt;/p&gt;
+
+&lt;h2 id=&#34;ほぼほぼデフォルトの設定だが以下２つだけは設定を行った:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;ほぼほぼデフォルトの設定だが以下２つだけは設定を行った。&lt;/h2&gt;
+
+&lt;p&gt;$ vim Vagrantfile&lt;/p&gt;
+
+&lt;h1 id=&#34;1-プライベートアドレスの割り当て:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;(1)プライベートアドレスの割り当て。&lt;/h1&gt;
+
+&lt;p&gt;config.vm.network &amp;ldquo;private_network&amp;rdquo;, ip: &amp;ldquo;192.168.33.10&amp;rdquo;&lt;/p&gt;
+
+&lt;h1 id=&#34;2-1gbしかメモリがないのでこの設定をしないと２つ仮想化するとだいぶ大変なことになりました:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;(2)1GBしかメモリがないのでこの設定をしないと２つ仮想化するとだいぶ大変なことになりました。&lt;/h1&gt;
+
+&lt;p&gt;config.vm.provider &amp;ldquo;virtualbox&amp;rdquo; do |vb|
+     vb.customize [&amp;ldquo;modifyvm&amp;rdquo;, :id, &amp;ldquo;&amp;ndash;memory&amp;rdquo;, &amp;ldquo;128&amp;rdquo;]
+end&lt;/p&gt;
+
+&lt;p&gt;$ vagrant ssh&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;同様にweb2においても同じことを行った。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;また、&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/vagrant&amp;quot;&amp;gt;vagrant&amp;lt;/a&amp;gt;では一般的に対象のディレクトリで&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/vagrant&amp;quot;&amp;gt;vagrant&amp;lt;/a&amp;gt; &amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/ssh&amp;quot;&amp;gt;ssh&amp;lt;/a&amp;gt;を利用してサーバに入るが、&amp;lt;br&amp;gt;
+今回はプライベートアドレスも振ってあるし、物理サーバとしてイメージしているので以下のようにしてサーバにはいるようにした。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ ssh vagrant@192.168.33.10  # web1への接続
+$ ssh vagrant@192.168.33.11  # web2への接続
+&lt;code&gt;
+&amp;lt;p&amp;gt;ホストサーバ側の&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%BF%A1%BC%A5%D5%A5%A7%A5%A4%A5%B9&amp;quot;&amp;gt;インターフェイス&amp;lt;/a&amp;gt;情報をみると。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;cent7なので以下コマンドだがifconfig-aのこと:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;cent7なので以下コマンドだがifconfig -aのこと&lt;/h1&gt;
+
+&lt;p&gt;$ ip a
+(中略)
+5: vboxnet0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UNKNOWN qlen 1000
+    link/ether 0a:00:27:00:00:00 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.33.&lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;24&lt;/sub&gt; brd 192.168.33.255 scope global vboxnet0
+       valid_lft forever preferred_lft forever
+    inet 192.168.56.&lt;sup&gt;101&lt;/sup&gt;&amp;frasl;&lt;sub&gt;24&lt;/sub&gt; brd 192.168.56.255 scope global dynamic vboxnet0
+       valid_lft 839sec preferred_lft 839sec
+    inet6 fe80::800:27ff:fe00:0/64 scope link
+       valid_lft forever preferred_lft forever&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;vboxnet0という仮想の&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%BF%A1%BC%A5%D5%A5%A7%A5%A4%A5%B9&amp;quot;&amp;gt;インターフェイス&amp;lt;/a&amp;gt;が作成され、&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&amp;quot;&amp;gt;IPアドレス&amp;lt;/a&amp;gt;も192.168.33.1が振られていることを確認。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;ルーティングテーブルも確認しておくと&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ netstat -rn
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+0.0.0.0         153.120.2.1     0.0.0.0         UG        0 0          0 eth0
+153.120.2.0     0.0.0.0         255.255.254.0   U         0 0          0 eth0
+192.168.33.0    0.0.0.0         255.255.255.0   U         0 0          0 vboxnet0
+&lt;code&gt;
+&amp;lt;p&amp;gt;192.168.33.0/24行はvboxnet0から出るように設定されている。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;上の物理イメージに詳細書き込むと以下。&amp;lt;br&amp;gt;
+&amp;lt;span itemscope itemtype=&amp;quot;http://schema.org/Photograph&amp;quot;&amp;gt;&amp;lt;img src=&amp;quot;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141006/20141006000246.png&amp;quot; alt=&amp;quot;f:id:mosuke5:20141006000246p:plain&amp;quot; title=&amp;quot;f:id:mosuke5:20141006000246p:plain&amp;quot; class=&amp;quot;hatena-fotolife&amp;quot; itemprop=&amp;quot;image&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;div style=&amp;quot;border: solid 1px #dddddd;&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;p&amp;gt;&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/Apache&amp;quot;&amp;gt;Apache&amp;lt;/a&amp;gt;のみインスールする必要があるので、&amp;lt;br&amp;gt;
+web1, web2で以下を実施。（プロビジョニングしたほうが後々楽です。）&amp;lt;/p&amp;gt;
+&lt;/code&gt;
+$ sudo apt-get apache2&lt;/p&gt;
+
+&lt;p&gt;##どちらがweb1でどちらがweb2か区別するために以下ファイルは変えておきます。
+$ sudo vim /var/www/index.html
+#Web1とかWeb2とかわかりやすい文言を入れておきます。&lt;/p&gt;
+
+&lt;p&gt;##Apache起動
+$ sudo service apache2 start&lt;/p&gt;
+
+&lt;p&gt;##Apache起動確認
+$ curl localhost
+　上記で変更したindex.htmlの内容が表示されること&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;これでWebサーバの準備は完了。&amp;lt;/p&amp;gt;
+
+&amp;lt;/div&amp;gt;
+&amp;lt;div class=&amp;quot;section&amp;quot;&amp;gt;
+    &amp;lt;h2&amp;gt;4, Nginxでリバースプロキシサーバを構築する&amp;lt;/h2&amp;gt;
+    &amp;lt;p&amp;gt;Nginx初めて触ったがとてもシンプル。&amp;lt;br&amp;gt;
+今回はNginxをリバースプロキシとして利用したので、proxy.confを作成するだけ。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;##インスール
+$ sudo yum install nginx&lt;/p&gt;
+
+&lt;h2 id=&#34;etc-nginx以下に設定ファイルなどあること確認:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;/etc/nginx以下に設定ファイルなどあること確認&lt;/h2&gt;
+
+&lt;p&gt;$ ls /etc/nginx&lt;/p&gt;
+
+&lt;h2 id=&#34;プロキシ構築のための設定ファイル作成:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;プロキシ構築のための設定ファイル作成&lt;/h2&gt;
+
+&lt;p&gt;$ cd /etc/nginx/conf.d
+$ sudo vim proxy.conf
+server {&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# /web1にアクセスが来た時
+location /web1 {
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;	proxy_http_version 1.1;&lt;/p&gt;
+
+&lt;p&gt;	#受け渡す際のヘッダ情報を指定
+	proxy_set_header Host $host:$server_port;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header X-Forwarded_Proto http;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    # 飛ばす先のURL(Web1サーバ)
+    proxy_pass http://192.168.33.10/;
+}
+
+# /web2にアクセスが来た時
+location /web2 {
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;	proxy_http_version 1.1;&lt;/p&gt;
+
+&lt;p&gt;	#受け渡す際のヘッダ情報を指定
+	proxy_set_header Host $host:$server_port;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header X-Forwarded_Proto http;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    # 飛ばす先のURL(Web2サーバ)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;	proxy_pass &lt;a href=&#34;http://192.168.33.11/&#34;&gt;http://192.168.33.11/&lt;/a&gt;;
+    }
+}&lt;/p&gt;
+
+&lt;h2 id=&#34;あとは起動させるのみ:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;あとは起動させるのみ&lt;/h2&gt;
+
+&lt;p&gt;$ sudo systemctl enable nginx
+$ sudo systemctl start nginx
+```
+&lt;/div&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

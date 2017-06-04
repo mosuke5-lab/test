@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>異動 on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/%E7%95%B0%E5%8B%95/</link>
+    <description>Recent content in 異動 on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Fri, 29 Jul 2016 18:00:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/%E7%95%B0%E5%8B%95/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>社内システム開発からパブリッククラウドの会社へジョインします</title>
+      <link>https://blog.mosuke.tech/entry/2016/07/29/180000/</link>
+      <pubDate>Fri, 29 Jul 2016 18:00:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/07/29/180000/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;本日、2016年7月29日をもって、新卒から３年４ヶ月働いてきた部署が最後となり、8月1日から異動（出向）する。&lt;br&gt;
+社内転職制度を使って、自らの希望で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;事業の会社へジョインすることになった。&lt;br&gt;
+（新規事業を行う部署へ異動となり、そこから別会社へ出向という扱い）&lt;br&gt;
+グループ内の異動ではあるが、違う会社・事業で、職種も変わるので、今の部署でやってきたことをまとめて残しておこうと思う。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;私は通信会社のネットワーク運用部隊に所属している（いた）。&lt;br&gt;
+ネットワーク運用部隊なのだが、私の部署はネットワーク運用を自動化したり運用を楽にするための&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%B9%A5%C6%A5%E0%B3%AB%C8%AF&#34;&gt;システム開発&lt;/a&gt;を担うところで、下記のような仕事をしてきた。&lt;/p&gt;
+
+&lt;h1&gt;1. ベンダーコントロールという仕事&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%B9%A5%C6%A5%E0%B3%AB%C8%AF&#34;&gt;システム開発&lt;/a&gt;にはうちでは外注物も内製物（後述）もある。&lt;br&gt;
+業務の都合上、システムの種類によってはSIベンダーへ発注をして作ることがあった。&lt;br&gt;
+ベンダーコン&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C8%A5%ED%A1%BC%A5%EB&#34;&gt;トロール&lt;/a&gt;なんて言ったりするが、発注での&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%B9%A5%C6%A5%E0%B3%AB%C8%AF&#34;&gt;システム開発&lt;/a&gt;の業務では下記のようなことをしてきた。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;要求仕様の検討&lt;/li&gt;
+&lt;li&gt;見積もり依頼と価格交渉&lt;/li&gt;
+&lt;li&gt;発注、スケジュール調整&lt;/li&gt;
+&lt;li&gt;社内での業務調整&lt;/li&gt;
+&lt;li&gt;受入試験、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B8%A1%BC%FD&#34;&gt;検収&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;運用&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;仕事のほとんどは、社内外の人との調整（コミュニケーション）だ。&lt;br&gt;
+エンジニアとしては一見つまらなそうな仕事にみえるかもしれない。&lt;br&gt;
+しかし、この仕事から様々なコミュニケーションを学び、それはいろんな場面で役に立っている。&lt;br&gt;
+例えばだが、以下の様なコミュニケーションがあったりした。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;要求を他者にしっかり、わかりやすく伝える&lt;/li&gt;
+&lt;li&gt;仕様や価格についての折衝をする&lt;/li&gt;
+&lt;li&gt;システムの利用部門との業務調整をする&lt;/li&gt;
+&lt;li&gt;作業の手順について精査し指摘する&lt;/li&gt;
+&lt;li&gt;ミスなど良くないことが起きた際には、今後の対策はどうするか相手側に考えさせるよう導く&lt;/li&gt;
+&lt;li&gt;場合によっては厳しく叱ることもする（感情的に怒るわけではない）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;特に価格の折衝などは、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SIer&#34;&gt;SIer&lt;/a&gt;や購買部と激しく激突することもあり今でもとても印象に残っている。&lt;br&gt;
+こういった業務はビジネスマンとしてとても大事なことを学んだと思うし、内製での開発業務でもとても活きてきている。&lt;/p&gt;
+
+&lt;h4&gt;外注はいいけど・・・&lt;/h4&gt;
+
+&lt;p&gt;社内リソースが少なくても同時並行でいろんなシステムの開発ができるし外注はいい。&lt;br&gt;
+一方で外注開発について、もどかしさや非効率さなどもたくさん経験してきた。&lt;/p&gt;
+
+&lt;p&gt;まず、なにをやるにもお金と時間がかかることだ。&lt;br&gt;
+一度納品されてしまったものについて、なんらかの改修をしたい場合、&lt;br&gt;
+その改修規模を問わず、見積もり→発注→開発・改修→納品のプロセスを通さなければならない。&lt;br&gt;
+if文を１行追加するだけだろ…って思うようなものでも数百万で数週間かかることだってあった。&lt;/p&gt;
+
+&lt;p&gt;そして、プロセスの効率化が難しいことだ。&lt;br&gt;
+ベンダーが開発したシステムをリリースするには、発注側の会社に度々きてリリース作業を行う。&lt;br&gt;
+勝手に発注側のシステムをアップデートすることはありえないので、必ずリリース作業には社員が立ち会わなければいけない。&lt;br&gt;
+そのとき、リリース作業が自動化されていないことも多く（発注時の要求によってもちろん異なる）、&lt;br&gt;
+何時間もかけて数十台のサーバにデプロイしたりしなければいけなかったりするので大変だ。&lt;/p&gt;
+
+&lt;p&gt;これは当たり前だがとても効率が悪いし時間の無駄だ。&lt;br&gt;
+だがこれを改善しようと思うとまたお金がかかるわけである。&lt;br&gt;
+扱っているシステムが、業務システムなのでアップデートの頻度がおおくないこともあるので、&lt;br&gt;
+はじめからデプロイの自動化などを要件にいれることは少ないのである。&lt;/p&gt;
+
+&lt;p&gt;これらはSIの開発をディスっているわけではない。（要求も悪いのはわかる。）&lt;br&gt;
+これは仕方ないこととして、そのメリット・デメリットをきちんと理解した上で選択、要求をしなれけばいけないということだ。&lt;/p&gt;
+
+&lt;h1&gt;2. 内製開発の仕事&lt;/h1&gt;
+
+&lt;p&gt;外注開発とは別にシステムの内製での開発業務も多くおこなってきた。&lt;br&gt;
+社内的には外注開発から内製開発に徐々に切り替えの最中であった。&lt;br&gt;
+ちなみに開発言語は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rails&#34;&gt;Rails&lt;/a&gt;やPadrino）や&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/PHP&#34;&gt;PHP&lt;/a&gt;（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FuelPHP&#34;&gt;FuelPHP&lt;/a&gt;）なんか使っていた。&lt;/p&gt;
+
+&lt;p&gt;業務システムの他にもメールサーバやリバースプロキシサーバなど基盤システムも構築してきた。&lt;br&gt;
+2015年の振り返りブログに雑だが少し書いていた。&lt;/p&gt;
+&lt;a href=&#34;https://blog.mosuke.tech/entry/2015/12/28/150042/&#34;&gt;2015年振り返り - Goldstine研究所&lt;/a&gt;
+
+&lt;h4&gt;開発組織の改善活動&lt;/h4&gt;
+
+&lt;p&gt;また、開発組織を改善するための活動をおおく行ってきた。&lt;br&gt;
+どこの組織でもある問題だと思うが、うちもまた「属人化」「秘伝のタレ」などといった類の悩みをたくさん抱えていた。&lt;/p&gt;
+
+&lt;p&gt;うちはソフトウェア企業ではないし、システムを外注で作る部署も多い。&lt;br&gt;
+そのため、新卒や異動してくる人などがソフトウェアエンジニア思考の人ばかりではない。というかむしろ少数派。&lt;br&gt;
+だからこそ、よりいっそう「属人化」「秘伝のタレ」が弊害となる。&lt;br&gt;
+わかりやすいところでいうと下記のようなことをやったりして開発組織の改善をしてきた。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;gitlabを使った&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/github&#34;&gt;github&lt;/a&gt;-flowの導入。レビュー必須化&lt;/li&gt;
+&lt;li&gt;Ansibleを使ったインフラ環境のコード化、構築自動化&lt;/li&gt;
+&lt;li&gt;またそういったツールの導入だけでなく講師としてワークショップの実施やサポート活動&lt;/li&gt;
+&lt;li&gt;部署内の開発ルールの策定&lt;/li&gt;
+&lt;li&gt;最低限身につけてほしいスキルや知識を習得できる環境や研修の準備&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ツールの導入や普及、組織改善活動について次の２つがとても重要だったと思う。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;キーパーソンを見方につける。&lt;/li&gt;
+&lt;li&gt;ハンズオンを行う。サポートを手厚くする。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;どんなにいい試みをやっても、独断で行ってしまうと「勝手にやったことだよね？」ってやっぱり思われてしまう。&lt;br&gt;
+また、その試みを広めるのに苦労する。&lt;br&gt;
+試みに対して理解してくれる上の人、キーパーソンを見方につけて働くことがとても有効的だった。&lt;/p&gt;
+
+&lt;p&gt;そして、ツール類はとくにそうだが、紹介したりするだけじゃなくて、&lt;br&gt;
+ハンズオン会をやったりサポートをし「軌道にのせる」ところまでやったのがとてもよかった。&lt;br&gt;
+サポートがないと、気が付くと昔のやりかたにもどってしまっていた、なんてこともあった。&lt;/p&gt;
+
+&lt;h1&gt;3. データセンター、ネットワークの仕事&lt;/h1&gt;
+
+&lt;h4&gt;データセンター系&lt;/h4&gt;
+
+&lt;p&gt;サーバ環境はオンプレだった。&lt;br&gt;
+また、専任のサーバ・インフラ管理者がいるわけではなかったので、&lt;br&gt;
+データセンターへのサー&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%E9%A5%C3%A5%AF&#34;&gt;バラック&lt;/a&gt;の立架工事やサーバ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%E9%A5%C3%A5%AD%A5%F3%A5%B0&#34;&gt;ラッキング&lt;/a&gt;、配線などそういったことも業務の１つだった。&lt;br&gt;
+データセンタ系業務とそれで身につけたことなどは下記。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;データセンターへのサー&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%E9%A5%C3%A5%AF&#34;&gt;バラック&lt;/a&gt;の立架工事やサーバ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%E9%A5%C3%A5%AD%A5%F3%A5%B0&#34;&gt;ラッキング&lt;/a&gt;、配線をやった
+
+&lt;ul&gt;
+&lt;li&gt;ラックの立架工事や電源工事は当たり前だが外注&lt;/li&gt;
+&lt;li&gt;工事の監督はさんざんやった&lt;/li&gt;
+&lt;li&gt;サーバの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%E9%A5%C3%A5%AD%A5%F3%A5%B0&#34;&gt;ラッキング&lt;/a&gt;やLANケーブルの敷設は自前でもたくさんやった&lt;/li&gt;
+&lt;li&gt;LANケーブル作るのはだいぶこなれた&lt;/li&gt;
+&lt;li&gt;でもやっぱりプロの配線は神&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;安全に工事するための知恵をたくさん身につけた&lt;/li&gt;
+&lt;li&gt;電源工事などに備え、電気的な知識を身につけた&lt;/li&gt;
+&lt;li&gt;openstack（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%A4%A5%D9%A1%BC%A5%C8%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;プライベートクラウド&lt;/a&gt;）の検証などもした&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;ネットワーク系&lt;/h4&gt;
+
+&lt;p&gt;バックボーンのネットワークは範囲外ではあるが、&lt;br&gt;
+システム内のネットワーク設計・構築・運用は自分たちの仕事だった。&lt;/p&gt;
+
+&lt;p&gt;そういう組織体系が業務的によかったかどうかはわからないけど、&lt;br&gt;
+現代では特に触れる機会が少ないネットワークについて理解を深められたのはとてもプラスになっている。&lt;br&gt;
+下記あたりは自前でやってきた。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;システム内のネットワークの設計&lt;/li&gt;
+&lt;li&gt;L2スイッチ、L3スイッチの設定
+
+&lt;ul&gt;
+&lt;li&gt;VLANとかNAT、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ACL&#34;&gt;ACL&lt;/a&gt;とか&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;NW機器が故障した際の交換とか設定投入&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ネットワークは専門ではないけれど、オンプレでやっているとネットワーク系の仕事をやることや、&lt;br&gt;
+他部署とネットワークの話をしなければいけないことが多い。&lt;br&gt;
+ネットワークの知識は仮想サーバを構築するときなどにも役に立つし、ソフトウェア開発でも何かと役に立っている。&lt;br&gt;
+ちょうど最近、システムが調子悪い原因が&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B8%F7%A5%D5%A5%A1%A5%A4%A5%D0&#34;&gt;光ファイバ&lt;/a&gt;ーの不良ということを発見できてとてもスッキリした。&lt;/p&gt;
+
+&lt;h1&gt;4. その他&lt;/h1&gt;
+
+&lt;p&gt;その他にあったことを雑にまとめる&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;たくさん出張にいった
+
+&lt;ul&gt;
+&lt;li&gt;大阪、北陸、名古屋、広島、四国など&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;社内での業務改善コンテストで賞をとった&lt;/li&gt;
+&lt;li&gt;新卒の面倒をみたりした&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%BF%A1%BC%A5%F3&#34;&gt;インターン&lt;/a&gt;生も毎年きて面倒をみた&lt;/li&gt;
+&lt;li&gt;採用リクルータをやって就活生とたくさん出会った&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%EA%A5%AA%A5%AB%A1%BC%A5%C8&#34;&gt;マリオカート&lt;/a&gt;大会企画した&lt;/li&gt;
+&lt;li&gt;勤務地が変更になったりした&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;最後に&lt;/h1&gt;
+
+&lt;p&gt;ほんとうに多岐にわたる仕事をさせてもらい、視野が広がった３年間だった。&lt;br&gt;
+アプリケーション開発しか知らなかった学生時代を振り返ると驚くほどの成長をしたと思う。&lt;/p&gt;
+
+&lt;p&gt;部署や上司、メンバーへ、本当に感謝です（＾人＾）&lt;/p&gt;
+
+&lt;p&gt;次は、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;の会社に行く。&lt;br&gt;
+（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;を構築し運用するところなので、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;や&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/GCP&#34;&gt;GCP&lt;/a&gt;が敵…）&lt;/p&gt;
+
+&lt;p&gt;会社ではオンプレを使っていたし、また&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%A4%A5%D9%A1%BC%A5%C8%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;プライベートクラウド&lt;/a&gt;の構築の検証にも携わった。&lt;br&gt;
+規模感や組織構造によるのはわかっているが、どうもシステムを維持することにばかり時間を費やし、本来やるべき&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%B9%A5%C6%A5%E0%B3%AB%C8%AF&#34;&gt;システム開発&lt;/a&gt;による問題解決になかなかいたらなかった感じはあった。&lt;br&gt;
+一方、趣味開発では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;やHerokuなどの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;クラウド&lt;/a&gt;を使っていたので、本来やるべき問題解決に集中できることの価値を感じていた。&lt;br&gt;
+そういった経験から、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%D6%A5%EA%A5%C3%A5%AF%A5%AF%A5%E9%A5%A6%A5%C9&#34;&gt;パブリッククラウド&lt;/a&gt;をもっと多くの人が活用して&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%B9%A5%C6%A5%E0%B3%AB%C8%AF&#34;&gt;システム開発&lt;/a&gt;の本質により注力できるように、と思うようになった。&lt;/p&gt;
+
+&lt;p&gt;最後に…&lt;br&gt;
+この３年間で社内の仕事の質がかわった瞬間を目の当たりにした。&lt;br&gt;
+外注も内製もやってきたと書いたが、はじめは外注が多かったが徐々に内製開発の比率が増えてきた。&lt;br&gt;
+それに伴って、社員が行う仕事の質や求められるスキルが変化していったのを感じた。&lt;br&gt;
+きっと、次の３年間もなんらかで変化が起こるはずで、振り落とされないよう頑張りたい。&lt;/p&gt;
+
+&lt;p&gt;&lt;span style=&#34;font-size: 80%&#34;&gt;※次のところ英語話さなきゃいけなくてほんとにヤ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D0%A5%A4&#34;&gt;バイ&lt;/a&gt;・・・&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;とてもながめのいいオフィスでした。&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;a href=&#34;http://f.hatena.ne.jp/mosuke5/20160729160810&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;url&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160729/20160729160810.jpg&#34; alt=&#34;f:id:mosuke5:20160729160810j:image&#34; title=&#34;f:id:mosuke5:20160729160810j:image&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/a&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;a href=&#34;http://f.hatena.ne.jp/mosuke5/20160729160817&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;url&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20160729/20160729160817.jpg&#34; alt=&#34;f:id:mosuke5:20160729160817j:image&#34; title=&#34;f:id:mosuke5:20160729160817j:image&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/a&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

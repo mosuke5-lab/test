@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Arduino on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/arduino/</link>
+    <description>Recent content in Arduino on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sat, 13 Sep 2014 11:15:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/arduino/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>【Ethernetシールド】Arduinoをネットワークへ繋げる(1)</title>
+      <link>https://blog.mosuke.tech/entry/2014/09/13/111537/</link>
+      <pubDate>Sat, 13 Sep 2014 11:15:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/09/13/111537/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ethernet&#34;&gt;Ethernet&lt;/a&gt;シールドを使ってネットワークへ繋げる。&lt;br&gt;
+とりあえずは、スモールステップでPCとの1対1の通信。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;PCとの1対1通信&lt;/h3&gt;
+    &lt;p&gt;構成図&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140907/20140907231747.png&#34; alt=&#34;f:id:mosuke5:20140907231747p:plain&#34; title=&#34;f:id:mosuke5:20140907231747p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Arduino&#34;&gt;Arduino&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9&#34;&gt;ソースコード&lt;/a&gt;&lt;/p&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;lt;SPI.h&amp;gt;
+#include &amp;lt;Ethernet.h&amp;gt;
+
+byte MAC[] = {0x90,0xA2,0xDA,0x0F,0x8B,0xA2};
+byte IP[]  = {192,168,11,3};
+
+void setup()
+{
+  Ethernet.begin(MAC,IP);
+}
+
+void loop()
+{
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;疎通確認&lt;/p&gt;
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+&lt;pre class=&#34;code&#34; data-lang=&#34;&#34; data-unlink&gt;
+=======
+
+```
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; 4f3b2c72e32161441359f6d2116c410a27a8faaf
+% ping 192.168.100.3
+PING 192.168.100.3 (192.168.100.3): 56 data bytes
+Request timeout for icmp_seq 0
+64 bytes from 192.168.100.3: icmp_seq=1 ttl=128 time=0.576 ms
+64 bytes from 192.168.100.3: icmp_seq=2 ttl=128 time=0.425 ms
+64 bytes from 192.168.100.3: icmp_seq=3 ttl=128 time=0.302 ms 
+```
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ping&#34;&gt;Ping&lt;/a&gt;確認ヨシ!!&lt;/p&gt;
+&lt;p&gt;一応&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ARP&#34;&gt;ARP&lt;/a&gt;テーブルを見ておく。&lt;/p&gt;
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+&lt;pre class=&#34;code&#34; data-lang=&#34;&#34; data-unlink&gt;
+=======
+
+```
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; 4f3b2c72e32161441359f6d2116c410a27a8faaf
+% arp -a
+? (192.168.100.3) at 90:a2:da:f:8b:a2 on en4 ifscope [ethernet]
+? (192.168.100.255) at ff:ff:ff:ff:ff:ff on en4 ifscope [ethernet] 
+```
+&lt;p&gt;マックアドレスの取得もヨシ!!&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/DHCP&#34;&gt;DHCP&lt;/a&gt;を使って家内LAN接続&lt;/h3&gt;
+    &lt;p&gt;実運用では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/DHCP&#34;&gt;DHCP&lt;/a&gt;を利用することが圧倒的に多いと思うが、こちらもとても簡単。&lt;/p&gt;
+&lt;p&gt;構成図&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140913/20140913110038.png&#34; alt=&#34;f:id:mosuke5:20140913110038p:plain&#34; title=&#34;f:id:mosuke5:20140913110038p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN&#34;&gt;無線LAN&lt;/a&gt;ルータから有線LANケーブルを伸ばし&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Arduino&#34;&gt;Arduino&lt;/a&gt;に結線。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/DHCP&#34;&gt;DHCP&lt;/a&gt;による&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;の取得はとても容易で以下のようにマックアドレスを指定するのみ。&lt;/p&gt;
+```
+Ethernet.begin(mac)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;以下は&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/Arduino&amp;quot;&amp;gt;Arduino&amp;lt;/a&amp;gt;公式サイトに則って実施したもの。&amp;lt;br&amp;gt;
+&amp;lt;a href=&amp;quot;http://arduino.cc/en/Tutorial/DhcpAddressPrinter&amp;quot;&amp;gt;Arduino - DhcpAddressPrinter&amp;lt;/a&amp;gt;&amp;lt;br&amp;gt;
+&amp;lt;/p&amp;gt;
+
+```c
+#include &amp;lt;SPI.h&amp;gt;
+#include &amp;lt;Ethernet.h&amp;gt;
+
+//Mac Address Static
+byte mac[] = {0x90,0xA2,0xDA,0x0F,0x8B,0xA2};
+
+void setup()
+{
+  // Open serial communications and wait for port to open:
+  Serial.begin(9600);
+
+  // start the Ethernet connection:
+  if (Ethernet.begin(mac) == 0) {
+    Serial.println(&amp;quot;Failed to configure Ethernet using DHCP&amp;quot;);
+    // no point in carrying on, so do nothing forevermore:
+    for(;;)
+      ;
+      
+  }
+  // print your local IP address:
+  Serial.print(&amp;quot;My IP address: &amp;quot;);
+  for (byte thisByte = 0; thisByte &amp;lt; 4; thisByte++) {
+    // print the value of each byte of the IP address:
+    Serial.print(Ethernet.localIP()[thisByte], DEC);
+    Serial.print(&amp;quot;.&amp;quot;); 
+  }
+  Serial.println();
+}
+
+void loop()
+{
+  Serial.println(&amp;quot;abc&amp;quot;);
+  delay(3000);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Arduino&#34;&gt;Arduino&lt;/a&gt;に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;が割り当てられたかどうか確認するには、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN&#34;&gt;無線LAN&lt;/a&gt;ルータにアクセスし、マックアドレスと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;のヒモ付のテーブルをみればよい。&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>【これだけは抑えておきたい】Arduino入門まとめ</title>
+      <link>https://blog.mosuke.tech/entry/2014/07/21/231946/</link>
+      <pubDate>Mon, 21 Jul 2014 23:19:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/07/21/231946/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;前々から&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Arduino&#34;&gt;Arduino&lt;/a&gt;自体はもっていたし、ちょろっと触ったことはあったのだが、&lt;br&gt;
+大学時代の研究室の仲間と&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Arduino&#34;&gt;Arduino&lt;/a&gt;勉強会をやることになり、それに向けて友人と再入門したのでそのときのメモ。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Arduino&#34;&gt;Arduino&lt;/a&gt;入門にこれだけは知っておきたい事項をプログラム形式にまとめた。&lt;/p&gt;
+&lt;p&gt;もちろん、不足部分もたくさんあるが、これだけわかれば楽しめるようになるかも。&lt;/p&gt;
+&lt;p&gt;以下が入門プログラム。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;#program1&#34;&gt;LEDの点灯&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#program2&#34;&gt;PCとArduino間のシリアル通信&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#program3&#34;&gt;超音波距離センサの利用&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#program4&#34;&gt;超音波距離センサとLEDの組み合わせ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#program5&#34;&gt;Processingとの連携&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#program6&#34;&gt;電池でArduinoを動作させる&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;【用意したもの】&lt;br&gt;
+基本は以下の２つ&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B0025Y6C5G/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/518mUs-GudL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;Arduinoをはじめようキット&#34; title=&#34;Arduinoをはじめようキット&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B0025Y6C5G/hatena-blog-22/&#34;&gt;Arduinoをはじめようキット&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; スイッチサイエンス&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; エレクトロニクス&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;購入&lt;/span&gt;: 64人 &lt;span class=&#34;hatena-asin-detail-label&#34;&gt;クリック&lt;/span&gt;: 1,164回&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/B0025Y6C5G/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログ (51件) を見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00IJ02A7O/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/51s%2BQnZbv0L._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;みんなのArduino入門：拡張キット&#34; title=&#34;みんなのArduino入門：拡張キット&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00IJ02A7O/hatena-blog-22/&#34;&gt;みんなのArduino入門：拡張キット&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; スイッチサイエンス&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; エレクトロニクス&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/B00IJ02A7O/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログを見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;【参考にした書籍】&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/487311537X/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/51zFePM-naL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;Arduinoをはじめよう 第2版 (Make:PROJECTS)&#34; title=&#34;Arduinoをはじめよう 第2版 (Make:PROJECTS)&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/487311537X/hatena-blog-22/&#34;&gt;Arduinoをはじめよう 第2版 (Make:PROJECTS)&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;作者:&lt;/span&gt; Massimo Banzi,船田巧&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AA%A5%E9%A5%A4%A5%EA%A1%BC%A5%B8%A5%E3%A5%D1%A5%F3&#34;&gt;オライリージャパン&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2012/03/16&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; 単行本（ソフトカバー）&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;購入&lt;/span&gt;: 9人 &lt;span class=&#34;hatena-asin-detail-label&#34;&gt;クリック&lt;/span&gt;: 27回&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/487311537X/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログ (10件) を見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/489797948X/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/517KqAKiwvL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;みんなのArduino入門&#34; title=&#34;みんなのArduino入門&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/489797948X/hatena-blog-22/&#34;&gt;みんなのArduino入門&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;作者:&lt;/span&gt; 高本孝頼&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EA%A5%C3%A5%AF%A5%C6%A5%EC%A5%B3%A5%E0&#34;&gt;リックテレコム&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2014/02/17&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; 単行本（ソフトカバー）&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/489797948X/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログを見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;h2 id=&#34;program1&#34;&gt;1. LEDの点灯&lt;/h2&gt;まずはじめの第一歩はLEDの点灯。&lt;br&gt;
+これは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Arduino&#34;&gt;Arduino&lt;/a&gt;標準搭載の「スケッチの例」を利用。&lt;br&gt;
+　利用したスケッチ：スケッチの例⇒01.&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Basic&#34;&gt;Basic&lt;/a&gt;⇒Blink&lt;p&gt;LEDのプラス側を13番に、マイナス側を&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/GND&#34;&gt;GND&lt;/a&gt;に挿せば完成。&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;a href=&#34;http://f.hatena.ne.jp/mosuke5/20140721211703&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;url&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140721/20140721211703.jpg&#34; alt=&#34;f:id:mosuke5:20140721211703j:image:h200&#34; title=&#34;f:id:mosuke5:20140721211703j:image:h200&#34; class=&#34;hatena-fotolife&#34; style=&#34;height:200px&#34; itemprop=&#34;image&#34;&gt;&lt;/a&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;h2&gt;2. PCと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Arduino&#34;&gt;Arduino&lt;/a&gt;間のシリアル通信&lt;/h2&gt;センサーで取得したデータ等をPC側に渡すシリアル通信。&lt;br&gt;
+まずは最初なので、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Arduino&#34;&gt;Arduino&lt;/a&gt;本体側で文字列を適当に出力させてそれを表示する。&lt;p&gt;はじめは&amp;rdquo;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/hoge&#34;&gt;hoge&lt;/a&gt;&amp;ldquo;だけを出力させたのだが、ひたすら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/hoge&#34;&gt;hoge&lt;/a&gt;が並ぶだけなので&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Arduino&#34;&gt;Arduino&lt;/a&gt;側の処理がよく見えなかったので、&lt;br&gt;
+以下のサンプルのようにした。また、回路側はなにもいじっていない。&lt;/p&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;int i = 0;
+
+void setup(){
+
+  //シリアル通信の宣言
+  Serial.begin(9600);
+
+}
+
+void loop(){
+
+  Serial.print(&amp;quot;hoge&amp;quot;);
+  Serial.println(i);
+  i++;
+  
+  delay(300);
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;出力結果&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hoge1
+hoge2
+hoge3
+ .... 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140721/20140721103544.png&#34; alt=&#34;f:id:mosuke5:20140721103544p:plain&#34; title=&#34;f:id:mosuke5:20140721103544p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;h2&gt;3. 超音波距離センサの利用&lt;/h2&gt;次のステップとしてセンサーの利用を行った。&lt;br&gt;
+はじめ温度センサーを利用したのだが、温度の変化は室内ではわかりづらかったので「超音波距離センサ」を利用した。&lt;br&gt;
+ここでは超音波距離センサを利用するが、大事なことはセンサーの種類ではなく、センサーを利用した入力である。&lt;p&gt;【作ったもの】&lt;br&gt;
+超音波距離センサにて測定した物体との距離をシリアルモニターで表示するもの。&lt;/p&gt;
+&lt;p&gt;【&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9&#34;&gt;ソースコード&lt;/a&gt;】&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;// 送信側のピン番号
+const int TRIGPIN = 8; 
+
+// 受信側のピン番号
+const int ECHOPIN = 9;
+
+// HIGHの時間（μ秒）
+const int CTM = 10;
+
+// 時間差（μ秒）
+int dur;
+
+// 距離（ｃｍ）
+float dis;
+
+void setup() {
+
+  //シリアル通信の宣言
+  Serial.begin (9600);
+  
+  pinMode(TRIGPIN, OUTPUT);
+  pinMode(ECHOPIN, INPUT); 
+
+}
+
+void loop() {
+  
+  digitalWrite(TRIGPIN, HIGH);
+  delayMicroseconds(CTM);
+  digitalWrite(TRIGPIN, LOW);
+  
+  // 超音波が物体にあたり跳ね返ってくるまでの時間を測定
+  dur = pulseIn(ECHOPIN, HIGH);
+  
+  //物体までの距離に変換
+  dis  = (float) dur*0.017;
+  
+  //シリアルモニタへ出力
+  Serial.print(dis);
+  Serial.println(&amp;quot; cm&amp;quot;);
+  
+  delay(500);
+  
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;【回路】&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140721/20140721220559.png&#34; alt=&#34;f:id:mosuke5:20140721220559p:plain&#34; title=&#34;f:id:mosuke5:20140721220559p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;h2&gt;4. 超音波距離センサとLEDの組み合わせ&lt;/h2&gt;センサーを用いいた入力方法・LEDを使った出力方法について学んだので、それらを組み合わせて以下のものを作成。&lt;p&gt;【作ったもの】&lt;br&gt;
+超音波距離センサを用いて、物体がある一定以上近づいた場合には赤LED の点灯を、&lt;br&gt;
+物体がある一定以上離れている場合（あるいは物体がない場合）には青LEDの点灯をするもの。&lt;/p&gt;
+&lt;p&gt;【&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9&#34;&gt;ソースコード&lt;/a&gt;】&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;// 送信側のピン番号
+const int TRIGPIN = 8; 
+
+// 受信側のピン番号
+const int ECHOPIN = 9;
+
+// HIGHの時間（μ秒）
+const int CTM = 10;
+
+// 青LED
+const int LED_BLUE = 12;
+
+// 赤LED
+const int LED_RED = 13;
+
+// 時間差（μ秒）
+int dur;
+
+// 距離（ｃｍ）
+float dis;
+
+void setup() {
+
+  // シリアル通信の宣言
+  Serial.begin (9600);
+  
+  // 超音波距離センサ
+  pinMode(TRIGPIN, OUTPUT);
+  pinMode(ECHOPIN, INPUT); 
+  
+  // LED
+  pinMode(LED_BLUE, OUTPUT);
+  pinMode(LED_RED, OUTPUT); 
+
+}
+
+void loop() {
+  
+  digitalWrite(TRIGPIN, HIGH);
+  delayMicroseconds(CTM);
+  digitalWrite(TRIGPIN, LOW);
+  
+  // 超音波が物体にあたり跳ね返ってくるまでの時間を測定
+  dur = pulseIn(ECHOPIN, HIGH);
+  
+  // 物体までの距離に変換
+  dis = (float) dur * 0.017;
+  
+  // シリアルモニタへ出力
+  Serial.print(dis);
+  Serial.println(&amp;quot; cm&amp;quot;);
+  
+  // 距離が50cm以上なら青LEDを光らせる
+  if(dis &amp;lt; 50) {
+    digitalWrite(LED_BLUE,HIGH);
+    digitalWrite(LED_RED,LOW);
+  
+  // 50cm未満なら赤LEDを光らせる
+  }else{
+    digitalWrite(LED_BLUE,LOW);
+    digitalWrite(LED_RED,HIGH);
+    
+  }
+  
+  delay(500);
+  
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br&gt;
+【回路】&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140721/20140721222730.png&#34; alt=&#34;f:id:mosuke5:20140721222730p:plain&#34; title=&#34;f:id:mosuke5:20140721222730p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;h2&gt;5. Processingとの連携&lt;/h2&gt;シリアル通信で受け取ったデータをシリアルモニターで表示するだけでなく、Processingで受け取ることもできる。&lt;br&gt;
+Processingで受け取ったデータをとりあえず、出力するところまで実施した。&lt;p&gt;【&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Arduino&#34;&gt;Arduino&lt;/a&gt;側】&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;// 送信側のピン番号
+const int TRIGPIN = 8; 
+
+// 受信側のピン番号
+const int ECHOPIN = 9;
+
+// HIGHの時間（μ秒）
+const int CTM = 10;
+
+// 時間差（μ秒）
+int dur;
+
+// 距離（ｃｍ）
+float dis;
+
+void setup() {
+
+  //シリアル通信の宣言
+  Serial.begin (9600);
+  
+  pinMode(TRIGPIN, OUTPUT);
+  pinMode(ECHOPIN, INPUT); 
+
+}
+
+void loop() {
+  
+  digitalWrite(TRIGPIN, HIGH);
+  delayMicroseconds(CTM);
+  digitalWrite(TRIGPIN, LOW);
+  
+  // 超音波が物体にあたり跳ね返ってくるまでの時間を測定
+  dur = pulseIn(ECHOPIN, HIGH);
+  
+  //物体までの距離に変換
+  dis  = (float) dur * 0.017;
+  
+  //シリアルモニタへ出力
+  Serial.println(dis);
+  
+  delay(500);
+  
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;【Processing側】&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;import processing.serial.*;
+
+int val;
+Serial myPort;
+
+void setup() {
+  String arduinoPort = Serial.list()[3]; 
+  myPort = new Serial(this, arduinoPort, 9600); 
+}
+
+void draw() {
+  println(val);
+}
+
+void serialEvent(Serial p){
+
+  val=myPort.read();
+  delay(1000);
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;p&gt;なんか受け取れているけど、これであっているか検討します…&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;h2&gt;6. 電池で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Arduino&#34;&gt;Arduino&lt;/a&gt;を動作させる&lt;/h2&gt;通常、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Arduino&#34;&gt;Arduino&lt;/a&gt;はPCから電源をとっているため、PCと切り離してしまうと動かなくなる。&lt;br&gt;
+しかし、PCと繋いでいないと動作できない&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Arduino&#34;&gt;Arduino&lt;/a&gt;なんて必要ない…とも思う。&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Arduino&#34;&gt;Arduino&lt;/a&gt;を電池で動かす方法はいたって簡単で以下の２つを用意して接続するだけ。&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B000FHVRLE/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/41IakcNEXoL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;Panasonic 9V型アルカリ乾電池 1本 6LR61YXJ/1S&#34; title=&#34;Panasonic 9V型アルカリ乾電池 1本 6LR61YXJ/1S&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B000FHVRLE/hatena-blog-22/&#34;&gt;Panasonic 9V型アルカリ乾電池 1本 6LR61YXJ/1S&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%D1%A5%CA%A5%BD%A5%CB%A5%C3%A5%AF&#34;&gt;パナソニック&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2006/04/10&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; エレクトロニクス&lt;/li&gt;
+&lt;li&gt; &lt;span class=&#34;hatena-asin-detail-label&#34;&gt;クリック&lt;/span&gt;: 2回&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/B000FHVRLE/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログを見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/0101625138/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/311H0nRslqL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;DC 9V電池スナップ＋2.1mm DCプラグ  並行輸入品&#34; title=&#34;DC 9V電池スナップ＋2.1mm DCプラグ  並行輸入品&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/0101625138/hatena-blog-22/&#34;&gt;DC 9V電池スナップ＋2.1mm DCプラグ  並行輸入品&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; Gadgettown&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; &lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/0101625138/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログを見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;これらを以下のように接続する。&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;a href=&#34;http://f.hatena.ne.jp/mosuke5/20140721222037&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;url&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140721/20140721222037.jpg&#34; alt=&#34;f:id:mosuke5:20140721222037j:image:w500&#34; title=&#34;f:id:mosuke5:20140721222037j:image:w500&#34; class=&#34;hatena-fotolife&#34; style=&#34;width:500px&#34; itemprop=&#34;image&#34;&gt;&lt;/a&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;br&gt;
+&lt;p&gt;以上で入門まとめは終わりだが、&lt;br&gt;
+その他にも以下を購入しているので次はもっと高度なことを実践したい。&lt;br&gt;
+・&lt;a href=&#34;http://www.switch-science.com/catalog/224/&#34;&gt;XBee ZB / ワイヤアンテナ型 - スイッチサイエンス&lt;/a&gt;&lt;br&gt;
+・&lt;a href=&#34;http://www.switch-science.com/catalog/786/&#34;&gt;Arduino ワイヤレスプロトシールド - スイッチサイエンス&lt;/a&gt;&lt;br&gt;
+・&lt;a href=&#34;http://www.switch-science.com/catalog/1031/&#34;&gt;XBee USB アダプター(リセットスイッチ付き) - スイッチサイエンス&lt;/a&gt;&lt;br&gt;
+・&lt;a href=&#34;http://www.switch-science.com/catalog/838/&#34;&gt;Arduino イーサネットシールド R3 - スイッチサイエンス&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インフラテスト(serverspec)はじめました &middot; Goldstine研究所</title>
+
+    <meta name="description" content=" ※執筆後、業務でもserverspecを利用し始めたのもあり、業務レベルでの実践例も追記している。  運営中のVim::Factoryでserverspecを使ったインフラテストを導入したので、導入理由や工夫している点、悩んでいる点につい">
+
+    <meta name="generator" content="Hugo 0.14" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="インフラテスト(serverspec)はじめました &middot; Goldstine研究所">
+    <meta name="twitter:description" content=" ※執筆後、業務でもserverspecを利用し始めたのもあり、業務レベルでの実践例も追記している。  運営中のVim::Factoryでserverspecを使ったインフラテストを導入したので、導入理由や工夫している点、悩んでいる点につい">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="インフラテスト(serverspec)はじめました &middot; Goldstine研究所">
+    <meta property="og:description" content=" ※執筆後、業務でもserverspecを利用し始めたのもあり、業務レベルでの実践例も追記している。  運営中のVim::Factoryでserverspecを使ったインフラテストを導入したので、導入理由や工夫している点、悩んでいる点につい">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/all.min.css">
+    <link rel="stylesheet" href="https://blog.mosuke.tech/css/mosuke5.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="Goldstine研究所" href="https://blog.mosuke.tech/index.xml" />
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://blog.mosuke.tech">Goldstine研究所</a></h1>
+            <h2 class="brand-tagline"> mosuke5&#39;s blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">02 Nov 2015, 16:17</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://blog.mosuke.tech/entry/2015/11/02/161744/" class="post-title">インフラテスト(serverspec)はじめました</a>
+
+                        <p class="post-meta">
+                            
+                                By <strong class="post-author">mosuke5</strong>
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-serverspec" href="https://blog.mosuke.tech/categories/serverspec">serverspec</a><a class="post-category post-category-インフラテスト" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E3%83%86%E3%82%B9%E3%83%88">インフラテスト</a><a class="post-category post-category-vim::factory" href="https://blog.mosuke.tech/categories/vimfactory">vim::factory</a><a class="post-category post-category-vimfactory" href="https://blog.mosuke.tech/categories/vimfactory">vimfactory</a><a class="post-category post-category-インフラCI" href="https://blog.mosuke.tech/categories/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9ci">インフラCI</a>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p><body>
+<p>※執筆後、業務でもserverspecを利用し始めたのもあり、業務レベルでの実践例も追記している。</p></p>
+
+<p>運営中の<a class="keyword" href="http://d.hatena.ne.jp/keyword/Vim">Vim</a>::Factoryでserverspecを使ったインフラテストを導入したので、
+導入理由や工夫している点、悩んでいる点について記述します。</p>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Vim">Vim</a>::Factoryについてはこっちみてね。
+<a href="/entry/2015/07/19/135844/">DockerとWebSocketを使って、vimの設定をブラウザで即体感できるサービスを作った - Goldstine研究所</a>
+
+<h1>1. serverspecってなによ</h1>
+
+<p>詳しくは公式サイトや書籍などを参考にして欲しいですが、<br>
+「サーバの状態をコードで自動的にテスト・確認するためのツール」です。</p>
+
+<p><a href="http://serverspec.org">Serverspec - Home</a></p>
+
+<p>例えば、<a class="keyword" href="http://d.hatena.ne.jp/keyword/Apache">Apache</a>でWebサーバを組んでいるサーバがあったとして、下記の要件で動いているとします。</p>
+
+<ul>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/apache">apache</a>がインス<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C8%A1%BC%A5%EB">トール</a>されていること</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/apache">apache</a>が起動していること、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%BC%AB%C6%B0%B5%AF%C6%B0">自動起動</a>する設定であること</li>
+<li>ポート80があいていること</li>
+</ul>
+
+<p>この要件をサーバが満たしているかコードでテストします。<br>
+上記の例だとこんなコードを書きます。</p>
+
+<pre><code class="language-ruby">describe package('httpd') do
+  it { should be_installed }
+end
+
+describe service('httpd') do
+  it { should be_enabled   }
+  it { should be_running   }
+end
+
+describe port(80) do
+  it { should be_listening }
+end
+ 
+
+</code></pre>
+
+<h1>各種テストの立ち位置</h1>
+
+<p><span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170416/20170416114252.jpg" alt="f:id:mosuke5:20170416114252j:plain:w600" title="f:id:mosuke5:20170416114252j:plain:w600" class="hatena-fotolife" style="width:600px" itemprop="image"></span></p>
+
+<ul>
+<li>serverspecは、サーバの状態（正しく設定されたか）を確認するためのテストツールです</li>
+<li>サーバの振る舞いのテストは別のツールを使うことをおすすめします</li>
+<li>また、監視も一種のテストと言えます</li>
+<li>一般的には監視はその実行頻度の高さから、振る舞いを監視することが多い</li>
+<li>監視ツールで、Configファイルが正しいかは見ない</li>
+</ul>
+
+<h1>2. なんで導入したの？</h1>
+
+<p>serverspecを導入したのには大きく2つの理由があります。</p>
+
+<h2>(その１) インフラの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C6%A5%B9%A5%C8%B6%EE%C6%B0%B3%AB%C8%AF">テスト駆動開発</a>を支えるため</h2>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/Vim">Vim</a>::Factoryは趣味で開発・運用しているサービスで、まだ作りたての発展途上のサービスです。<br>
+（作って公開してからは日が経っている気もしますが、週1の開発なので…）<br>
+そのため、今後もインフラコードをガンガン修正していくことを想定しています。<br>
+ですので、その開発、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%D5%A5%A1%A5%AF%A5%BF%A5%EA%A5%F3%A5%B0">リファクタリング</a>を支えるべく、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C6%A5%B9%A5%C8%B6%EE%C6%B0%B3%AB%C8%AF">テスト駆動開発</a>で行えるようにするためです。</p>
+
+<h2>(その２) インフラテストの必要性を深く理解するため</h2>
+
+<p>「インフラテストの必要性を深く理解するため」です。<br>
+必要性があるから導入したんじゃにないの？と思われるかもしれませんが、<br>
+ぼくはまだインフラテストの本当の必要性を理解できていないと思っています。</p>
+
+<p>実は、はじめこんな風に思っていましたし、今でも少し思う部分もある。</p>
+
+<ul>
+<li>ansibleやchefで実行結果がOKならそれでテストも兼ねているのでは？</li>
+<li>実際にどんな項目をテストすればいいか、考えてみた時にピンと来ない…</li>
+</ul>
+
+<p>実際に試してみないと、その本質が見えてこないと思っているので、<br>
+導入してみて自分の肌で感じようと思っています。</p>
+
+<p>個人的なお話なのでみなさんには関係のない話ではありますが、<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/Vim">Vim</a>::Factoryの開発は企業でもなければ営利目的でもありません。<br>
+「週末にインフラ技術のインプット勉強をしていたが、それだけでは飽きてきて、<br>
+サービスを開発・運用していくなかでインフラ技術を磨いていきたい」
+というものだったので、こういった実験も大歓迎だったのです。</p>
+
+<h1>3. 工夫している点</h1>
+
+<h1>チーム内でインフラテストコードの「指針」を決める</h1>
+
+<p>Ansibleなど構成管理ツールがあるなかで、本当にインフラテストっているの？とはじめは誰もが思うはずです。<br>
+「なんとなく」、「流行っているから」という理由で導入をすると、<br>
+きっと<b>チーム内でインフラテストを書く意味や目的が異なって</b>きてしまいます。<br>
+また、serverspecはいろんな使い方ができてしまうので、なおさら人によって考え方が異なってしまいます。</p>
+
+<p>ですので、チーム内でインフラテストコードの「指針」を決めて共有しています。<br>
+こうすることで、「なぜインフラテストコードを書くのか」の目的意識を統一しています。</p>
+
+<p>この指針には、下記の本をかなり参考にしました。（serverspec作者の本です）
+</p>
+<div class="hatena-asin-detail">
+<a href="http://www.amazon.co.jp/exec/obidos/ASIN/4873117097/hatena-blog-22/"><img src="https://images-fe.ssl-images-amazon.com/images/I/51P6qVOPALL._SL160_.jpg" class="hatena-asin-detail-image" alt="Serverspec" title="Serverspec"></a><div class="hatena-asin-detail-info">
+<p class="hatena-asin-detail-title"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/4873117097/hatena-blog-22/">Serverspec</a></p>
+<ul>
+<li>
+<span class="hatena-asin-detail-label">作者:</span> 宮下剛輔</li>
+<li>
+<span class="hatena-asin-detail-label">出版社/メーカー:</span> <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%AA%A5%E9%A5%A4%A5%EA%A1%BC%A5%B8%A5%E3%A5%D1%A5%F3">オライリージャパン</a>
+</li>
+<li>
+<span class="hatena-asin-detail-label">発売日:</span> 2015/01/17</li>
+<li>
+<span class="hatena-asin-detail-label">メディア:</span> 単行本（ソフトカバー）</li>
+<li><a href="http://d.hatena.ne.jp/asin/4873117097/hatena-blog-22" target="_blank">この商品を含むブログ (6件) を見る</a></li>
+</ul>
+</div>
+<div class="hatena-asin-detail-foot"></div>
+</div>
+
+<h1>テストをサーバの役割毎にまとめる</h1>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8">ディレクト</a>リの主な構成は下記のようになっています。<br>
+（実際にはもっとファイルやホストが多いですがイメージです。）</p>
+
+<pre><code>├ Rakefile
+├ spec/
+│ └ spec_helper.rb
+│ ├ base/
+│ │   ├ user_spec.rb
+│ │   └ selinux_spec.rb
+│ ├ proxy/
+│ │   └ nginx_spec.rb
+│ └ app/
+│     └ vimfactory-app_spec.rb
+└ sshconfig 
+</code></pre>
+
+<p>nginxなどを搭載するプロキシサーバと<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%B5%A1%BC%A5%D0">アプリケーションサーバ</a>があり、それぞれにロールを割り振ります。<br>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/Rakefile">Rakefile</a>内に書いてます。もし記述が増えるようだと別ファイルに切り出すと思います。</p>
+
+<pre><code class="language-ruby">hosts = [
+  {
+    :name   =&gt; &quot;proxy.vimfactory&quot;,
+    :roles  =&gt; %w( base proxy )
+  },
+  {
+    :name   =&gt; &quot;app.vimfactory&quot;,
+    :roles  =&gt; %w( base app )
+  }
+]
+ 
+
+</code></pre>
+
+<p>このようにすることで、役割の違うサーバでも共有するテスト項目はコードの重複なくテストできます。<br>
+また拡張性もそこそこいい感じなんじゃないかと思っています。</p>
+
+<h1>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>の設定ファイルを任意で指定する</h1>
+
+<p>serverspecを使っていると<a class="keyword" href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>のクライアント側の設定ファイルを利用することがでてきます。<br>
+<code>serverspec-init</code>コマンドで生成されるspec_helper.rbでは<code>~/.ssh/config</code>をデフォルトで読むようになっています。</p>
+
+<p>ですが個人的には<code>~/.ssh/config</code>にプロジェクトの設定を書くのがあまり好きではないし、効果的でないことがあると考えています。<br>
+<code>~/.ssh/config</code>は個人のPCなどの設定によって各々違うものです。<br>
+そこにプロジェクト固有の設定を書くと、設定が衝突したり、管理が難しくなります。</p>
+
+<p>ですので、プロジェクトで使う<a class="keyword" href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>のクライアントの設定ファイルもgit管理しておいて、<br>
+それを使うようにすることが望ましいと思っています。</p>
+
+<p>そこで、spec_helper.rbの<code>Net::SSH::Config</code>部分を修正し、<a class="keyword" href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>の設定ファイルを任意で指定できるようにしています。</p>
+
+<pre><code class="language-ruby">config  = ENV['SSH_CONFIG']
+options = Net::SSH::Config.for(host, [config])
+ 
+</code></pre>
+
+<p>実行時に指定します。</p>
+
+<pre><code>bundle exec rake serverspec SSH_CONFIG=sshconfig 
+</code></pre>
+
+<h1>デプロイ作業での活用</h1>
+
+<p>serverspecは主に、インフラの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C6%A5%B9%A5%C8%B6%EE%C6%B0%B3%AB%C8%AF">テスト駆動開発</a>のために導入したのですが、
+本番環境でのデプロイ作業（インフラ設定の変更）にも大活躍しています。</p>
+
+<p>デプロイ作業時に、下記ステップで行うことで、デプロイ作業の安心感を得るとともに、<br>
+作業後の確認作業を軽減できたのはとても素晴らしいことでした。</p>
+
+<ol>
+<li>serverspec実行：テスト落ちる</li>
+<li>Ansible実行：デプロイ</li>
+<li>serverspec：テスト通る</li>
+</ol>
+
+<h1>4. 悩んでいること。これからについて</h1>
+
+<p>serverspecのCIの方法に悩んでいます。</p>
+
+<ul>
+<li>どうやってCIをやるのが効率的か？</li>
+<li>
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/Vim">Vim</a>::FactoryはAnsibleでアプリケーションのデプロイまで行っているのだけど、</li>
+<li>インフラテストとアプリのテスト同時にやってほうがよくないだろうか？</li>
+<li>でも、アプリのテストをするごとにAnsibleで環境構築すると時間がかかってしまう。</li>
+<li>上記を解決するためにCI用にDockerイメージを作るという案もあるけど、そこまでするべきか？？</li>
+</ul>
+
+<p>これからは、どうCIをしていくか。<br>
+インフラテストとアプリのテストをどう結びつけていくか。<br>
+このあたりが課題と考えています。</p>
+
+<h1>(追記)インフラCI失敗した</h1>
+
+<p>よくある構成例ではあるが、下記のようにGitlabCI+ DigitalOceanを使ってインフラCIの検討を行った。<br>
+<span itemscope itemtype="http://schema.org/Photograph"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20170416/20170416125051.jpg" alt="f:id:mosuke5:20170416125051j:plain:w600" title="f:id:mosuke5:20170416125051j:plain:w600" class="hatena-fotolife" style="width:600px" itemprop="image"></span></p>
+
+<p>しかし、結果的には運用にのるところまでいかなかった。理由はこんな感じ。<br>
+正直、趣味でやってる範囲にしては、ここを突破するモチベーションがなかった。</p>
+
+<ul>
+<li>実行に膨大な時間がかかる</li>
+<li>それゆえにたまに<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%BF%A5%A4%A5%E0%A5%A2%A5%A6%A5%C8">タイムアウト</a>で死ぬ</li>
+<li>DigitalOcean<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%B9%A5%BF%A5%F3%A5%B9">インスタンス</a>の停止に失敗した場合が面倒（笑）</li>
+</ul>
+
+<p></body></p>
+
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label-counter" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+                            <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3a%2f%2fblog.mosuke.tech%2fentry%2f2015%2f11%2f02%2f161744%2f&layout=button_count&size=small&mobile_iframe=true&appId=1383467145023614&width=90&height=20" width="90" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <hr class="footer-hr" />
+<div class="">
+    <div class="google-search-engine">
+        <script>
+          (function() {
+            var cx = '012458736543810277235:x4juxtghjhg';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+          })();
+        </script>
+		    <gcse:search></gcse:search>
+    </div>
+    <a class="pure-button" href="https://mosuke.tech "><i class="fa fa-user"></i> mosuke5</a>
+    <a class="pure-button" href="/archive/"><i class="fa fa-archive"></i> Arvhive</a>
+    <a class="pure-button" href="https://blog.mosuke.tech/index.xml"><i class="fa fa-rss"></i> rss</a>
+</div>
+<div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>&copy; <strong>mosuke5</strong> All rights reserved.<br />Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://blog.mosuke.tech/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-99596316-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

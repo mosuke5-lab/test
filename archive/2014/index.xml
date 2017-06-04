@@ -1,0 +1,1568 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>2014 on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/archive/2014/</link>
+    <description>Recent content in 2014 on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 31 Dec 2014 17:05:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/archive/2014/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>SSHでローカルポートフォワードを実際に試す</title>
+      <link>https://blog.mosuke.tech/entry/2014/12/31/170545/</link>
+      <pubDate>Wed, 31 Dec 2014 17:05:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/12/31/170545/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;・・・&lt;br&gt;
+いろんなことができる&amp;rdquo;らしい&amp;rdquo;ということは知っていたし、&lt;br&gt;
+例えばポートフォワーディングなんていうこともできるのも知っている。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;でもそれがどんなものなのか自分の手で試したことはないし、&lt;br&gt;
+なんとなくただのサーバログイン&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB&#34;&gt;ツール&lt;/a&gt;として利用していた。&lt;/p&gt;
+
+&lt;p&gt;サーバインフラ技術に興味を持つようになっていろんなことを勉強していると、&lt;br&gt;
+ポートフォワーディングは必須な技術であることも感じ、&lt;br&gt;
+年末の持て余す時間を使って&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;のローカルポートフォワードを試してみたのでメモする。&lt;/p&gt;
+
+&lt;h1&gt;環境とやりたいこと&lt;/h1&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141231/20141231162958.png&#34; alt=&#34;f:id:mosuke5:20141231162958p:plain&#34; title=&#34;f:id:mosuke5:20141231162958p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;ローカルPCからexample.jpは以下で接続できる状態。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[local pc] $ ssh username@example.jp 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;またWebサーバのポート番号は80で、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;のホストサーバからはWebサーバへ接続できる。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/CUI&#34;&gt;CUI&lt;/a&gt;なのでわかりづらいが&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/curl&#34;&gt;curl&lt;/a&gt;を打つと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Hello%20World&#34;&gt;Hello World&lt;/a&gt;が返ってきている。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[example.jp] $ curl 192.168.33.10
+&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;&amp;lt;h1&amp;gt;Hello World! Virtual Web Server&amp;lt;/h1&amp;gt;
+&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;ローカルポートフォワードの実行&lt;/h1&gt;
+
+&lt;p&gt;ローカルPCから以下を実行する。&lt;br&gt;
+以下のコマンドは、&lt;br&gt;
+&lt;b&gt;ローカルPCのポート8888での接続はexample.jpからみて「192.168.33.10のポート80」に飛ばす&lt;/b&gt;&lt;br&gt;
+といったもの。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[local pc] $ ssh -L8888:192.168.33.10:80 username@example.jp 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この状態でブラウザから&lt;code&gt;http://localhost:8888&lt;/code&gt;にアクセスすると&lt;br&gt;
+
+&lt;p&gt;なんと、ローカルホストにつないだはずが、example.jp上の仮想Webサーバのhtmlがうつっているではないか…&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141231/20141231163932.png&#34; alt=&#34;f:id:mosuke5:20141231163932p:plain&#34; title=&#34;f:id:mosuke5:20141231163932p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34; style=&#34;border:solid 1px #ddd;&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1&gt;セキュリティはどうなの？&lt;/h1&gt;
+
+&lt;p&gt;ローカルの端末からhttpで仮想のWebサーバに接続しているけど、セキュリティはだいじょうぶなのだろうか？&lt;br&gt;
+http通信だから暗号化はされていないのだろうか？&lt;br&gt;
+なんて疑問もあるが、それは問題ない。&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;でローカルPCから&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EA%A5%E2%A1%BC%A5%C8%A5%DB%A5%B9%A5%C8&#34;&gt;リモートホスト&lt;/a&gt;(example.jp)までトンネルをはり、&lt;br&gt;
+そのなかをhttpで通信しているから全く問題なしといえる。&lt;/p&gt;
+
+&lt;p&gt;ローカルポートフォワードを利用する場合は、おそらく表には出したくないけど、&lt;br&gt;
+ローカルから接続したいなどの要件の時に使うと思うけど、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;できちんと暗号化しているので安心。&lt;/p&gt;
+
+&lt;h1&gt;最後に&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;でできることはこの他にもたくさんある。&lt;br&gt;
+ポートフォワードだけみても他にも「リモートポートフォワード」や「ダイナミックポートフォワード」などがある。&lt;br&gt;
+リモートポートなどはいまぱっと試せる環境がなかったのでおいおい実践してみる…&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;をただのログイン&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB&#34;&gt;ツール&lt;/a&gt;だけに留めるのは今年で終わりにしよう…&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>【年末遊び】秋葉原で自作PCパーツ集めて作った</title>
+      <link>https://blog.mosuke.tech/entry/2014/12/29/154251/</link>
+      <pubDate>Mon, 29 Dec 2014 15:42:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/12/29/154251/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BC%AB%BA%EEPC&#34;&gt;自作PC&lt;/a&gt;を作ったのでその材料と参考資料などを簡単にまとめる。&lt;br&gt;
+すべての部品は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BD%A9%CD%D5%B8%B6&#34;&gt;秋葉原&lt;/a&gt;の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C4%A5%AF%A5%E2&#34;&gt;ツクモ&lt;/a&gt;で揃えた。&lt;br&gt;
+&lt;a href=&#34;http://shop.tsukumo.co.jp/&#34; target=&#34;_blank&#34;&gt;パソコン・ゲームPC・自作パソコンなら【TSUKUMO】&lt;/a&gt;
+&lt;p&gt;わけがあって荷物はすべて手で運んだのだが、かなり重くなるので郵送をおすすめする。&lt;br&gt;
+以下買ったパーツ一式や用意した道具。&lt;br&gt;
+ちなみに全部で54000円程度でした。（お店で買うとセット割などがあったため）&lt;/p&gt;&lt;/p&gt;
+
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;材料・パーツ一式&lt;/h2&gt;
+    
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%B6%A1%BC%A5%DC%A1%BC%A5%C9&#34;&gt;マザーボード&lt;/a&gt;&lt;/h3&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00KD6RZIG/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/61rM4AVJ3yL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;ASUSTeK Intel H97チップセット搭載マザーボード H97-PRO 【ATX】&#34; title=&#34;ASUSTeK Intel H97チップセット搭載マザーボード H97-PRO 【ATX】&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00KD6RZIG/hatena-blog-22/&#34;&gt;ASUSTeK Intel H97チップセット搭載マザーボード H97-PRO 【ATX】&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Asustek&#34;&gt;Asustek&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2014/05/17&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; Personal Computers&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/B00KD6RZIG/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログを見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;CPU&lt;/h3&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00LV8U0VE/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/51R95kYLwCL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;Intel CPU Core-i3-4160 3.60GHz 3Mキャッシュ LGA1150 BX80646I34160 【BOX】&#34; title=&#34;Intel CPU Core-i3-4160 3.60GHz 3Mキャッシュ LGA1150 BX80646I34160 【BOX】&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00LV8U0VE/hatena-blog-22/&#34;&gt;Intel CPU Core-i3-4160 3.60GHz 3Mキャッシュ LGA1150 BX80646I34160 【BOX】&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%C6%A5%EB&#34;&gt;インテル&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2014/07/27&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; Personal Computers&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/B00LV8U0VE/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログを見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;メモリ&lt;/h3&gt;
+    &lt;a href=&#34;http://kakaku.com/item/K0000290991/&#34;&gt;価格.com - Team TED38192M1600C11DC [DDR3 PC3-12800 4GB 2枚組] 価格比較&lt;/a&gt;&lt;br&gt;
+&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;HDD&lt;/h3&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B009QWUF9E/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/51XtnFUCHHL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;【Amazon.co.jp限定】WD Blue 3.5inch 7,200rpm 1.0TB 64MBキャッシュ SATA3.0 WD10EZEX/N 【フラストレーションフリーパッケージ(FFP)】&#34; title=&#34;【Amazon.co.jp限定】WD Blue 3.5inch 7,200rpm 1.0TB 64MBキャッシュ SATA3.0 WD10EZEX/N 【フラストレーションフリーパッケージ(FFP)】&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B009QWUF9E/hatena-blog-22/&#34;&gt;【Amazon.co.jp限定】WD Blue 3.5inch 7,200rpm 1.0TB 64MBキャッシュ SATA3.0 WD10EZEX/N 【フラストレーションフリーパッケージ(FFP)】&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Western%20Digital&#34;&gt;Western Digital&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; Personal Computers&lt;/li&gt;
+&lt;li&gt; &lt;span class=&#34;hatena-asin-detail-label&#34;&gt;クリック&lt;/span&gt;: 5回&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/B009QWUF9E/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログを見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;光学式ドライブ&lt;/h3&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00OYQTP48/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/11PYvtXkVFL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;ASUSTeK CyberLink Power2Go 8、E-Greenソフト付き内蔵ドライブ&#34; title=&#34;ASUSTeK CyberLink Power2Go 8、E-Greenソフト付き内蔵ドライブ&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00OYQTP48/hatena-blog-22/&#34;&gt;ASUSTeK CyberLink Power2Go 8、E-Greenソフト付き内蔵ドライブ&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Asustek&#34;&gt;Asustek&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2014/11/12&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; Personal Computers&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/B00OYQTP48/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログを見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;電源ユニット&lt;/h3&gt;
+    &lt;p&gt;グラフィックボードも積んでいないし、ゲームとかもやる予定はないので430Wで十分。&lt;br&gt;
+また、PCケースも大きめのものを選ぶ予定だったので大きさも気にしなくてオッケーでした。&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00FSFA566/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/51-UWNSkHAL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;ENERMAX エナーマックス PC電源 Revolution X&#39;t 430W ERX430AWT&#34; title=&#34;ENERMAX エナーマックス PC電源 Revolution X&#39;t 430W ERX430AWT&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00FSFA566/hatena-blog-22/&#34;&gt;ENERMAX エナーマックス PC電源 Revolution X&amp;rsquo;t 430W ERX430AWT&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; ENERMAX&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2014/08/02&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; 付属品&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/B00FSFA566/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログを見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;ケース&lt;/h3&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00E6GZL7Q/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/51SRInEw4oL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;SharkoonミドルタワーPCケース サイドクリアウィンドウ グリーン SHA-T28-G-V3/A&#34; title=&#34;SharkoonミドルタワーPCケース サイドクリアウィンドウ グリーン SHA-T28-G-V3/A&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/B00E6GZL7Q/hatena-blog-22/&#34;&gt;SharkoonミドルタワーPCケース サイドクリアウィンドウ グリーン SHA-T28-G-V3/A&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; Sharkoon&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; Personal Computers&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/B00E6GZL7Q/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログ (1件) を見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;参考にした書籍&lt;/h3&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;div class=&#34;hatena-asin-detail&#34;&gt;
+&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4822269973/hatena-blog-22/&#34;&gt;&lt;img src=&#34;http://ecx.images-amazon.com/images/I/618HZCdKnkL._SL160_.jpg&#34; class=&#34;hatena-asin-detail-image&#34; alt=&#34;PC自作の鉄則! 2015 (日経BPパソコンベストムック)&#34; title=&#34;PC自作の鉄則! 2015 (日経BPパソコンベストムック)&#34;&gt;&lt;/a&gt;&lt;div class=&#34;hatena-asin-detail-info&#34;&gt;
+&lt;p class=&#34;hatena-asin-detail-title&#34;&gt;&lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4822269973/hatena-blog-22/&#34;&gt;PC自作の鉄則! 2015 (日経BPパソコンベストムック)&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;作者:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%C6%FC%B7%D0WinPC&#34;&gt;日経WinPC&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;出版社/メーカー:&lt;/span&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%C6%FC%B7%D0BP&#34;&gt;日経BP&lt;/a&gt;社&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;発売日:&lt;/span&gt; 2014/11/17&lt;/li&gt;
+&lt;li&gt;
+&lt;span class=&#34;hatena-asin-detail-label&#34;&gt;メディア:&lt;/span&gt; 単行本&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/asin/4822269973/hatena-blog-22&#34; target=&#34;_blank&#34;&gt;この商品を含むブログを見る&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hatena-asin-detail-foot&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;利用した道具など&lt;/h3&gt;
+    &lt;p&gt;&lt;b&gt;・プラスドライバー&lt;/b&gt;&lt;br&gt;
+　⇒PCケースと&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%B6%A1%BC%A5%DC%A1%BC%A5%C9&#34;&gt;マザーボード&lt;/a&gt;などを固定したりするのにドライバーは必須&lt;br&gt;
+&lt;b&gt;・インシュロック（結束バンド）&lt;/b&gt;&lt;br&gt;
+　⇒PCケースに何本かついてくるが、綺麗に配線しようと思うと何度かやり直したりするので用意しておいた方が無難。&lt;br&gt;
+&lt;b&gt;・ニッパー&lt;/b&gt;&lt;br&gt;
+　⇒インシュロックを切ったりするのに必要なので準備しておきましょう。&lt;br&gt;
+&lt;b&gt;・LANケーブル&lt;/b&gt;&lt;br&gt;
+　⇒今回&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CC%B5%C0%FELAN&#34;&gt;無線LAN&lt;/a&gt;モジュールは搭載していないので、家のネットワークにつなぐには優先が必要。&lt;br&gt;
+　　&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BD%A9%CD%D5%B8%B6&#34;&gt;秋葉原&lt;/a&gt;のジャンクショップでカテゴリ6の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%C8%A5%EC%A1%BC%A5%C8%A5%B1%A1%BC%A5%D6%A5%EB&#34;&gt;ストレートケーブル&lt;/a&gt;5mで200円でした。（すごいお買い得）&lt;br&gt;
+&lt;b&gt;・OSインストールディスク&lt;/b&gt;&lt;br&gt;
+　⇒作ったPCには&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ubuntu&#34;&gt;Ubuntu&lt;/a&gt;を入れたかったので予め、イメージをDVDに焼いておきました。&lt;/p&gt;
+&lt;p&gt;以下は当然だがないと、セットアップできないので要注意。&lt;br&gt;
+・ディプレイ&lt;br&gt;
+・マウス&lt;br&gt;
+・キーボード&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;完成ものと苦労したこと&lt;/h2&gt;
+    &lt;p&gt;作るだけならとても簡単なのだが、そのなかでも一番苦労したのはやはり「配線」。&lt;br&gt;
+はじめはなにも考えずに配線してたら、蓋が閉まらなくなるわ、ファンに線がぶつかるわ…でやり直した。&lt;br&gt;
+配線を綺麗にするには上であげた「インシュロック」を追加で買っておくといいと思います。&lt;/p&gt;
+&lt;p&gt;表面&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141229/20141229154205.jpg&#34; alt=&#34;f:id:mosuke5:20141229154205j:plain&#34; title=&#34;f:id:mosuke5:20141229154205j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;裏面の配線&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141229/20141229154214.jpg&#34; alt=&#34;f:id:mosuke5:20141229154214j:plain&#34; title=&#34;f:id:mosuke5:20141229154214j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;【おまけ】昼飯&lt;/h2&gt;
+    &lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B7%A5%E5%A5%BF%A5%A4%A5%F3%A5%BA%A5%B2%A1%BC%A5%C8&#34;&gt;シュタインズゲート&lt;/a&gt;のまゆしぃおすすめのメンチカツ屋にいきました。&lt;br&gt;
+ご飯を大盛りにするとすごい量出てくるので注意(笑)&lt;br&gt;
+&lt;a href=&#34;http://tabelog.com/tokyo/A1310/A131001/13000352/&#34;&gt;キッチン ジロー 外神田店 （kitichen JIRO） - 秋葉原/洋食 [食べログ]&lt;/a&gt;&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>【VPS1台でインフラ勉強】SoftEtherを使ってVPN構築</title>
+      <link>https://blog.mosuke.tech/entry/2014/12/07/212156/</link>
+      <pubDate>Sun, 07 Dec 2014 21:21:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/12/07/212156/</guid>
+      <description>
+
+&lt;p&gt;&lt;body&gt;
+&lt;p&gt;VPS1台でインフラ勉強シリーズで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPN&#34;&gt;VPN&lt;/a&gt;構築を行ったのでそのメモ。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;1. 実施したこと&lt;/h2&gt;
+    &lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;のホストサーバを&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;サーバとし、その上で仮想で立ち上げたサーバ(ローカルネットワーク)に外部から接続できるようにすること。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;&lt;/h3&gt;
+    &lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141207/20141207200544.png&#34; alt=&#34;f:id:mosuke5:20141207200544p:plain&#34; title=&#34;f:id:mosuke5:20141207200544p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;2. 環境&lt;/h2&gt;
+    &lt;p&gt;・&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPN&#34;&gt;VPN&lt;/a&gt;ソフトウェア：&lt;a href=&#34;https://ja.softether.org/&#34;&gt;SoftEther VPN プロジェクト - SoftEther VPN プロジェクト&lt;/a&gt;&lt;br&gt;
+・メモリ：１GB&lt;br&gt;
+・CPU：仮想２コア&lt;br&gt;
+・HDD：100GB&lt;br&gt;
+・OS：CentOS7&lt;br&gt;
+・サーバ仮想化：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;(Utuntu13)&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;3. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SoftEther&#34;&gt;SoftEther&lt;/a&gt;のインストール&lt;/h2&gt;
+    &lt;p&gt;インストール手順は公式ドキュメント通りなので簡単にコマンドのみ記述しておく。&lt;br&gt;
+&lt;a href=&#34;https://ja.softether.org/4-docs/1-manual/7/7.3&#34;&gt;7.3 Linux へのインストールと初期設定 - SoftEther VPN プロジェクト&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;【ダウンロードしたもの】&lt;br&gt;
+ここから環境に応じて対象のソフトウェアを選ぶ&lt;br&gt;
+&lt;a href=&#34;http://www.softether-download.com/ja.aspx?product=softether&#34;&gt;SoftEther ダウンロード センター&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;・&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%DD%A1%BC%A5%CD%A5%F3%A5%C8&#34;&gt;コンポーネント&lt;/a&gt;：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SoftEther&#34;&gt;SoftEther&lt;/a&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPN&#34;&gt;VPN&lt;/a&gt; Server&lt;br&gt;
+・プラットフォーム：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Linux&#34;&gt;Linux&lt;/a&gt;&lt;br&gt;
+・CPU：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Intel&#34;&gt;Intel&lt;/a&gt; &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/x86&#34;&gt;x86&lt;/a&gt; / &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AMD64&#34;&gt;AMD64&lt;/a&gt;(64bit)&lt;/p&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;## ダウンロード
+$ wget ttp://jp.softether-download.com/files/softether/v4.08-9449-rtm-2014.06.08-tree/Linux/SoftEther%20VPN%20Server/64bit%20-%20Intel%20x64%20or%20AMD64/softether-vpnserver-v4.08-9449-rtm-2014.06.08-linux-x64-64bit.tar.gz
+
+## 解凍
+$ tar zxvf softether-vpnserver-v4.08-9449-rtm-2014.06.08-linux-x64-64bit.tar.gz
+
+## 実行可能ファイル作成
+$ cd vpnserver/
+$ sudo make
+
+## /usr/localへ配置
+$ sudo mv vpnserver /usr/local
+
+## パーミッション変更
+### 基本的には600。実行ファイルのみ700
+$ cd /usr/local/vpnserver
+$ sudo chown root:root ./*
+$ sudo chmod 600 ./*
+$ sudo chmod 700 ./vpncmd
+$ sudo chmod 700 ./vpnserver
+
+## 動作チェック
+$ sudo ./vpncmd
+1. VPN Server または VPN Bridge の管理
+2. VPN Client の管理
+3. VPN Tools コマンドの使用 (証明書作成や通信速度測定)
+
+1 - 3 を選択: 3
+
+VPN Tools&amp;gt;
+##helpとうつと利用可能なコマンドが出る
+VPN Tools&amp;gt; help
+下記の 6 個のコマンドが使用できます:
+ About         - バージョン情報の表示
+ Check         - SoftEther VPN の動作が可能かどうかチェックする
+ MakeCert      - 新しい X.509 証明書と秘密鍵の作成 (1024 bit)
+ MakeCert2048  - 新しい X.509 証明書と秘密鍵の作成 (2048 bit)
+ TrafficClient - 通信スループット測定ツールクライアントの実行
+ TrafficServer - 通信スループット測定ツールサーバーの実行
+VPN Tools&amp;gt; 
+VPN Tools&amp;gt; Check
+(略)
+すべてのチェックに合格しました。
+VPN Tools&amp;gt; 
+VPN Tools&amp;gt; exit
+
+##起動スクリプトの作成
+$ sudo vim /etc/init.d/vpnserver
+#!/bin/sh
+# chkconfig: 2345 99 01
+# description: SoftEther VPN Server
+DAEMON=/usr/local/vpnserver/vpnserver
+LOCK=/var/lock/subsys/vpnserver
+test -x $DAEMON || exit 0
+case &amp;quot;$1&amp;quot; in
+start)
+$DAEMON start
+touch $LOCK
+;;
+stop)
+$DAEMON stop
+rm $LOCK
+;;
+restart)
+$DAEMON stop
+sleep 3
+$DAEMON start
+;;
+*)
+echo &amp;quot;Usage: $0 {start|stop|restart}&amp;quot;
+exit 1
+esac
+exit 0
+
+##サービス登録
+$ sudo chkconfig --add vpnserver
+$ sudo chkconfig --list vpnserver
+vpnserver       0:off   1:off   2:on    3:on    4:on    5:on    6:off
+
+##起動
+$ sudo /etc/init.d/vpnserver start  
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;4. 設定&lt;/h2&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;section&#34;&gt;
+    &lt;h4&gt;(1)管理者パスワードの設定&lt;/h4&gt;
+&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt; HEAD&lt;/p&gt;
+
+&lt;h1 id=&#34;pre-class-code-data-lang-data-unlink-vpnserverへ接続:c1b6613662ee4f2f8321c8715a84defe&#34;&gt;&lt;pre class=&#34;code&#34; data-lang=&#34;&#34; data-unlink&gt; ## vpnserverへ接続&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;## vpnserverへ接続
+&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt; 4f3b2c72e32161441359f6d2116c410a27a8faaf
+$ sudo ./vpncmd localhost:443 /SERVER
+
+## 管理者パスワード設定
+VPN Server&amp;gt; ServerPasswordSet 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h4&gt;(2)仮想HUBの作成&lt;/h4&gt;
+    &lt;p&gt;デフォルトで「default」という仮想がHUBがあるのでそれで構築。&lt;br&gt;
+自分の仮想HUBを作りたければHubCreateでつくれる。&lt;/p&gt;
+```
+VPN Server&amp;gt; HubCreate&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;※HELPコマンドがだいぶ使えるので使おう。日本語で書かれているのでわかりやすいです。&amp;lt;/p&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;VPN Server&amp;gt;HELP
+下記の 205 個のコマンドが使用できます:
+ About                      - バージョン情報の表示
+ AcAdd                      - 接続元 IP 制限リストにルールを追加 (IPv4)
+ AcAdd6                     - 接続元 IP 制限リストにルールを追加 (IPv6)
+ AcDel                      - 接続元 IP 制限リスト内のルールの削除
+ AcList                     - 接続元 IP 制限リストのルール一覧の取得
+(&amp;hellip;以下略)
+&lt;code&gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;div class=&amp;quot;section&amp;quot;&amp;gt;
+    &amp;lt;h4&amp;gt;(3) &amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/IPsec&amp;quot;&amp;gt;IPsec&amp;lt;/a&amp;gt; &amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/VPN&amp;quot;&amp;gt;VPN&amp;lt;/a&amp;gt; サーバー機能の有効化&amp;lt;/h4&amp;gt;
+    &amp;lt;p&amp;gt;&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/VPN&amp;quot;&amp;gt;VPN&amp;lt;/a&amp;gt;のトンネリングをするにあたって事前共有鍵が必要なので作成する必要がある。&amp;lt;/p&amp;gt;
+&lt;/code&gt;
+VPN Server&amp;gt;IPsecEnable
+    IPsecEnable コマンド - IPsec VPN サーバー機能の有効化 / 無効化
+    L2TP over IPsec サーバー機能を有効 (yes / no): yes
+    Raw L2TP サーバー機能を有効 (yes / no): yes
+    EtherIP / L2TPv3 over IPsec サーバー機能を有効 (yes / no): yes
+    IPsec 事前共有鍵の文字列 (9 文字以下を推奨): *******
+    VPN 接続時に仮想 HUB 名が省略された場合のデフォルト仮想 HUB 名: Default&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;/div&amp;gt;
+&amp;lt;div class=&amp;quot;section&amp;quot;&amp;gt;
+    &amp;lt;h4&amp;gt;(4) グループとユーザの作成&amp;lt;/h4&amp;gt;
+    &amp;lt;p&amp;gt;ユーザを作成するにはグループの作成が必要なので先にグループを作る。&amp;lt;br&amp;gt;
+また、ユーザを作ったでではパスワードが設定されないので忘れずにパスワード設定。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;VPN Server&amp;gt;Hub Default
+VPN Server/DEFAULT&amp;gt;GroupCreate
+    GroupCreate コマンド - グループの作成
+    グループ名: mygroup
+    グループの本名: mygroup
+    グループの説明: mygroup&lt;/p&gt;
+
+&lt;p&gt;VPN Server/DEFAULT&amp;gt;UserCreate
+    UserCreate コマンド - ユーザーの作成
+    ユーザー名: myuser
+    参加するグループ名: mygroup
+    ユーザーの本名: myuser
+    ユーザーの説明: myuser
+    コマンドは正常に終了しました。&lt;/p&gt;
+
+&lt;h2 id=&#34;ユーザを作っただけではパスワードが設定されないので:c1b6613662ee4f2f8321c8715a84defe&#34;&gt;ユーザを作っただけではパスワードが設定されないので&lt;/h2&gt;
+
+&lt;p&gt;VPN Server/DEFAULT&amp;gt; UserPasswordSet
+&lt;code&gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;div class=&amp;quot;section&amp;quot;&amp;gt;
+    &amp;lt;h4&amp;gt;(5) ローカルブリッジの設定&amp;lt;/h4&amp;gt;
+    &amp;lt;p&amp;gt;次にローカルブリッジの設定をする。&amp;lt;br&amp;gt;
+ローカルブリッジは&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/VPN&amp;quot;&amp;gt;VPN&amp;lt;/a&amp;gt;の仮想ネットワークと、LAN の実ネットワーク（ここでは&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/VPS&amp;quot;&amp;gt;VPS&amp;lt;/a&amp;gt;ホストサーバと仮想Webサーバ間のローカルネットワーク）をつなげる設定です。&amp;lt;br&amp;gt;
+ローカルブリッジを行うLANカードを指定する必要があるが、ここでは仮想の「vboxnet0」を使用します。&amp;lt;/p&amp;gt;
+&lt;/code&gt;
+VPN Server/DEFAULT&amp;gt;BridgeCreate
+    BridgeCreate コマンド - ローカルブリッジ接続の作成
+    ブリッジする仮想 HUB 名: Default
+    ブリッジ先のデバイス名: vboxnet0&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;/div&amp;gt;
+&amp;lt;div class=&amp;quot;section&amp;quot;&amp;gt;
+    &amp;lt;h4&amp;gt;(6) &amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/DHCP&amp;quot;&amp;gt;DHCP&amp;lt;/a&amp;gt;の設定&amp;lt;/h4&amp;gt;
+    &amp;lt;p&amp;gt;&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/VPN&amp;quot;&amp;gt;VPN&amp;lt;/a&amp;gt;クライアント側に割り当てる&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&amp;quot;&amp;gt;IPアドレス&amp;lt;/a&amp;gt;のレンジを決めてあげます。&amp;lt;br&amp;gt;
+今回は最小限構成で実現するため、ローカルの&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&amp;quot;&amp;gt;IPアドレス&amp;lt;/a&amp;gt;は同一セグメントとしました。&amp;lt;br&amp;gt;
+192.168.33.0/24を利用セグメントとした。&amp;lt;br&amp;gt;
+また、サーバ側に割り当てているIPとバッティングしないように192.168.33.20以降を&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/DHCP&amp;quot;&amp;gt;DHCP&amp;lt;/a&amp;gt;のIPレンジとした。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;##まずは有効化。これをやらないと「PPPサーバーとの接続が確立ができません」ってなってハマります。
+VPN Server/example&amp;gt; SecureNatEnable&lt;/p&gt;
+
+&lt;p&gt;VPN Server/DEFAULT&amp;gt;DhcpSet
+    DhcpSet コマンド - SecureNAT 機能の仮想 DHCP サーバー機能の設定の変更
+    配布するアドレス帯の開始点: 192.168.33.20
+    配布するアドレス帯の終了点: 192.168.33.50
+    サブネットマスク: 255.255.255.0
+    リース期限 (秒): 7200
+    デフォルトゲートウェイ (未設定可):
+    DNS サーバー 1 (未設定可):
+    DNS サーバー 2 (未設定可):
+    ドメイン名:
+    ログの保存 (yes / no): yes
+```
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;5. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPN&#34;&gt;VPN&lt;/a&gt;接続試験&lt;/h2&gt;
+    &lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/iPhone&#34;&gt;iPhone&lt;/a&gt;の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPN&#34;&gt;VPN&lt;/a&gt;の設定から以下のように設定をする。&lt;br&gt;
+アカウントの部分は「ユーザ名@仮想Hub名」にすること。&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141207/20141207212531.jpg&#34; alt=&#34;f:id:mosuke5:20141207212531j:plain&#34; title=&#34;f:id:mosuke5:20141207212531j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;br&gt;
+&lt;p&gt;接続すると、ローカルのIPが割り当てられていることを確認。&lt;br&gt;
+途中で切れているが192.168.33.21が割り当てられました。&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141207/20141207212546.jpg&#34; alt=&#34;f:id:mosuke5:20141207212546j:plain&#34; title=&#34;f:id:mosuke5:20141207212546j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPN&#34;&gt;VPN&lt;/a&gt;につないだ状態でブラウザから192.168.33.10にアクセスすると”It works!!!”。&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141207/20141207212556.jpg&#34; alt=&#34;f:id:mosuke5:20141207212556j:plain&#34; title=&#34;f:id:mosuke5:20141207212556j:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;6 最後に&lt;/h2&gt;
+    &lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPN&#34;&gt;VPN&lt;/a&gt;の構築そのものはなんとかできるが、やはり奥は深い。&lt;br&gt;
+挙動がまだ不安定な部分もあるので、きちんと仕組みを理解していくことと、&lt;br&gt;
+今回は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPN&#34;&gt;VPN&lt;/a&gt;クライアント側とアクセス先サーバを同一セグメントとしたので、L3の設定などをして違うセグメントにもアクセスできるようにしていきたい。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ansible, sudoパスワード要求を忘れただけでめんどくなる</title>
+      <link>https://blog.mosuke.tech/entry/2014/11/28/001748/</link>
+      <pubDate>Fri, 28 Nov 2014 00:17:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/11/28/001748/</guid>
+      <description>
+
+&lt;p&gt;&lt;body&gt;
+&lt;p&gt;Ansibleを&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;上でずっと使ってて、Playbookも完成したし本番サーバへ&amp;hellip;&lt;br&gt;
+と思ったところである初歩的な罠にハマった。&lt;/p&gt;
+&lt;p&gt;本番環境へPalybook実行！！&lt;/p&gt;
+```
+$ ansible-playbook playbook.yml -i hosts&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;あれ、GATHERING FACTSで10分以上も待たされた...&amp;lt;br&amp;gt;
+しかも、エラー出た...&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;GATHERING FACTS
+failed to parse [ sudo via ansible, key= &amp;hellip;.. ]
+&lt;code&gt;
+&amp;lt;p&amp;gt;sudoできていない...？&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;playbook内のsudo: yesを外して実行。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;GATHERING FACTSは通過。&amp;lt;br&amp;gt;
+しかし、当たり前だがsudo で実行すべき部分で失敗...&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;とても単純なことに気づいた...&amp;lt;br&amp;gt;
+・&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/Vagrant&amp;quot;&amp;gt;Vagrant&amp;lt;/a&amp;gt;環境ではsudoのパスワードを要求されない&amp;lt;br&amp;gt;
+・本番環境はsudoのパスワードを要求されること&amp;lt;br&amp;gt;
+・sudoのパスワードを入力するようにしていなかったこと&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;というわけで-Kをつけて実行&amp;lt;/p&amp;gt;
+&lt;/code&gt;
+$ ansible-playbook playbook.yml -i hosts -K&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;うまくいった...&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;完全なる私のミスなんだが、ただ-Kオプションを忘れるだけで、一回の実行に10分ほども待たされるのは…。&amp;lt;br&amp;gt;
+しかもGATHERING FACTSで止まっているときはCtl+Cで中断も聞かなかった。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;要注意ですね。。。&amp;lt;/p&amp;gt;
+&amp;lt;br&amp;gt;
+&amp;lt;p&amp;gt;ちなみに、こんな方法で解決もできる。&amp;lt;br&amp;gt;
+sudoのパスワードを聞かれなくして対応。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;visudo:e62e8b218521d80b052b676f1c595d9b&#34;&gt;visudo&lt;/h1&gt;
+
+&lt;p&gt;user_name ALL=(ALL) NOPASSWD: ALL
+```
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>GithubクローンのGitlabの導入とその際のちょっとした注意点</title>
+      <link>https://blog.mosuke.tech/entry/2014/11/22/190648/</link>
+      <pubDate>Sat, 22 Nov 2014 19:06:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/11/22/190648/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;もろもろな理由のために&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Github&#34;&gt;Github&lt;/a&gt;が利用できないことも多くあると思う。&lt;br&gt;
+というわけで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Github&#34;&gt;Github&lt;/a&gt;クローンのGitlabを試しに立ててみたが、簡単すぎでした…&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://about.gitlab.com/&#34;&gt;GitLab | Open source software to collaborate on code&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;環境&lt;br&gt;
+さくら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt; 1Gプラン&lt;br&gt;
+OS：CentOS7&lt;/p&gt;
+&lt;p&gt;インストール&lt;br&gt;
+基本的にはドキュメントに書いてある以下のとおりで終わり。&lt;/p&gt;
+```
+$ curl -O &lt;a href=&#34;https://downloads-packages.s3.amazonaws.com/centos-7.0.1406/gitlab-7.5.1_omnibus.5.2.0.ci-1.el7.x86_64.rpm&#34;&gt;https://downloads-packages.s3.amazonaws.com/centos-7.0.1406/gitlab-7.5.1_omnibus.5.2.0.ci-1.el7.x86_64.rpm&lt;/a&gt;
+$ sudo yum install openssh-server
+$ sudo systemctl enable sshd
+$ sudo systemctl start sshd
+$ sudo yum install postfix
+$ sudo systemctl enable postfix
+$ sudo systemctl start postfix
+$ sudo rpm -i gitlab-7.5.1_omnibus.5.2.0.ci-1.el7.x86_64.rpm&lt;/p&gt;
+
+&lt;p&gt;$ sudo gitlab-ctl reconfigure
+$ sudo firewall-cmd &amp;ndash;permanent &amp;ndash;add-service=http # open up the firewall for HTTP and SSH requests
+$ sudo systemctl reload firewalld&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;しかし１つ気をつけないといけないことがある。&amp;lt;br&amp;gt;
+gitlabでは裏でNginxが起動しhttpのレスポンスに応答する。&amp;lt;br&amp;gt;
+すでに&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/Apache&amp;quot;&amp;gt;Apache&amp;lt;/a&amp;gt;等が動いている場合には停止、あるいはポート番号の変更などの工夫が必要。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;ちなみに&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/Apache&amp;quot;&amp;gt;Apache&amp;lt;/a&amp;gt;を停止し、Gitlabを起動した状態で80番ポートのプロセスをみると。&amp;lt;br&amp;gt;
+nginxが動いていることがわかります。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ sudo lsof -i:80
+COMMAND   PID       USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+nginx   25937       root    6u  IPv4  84715      0t0  TCP *:http (LISTEN)
+nginx   25942 gitlab-www    6u  IPv4  84715      0t0  TCP *:http (LISTEN)
+nginx   25943 gitlab-www    6u  IPv4  84715      0t0  TCP *:http (LISTEN)
+```
+&lt;p&gt;特定のポートで何が起動しているかみるのに&lt;b&gt;lsof&lt;/b&gt;コマンドはとても便利。&lt;/p&gt;
+&lt;p&gt;あともう一つとまどったのが、GItlabを起動させたものの、はじめログイン方法がわからなかった。&lt;br&gt;
+が、よーくページのしたの方よくみると書いてありました。（単なる見落とし）&lt;/p&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;blockquote&amp;gt;
+    &amp;lt;p&amp;gt;Browse to the hostname and login &amp;lt;br&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Username: root &lt;br&gt;
+Password: 5iveL!fe&lt;/p&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;/blockquote&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>後からGitレポジトリを共有設定に。sharedオプションの仕組みについて</title>
+      <link>https://blog.mosuke.tech/entry/2014/11/20/230334/</link>
+      <pubDate>Thu, 20 Nov 2014 23:03:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/11/20/230334/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;Git&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&#34;&gt;レポジトリ&lt;/a&gt;を作って、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4%BF%CD&#34;&gt;複数人&lt;/a&gt;で開発をしていた。&lt;br&gt;
+しかし、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&#34;&gt;レポジトリ&lt;/a&gt;の中に作成されるファイルやディレクトリが個人のグループになってしまい、&lt;br&gt;
+Push, PullするときにPermission &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/error&#34;&gt;error&lt;/a&gt;で怒られまくる。&lt;/p&gt;
+&lt;p&gt;ユーザには共通のグループを作っていたのに…なんでだっけ…&lt;/p&gt;
+&lt;p&gt;気づけば&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&#34;&gt;レポジトリ&lt;/a&gt;を作るとき以下のようにしていた。&lt;/p&gt;
+```
+$ git init &amp;ndash;bare&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4%BF%CD&amp;quot;&amp;gt;複数人&amp;lt;/a&amp;gt;で共有するときには以下のようにするべきであった。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ git init &amp;ndash;bare &amp;ndash;shared
+&lt;code&gt;
+&amp;lt;p&amp;gt;では、そもそもgitのsharedオプションをつけると何が裏で起こっているのか。&amp;lt;br&amp;gt;
+調べると「&amp;lt;b&amp;gt;setgid&amp;lt;/b&amp;gt;」というキーワードに辿り着いた。&amp;lt;br&amp;gt;
+setgidの権限を付けておくと、そのディレクトリに作成されたファイルの所有グループは、そのディレクトリの所有グループになる。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;以下のようにchmodでsetgidを付けることができる。&amp;lt;/p&amp;gt;
+&lt;/code&gt;
+$ chmod g+s dir_name&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;setgidがつくとあまり馴染みのない権限がつく。&amp;lt;br&amp;gt;
+「drwxrw&amp;lt;span style=&amp;quot;color: #ff40ff&amp;quot;&amp;gt;&amp;lt;b&amp;gt;s&amp;lt;/b&amp;gt;&amp;lt;/span&amp;gt;r-x」&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ ls -l
+drwxrwsr-x  4 user  group  136 11 16 22:49 test_dir
+&lt;code&gt;
+&amp;lt;p&amp;gt;そして、すでに共有設定なしで作ってしまった&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&amp;quot;&amp;gt;レポジトリ&amp;lt;/a&amp;gt;では以下のように対応可能。&amp;lt;br&amp;gt;
+（新しく&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/%A5%EC%A5%DD%A5%B8%A5%C8%A5%EA&amp;quot;&amp;gt;レポジトリ&amp;lt;/a&amp;gt;つくるのはめんどいので…）&amp;lt;/p&amp;gt;
+&lt;/code&gt;
+##Gigレポジトリ内のディレクトリに
+$ chmod -R g+s ./branches
+$ chmod -R g+s ./hooks
+$ chmod -R g+s ./info
+$ chmod -R g+s ./objects
+$ chmod -R g+s ./refs
+$ vim .git/config
+  ##[core内に]以下を付け加えておいた
+  [core]
+       repositoryformatversion = 0
+```
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ansible、コマンドでワイルドカードを使うときの注意</title>
+      <link>https://blog.mosuke.tech/entry/2014/11/18/225542/</link>
+      <pubDate>Tue, 18 Nov 2014 22:55:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/11/18/225542/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;AnsibleのPlaybookを書いていると、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EF%A5%A4%A5%EB%A5%C9%A5%AB%A1%BC%A5%C9&#34;&gt;ワイルドカード&lt;/a&gt;を含んだコマンドを実行したい時がある。&lt;br&gt;
+そんなときあるところでハマった。&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Apache&#34;&gt;Apache&lt;/a&gt;をソースインストールして、パスを/usr/sbinにリンクを貼ろうとして以下を実行した。&lt;/p&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;- command: ln -s /usr/local/httpd/bin/* /usr/sbin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;/usr/sbin内に「*」というリンクが貼られてしまった。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;* -&amp;gt; /usr/local/httpd/bin 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;p&gt;どうやらcommandモジュールは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EF%A5%A4%A5%EB%A5%C9%A5%AB%A1%BC%A5%C9&#34;&gt;ワイルドカード&lt;/a&gt;に対応していないよう。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%EF%A5%A4%A5%EB%A5%C9%A5%AB%A1%BC%A5%C9&#34;&gt;ワイルドカード&lt;/a&gt;を使いたいときはshellモジュールを利用すると良い。&lt;/p&gt;
+&lt;code&gt;yaml
+- shell: ln -s /usr/local/httpd/bin/* /usr/sbin
+&lt;/code&gt;
+&lt;p&gt;また、&lt;em&gt;というリンクを消すときは要注意（笑）&lt;/p&gt;
+```
+$ rm ./&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;とやってしまうとあたりまえだがやばいので&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ rm ./¥*
+```
+&lt;p&gt;こうですね…&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ansible、ソースインストールする際のPalybookの書き方</title>
+      <link>https://blog.mosuke.tech/entry/2014/11/16/153223/</link>
+      <pubDate>Sun, 16 Nov 2014 15:32:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/11/16/153223/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;最近、Ansibleを使い始めたのだが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/yum&#34;&gt;yum&lt;/a&gt;やapt-getでインストールできるものはいいけど、&lt;br&gt;
+どうしてもソースインストールが必要な場合がある。&lt;/p&gt;
+&lt;p&gt;ソースインストールを行う際のPlaybookの書き方と注意点をまとめた。&lt;/p&gt;
+&lt;p&gt;まず、あたりまえだが、ソースインストールを行うには以下のフローを踏まなければいけな。&lt;br&gt;
+1. ソースファイルの取得(tarで固められていると仮定)&lt;br&gt;
+2. tarファイルの解凍&lt;br&gt;
+3. 解答してできたディレクトリへ移動&lt;br&gt;
+4. configure&lt;br&gt;
+5. make&lt;br&gt;
+6. make install&lt;/p&gt;
+&lt;p&gt;また、Ansibleでは何回もPlaybookを実行していくため、&lt;br&gt;
+&lt;b&gt;すでにインストールされている場合は、インストールをスキップする&lt;/b&gt;必要がある。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/yum&#34;&gt;yum&lt;/a&gt;やapt-getで管理されていれば上記を心配することはないのだが、やはりソースインストールだとこの壁がある。&lt;br&gt;
+※パッケージ化しろよ！というツッコミは禁止&lt;/p&gt;
+&lt;p&gt;今回は例として、ubuntu13に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/emacs&#34;&gt;emacs&lt;/a&gt;をソースインストールするのを例としてみた。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;環境&lt;/h3&gt;
+    &lt;p&gt;【Ansible実行側】&lt;br&gt;
+さくら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;の1G&lt;br&gt;
+OS: &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Centos&#34;&gt;Centos&lt;/a&gt; 7&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;:192.168.33.1&lt;/p&gt;
+&lt;p&gt;【設定対象側】&lt;br&gt;
+上記さくら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;上にたてた&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;の仮想サーバ&lt;br&gt;
+OS: &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ubuntu&#34;&gt;Ubuntu&lt;/a&gt; 13.10&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&#34;&gt;IPアドレス&lt;/a&gt;:192.168.33.100&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;Playbook&lt;/h3&gt;
+    &lt;p&gt;以下playbookの例。&lt;/p&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;---
+- hosts: 192.168.33.100
+  user: vagrant
+  sudo: yes
+
+  vars:
+    src_dir: /usr/local/src
+    emacs_ver: emacs-23.4
+
+  tasks:
+   ## emacsのソースファイルを取得済みか確認
+   - name: check exist emacs source file
+     command: ls -l {{src_dir}}/{{emacs_ver}}.tar.gz
+     ignore_errors: True
+     register: result1
+
+   ## emacsのソースファイル取得。ただし、すでに取得済みならスキップ
+   - name: get emacs source file
+     command: chdir={{src_dir}} wget http://mirror.jre655.com/GNU/emacs/{{emacs_ver}}.tar.gz
+     when: result1|failed
+
+   ## emacsのソースインストールを解凍
+   - name: get emacs source file
+     command: chdir={{src_dir}} tar xvf {{emacs_ver}}.tar.gz
+     when: result1|failed
+
+   ## emacsがインストールされているか確認
+   #  確認基準はemacsコマンドのpathが通っているかで判断した
+   - name: check emacs install
+     command: which emacs
+     ignore_errors: True
+     register: result2
+
+   ## emacsのインストール。ただしすでにemacsがインストールされいたらスキップ
+   - name: expand emacs src
+     command: chdir={{src_dir}} tar xvf {{emacs_ver}}.tar.gz
+     when: result2|failed
+
+   - name: comfigure emacs
+     command: chdir={{src_dir}}/{{emacs_ver}} ./configure
+     when: result2|failed
+
+   - name: make emacs
+     command: chdir={{src_dir}}/{{emacs_ver}} make
+     when: result2|failed
+
+   - name: install emacs
+     command: chdir={{src_dir}}/{{emacs_ver}} make install
+     when: result2|failed
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>【VPS1台でインフラ勉強】多段SSH設定（おまけ）</title>
+      <link>https://blog.mosuke.tech/entry/2014/11/09/172745/</link>
+      <pubDate>Sun, 09 Nov 2014 17:27:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/11/09/172745/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;VPS1台でインフラ勉強の会で、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;のホストサーバ上に仮想でさらにいつくかのサーバを立てたが、&lt;br&gt;
+仮想のサーバにアクセスするには、ホストサーバにアクセスしてから更に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;をしなければならない。&lt;br&gt;
+これが面倒だったので多段&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;の設定をして、一発で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;接続できるようにした。&lt;/p&gt;
+&lt;p&gt;以下の図で言うと、web10, web11(192.168.33.&lt;sup&gt;10&lt;/sup&gt;&amp;frasl;&lt;sub&gt;11&lt;/sub&gt;)に一発で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SSH&#34;&gt;SSH&lt;/a&gt;できるようにする。&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141109/20141109170337.png&#34; alt=&#34;f:id:mosuke5:20141109170337p:plain&#34; title=&#34;f:id:mosuke5:20141109170337p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;クライアントPC側に以下の設定をした。&lt;/p&gt;
+```
+$ vim ~/.ssh/config
+host gateway
+    HostName xxxxx.xxx
+    User username&lt;/p&gt;
+
+&lt;p&gt;Host web10
+    HostName 192.168.33.10
+    User vagrant
+    ProxyCommand ssh -W %h:%p gateway&lt;/p&gt;
+
+&lt;p&gt;Host web11
+    HostName 192.168.33.11
+    User vagrant
+    ProxyCommand ssh -W %h:%p gateway&lt;/p&gt;
+
+&lt;p&gt;##これで以下で接続可能
+$ ssh web10
+$ ssh  web11
+```
+&lt;p&gt;簡単でした。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>【VPS1台でインフラ勉強】HAProxyでロードバランサーを構築</title>
+      <link>https://blog.mosuke.tech/entry/2014/11/09/171436/</link>
+      <pubDate>Sun, 09 Nov 2014 17:14:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/11/09/171436/</guid>
+      <description>
+
+&lt;p&gt;&lt;body&gt;
+&lt;p&gt;前回の&lt;a href=&#34;https://blog.mosuke.tech/entry/2014/10/09/230555&#34;&gt;【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築&lt;/a&gt;に続き、同様の環境を用いて、ロードバランサ構築を行った。&lt;br&gt;
+ロードバランサの構築にはHAProxyを利用した。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;1. 環境&lt;/h3&gt;
+    &lt;p&gt;前回同様で、さくら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;の1GBのプラン1台のみ。&lt;br&gt;
+・メモリ：１GB&lt;br&gt;
+・CPU：仮想２コア&lt;br&gt;
+・HDD：100GB&lt;br&gt;
+・OS：CentOS7&lt;br&gt;
+・サーバ仮想化：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;(Utuntu13)&lt;br&gt;
+・ロードバランサ：&lt;a href=&#34;http://www.haproxy.org/&#34;&gt;HAProxy - The Reliable, High Performance TCP/HTTP Load Balancer&lt;/a&gt;&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;2. 構成図&lt;/h3&gt;
+    &lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141109/20141109170337.png&#34; alt=&#34;f:id:mosuke5:20141109170337p:plain&#34; title=&#34;f:id:mosuke5:20141109170337p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;3. ロードバランサの構築&lt;/h3&gt;
+    &lt;p&gt;■ホストサーバ側の設定&lt;/p&gt;
+```
+#HAProxyインストール
+$ sudo yum install haproxy&lt;/p&gt;
+
+&lt;p&gt;#設定はすごく簡単で以下のファイルのみ。実際に
+$ sudo vim /etc/haproxy/haproxy.cfg&lt;/p&gt;
+
+&lt;p&gt;#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/p&gt;
+
+&lt;h1 id=&#34;example-configuration-for-a-possible-web-application-see-the:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;Example configuration for a possible web application.  See the&lt;/h1&gt;
+
+&lt;h1 id=&#34;full-configuration-options-online:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;full configuration options online.&lt;/h1&gt;
+
+&lt;p&gt;#&lt;/p&gt;
+
+&lt;h1 id=&#34;http-haproxy-1wt-eu-download-1-4-doc-configuration-txt:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;&lt;a href=&#34;http://haproxy.1wt.eu/download/1.4/doc/configuration.txt&#34;&gt;http://haproxy.1wt.eu/download/1.4/doc/configuration.txt&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;#
+#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/p&gt;
+
+&lt;p&gt;#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/p&gt;
+
+&lt;h1 id=&#34;global-settings:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;Global settings&lt;/h1&gt;
+
+&lt;p&gt;#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;
+global&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;log         127.0.0.1 local6 debug
+
+chroot      /var/lib/haproxy
+pidfile     /var/run/haproxy.pid
+maxconn     4000
+user        haproxy
+group       haproxy
+daemon
+
+# turn on stats unix socket
+stats socket /var/lib/haproxy/stats
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/p&gt;
+
+&lt;h1 id=&#34;common-defaults-that-all-the-listen-and-backend-sections-will:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;common defaults that all the &amp;lsquo;listen&amp;rsquo; and &amp;lsquo;backend&amp;rsquo; sections will&lt;/h1&gt;
+
+&lt;h1 id=&#34;use-if-not-designated-in-their-block:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;use if not designated in their block&lt;/h1&gt;
+
+&lt;p&gt;#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;
+defaults&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;##ロードバランサの動作モード。tcpにするとL4ロードバランサになる。httpにするとL7ロードバランサ。
+mode                    http
+log                     global
+option              log-health-checks
+option                  httplog
+option                  dontlognull
+
+##ヘルスチェック用のhtmlファイルをWebサーバ側に設置している。設置については後述。
+option httpchk GET /health_check.html HTTP/1.0\r\nUser-agent:\ Proxy-Check
+
+option http-server-close
+option forwardfor       except 127.0.0.0/8
+option                  redispatch
+retries                 3
+timeout http-request    10s
+timeout queue           1m
+timeout connect         10s
+timeout client          1m
+timeout server          1m
+timeout http-keep-alive 10s
+timeout check           10s
+maxconn                 3000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/p&gt;
+
+&lt;h1 id=&#34;main-frontend-which-proxys-to-the-backends:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;main frontend which proxys to the backends&lt;/h1&gt;
+
+&lt;p&gt;#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;
+frontend  main *:80
+    default_backend             hoge&lt;/p&gt;
+
+&lt;p&gt;#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/p&gt;
+
+&lt;h1 id=&#34;round-robin-balancing-between-the-various-backends:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;round robin balancing between the various backends&lt;/h1&gt;
+
+&lt;p&gt;#&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;
+backend hoge
+    balance     roundrobin
+    server      web10 192.168.33.10:80 check inter 3000 fall 2 rise 2
+    server      web11 192.168.33.11:80 check inter 3000 fall 2 rise 2&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;L4, L7のロードバランサについては以下参照。&amp;lt;br&amp;gt;
+&amp;lt;a href=&amp;quot;http://www.atmarkit.co.jp/ait/articles/0302/05/news001.html&amp;quot;&amp;gt;ロードバランサの本質（1）：パケットフローから負荷分散の基本を理解する - ＠IT&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;ロードバランサ側でhttpのリクエストを返していないことを意味づけるために&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/apache&amp;quot;&amp;gt;apache&amp;lt;/a&amp;gt;, nginxを停止しておく。&amp;lt;br&amp;gt;
+（特に意味は無いが念押し確認のため）&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ sudo systemctl stop nginx
+$ sudo systemctl stop httpd
+&lt;code&gt;
+&amp;lt;p&amp;gt;HAProxyのログをsyslogに残すように設定する。&amp;lt;br&amp;gt;
+ただしメインのmessageではなく、独自のファイルに書くために以下の設定。&amp;lt;/p&amp;gt;
+&lt;/code&gt;
+##ログの格納場所作成
+$ sudo mkdir /var/log/haproxy&lt;/p&gt;
+
+&lt;p&gt;##syslogの設定変更
+$ vim /etc/rsyslog.d/haproxy.conf
+   $ModLoad imudp
+   $UDPServerRun 514
+   $template Haproxy,&amp;ldquo;%msg%\n&amp;rdquo;
+   local6.* -/var/log/haproxy/haproxy.log;Haproxy&lt;/p&gt;
+
+&lt;p&gt;$ vim /etc/sysconfig/rsyslog
+以下を追加
+SYSLOGD_OPTIONS=&amp;ldquo;-r&amp;rdquo;&lt;/p&gt;
+
+&lt;h2 id=&#34;haproxyの起動:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;haproxyの起動&lt;/h2&gt;
+
+&lt;p&gt;$ sudo systemctl start haproxy&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;&amp;lt;br&amp;gt;
+■Webサーバの設定&amp;lt;br&amp;gt;
+仮想でのWebサーバ構築は省くが、Apache2をインストールしただけである。&amp;lt;br&amp;gt;
+仮想でのサーバ構築は前回を参照。&amp;lt;br&amp;gt;
+&amp;lt;a href=&amp;quot;https://blog.mosuke.tech/entry/2014/10/09/230555&amp;quot;&amp;gt;【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築&amp;lt;/a&amp;gt;&amp;lt;br&amp;gt;
+&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;var-www-html配下にヘルスチェック用のhtml設置:4125f84bdd8b5afb55876442f92cb5ec&#34;&gt;/var/www/html配下にヘルスチェック用のhtml設置&lt;/h2&gt;
+
+&lt;p&gt;$ sudo touch health_check.html
+&lt;code&gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;div class=&amp;quot;section&amp;quot;&amp;gt;
+    &amp;lt;h3&amp;gt;4. 動作試験&amp;lt;/h3&amp;gt;
+    &amp;lt;p&amp;gt;ブラウザよりホストサーバへアクセス。&amp;lt;br&amp;gt;
+きちんとロードバランスされていることを確認。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;HAProxy側のログは以下のとおり。&amp;lt;/p&amp;gt;
+&lt;/code&gt;
+$ sudo tail -f /var/log/haproxy/haproxy.conf&lt;/p&gt;
+
+&lt;p&gt;##起動した時。L7のhealt checkが走っている
+Proxy main started.
+Proxy hoge started.
+Health check for server hoge/web10 succeeded, reason: Layer7 check passed, code: 200, info: &amp;ldquo;OK&amp;rdquo;, check duration: 33ms, status: &lt;sup&gt;2&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; UP.
+Health check for server hoge/web11 succeeded, reason: Layer7 check passed, code: 200, info: &amp;ldquo;OK&amp;rdquo;, check duration: 12ms, status: &lt;sup&gt;2&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; UP.&lt;/p&gt;
+
+&lt;p&gt;##webサーバ側でapacheを停止
+Health check for server hoge/web11 failed, reason: Layer7 wrong status, code: 404, info: &amp;ldquo;Not Found&amp;rdquo;, check duration: 13ms, status: &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; UP.
+Health check for server hoge/web11 failed, reason: Layer7 wrong status, code: 404, info: &amp;ldquo;Not Found&amp;rdquo;, check duration: 8ms, status: 0/2 DOWN.&lt;/p&gt;
+
+&lt;p&gt;##webサーバ側でhealth_check.htmlを削除した時も同様に
+Health check for server hoge/web11 failed, reason: Layer7 wrong status, code: 404, info: &amp;ldquo;Not Found&amp;rdquo;, check duration: 13ms, status: &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; UP.
+Health check for server hoge/web11 failed, reason: Layer7 wrong status, code: 404, info: &amp;ldquo;Not Found&amp;rdquo;, check duration: 8ms, status: 0/2 DOWN.&lt;/p&gt;
+
+&lt;p&gt;##webサーバ側でhealth_check.htmlを復活させた時
+Health check for server hoge/web11 succeeded, reason: Layer7 check passed, code: 200, info: &amp;ldquo;OK&amp;rdquo;, check duration: 8ms, status: &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; DOWN.
+Health check for server hoge/web11 succeeded, reason: Layer7 check passed, code: 200, info: &amp;ldquo;OK&amp;rdquo;, check duration: 6ms, status: &lt;sup&gt;2&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2&lt;/sub&gt; UP.
+Server hoge/web11 is UP. 2 active and 0 backup servers online. 0 sessions requeued, 0 total in queue.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;Webサーバ側の&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/Apache&amp;quot;&amp;gt;Apache&amp;lt;/a&amp;gt;ログを見てみると。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ sudo tail -f /var/log/apache2/access.log&lt;/p&gt;
+
+&lt;p&gt;##ロードバランサからのヘルスチェックが来ていることがわかる。
+192.168.33.1 - - [09/Nov/2014:08:07:43 +0000] &amp;ldquo;GET /health_check.html HTTP/1.0&amp;rdquo; 200 276 &amp;ldquo;-&amp;rdquo; &amp;ldquo;Proxy-Check&amp;rdquo;
+192.168.33.1 - - [09/Nov/2014:08:07:46 +0000] &amp;ldquo;GET /health_check.html HTTP/1.0&amp;rdquo; 200 276 &amp;ldquo;-&amp;rdquo; &amp;ldquo;Proxy-Check&amp;rdquo;
+192.168.33.1 - - [09/Nov/2014:08:07:49 +0000] &amp;ldquo;GET /health_check.html HTTP/1.0&amp;rdquo; 200 276 &amp;ldquo;-&amp;rdquo; &amp;ldquo;Proxy-Check&amp;rdquo;
+192.168.33.1 - - [09/Nov/2014:08:07:52 +0000] &amp;ldquo;GET /health_check.html HTTP/1.0&amp;rdquo; 200 276 &amp;ldquo;-&amp;rdquo; &amp;ldquo;Proxy-Check&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;##Webからのアクセスが来た場合
+##SorceのIPはロードバランサにIPになっているが、UserAgentなど書き込まれていることを確認。
+192.168.33.1 - - [09/Nov/2014:08:10:06 +0000] &amp;ldquo;GET / HTTP/1.1&amp;rdquo; 200 488 &amp;ldquo;-&amp;rdquo; &amp;ldquo;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10) AppleWebKit/600.1.25 (KHTML, like Gecko) Version/8.0 Safari/600.1.25&amp;rdquo;
+```
+&lt;/div&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>自宅サーバ公開時などのDDNS、固定IPについて整理</title>
+      <link>https://blog.mosuke.tech/entry/2014/10/19/170854/</link>
+      <pubDate>Sun, 19 Oct 2014 17:08:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/10/19/170854/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BC%AB%C2%F0%A5%B5%A1%BC%A5%D0&#34;&gt;自宅サーバ&lt;/a&gt;を公開するときに使う&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/DDNS&#34;&gt;DDNS&lt;/a&gt;や固定IP。&lt;br&gt;
+それが必要な理由について図解的にまとめ。それだけ。&lt;/p&gt;
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141019/20141019170702.png&#34; alt=&#34;f:id:mosuke5:20141019170702p:plain&#34; title=&#34;f:id:mosuke5:20141019170702p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>【VPS1台でインフラ勉強】サーバ複数台構成、Nginxでリバースプロキシ構築</title>
+      <link>https://blog.mosuke.tech/entry/2014/10/09/230555/</link>
+      <pubDate>Thu, 09 Oct 2014 23:05:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/10/09/230555/</guid>
+      <description>
+
+&lt;p&gt;&lt;body&gt;
+&lt;p&gt;ロードバランシングとか&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%B9%A5%BF%A5%EA%A5%F3%A5%B0&#34;&gt;クラスタリング&lt;/a&gt;とかリバースプロキシとか、&lt;br&gt;
+業務でも使っているし、概念とかはわかってるけど、自分で構築したことはやっぱりない。&lt;/p&gt;
+&lt;p&gt;自分で構築してみたいなーと思いつつもあたりまえだけど、サーバやネットワーク機器をそう簡単に調達もできない。&lt;br&gt;
+お金も当然ない。&lt;/p&gt;
+&lt;p&gt;というわけで、さくら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;で仮想化つかってロードバランシングとか&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%B9%A5%BF%A5%EA%A5%F3%A5%B0&#34;&gt;クラスタリング&lt;/a&gt;とかリバースプロキシとか勉強しましょうという「サーバインフラ会」を友人と始めた。&lt;br&gt;
+その第１回目のメモ。&lt;/p&gt;
+&lt;p&gt;第1回 サーバ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%A3%BF%F4&#34;&gt;複数&lt;/a&gt;台構成、Nginxでリバースプロキシ構築&lt;br&gt;
+第2回 &lt;a href=&#34;https://blog.mosuke.tech/entry/2014/11/09/171436&#34;&gt;HAProxyでロードバランサ構築&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div style=&#34;border: solid 1px #dddddd;&#34;&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;1. 使用した環境&lt;/h2&gt;
+    &lt;p&gt;まず今回利用した環境は以下のとおり。&lt;br&gt;
+さくら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;の1GBのプラン。&lt;br&gt;
+・メモリ：１GB&lt;br&gt;
+・CPU：仮想２コア&lt;br&gt;
+・HDD：100GB&lt;br&gt;
+・OS：CentOS7&lt;br&gt;
+・仮想化：&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;&lt;br&gt;
+　→dockerなどもはじめ検討していたが、コンテナ型仮想化だとサーバ感がでないので、よりサーバとして意識できる&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;を採用&lt;/p&gt;
+&lt;p&gt;【参考】&lt;br&gt;
+&lt;a href=&#34;http://vps.sakura.ad.jp/specification.html&#34;&gt;料金・サービス仕様 | VPS（仮想専用サーバ）は「さくらのVPS」&lt;/a&gt;&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;2. 完成イメージ・物理イメージ&lt;/h2&gt;
+    &lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140930/20140930210924.png&#34; alt=&#34;f:id:mosuke5:20140930210924p:plain&#34; title=&#34;f:id:mosuke5:20140930210924p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div style=&#34;border: solid 1px #dddddd;&#34;&gt;&lt;/div&gt;
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20140930/20140930210914.png&#34; alt=&#34;f:id:mosuke5:20140930210914p:plain&#34; title=&#34;f:id:mosuke5:20140930210914p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h2&gt;3. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;でWebサーバ２台分を構築する&lt;/h2&gt;
+    &lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;の詳細な利用方法は公式ドキュメントをみてもらうとするが、セットアップまでのひととおりの流れと注意点のみ記載する。&lt;br&gt;
+&lt;a href=&#34;https://docs.vagrantup.com/v2/&#34;&gt;Vagrant Documentation&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;今回はWebサーバ２台を仮想で実現するので、それぞれweb1, web2とする。&lt;br&gt;
+それぞれのディレクトリを作成。&lt;/p&gt;
+```&lt;/p&gt;
+
+&lt;h2 id=&#34;web1-web2のディレクトリ作成:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;web1, web2のディレクトリ作成&lt;/h2&gt;
+
+&lt;p&gt;$ pwd
+/home/vagrant
+$ mkdir web1
+$ mkdir web2&lt;/p&gt;
+
+&lt;h2 id=&#34;仮想化で利用するosイメージをダウンロード:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;仮想化で利用するOSイメージをダウンロード&lt;/h2&gt;
+
+&lt;p&gt;$ vagrant box add ubuntu1310 ¥
+&lt;a href=&#34;http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box&#34;&gt;http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;web1サーバ構築:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;web1サーバ構築&lt;/h2&gt;
+
+&lt;p&gt;$ cd web1
+$ vagrant init ubuntu1310&lt;/p&gt;
+
+&lt;h2 id=&#34;ほぼほぼデフォルトの設定だが以下２つだけは設定を行った:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;ほぼほぼデフォルトの設定だが以下２つだけは設定を行った。&lt;/h2&gt;
+
+&lt;p&gt;$ vim Vagrantfile&lt;/p&gt;
+
+&lt;h1 id=&#34;1-プライベートアドレスの割り当て:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;(1)プライベートアドレスの割り当て。&lt;/h1&gt;
+
+&lt;p&gt;config.vm.network &amp;ldquo;private_network&amp;rdquo;, ip: &amp;ldquo;192.168.33.10&amp;rdquo;&lt;/p&gt;
+
+&lt;h1 id=&#34;2-1gbしかメモリがないのでこの設定をしないと２つ仮想化するとだいぶ大変なことになりました:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;(2)1GBしかメモリがないのでこの設定をしないと２つ仮想化するとだいぶ大変なことになりました。&lt;/h1&gt;
+
+&lt;p&gt;config.vm.provider &amp;ldquo;virtualbox&amp;rdquo; do |vb|
+     vb.customize [&amp;ldquo;modifyvm&amp;rdquo;, :id, &amp;ldquo;&amp;ndash;memory&amp;rdquo;, &amp;ldquo;128&amp;rdquo;]
+end&lt;/p&gt;
+
+&lt;p&gt;$ vagrant ssh&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;同様にweb2においても同じことを行った。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;また、&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/vagrant&amp;quot;&amp;gt;vagrant&amp;lt;/a&amp;gt;では一般的に対象のディレクトリで&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/vagrant&amp;quot;&amp;gt;vagrant&amp;lt;/a&amp;gt; &amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/ssh&amp;quot;&amp;gt;ssh&amp;lt;/a&amp;gt;を利用してサーバに入るが、&amp;lt;br&amp;gt;
+今回はプライベートアドレスも振ってあるし、物理サーバとしてイメージしているので以下のようにしてサーバにはいるようにした。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ ssh vagrant@192.168.33.10  # web1への接続
+$ ssh vagrant@192.168.33.11  # web2への接続
+&lt;code&gt;
+&amp;lt;p&amp;gt;ホストサーバ側の&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%BF%A1%BC%A5%D5%A5%A7%A5%A4%A5%B9&amp;quot;&amp;gt;インターフェイス&amp;lt;/a&amp;gt;情報をみると。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;cent7なので以下コマンドだがifconfig-aのこと:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;cent7なので以下コマンドだがifconfig -aのこと&lt;/h1&gt;
+
+&lt;p&gt;$ ip a
+(中略)
+5: vboxnet0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UNKNOWN qlen 1000
+    link/ether 0a:00:27:00:00:00 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.33.&lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;24&lt;/sub&gt; brd 192.168.33.255 scope global vboxnet0
+       valid_lft forever preferred_lft forever
+    inet 192.168.56.&lt;sup&gt;101&lt;/sup&gt;&amp;frasl;&lt;sub&gt;24&lt;/sub&gt; brd 192.168.56.255 scope global dynamic vboxnet0
+       valid_lft 839sec preferred_lft 839sec
+    inet6 fe80::800:27ff:fe00:0/64 scope link
+       valid_lft forever preferred_lft forever&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;vboxnet0という仮想の&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%BF%A1%BC%A5%D5%A5%A7%A5%A4%A5%B9&amp;quot;&amp;gt;インターフェイス&amp;lt;/a&amp;gt;が作成され、&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/IP%A5%A2%A5%C9%A5%EC%A5%B9&amp;quot;&amp;gt;IPアドレス&amp;lt;/a&amp;gt;も192.168.33.1が振られていることを確認。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;ルーティングテーブルも確認しておくと&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;$ netstat -rn
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+0.0.0.0         153.120.2.1     0.0.0.0         UG        0 0          0 eth0
+153.120.2.0     0.0.0.0         255.255.254.0   U         0 0          0 eth0
+192.168.33.0    0.0.0.0         255.255.255.0   U         0 0          0 vboxnet0
+&lt;code&gt;
+&amp;lt;p&amp;gt;192.168.33.0/24行はvboxnet0から出るように設定されている。&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;上の物理イメージに詳細書き込むと以下。&amp;lt;br&amp;gt;
+&amp;lt;span itemscope itemtype=&amp;quot;http://schema.org/Photograph&amp;quot;&amp;gt;&amp;lt;img src=&amp;quot;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20141006/20141006000246.png&amp;quot; alt=&amp;quot;f:id:mosuke5:20141006000246p:plain&amp;quot; title=&amp;quot;f:id:mosuke5:20141006000246p:plain&amp;quot; class=&amp;quot;hatena-fotolife&amp;quot; itemprop=&amp;quot;image&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;div style=&amp;quot;border: solid 1px #dddddd;&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;p&amp;gt;&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/Apache&amp;quot;&amp;gt;Apache&amp;lt;/a&amp;gt;のみインスールする必要があるので、&amp;lt;br&amp;gt;
+web1, web2で以下を実施。（プロビジョニングしたほうが後々楽です。）&amp;lt;/p&amp;gt;
+&lt;/code&gt;
+$ sudo apt-get apache2&lt;/p&gt;
+
+&lt;p&gt;##どちらがweb1でどちらがweb2か区別するために以下ファイルは変えておきます。
+$ sudo vim /var/www/index.html
+#Web1とかWeb2とかわかりやすい文言を入れておきます。&lt;/p&gt;
+
+&lt;p&gt;##Apache起動
+$ sudo service apache2 start&lt;/p&gt;
+
+&lt;p&gt;##Apache起動確認
+$ curl localhost
+　上記で変更したindex.htmlの内容が表示されること&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;これでWebサーバの準備は完了。&amp;lt;/p&amp;gt;
+
+&amp;lt;/div&amp;gt;
+&amp;lt;div class=&amp;quot;section&amp;quot;&amp;gt;
+    &amp;lt;h2&amp;gt;4, Nginxでリバースプロキシサーバを構築する&amp;lt;/h2&amp;gt;
+    &amp;lt;p&amp;gt;Nginx初めて触ったがとてもシンプル。&amp;lt;br&amp;gt;
+今回はNginxをリバースプロキシとして利用したので、proxy.confを作成するだけ。&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;##インスール
+$ sudo yum install nginx&lt;/p&gt;
+
+&lt;h2 id=&#34;etc-nginx以下に設定ファイルなどあること確認:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;/etc/nginx以下に設定ファイルなどあること確認&lt;/h2&gt;
+
+&lt;p&gt;$ ls /etc/nginx&lt;/p&gt;
+
+&lt;h2 id=&#34;プロキシ構築のための設定ファイル作成:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;プロキシ構築のための設定ファイル作成&lt;/h2&gt;
+
+&lt;p&gt;$ cd /etc/nginx/conf.d
+$ sudo vim proxy.conf
+server {&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# /web1にアクセスが来た時
+location /web1 {
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;	proxy_http_version 1.1;&lt;/p&gt;
+
+&lt;p&gt;	#受け渡す際のヘッダ情報を指定
+	proxy_set_header Host $host:$server_port;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header X-Forwarded_Proto http;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    # 飛ばす先のURL(Web1サーバ)
+    proxy_pass http://192.168.33.10/;
+}
+
+# /web2にアクセスが来た時
+location /web2 {
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;	proxy_http_version 1.1;&lt;/p&gt;
+
+&lt;p&gt;	#受け渡す際のヘッダ情報を指定
+	proxy_set_header Host $host:$server_port;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header X-Forwarded_Proto http;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    # 飛ばす先のURL(Web2サーバ)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;	proxy_pass &lt;a href=&#34;http://192.168.33.11/&#34;&gt;http://192.168.33.11/&lt;/a&gt;;
+    }
+}&lt;/p&gt;
+
+&lt;h2 id=&#34;あとは起動させるのみ:4ad775d019fc2a93172e04f65e0d5895&#34;&gt;あとは起動させるのみ&lt;/h2&gt;
+
+&lt;p&gt;$ sudo systemctl enable nginx
+$ sudo systemctl start nginx
+```
+&lt;/div&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CentOS7, iptables設定でハマった</title>
+      <link>https://blog.mosuke.tech/entry/2014/09/20/180326/</link>
+      <pubDate>Sat, 20 Sep 2014 18:03:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/09/20/180326/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;最近&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/VPS&#34;&gt;VPS&lt;/a&gt;のOSをcentos7にしたのだが、なかなか手付かずで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/iptables&#34;&gt;iptables&lt;/a&gt;の設定も放置していた…&lt;br&gt;
+（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;の最低限の設定はしていたが、ほんとうに良くない…）&lt;/p&gt;
+&lt;p&gt;久しぶりに手が空いたので設定するかーと思いきや&lt;br&gt;
+まず/etc/sysconfig/&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/iptables&#34;&gt;iptables&lt;/a&gt;がないし&amp;hellip;&lt;/p&gt;
+&lt;p&gt;Cent7からのsystemctlで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/iptables&#34;&gt;iptables&lt;/a&gt;のサービスを確認してもでてこないし…&lt;/p&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# systemctl status iptables
+iptables.service
+   Loaded: not-found (Reason: No such file or directory)
+   Active: inactive (dead)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;というわけで、調べてみると、まず&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/iptables&#34;&gt;iptables&lt;/a&gt;.serviceをインスールしないといけないとのこと。&lt;br&gt;
+そして、centos7からはfirewalldがデフォルトでオンになっているからオフにしないといけない。&lt;br&gt;
+（いけないわけではないけど両方使う意味が無いので。）&lt;/p&gt;
+&lt;br&gt;
+&lt;p&gt;まずは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/iptables&#34;&gt;iptables&lt;/a&gt;-serviceをインスールし、firewalldをオフ、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/iptables&#34;&gt;iptables&lt;/a&gt;をオンとした。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum install iptables-services
+# systemctl status firewalld
+   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled)
+   Active: active (running) since Sat 2014-09-20 17:47:11 JST; 4s ago
+ Main PID: 11162 (firewalld)
+   CGroup: /system.slice/firewalld.service
+           └─11162 /usr/bin/python -Es /usr/sbin/firewalld --nofork --nopid
+
+#
+# systemctl stop firewalld
+#
+# systemctl status firewalld
+   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled)
+   Active: inactive (dead)
+
+#
+#systemctl disable firewalld
+#
+#systemctl enable iptables
+#systemctl start iptables
+#
+#systemctl status iptables
+   Loaded: loaded (/usr/lib/systemd/system/iptables.service; enabled)
+   Active: inactive (dead) since Sat 2014-09-20 17:47:10 JST; 2min 48s ago
+  Process: 11139 ExecStop=/usr/libexec/iptables/iptables.init stop (code=exited, status=0/SUCCESS)
+  Process: 10096 ExecStart=/usr/libexec/iptables/iptables.init start (code=exited, status=0/SUCCESS)
+ Main PID: 10096 (code=exited, status=0/SUCCESS)
+....
+
+# 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/iptables&#34;&gt;iptables&lt;/a&gt;の設定はいつもどおり。&lt;br&gt;
+CentOS7の新しいコマンドに戸惑ったので一部メモ。&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;h2&gt;service, chkconfigコマンドはsystemctlコマンドへ&lt;/h2&gt;service, chkconfigコマンドは推奨されずsystemctlコマンドへ切り替わった。&lt;br&gt;
+試しにchkconfigコマンドを利用すると…
+
+```
+# chkconfig --list
+Note: This output shows SysV services only and does not include native
+      systemd services. SysV configuration data might be overridden by native
+      systemd configuration.
+
+      If you want to list systemd services use &#39;systemctl list-unit-files&#39;.
+      To see services enabled on particular target use
+      &#39;systemctl list-dependencies [target]&#39;.
+
+iprdump        	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+iprinit        	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+iprupdate      	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+netconsole     	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+network        	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+pmcd           	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+pmie           	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+pmlogger       	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+pmmgr          	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+pmproxy        	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+pmwebd         	0:off	1:off	2:off	3:off	4:off	5:off	6:off
+```
+
+&lt;blockquote&gt;
+    &lt;p&gt;&#34;If you want to list systemd services use &#39;systemctl list-unit-files&#39;.&#34;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;systemdのサービスを表示したければ、systemctl list-unit-filesを利用せよとのこと。&lt;br&gt;
+試しに打つと以下のように表示される&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# systemctl list-unit-files
+UNIT FILE                                   STATE
+proc-sys-fs-binfmt_misc.automount           static
+dev-hugepages.mount                         static
+dev-mqueue.mount                            static
+proc-fs-nfsd.mount                          static
+proc-sys-fs-binfmt_misc.mount               static
+sys-fs-fuse-connections.mount               static
+sys-kernel-config.mount                     static
+sys-kernel-debug.mount                      static
+tmp.mount                                   disabled
+var-lib-nfs-rpc_pipefs.mount                static
+brandbot.path                               disabled
+....
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;また、サービスの起動・停止・状態確認などは&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# service &amp;lt;service name&amp;gt; &amp;lt;start/stop/restart/status&amp;gt;
+　↓
+# systemctl &amp;lt;start/stop/restart/status&amp;gt; &amp;lt;service name&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;そして、サービスの起動オプションの設定は&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# chkconfig &amp;lt;service name&amp;gt; &amp;lt;on/off&amp;gt;
+   ↓
+# systemctl &amp;lt;enable/disable&amp;gt; &amp;lt;service name&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;p&gt;まずはこんなところ。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>D3.js、DBからのデータ連携方法の検討</title>
+      <link>https://blog.mosuke.tech/entry/2014/09/15/135611/</link>
+      <pubDate>Mon, 15 Sep 2014 13:56:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/09/15/135611/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;最近D3.jsを使う機会があり、DBのデータを読み込ませる方法についていくつか検討した。&lt;br&gt;
+例えば以下の状況を考える。&lt;br&gt;
+【やりたいこと】&lt;br&gt;
+「DBに格納されているデータを使って、D3.jsで折れ線グラフを描く」&lt;/p&gt;
+&lt;p&gt;【DBの構造】&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AB%A5%E9%A5%E0%CC%BE&#34;&gt;カラム名&lt;/a&gt;：型&lt;br&gt;
+　date : datetime&lt;br&gt;
+　value : int&lt;/p&gt;
+&lt;p&gt;※また、下記では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Sinatra&#34;&gt;Sinatra&lt;/a&gt;上で行っているが、他の言語でも同様のことがいえる。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;(1) 簡単な&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/API&#34;&gt;API&lt;/a&gt;のようなものを利用する&lt;/h3&gt;
+    &lt;p&gt;先に結論から書くと、今まで次の(2)(3)のようなやりかたをやっていたのだけれど、&lt;br&gt;
+これが一番複雑にならずに良いと思ったということ。&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Sinatra&#34;&gt;Sinatra&lt;/a&gt;側で/&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/csv&#34;&gt;csv&lt;/a&gt;にアクセスすると&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/csv&#34;&gt;csv&lt;/a&gt;ファイルをダウンロードできるようにする。&lt;/p&gt;
+```ruby
+#Sinatra側
+get &amp;lsquo;/csv&amp;rsquo; do
+    content_type &amp;lsquo;application/csv&amp;rsquo;
+    attachment &amp;lsquo;download.csv&amp;rsquo;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#DBからデータ取得(Activerecord利用)
+@data   = Model.all()
+
+#出力するCSVデータの変数。csvヘッダーを先につけている。
+@csv = &amp;quot;date,value\n&amp;quot;
+
+#DBのデータをCSVの形にして格納
+@data.each do |d|
+    @csv += d.date.to_s + &amp;quot;,&amp;quot; + d.value.to_s + &amp;quot;\n&amp;quot;
+end
+
+#csvtest.erbというビューに出力
+erb :csvtest, :layout =&amp;gt; false
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;end&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;csvtest.erb&amp;lt;/p&amp;gt;
+```ruby
+&amp;lt;%= @csv %&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こうすることで&#34;&lt;a href=&#34;http://*****/csv&#34;&gt;http://*****/csv&lt;/a&gt;&#34;にアクセスすると&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/csv&#34;&gt;csv&lt;/a&gt;ファイルとしてダウンロードできる状態になる。&lt;br&gt;
+条件指定をしてデータをダウンロードできるようにしたい場合はGETでパラメータ指定できるようにすれば良いと思う。&lt;br&gt;
+（&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Sinatra&#34;&gt;Sinatra&lt;/a&gt;で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/CSV&#34;&gt;CSV&lt;/a&gt;ファイルを生成するところのコードがナンセンスだと思っているので、もっといい方法があるはず…）&lt;/p&gt;
+&lt;p&gt;また、今回は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/csv&#34;&gt;csv&lt;/a&gt;にしているが&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/json&#34;&gt;json&lt;/a&gt;などの他の形式でも同様のことがいえる。&lt;/p&gt;
+&lt;p&gt;これをD3.js側で以下のように読み込ませる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;d3.csv(&amp;quot;/csv&amp;quot;, function(error, data) {
+    (中略)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;d3.jsの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/csv&#34;&gt;csv&lt;/a&gt;を読み込ませる関数の引数にURLを指定してあげればそれで終了。&lt;/p&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class=&#34;section&#34;&gt;
+    &lt;h3&gt;(2) &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/javascript&#34;&gt;javascript&lt;/a&gt;コードの中で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;変数を展開させる&lt;/h3&gt;
+    &lt;p&gt;d3.jsのdatasetの中で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;の変数を展開させる。ビューに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Javascript&#34;&gt;Javascript&lt;/a&gt;を書いているので、ビューの中で変数展開するのと同じ要領。&lt;br&gt;
+しかし、jsコードに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;コードも交じるので複雑になりがち。&lt;/p&gt;
+```javascript
+var dataset = [
+&amp;lt;% @data.each do |d| %&amp;gt;
+    {date:&amp;lt;%= d.date%&amp;gt;, value:&amp;lt;%= d.value %&amp;gt;},
+&amp;lt;% end %&amp;gt;
+];&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;/div&amp;gt;
+&amp;lt;div class=&amp;quot;section&amp;quot;&amp;gt;
+    &amp;lt;h3&amp;gt;(3) &amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/CSV&amp;quot;&amp;gt;CSV&amp;lt;/a&amp;gt;ファイルをおいておく&amp;lt;/h3&amp;gt;
+    &amp;lt;p&amp;gt;こちらはリアルタイムな更新でなれけばこれはこれでありだと思う。&amp;lt;br&amp;gt;
+publicのフォルダに予め&amp;lt;a class=&amp;quot;keyword&amp;quot; href=&amp;quot;http://d.hatena.ne.jp/keyword/csv&amp;quot;&amp;gt;csv&amp;lt;/a&amp;gt;ファイルを設置しておき、以下のようにd3.jsで読み込ませる。&amp;lt;/p&amp;gt;
+
+```javascript
+d3.csv(&amp;quot;test.csv&amp;quot;, function(error, data) {
+    (中略)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>2014/8/2 Arduino会を実施の報告</title>
+      <link>https://blog.mosuke.tech/entry/2014/09/13/214414/</link>
+      <pubDate>Sat, 13 Sep 2014 21:44:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2014/09/13/214414/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;2014年8月2日(土)に大学時代の研究室の同期・後輩を巻き込んで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Arduino&#34;&gt;Arduino&lt;/a&gt;勉強会を行った。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Arduino&#34;&gt;Arduino&lt;/a&gt;をほとんど触ったことのないメンバーで実施したのだが、初心者でもプロダクトを作り上げられるところまでできた。&lt;br&gt;
+その勉強会の簡単な資料を掲載。&lt;/p&gt;
+&lt;p&gt;&lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;04fb75c01d710132f325123486985575&#34; data-ratio=&#34;1.33333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

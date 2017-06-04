@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ajax on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/ajax/</link>
+    <description>Recent content in Ajax on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sat, 13 Jun 2015 23:19:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/ajax/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Ajaxの嫌いだった部分をJsRenderで心地良くした</title>
+      <link>https://blog.mosuke.tech/entry/2015/06/13/231917/</link>
+      <pubDate>Sat, 13 Jun 2015 23:19:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/06/13/231917/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;h1&gt;1. はじめに&lt;/h1&gt;&lt;/p&gt;
+
+&lt;p&gt;ぼくはフロントエンドは本業ではありません。&lt;br&gt;
+jsはあまり好きではありません。&lt;br&gt;
+そして&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ajax&#34;&gt;Ajax&lt;/a&gt;通信後にhtmlをアウトプットする際にjsの変数の中にhtmlを書いていく&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9&#34;&gt;ソースコード&lt;/a&gt;がもっと好きではありません。(後述)&lt;br&gt;
+それをJSテンプレートエンジンを使ってシンプルにしてみたって話です。
+（JsRenderの使い方を書いたものではありません。）&lt;/p&gt;
+
+&lt;h1&gt;2. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ajax&#34;&gt;Ajax&lt;/a&gt;が嫌いだった理由&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ajax&#34;&gt;Ajax&lt;/a&gt;はユーザ体感的にはいいのだけれど、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ajax&#34;&gt;Ajax&lt;/a&gt;の結果受け取った&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/json&#34;&gt;json&lt;/a&gt;などのデータを使ってhtmlを出力とかやると&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9&#34;&gt;ソースコード&lt;/a&gt;が煩雑になるので嫌いだった。&lt;/p&gt;
+
+&lt;p&gt;例として&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ajax&#34;&gt;Ajax&lt;/a&gt;で/xxxxxにリクエストを投げて、その結果(&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/json&#34;&gt;json&lt;/a&gt;データ)を使ってhtmlを出力するものを考えると。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;/* jsonデータは下記が返ってくるとする
+[
+    {
+        id: &#39;1&#39;,
+        name: &#39;らーめん&#39;,
+        text: &#39;らーめんはやっぱり濃厚鶏そばです。&#39;
+    },
+    {
+        id: &#39;2&#39;,
+        name: &#39;うどん&#39;,
+        text: &#39;うどんはやっぱり釜揚げうどんです。&#39;
+    }
+]
+*/
+$.ajax({
+  type: &amp;quot;GET&amp;quot;,
+  url: &amp;quot;/xxxxx&amp;quot;,
+  dataType: &amp;quot;json&amp;quot;,
+  success: function(data){
+    var html = &#39;&#39;;
+    data.forEach(function (e) {
+      html += &#39;&amp;lt;div id=&amp;quot;&#39; + e.id + &#39;&amp;quot;&amp;gt;&#39;;
+      html += &#39;&amp;lt;h1&amp;gt;&#39; + e.name + &#39;&amp;lt;/h1&amp;gt;&#39;;
+      html += &#39;&amp;lt;p&amp;gt;&#39; + e.text + &#39;&amp;lt;/p&amp;gt;&#39;;
+      html += &#39;&amp;lt;/div&amp;gt;&#39;;
+    });
+    $(&amp;quot;#result&amp;quot;).append(html);
+  },
+})
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;jsの変数の中にhtmlが含まれる。&lt;br&gt;
+&lt;b&gt;そう、jsの変数の中にhtmlが！！&lt;/b&gt;&lt;br&gt;
+この規模ならまだいいが、もう少しhtmlが肥大化してくると最悪である。&lt;br&gt;
+これがどうしても許せない。&lt;/p&gt;
+
+&lt;h1&gt;3.jsのテンプレートエンジンを使ってみた&lt;/h1&gt;
+
+&lt;p&gt;上の問題をなんとかできないかと思っていたところ、jsのテンプレートエンジンにいきついた。&lt;br&gt;
+jsのテンプレートエンジンは多数あるのだが今回はJsRenderを採用し、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ajax&#34;&gt;ajax&lt;/a&gt;を心地よく使うことができるようになった。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jsviews.com/&#34;&gt;JsRender/JsViews&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3&gt;3-1. jsテンプレートエンジンの選定について&lt;/h3&gt;
+
+&lt;p&gt;以下のまとめなど参考にするといいが、多数ある。
+&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fqiita.com%2FKumamon%2Fitems%2F7db7c8f5e5ace3b40874&#34; title=&#34;JavaScriptテンプレートエンジンまとめ - Qiita&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;a href=&#34;http://qiita.com/Kumamon/items/7db7c8f5e5ace3b40874&#34;&gt;JavaScriptテンプレートエンジンまとめ - Qiita&lt;/a&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://qiita.com/Kumamon/items/7db7c8f5e5ace3b40874&#34;&gt;qiita.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;用途としては下記のような感じで選んだ。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;クライアントサイドで利用できる
+
+&lt;ul&gt;
+&lt;li&gt;特にサーバサイドで使える必要はなかった&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;簡単に利用できること。学習コストが低そうなこと&lt;/li&gt;
+&lt;li&gt;for文やif文はつかえること&lt;/li&gt;
+&lt;li&gt;プレ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB&#34;&gt;コンパイル&lt;/a&gt;とかは必要なかった&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;3-2. JsRenderを使えばここまで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ajax&#34;&gt;ajax&lt;/a&gt;がシンプルになった&lt;/h3&gt;
+
+&lt;p&gt;JsRenderを利用して先ほどの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ajax&#34;&gt;ajax&lt;/a&gt;部分を書き直すと以下のようになる。&lt;/p&gt;
+
+&lt;h4&gt;js側&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;$.ajax({
+  type: &amp;quot;GET&amp;quot;,
+  url: &amp;quot;/xxxxx&amp;quot;,
+  dataType: &amp;quot;json&amp;quot;,
+  success: function(data){
+    var template = $.templates(&amp;quot;#result-template&amp;quot;);   // テンプレートを指定
+    var htmlOutput = template.render(data);   //テンプレート内に変数展開
+    $(&amp;quot;#result&amp;quot;).html(htmlOutput);   //出力
+  },
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;html側&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;div id=&amp;quot;result&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;script id=&amp;quot;result-template&amp;quot; type=&amp;quot;text/x-jsrender&amp;quot;&amp;gt;
+&amp;lt;div id=&amp;quot;{{:id}}&amp;quot;&amp;gt;
+  &amp;lt;h1&amp;gt;{{:name}}&amp;lt;/h1&amp;gt;
+  &amp;lt;p&amp;gt;{{:text}}&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;何が素晴らしいって、ロジックの部分と、ビュー部分を綺麗に分離できたこと。&lt;br&gt;
+いや、サーバサイドなら当たり前のようにやっていたことなんだけど、&lt;br&gt;
+JsRenderを使えばクライアントサイドでも簡単に実装できて最高でした。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;以上。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

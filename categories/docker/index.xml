@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Docker on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/docker/</link>
+    <description>Recent content in Docker on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sun, 03 Jul 2016 22:45:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/docker/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Vim::Factory、LTではなす</title>
+      <link>https://blog.mosuke.tech/entry/2016/07/03/224531/</link>
+      <pubDate>Sun, 03 Jul 2016 22:45:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2016/07/03/224531/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;7月6日の会社のエンジニアイベントでLTするやつ、先にあげておく。&lt;br&gt;
+自分の中でのネタとしては古いけど、話すのはなんだかんだ初。&lt;/p&gt;&lt;/p&gt;
+
+&lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;edf3569025fd4894867e772d5731a20f&#34; data-ratio=&#34;1.33333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>DockerとWebSocketを使って、vimの設定をブラウザで即体感できるサービスを作った</title>
+      <link>https://blog.mosuke.tech/entry/2015/07/19/135844/</link>
+      <pubDate>Sun, 19 Jul 2015 13:58:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/07/19/135844/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;2014年の秋から&lt;code&gt;@mogulla3&lt;/code&gt;と定期的にインフラ関連技術の勉強会をやってきましたが、&lt;br&gt;
+インプットの勉強会だけでは飽き足らず、いつしかサービスを作る中でインフラ関連技術を駆使し勉強したいと思うように…&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;そして、普段使っている&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;を題材に、&lt;br&gt;
+&lt;b&gt;&lt;span style=&#34;font-size: 150%&#34;&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/vim&#34;&gt;vim&lt;/a&gt;の設定をブラウザ上で即体感できるサービス &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factory&lt;/span&gt;&lt;/b&gt;&lt;br&gt;
+を開発しました。&lt;/p&gt;
+
+&lt;p&gt;本記事は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryの簡単な紹介と技術的な仕組みについて記述しています。&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryはこちら。&lt;br&gt;
+&lt;a href=&#34;http://vimfactory.com/&#34;&gt;http://vimfactory.com/&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;1. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryについて&lt;/h1&gt;
+
+&lt;h2&gt;1-1. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryってなに？？&lt;/h2&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryは、選択した&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;の設定を、ブラウザ上で「即体感」できるサービスです。&lt;br&gt;
+数多くあり複雑な&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;の設定を容易にし、お気に入りの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;探しをサポートすることを目指しています。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150719/20150719155723.png&#34; alt=&#34;f:id:mosuke5:20150719155723p:plain&#34; title=&#34;f:id:mosuke5:20150719155723p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;1-2. なんで作ったの？&lt;/h2&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;の設定ってたくさんあってどれを選んでいいかわからなかったり、&lt;br&gt;
+設定したもののどう変わったかイマイチわからなかったりしませんか？&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;の設定がどのように反映されるか、もっと簡単に体験したいと考えたからです。&lt;/p&gt;
+
+&lt;p&gt;あと、例えば&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Github&#34;&gt;Github&lt;/a&gt;で100star以上をつける人の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;をブラウザ上で体験できたらいいなと思っていて、&lt;br&gt;
+それを実現のための第一歩としてこのサービスを作りました。&lt;/p&gt;
+
+&lt;h2&gt;1-3. このサービスの最大の特徴は？&lt;/h2&gt;
+
+&lt;p&gt;このサービスの最大の特徴はなんといっても&lt;b&gt;「ブラウザ上で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;が体感できること」&lt;/b&gt;です。&lt;/p&gt;
+
+&lt;p&gt;今までは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;の設定を試そうと思ったら、ネットで調べて自分の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;に反映させて…という作業が必要でしたが、&lt;br&gt;
+ブラウザ上で設定を即体感するという新しい体験を提供するために力を注いできました。&lt;br&gt;
+その実現方法については、後述しています。&lt;/p&gt;
+
+&lt;h2&gt;1-4. 紹介動画&lt;/h2&gt;
+
+&lt;p&gt;詳しくは、実際に試してもらうのが早いと思いますが、簡単な操作動画を用意してみました。&lt;br&gt;
+モバイルからこのサービスはちょっと使えないので、モバイルで読んでいる方は動画でお楽しみください(笑)&lt;br&gt;
+&lt;iframe width=&#34;480&#34; height=&#34;270&#34; src=&#34;https://www.youtube.com/embed/j20agcBcAec?feature=oembed&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=j20agcBcAec&amp;amp;feature=youtu.be&#34;&gt;www.youtube.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;h1&gt;2. &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryの技術について&lt;/h1&gt;
+
+&lt;p&gt;ここから&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryの技術について一部ではありますがご紹介します。&lt;/p&gt;
+
+&lt;h2&gt;2-1. ブラウザ上での&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;を実現した技術&lt;/h2&gt;
+
+&lt;p&gt;ブラウザ上で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;を実現しようと思うと、ぱっと思いつくのは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/JavaScript&#34;&gt;JavaScript&lt;/a&gt;で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;そのものを実装してしまおうというものかもしれません。&lt;br&gt;
+ですが、JSで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;を実装することってどれくらい難しいでしょうか？&lt;br&gt;
+少なくともぼくにはそんなことはできませんし、できたとして質の悪いものになってしまうと思います。&lt;/p&gt;
+
+&lt;p&gt;そこで思いついたのが、一般的なターミナルソフトと同様にサーバ上で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/vim&#34;&gt;vim&lt;/a&gt;を起動し、&lt;br&gt;
+そのターミナル情報をブラウザ上で表示するという方法です。&lt;br&gt;
+この方法であれば自ら&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;を実装せずとも&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;を再現できます。イメージは下記のとおりです。&lt;br&gt;
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150718/20150718230605.png&#34; alt=&#34;f:id:mosuke5:20150718230605p:plain&#34; title=&#34;f:id:mosuke5:20150718230605p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;また、サービスとして上記を行うには、接続してきたユーザごとに&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;を用意する必要があります。&lt;/p&gt;
+
+&lt;p&gt;これらを実現するために利用したのが&lt;b&gt;Docker&lt;/b&gt;と&lt;b&gt;WebSocket&lt;/b&gt;です。&lt;br&gt;
+dockerコンテナ上で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;を起動し、そのターミナル情報をWebSocketでブラウザに送信するようにしました。
+&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150720/20150720002840.png&#34; alt=&#34;f:id:mosuke5:20150720002840p:plain&#34; title=&#34;f:id:mosuke5:20150720002840p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;dockerはコンテナ型の仮想化なので起動がとてもはやく、&lt;br&gt;
+httpのリクエストが来てからdockerコンテナを立ち上げても十分なほどのはやさをもっています。&lt;/p&gt;
+
+&lt;h2&gt;2-2. 全体構成&lt;/h2&gt;
+
+&lt;p&gt;システムの全体構成は以下のような感じです。&lt;br&gt;
+※実際の役割は図のとおりですが、サーバはこんなに多くありません。&lt;/p&gt;
+
+&lt;p&gt;&lt;span itemscope itemtype=&#34;http://schema.org/Photograph&#34;&gt;&lt;img src=&#34;https://cdn-ak.f.st-hatena.com/images/fotolife/m/mosuke5/20150719/20150719124021.png&#34; alt=&#34;f:id:mosuke5:20150719124021p:plain&#34; title=&#34;f:id:mosuke5:20150719124021p:plain&#34; class=&#34;hatena-fotolife&#34; itemprop=&#34;image&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2&gt;2-3. 利用した技術とか&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB&#34;&gt;ツール&lt;/a&gt;のまとめ&lt;/h2&gt;
+
+&lt;p&gt;振り返りも兼ねて利用した技術・&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB&#34;&gt;ツール&lt;/a&gt;を一覧にまとめておきます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Sinatra&#34;&gt;Sinatra&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;thin&lt;/li&gt;
+&lt;li&gt;node.js&lt;/li&gt;
+&lt;li&gt;Websocket&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/memcached&#34;&gt;memcached&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;docker&lt;/li&gt;
+&lt;li&gt;nginx&lt;/li&gt;
+&lt;li&gt;centos7&lt;/li&gt;
+&lt;li&gt;Ansible&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vagrant&#34;&gt;Vagrant&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;gitlab&lt;/li&gt;
+&lt;li&gt;mackerel&lt;/li&gt;
+&lt;li&gt;slack&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/esa&#34;&gt;esa&lt;/a&gt;.io(ドキュメント管理)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;3. まとめ&lt;/h1&gt;
+
+&lt;p&gt;このサービスで一番苦労したことはやっぱりブラウザ上での&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;の実現部分です。&lt;br&gt;
+当初、このサービスを思いついた時、実現不可能だ…とあきらめました。&lt;br&gt;
+というのもJS（アプリケーションサイド）で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;をどう実装しようかしか考えていなかったからです。&lt;/p&gt;
+
+&lt;p&gt;ですが、ふとしたときに上記の別の方法（インフラサイド）での実現方法を思いつきました。&lt;/p&gt;
+
+&lt;p&gt;このサービスを作るきっかけは、インフラ技術のインプット勉強だけでは飽きたらず、&lt;br&gt;
+サービスを開発・運用していくなかでインフラ技術を磨いていきたいというものでしたが、&lt;br&gt;
+インプットの勉強があってこそインフラサイドからの実現方法を見つけられたようにも思いました。&lt;/p&gt;
+
+&lt;p&gt;今後、運用を通してさらなるパワーアップができたらいいなと思います。&lt;/p&gt;
+
+&lt;h1&gt;4. 最後に&lt;/h1&gt;
+
+&lt;p&gt;最後になりますが、
+完全な趣味で作ってしまったサービスで、今後どのように展開していこうか何も考えていません。&lt;br&gt;
+まずは、このように公開し皆様に利用して頂いて、フィードバックなど頂いてから考えようと思っています。&lt;/p&gt;
+
+&lt;p&gt;サービスに関するご意見等あれば、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Twitter&#34;&gt;Twitter&lt;/a&gt;やメールで書いてくれると大変嬉しいです。&lt;/p&gt;
+
+&lt;p&gt;お問い合せはこちら:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Twitter&#34;&gt;Twitter&lt;/a&gt;: &lt;a href=&#34;https://twitter.com/mosuke5&#34;&gt;もーすけ (@mosuke5) | Twitter&lt;/a&gt; or &lt;a href=&#34;https://twitter.com/mogulla3&#34;&gt;もぐらマン (@mogulla3) | Twitter&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;e-mail: ilab.vimfactory+info@&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/gmail&#34;&gt;gmail&lt;/a&gt;.com&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;では、みなさんも&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;ライフを楽しみましょう！&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Vim&#34;&gt;Vim&lt;/a&gt;::Factoryはこちら。&lt;br&gt;
+&lt;a href=&#34;http://vimfactory.com/&#34;&gt;http://vimfactory.com/&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>リモートのサーバでdockerを起動させるときの端末割り当て</title>
+      <link>https://blog.mosuke.tech/entry/2015/02/07/144208/</link>
+      <pubDate>Sat, 07 Feb 2015 14:42:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/02/07/144208/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;自分がハマったのでメモ。&lt;br&gt;
+リモートのサーバでdocker runを実行し(/bin/&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/bash&#34;&gt;bash&lt;/a&gt;)、ローカル側でシェルを操作したかった。&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/ssh&#34;&gt;ssh&lt;/a&gt;でリモートサーバに接続し、docker runすればいいや、と思い以下を実行してみた。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ssh user@host &#39;docker run -t -i image_name /bin/bash&#39; 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;そうすると&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@0c6742f02bd9 ~]#
+
+[root@0c6742f02bd9 ~]# ^[[A^[[A^[[C 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;エンターを押すと2行されるし、矢印キーはキーコードがでてしまう。&lt;/p&gt;
+
+&lt;p&gt;これを解消するのには以下のようにすればいい。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ssh -t user@host &#39;docker run -t -i image_name /bin/bash&#39; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;p&gt;-tとはなんなのか、なぜこのような&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BB%F6%BE%DD&#34;&gt;事象&lt;/a&gt;が起きたのか、これからしっかり調べる。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>dockerで特定ユーザでログインした状態のシェル環境を提供する</title>
+      <link>https://blog.mosuke.tech/entry/2015/01/24/213255/</link>
+      <pubDate>Sat, 24 Jan 2015 21:32:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/01/24/213255/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;dockerの一般的な利用の仕方ではあまり想定されないケースかもしれないが、&lt;br&gt;
+特定のユーザでログインした状態のコンテナを作りたいという場面に遭遇した。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;&amp;lt;やりたいこと&amp;gt;&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;特定のユーザでログインした状態のシェルを提供すること&lt;/li&gt;
+&lt;li&gt;その際、ユーザの.&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/bash&#34;&gt;bash&lt;/a&gt;_profile（あるいあは.bashrc）を読み込んだ状態であること
+
+&lt;ul&gt;
+&lt;li&gt;.&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/bash&#34;&gt;bash&lt;/a&gt;_profileに記載したPATHやaliasを使いたい&lt;/li&gt;
+&lt;li&gt;ユーザのログインシェルを利用したい（カスタマイズされたシェルとか）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;docker runに-uオプションがあるし、これで余裕！と思った。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[host] $ sudo docker run -u=user_name -i -t image_name /bin/bash 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;しかし…以下を確認してみると…&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[docker] $ pwd
+[docker] $ echo $PATH
+[docker] $ alias
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ディレクトリは &#34;/&#34; だし、PATHも通ってない。&lt;br&gt;
+どうやら.&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/bash&#34;&gt;bash&lt;/a&gt;_profileなどは読んでいないようだ。普通にログインした状態とは違う。&lt;/p&gt;
+
+&lt;p&gt;dockerで-uでユーザを指定し場合、指定したuserでコマンドを実行するが、&lt;br&gt;
+サーバにユーザでログインしてからコマンドを実行するわけではないらしい。&lt;/p&gt;
+
+&lt;p&gt;ディレクトリはどうやら-wオプションで解決できるようだが…&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[host] $ sudo docker run -u=user_name -w /home/user_name -i -t image_name /bin/bash 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;[docker] $ pwd
+/home/user_name 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ディレクトリはおっけーだが、&lt;br .&gt;
+当然ながら依然として.&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/bash&#34;&gt;bash&lt;/a&gt;_profileはダメ。&lt;/p&gt;
+
+&lt;p&gt;そこでふと思いついた。-uも-wもいらない。&lt;br&gt;
+&lt;b&gt;あの手&lt;/b&gt;があるではないか…！！&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[host] $ sudo docker run -i -t image_name su - username 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;p&gt;suでスイッチユーザすれば.&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/bash&#34;&gt;bash&lt;/a&gt;_profileもホームディレクトリも全部解決だ！！&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

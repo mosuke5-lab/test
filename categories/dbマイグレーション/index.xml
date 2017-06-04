@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Dbマイグレーション on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/db%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3/</link>
+    <description>Recent content in Dbマイグレーション on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 17 Jun 2015 21:28:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/db%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>PostgreSQL環境でFuelPHPのDBマイグレーションを使う</title>
+      <link>https://blog.mosuke.tech/entry/2015/06/17/212852/</link>
+      <pubDate>Wed, 17 Jun 2015 21:28:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/06/17/212852/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;今更&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FuelPHP&#34;&gt;FuelPHP&lt;/a&gt;感はあるのだが、&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/postgresql&#34;&gt;postgresql&lt;/a&gt;利用時の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FuelPHP&#34;&gt;FuelPHP&lt;/a&gt;のmigration導入について、注意点をまとめた。&lt;br&gt;
+でも、結論は納得がいっていない。&lt;/p&gt;&lt;/p&gt;
+
+&lt;h1&gt;0. 前提&lt;/h1&gt;
+
+&lt;p&gt;下記の環境で行ったものです。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/PHP&#34;&gt;PHP&lt;/a&gt;: 5.5.7&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FuelPHP&#34;&gt;FuelPHP&lt;/a&gt;: 1.7&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Postgresql&#34;&gt;Postgresql&lt;/a&gt;: 9.4&lt;/p&gt;
+
+&lt;h1&gt;1. テーブル&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%B8%BB%FA%A5%B3%A1%BC%A5%C9&#34;&gt;文字コード&lt;/a&gt;の問題&lt;/h1&gt;
+
+&lt;h1&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BB%F6%BE%DD&#34;&gt;事象&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;公式サイトのサンプルの通りはじめに&lt;code&gt;app/migrations/001_example.php&lt;/code&gt;を作り、migrationを実行した。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;app/migrations/001_example.php&lt;/code&gt;の作成&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;&amp;lt;?php
+namespace Fuel\Migrations;
+class Example
+{
+    function up()
+    {
+        \DBUtil::create_table(&#39;posts&#39;, array(
+            &#39;id&#39; =&amp;gt; array(&#39;type&#39; =&amp;gt; &#39;int&#39;, &#39;constraint&#39; =&amp;gt; 5),
+            &#39;title&#39; =&amp;gt; array(&#39;type&#39; =&amp;gt; &#39;varchar&#39;, &#39;constraint&#39; =&amp;gt; 100),
+            &#39;body&#39; =&amp;gt; array(&#39;type&#39; =&amp;gt; &#39;text&#39;),
+        ), array(&#39;id&#39;));
+    }
+    
+    function down()
+    {
+        \DBUtil::drop_table(&#39;posts&#39;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%A4%A5%B0%A5%EC%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;マイグレーション&lt;/a&gt;実行すると以下のエラーに襲われた。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ php oil refine migrate
+Uncaught exception Fuel\Core\Database_Exception: SQLSTATE[42601]: Syntax error: 7 ERROR: syntax error at or near &amp;quot;DEFAULT&amp;quot;
+LINE 5: )DEFAULT CHARACTER SET utf8;
+^ with query: &amp;quot;CREATE TABLE IF NOT EXISTS &amp;quot;migration&amp;quot; (
+&amp;quot;type&amp;quot; varchar(25) NOT NULL,
+&amp;quot;name&amp;quot; varchar(50) NOT NULL,
+&amp;quot;migration&amp;quot; varchar(100) DEFAULT &#39;&#39; NOT NULL
+)DEFAULT CHARACTER SET utf8;&amp;quot; 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;理由&lt;/h1&gt;
+
+&lt;p&gt;しょっぱなから躓くわけだが…&lt;/p&gt;
+
+&lt;p&gt;初めて&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%A4%A5%B0%A5%EC%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;マイグレーション&lt;/a&gt;を実行する際には&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%A4%A5%B0%A5%EC%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;マイグレーション&lt;/a&gt;管理用のテーブルを作る。&lt;br&gt;
+そのテーブルを作る&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;が下記の通り発行されている。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;CREATE TABLE IF NOT EXISTS &amp;quot;migration&amp;quot; (
+&amp;quot;type&amp;quot; varchar(25) NOT NULL,
+&amp;quot;name&amp;quot; varchar(50) NOT NULL,
+&amp;quot;migration&amp;quot; varchar(100) DEFAULT &#39;&#39; NOT NULL
+)DEFAULT CHARACTER SET utf8;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;理由は単純で、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/postgresql&#34;&gt;postgresql&lt;/a&gt;のcreate tableでは次のdefault構文は利用できないから。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;create table xxxx ( ) default character set xxx;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なぜ、利用できない構文の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;が発行されたのか？&lt;br&gt;
+それは単に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FuelPHP&#34;&gt;FuelPHP&lt;/a&gt;の問題です。次期バージョンでは解決されることを祈る。&lt;/p&gt;
+
+&lt;h1&gt;解決方法&lt;/h1&gt;
+
+&lt;p&gt;解決方法は下記の記事がわかりやすかった。
+&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fqiita.com%2Fhirobow%2Fitems%2F8c2c379b33f0040480b7&#34; title=&#34;FuelPHP で PDOによるPostgreSQL接続の罠 - Qiita&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;a href=&#34;http://qiita.com/hirobow/items/8c2c379b33f0040480b7&#34;&gt;FuelPHP で PDOによるPostgreSQL接続の罠 - Qiita&lt;/a&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://qiita.com/hirobow/items/8c2c379b33f0040480b7&#34;&gt;qiita.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;簡単に言うとdbのコンフィグで、charsetをnullにすると&lt;code&gt;DEFAULT CHARACTER SET xxx&lt;/code&gt;部分が発行されない。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&#39;charset&#39; =&amp;gt; NULL, 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;2. PRIMARY KEYの問題&lt;/h1&gt;
+
+&lt;h1&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BB%F6%BE%DD&#34;&gt;事象&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;1.の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%CA%B8%BB%FA%A5%B3%A1%BC%A5%C9&#34;&gt;文字コード&lt;/a&gt;の問題は解決して、さあもう一度&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%A4%A5%B0%A5%EC%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;マイグレーション&lt;/a&gt;を！と思って実行するもさらなるエラーに阻まれる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ php oil refine migrate
+Uncaught exception Fuel\Core\Database_Exception: SQLSTATE[42601]: Syntax error: 7 ERROR: syntax error at or near &amp;quot;(&amp;quot;
+LINE 2: &amp;quot;id&amp;quot; int(5) NOT NULL,
+^ with query: &amp;quot;CREATE TABLE IF NOT EXISTS &amp;quot;users&amp;quot; (
+&amp;quot;id&amp;quot; int(5) NOT NULL,
+&amp;quot;name&amp;quot; text NOT NULL,
+PRIMARY KEY &amp;quot;id&amp;quot; (&amp;quot;id&amp;quot;)
+);&amp;quot; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;理由は1のときと一緒。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/postgresql&#34;&gt;postgresql&lt;/a&gt;では以下の構文は使えないのだ…&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;PRIMARY KEY &amp;quot;id&amp;quot; (&amp;quot;id&amp;quot;) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;3. 結局&lt;/h1&gt;
+
+&lt;p&gt;つまるところ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/FuelPHP&#34;&gt;FuelPHP&lt;/a&gt;(すくなくとも1.7までは)では、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/postgresql&#34;&gt;postgresql&lt;/a&gt;で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%A4%A5%B0%A5%EC%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;マイグレーション&lt;/a&gt;を行う環境がちゃんと整っていないということ。&lt;br&gt;
+しかたないので、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%DE%A5%A4%A5%B0%A5%EC%A1%BC%A5%B7%A5%E7%A5%F3&#34;&gt;マイグレーション&lt;/a&gt;の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;は生&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;を書くことにしました。&lt;/p&gt;
+
+&lt;p&gt;PRIMARY KEYを後から別途で付与するとか考えたけど、&lt;br&gt;
+ほかにも罠がありそうだったので、安全な生&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/SQL&#34;&gt;SQL&lt;/a&gt;を採用しました。&lt;br&gt;
+バージョン1.8では直っている?とのことだが、まだdevelopmentだったのでこれも見送り。&lt;/p&gt;
+
+&lt;p&gt;うむ。。。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;&amp;lt;参考&amp;gt;
+&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fimprove-future.com%2Favailable-dbms-in-fuelphp.html&#34; title=&#34;FuelPHP で使用可能なデータベース&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;a href=&#34;http://improve-future.com/available-dbms-in-fuelphp.html&#34;&gt;FuelPHP で使用可能なデータベース&lt;/a&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://improve-future.com/available-dbms-in-fuelphp.html&#34;&gt;improve-future.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

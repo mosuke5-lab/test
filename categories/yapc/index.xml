@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Yapc on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/yapc/</link>
+    <description>Recent content in Yapc on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sat, 22 Aug 2015 22:30:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/yapc/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>(個人的) YAPC::Asia 2015ふりかえり</title>
+      <link>https://blog.mosuke.tech/entry/2015/08/22/223025/</link>
+      <pubDate>Sat, 22 Aug 2015 22:30:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2015/08/22/223025/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;p&gt;「ブログを書くまでが&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/YAPC&#34;&gt;YAPC&lt;/a&gt;」&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;というわけで、8/21, 22と&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/YAPC&#34;&gt;YAPC&lt;/a&gt;に参加したので、そこでの学んだこと、気になったことなどを振り返ります。&lt;br&gt;
+しかし、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/YAPC&#34;&gt;YAPC&lt;/a&gt;で聞いた公演内容を淡々とまとめるなどはしません。&lt;br&gt;
+単なる内容のまとめであれば、公開されているスライドなどをみるのが一番だと思いますので。&lt;/p&gt;
+
+&lt;p&gt;以下３点を中心に振り返ってみます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;インフラ関連セッションについて&lt;/li&gt;
+&lt;li&gt;発表を聞いてよかった、今の自分に一番必要だったことについて&lt;/li&gt;
+&lt;li&gt;興味を持ったことについて（CONBU）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;インフラ関連セッションについて&lt;/h1&gt;
+
+&lt;p&gt;意図的も半分くらいあるんだけど、なんとなくセッションを選んでいたら、インフラ関連のものが多くなりました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://yapcasia.org/2015/talk/show/9ec2791c-05e5-11e5-81fa-79c97d574c3a&#34;&gt;世界展開する大規模ウェブサービスのデプロイを支える技術 - YAPC::Asia Tokyo 2015&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://yapcasia.org/2015/talk/show/b335dee0-09ad-11e5-8d7a-67dc7d574c3a&#34;&gt;Consulと自作OSSを活用した100台規模のWebサービス運用 - YAPC::Asia Tokyo 2015&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://yapcasia.org/2015/talk/show/4f85e87a-f9ec-11e4-8262-8ab37d574c3a&#34;&gt;3分でサービスのOSを入れ替える技術 - YAPC::Asia Tokyo 2015&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://yapcasia.org/2015/talk/show/f2816038-10ec-11e5-89bf-d7f07d574c3a&#34;&gt;我々はどのように冗長化を失敗したのか - YAPC::Asia Tokyo 2015&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;デプロイについて&lt;/h2&gt;
+
+&lt;p&gt;大規模サービスでのデプロイにおいて、一台一台のホストが&lt;code&gt;git clone&lt;/code&gt;して、&lt;code&gt;bundle install&lt;/code&gt;やらせてーとかやると、&lt;br&gt;
+時間もかかるし、並列的にgit cloneした際などgitサーバが負荷的に危なくなってくる。&lt;br&gt;
+なので、予めライブラリとかすべてインストールされたものをターボールなどにまとめておいて、&lt;br&gt;
+それをプルしてくる形式のデプロイについて多くの発表がありました。&lt;/p&gt;
+
+&lt;p&gt;このデプロイ方法、並列で数百MBのファイルをダウンロードしても落ちないストーレジ（ようは&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;のS3）を前提に構築されている感がありました。&lt;br&gt;
+（というかそう言っていた）&lt;/p&gt;
+
+&lt;p&gt;相変わらず&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;はせこいなーと思っています（笑）&lt;/p&gt;
+
+&lt;p&gt;うちの環境では真似するのは難しいなーと思う部分もありますが、&lt;br&gt;
+それ以前にシステムの規模や用途によってデプロイのあり方も多種多様になることを改めて考えさせられました。&lt;br&gt;
+自分の環境にあった最適なデプロイ形態を探す日々がまた始まりそうですが、良いヒントになりそうなのはまちがいなしです。&lt;/p&gt;
+
+&lt;h2&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BC%B0%C7%AF%C1%AB%B5%DC&#34;&gt;式年遷宮&lt;/a&gt;インフラストラクチャ&lt;/h2&gt;
+
+&lt;p&gt;Kenjiさんの&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BC%B0%C7%AF%C1%AB%B5%DC&#34;&gt;式年遷宮&lt;/a&gt;インフラストラクチャ。
+この考え方、ぼくも一度考えたことはありますが、ここまで実践してみた経験談がきけたのは面白かった。&lt;/p&gt;
+
+&lt;p&gt;いざというときに切り替わらない、切り替えられないという問題に対して、&lt;br&gt;
+自動ではないが、「切替訓練」ということで、定期的に&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%BE%E9%C4%B9%B2%BD&#34;&gt;冗長化&lt;/a&gt;の系を切り替えることはしてもいいのかなーと思ったりしています。&lt;/p&gt;
+
+&lt;h2&gt;consulについて&lt;/h2&gt;
+
+&lt;p&gt;実は、上であげた４つのセッション全てで共通していたのが&lt;code&gt;consul&lt;/code&gt;を使っていた。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Fwww.consul.io%2F&#34; title=&#34;Consul by HashiCorp&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;a href=&#34;https://www.consul.io/&#34;&gt;Consul by HashiCorp&lt;/a&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://www.consul.io/&#34;&gt;www.consul.io&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;正直、consulについて、名前くらいしかしらなかったのに、ここまで利用されていたので、時代に乗り遅れている感を感じた。
+でも利用用途をみていくと、iaas環境で力を発揮するっぽいので、概要と用途だけ押さえておくか…といったところ。&lt;br&gt;
+今月中の課題です。&lt;/p&gt;
+
+&lt;h1&gt;発表を聞いてよかった、今の自分に一番必要だったことについて&lt;/h1&gt;
+
+&lt;p&gt;たくさん学びのあったなかで、なんだかんだいっても、koemuさんの発表が今の自分が一番考えていてることであり、&lt;br&gt;
+一番必要なことであったように感じた。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fyapcasia.org%2F2015%2Ftalk%2Fshow%2F53aacc02-faca-11e4-8c2e-8ab37d574c3a&#34; title=&#34;辛いことをやめる！から始まる業務改善とInfrastructure as Code - YAPC::Asia Tokyo 2015&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;a href=&#34;http://yapcasia.org/2015/talk/show/53aacc02-faca-11e4-8c2e-8ab37d574c3a&#34;&gt;辛いことをやめる！から始まる業務改善とInfrastructure as Code - YAPC::Asia Tokyo 2015&lt;/a&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://yapcasia.org/2015/talk/show/53aacc02-faca-11e4-8c2e-8ab37d574c3a&#34;&gt;yapcasia.org&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;実はkoemuさんのブログをたまにみていて、&lt;br&gt;
+いちど話を聞いてみたいなーと思っていた人であったので、とてもいい機会であった。&lt;/p&gt;
+
+&lt;p&gt;特に個人的に響いたのが、次の２つのこと。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CTO（という言い方をしていたが、要はキーパーソン）を味方につける働き方をする&lt;/li&gt;
+&lt;li&gt;ハンズオンを大事にする&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;キーパーソンにやりたいことを伝えて公認とするのは、いまもよくやっていることでぼくも大事にしていること。&lt;br&gt;
+だた、ハンズオンについてはうまくできていない部分も多くあったので見直していきたいポイントでした。&lt;/p&gt;
+
+&lt;p&gt;また、個人的にこの手でよくやっているのが、「スモールステップ展開」。&lt;br&gt;
+一度に、あれもこれも新しいことやっていく、となると、どんなにサポートを厚くしてもなかなか浸透しなかったりしてしまう。&lt;br&gt;
+なので、新しいことやるときはスモールステップでひとつひとつやっていき、文化浸透してから次のことをやるという風にしている。&lt;/p&gt;
+
+&lt;h1&gt;興味をもったことんついて（CONBU）&lt;/h1&gt;
+
+&lt;p&gt;会場のネットワークを作ってくれたのがCONBUという団体でした。
+CONBU自体はソフトウェアデザインで特集されているのを見ていたので知ってはいましたが、ネットワークの品質の良さ、&lt;br&gt;
+そしてリアルタイムでのネットワークの状態を&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/API&#34;&gt;API&lt;/a&gt;提供の便利さなど肌身で感じました。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=http%3A%2F%2Fgihyo.jp%2Fmagazine%2FSD%2Farchive%2F2015%2F201503&#34; title=&#34;Software Design 2015年3月号&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;a href=&#34;http://gihyo.jp/magazine/SD/archive/2015/201503&#34;&gt;Software Design 2015年3月号&lt;/a&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;http://gihyo.jp/magazine/SD/archive/2015/201503&#34;&gt;gihyo.jp&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;こちら、LTで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/WiFi&#34;&gt;WiFi&lt;/a&gt; AP設置の速さを実演したもの。&lt;br&gt;
+でも、ほんとの現場では安全第一でやっていると思うので、その辺も一言いってくれてるとよかったかなと笑&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34; lang=&#34;HASH(0x86c7010)&#34;&gt;
+&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;突然目の前に無線APが生えてきた &lt;a href=&#34;https://twitter.com/hashtag/yapcasia?src=hash&#34;&gt;#yapcasia&lt;/a&gt; &lt;a href=&#34;http://t.co/UWcSzvRv08&#34;&gt;pic.twitter.com/UWcSzvRv08&lt;/a&gt;&lt;/p&gt;— ぷりんたいは求職中です、 (@spacepro_be) &lt;a href=&#34;https://twitter.com/spacepro_be/status/635004222291902464&#34;&gt;August 22, 2015&lt;/a&gt;
+&lt;/blockquote&gt;
+&lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+&lt;h1&gt;最後に&lt;/h1&gt;
+
+&lt;p&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/YAPC&#34;&gt;YAPC&lt;/a&gt;は今年初参加でした。
+学びも多かったけど、それ以上にエンタメとしてとても楽しめました。&lt;/p&gt;
+
+&lt;p&gt;小さいところからでも楽しく学べる作っていきたいですね。&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;本当にスタッフのみなさんお疲れ様でした。&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

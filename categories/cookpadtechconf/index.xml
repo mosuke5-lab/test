@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cookpadtechconf on Goldstine研究所</title>
+    <link>https://blog.mosuke.tech/categories/cookpadtechconf/</link>
+    <description>Recent content in Cookpadtechconf on Goldstine研究所</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 23 Jan 2017 23:37:00 +0900</lastBuildDate>
+    <atom:link href="https://blog.mosuke.tech/categories/cookpadtechconf/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Cookpad TechConf2017にいってきたメモ</title>
+      <link>https://blog.mosuke.tech/entry/2017/01/23/233756/</link>
+      <pubDate>Mon, 23 Jan 2017 23:37:00 +0900</pubDate>
+      
+      <guid>https://blog.mosuke.tech/entry/2017/01/23/233756/</guid>
+      <description>&lt;p&gt;&lt;body&gt;
+&lt;h1&gt;はじめに&lt;/h1&gt;&lt;/p&gt;
+
+&lt;p&gt;CookpadTechConf2017に参加してきた。&lt;br&gt;
+昨年は抽選に外れていけなかったのでよかった。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//hatenablog-parts.com/embed?url=https%3A%2F%2Ftechconf.cookpad.com%2F2017%2F&#34; title=&#34;Cookpad TechConf 2017&#34; class=&#34;embed-card embed-webcard&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; style=&#34;display: block; width: 100%; height: 155px; max-width: 500px; margin: 10px 0px;&#34;&gt;&lt;/iframe&gt;&lt;cite class=&#34;hatena-citation&#34;&gt;&lt;a href=&#34;https://techconf.cookpad.com/2017/&#34;&gt;techconf.cookpad.com&lt;/a&gt;&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;おなじみ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Cookpad&#34;&gt;Cookpad&lt;/a&gt;が年に一回行っているテクノロジーカンファレンス。&lt;br&gt;
+１年間の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%C3%A5%AF%A5%D1%A5%C3%A5%C9&#34;&gt;クックパッド&lt;/a&gt;での取り組みを発表する場。&lt;/p&gt;
+
+&lt;p&gt;完全メモ書きではあるが、ご活用ください。&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%C3%A5%AF%A5%D1%A5%C3%A5%C9&#34;&gt;クックパッド&lt;/a&gt;の取り組み&lt;/h1&gt;
+
+&lt;p&gt;セッションはたくさんあったが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%C3%A5%AF%A5%D1%A5%C3%A5%C9&#34;&gt;クックパッド&lt;/a&gt;が今年１年間で取り組んできた大きな内容は以下３つと感じた。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;海外進出&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B5%A1%B3%A3%B3%D8%BD%AC&#34;&gt;機械学習&lt;/a&gt;への取り組み&lt;/li&gt;
+&lt;li&gt;スケールへの対応&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;海外進出の話は今まではほとんど聞いたことなかったので、本格的に力を入れ始めたというところだろう。&lt;br&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B5%A1%B3%A3%B3%D8%BD%AC&#34;&gt;機械学習&lt;/a&gt;への取り組みは去年からと明確にいっていたのでこちらもそう。&lt;br&gt;
+最後のスケールへの対応は今までもたくさん発表してきたが、そこに大きな波がもう１つやってきた。後ほど。&lt;/p&gt;
+
+&lt;h1&gt;海外進出&lt;/h1&gt;
+
+&lt;h3&gt;Go Global&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;宗教、言語、気候によってサービスを変える
+
+&lt;ul&gt;
+&lt;li&gt;同じ言語圏であっても気候が違えば違う食文化がある&lt;/li&gt;
+&lt;li&gt;例えば&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B9%A5%DA%A5%A4%A5%F3%B8%EC&#34;&gt;スペイン語&lt;/a&gt;圏でも、スペインと南米では全く食文化が異なる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;どうやってサービスを作っていくか
+
+&lt;ul&gt;
+&lt;li&gt;あたりまえ品質&lt;/li&gt;
+&lt;li&gt;グローバリゼーションとローカライゼーション&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;検索の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%ED%A1%BC%A5%AB%A5%E9%A5%A4%A5%BA&#34;&gt;ローカライズ&lt;/a&gt;ははてしなくどろくさい&lt;/li&gt;
+&lt;li&gt;翻訳もとんでもなく大変
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Amazon&#34;&gt;Amazon&lt;/a&gt;の例だが、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Kindle&#34;&gt;Kindle&lt;/a&gt;で&#34;OR&#34;で誤訳があった
+
+&lt;ul&gt;
+&lt;li&gt;「あるいは」のorなのか、「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AA%A5%EC%A5%B4%A5%F3%BD%A3&#34;&gt;オレゴン州&lt;/a&gt;」のorなのか&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;プレミアムという言葉も実は難しい
+
+&lt;ul&gt;
+&lt;li&gt;プレミアムというのは地方によってはプレミアムでないものを差別する用語として使われることもある&lt;/li&gt;
+&lt;li&gt;プライムやプレミアム、エクストリームなど使い分ける&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;国際チームは国籍がみんなばらばら
+
+&lt;ul&gt;
+&lt;li&gt;それぞれの考え方も文化も異なる&lt;/li&gt;
+&lt;li&gt;最終的なアウトプットだけ共有しあとはまかせるというスタイルをとっている&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;Global Infrastracture&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;多くのリージョンへ展開している
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://cookpad.com/us/regions&#34;&gt;Choose your Country - Cookpad&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;でも中国は進出してない
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%C3%A5%AF%A5%D1%A5%C3%A5%C9&#34;&gt;クックパッド&lt;/a&gt;は&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;絶対&lt;/li&gt;
+&lt;li&gt;中国市場ではやっぱり厳しさがあるようにみえる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;グローバルアプリはス&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%E9%A5%C3%A5%C1&#34;&gt;クラッチ&lt;/a&gt;で新規開発
+
+&lt;ul&gt;
+&lt;li&gt;いまは普通の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rails&#34;&gt;Rails&lt;/a&gt;アプリ&lt;/li&gt;
+&lt;li&gt;日本の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Cookpad&#34;&gt;Cookpad&lt;/a&gt;とはUIも全く異なる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;グローバルのインフラについて
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;code&gt;us-east-1&lt;/code&gt;のサーバを利用&lt;/li&gt;
+&lt;li&gt;データベースはAurora for &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/MySQL&#34;&gt;MySQL&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;Elasticache利用&lt;/li&gt;
+&lt;li&gt;nginx, &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/unicorn&#34;&gt;unicorn&lt;/a&gt;の構成&lt;/li&gt;
+&lt;li&gt;CDNはFastly&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;地域によって&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%C8%A5%E9%A5%D5%A5%A3%A5%C3%A5%AF&#34;&gt;トラフィック&lt;/a&gt;ピークが全く異なる
+
+&lt;ul&gt;
+&lt;li&gt;日本だとバレンタインシーズン&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A4%A5%B9%A5%E9%A5%E0&#34;&gt;イスラム&lt;/a&gt;では&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%E9%A5%DE%A5%C0&#34;&gt;ラマダ&lt;/a&gt;ンと呼ばれるシーズンがある
+
+&lt;ul&gt;
+&lt;li&gt;しばらく断食していたその後に食事を楽しむ時期&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://speakerdeck.com/rejasupotaro/go-global-number-cookpadtechconf-2017&#34;&gt;Go Global - #CookpadTechconf 2017 // Speaker Deck&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://speakerdeck.com/sorah/building-infrastructure-for-our-global-service&#34;&gt;Building infrastructure for our global service // Speaker Deck&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%B5%A1%B3%A3%B3%D8%BD%AC&#34;&gt;機械学習&lt;/a&gt;へのとりくみ&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;2016/07/01 &lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AF%A5%C3%A5%AF%A5%D1%A5%C3%A5%C9&#34;&gt;クックパッド&lt;/a&gt;研究開発部設立&lt;/li&gt;
+&lt;li&gt;2016/10/05 アプリ「料理きろく」公開
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://itunes.apple.com/jp/app/wu-liaode-yin-le-dong-hua/id931374280?mt=8&amp;amp;ign-mpt=uo%3D4&#34;&gt;お料理アルバム byクックパッド ~料理写真とレシピをプライベート記録~を App Store で&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/AWS&#34;&gt;AWS&lt;/a&gt;の&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/GPU&#34;&gt;GPU&lt;/a&gt;&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%B9%A5%BF%A5%F3%A5%B9&#34;&gt;インスタンス&lt;/a&gt;を使って研究環境を構築
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Nvidia&#34;&gt;Nvidia&lt;/a&gt;ドライバーのインストールからそのセットアップまでハマるポイント多すぎる&lt;/li&gt;
+&lt;li&gt;packerを使って研究用AMIを用意するなどしている&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;正直まだまだこれからの状態&lt;/li&gt;
+&lt;li&gt;現状は、料理か否かの判定のみに注力&lt;/li&gt;
+&lt;li&gt;料理の種類の判定などはこれから頑張りたい&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://speakerdeck.com/ayemos/real-world-machine-learning&#34;&gt;Real World Machine Learning // Speaker Deck&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;スケーラビリティへの対応&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Rails&#34;&gt;Rails&lt;/a&gt;アプリでは世界最大規模
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%E2%A5%CE%A5%EA%A5%B9&#34;&gt;モノリス&lt;/a&gt;ティックに構築して巨大化しすぎた。。。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;サービスの分割化、マイクロサービス化を促進&lt;/li&gt;
+&lt;li&gt;マイクロサービス化、それゆえにおこる問題が起きてくる
+
+&lt;ul&gt;
+&lt;li&gt;サービス間の連携がとても重要に&lt;/li&gt;
+&lt;li&gt;次の仕組みを使って連携を強化
+
+&lt;ul&gt;
+&lt;li&gt;障害を制御する =&amp;gt; Expeditor&lt;/li&gt;
+&lt;li&gt;障害を予防する =&amp;gt; Pact&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Expeditor（内製ソフトウェア）
+
+&lt;ul&gt;
+&lt;li&gt;1)サーキットブレイカー&lt;/li&gt;
+&lt;li&gt;2)並列処理&lt;/li&gt;
+&lt;li&gt;3)リトライ処理&lt;/li&gt;
+&lt;li&gt;もともとは並列処理のために作ったがサーキットブレイカーの機能が重宝&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/netflix&#34;&gt;netflix&lt;/a&gt;の&lt;code&gt;Netflix/Hystrix&lt;/code&gt;にインスパイア&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Pact (&lt;a href=&#34;https://docs.pact.io/&#34;&gt;https://docs.pact.io/&lt;/a&gt;)
+
+&lt;ul&gt;
+&lt;li&gt;サービス間の連携テストを行うソフトウェア&lt;/li&gt;
+&lt;li&gt;これは外部開発のソフトウェアだが周辺ツールは内製&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;マイクロサービス化したのでDockerでサービスのポータビリティも上げた
+
+&lt;ul&gt;
+&lt;li&gt;Dockerをより良く使うためにHakoというDockerデプロイツールも開発&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;その他、スケールに対応するために幾つかのソフトウェアを内製
+
+&lt;ul&gt;
+&lt;li&gt;Kuroko2&lt;/li&gt;
+&lt;li&gt;barbeque&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;これらの内製ソフトウェアはすべて&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;で書いている
+
+&lt;ul&gt;
+&lt;li&gt;なぜ&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;か？&lt;/li&gt;
+&lt;li&gt;好きというのもあるが、統一することで品質やスキルの担保ができる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;でも&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;には速度の問題などあることは承知。。。
+
+&lt;ul&gt;
+&lt;li&gt;そこで、&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/Ruby&#34;&gt;Ruby&lt;/a&gt;自体の速度改善に貢献しようとした&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://info.cookpad.com/pr/news/press_2017_0123&#34;&gt;クックパッド、フルタイムRubyコミッター・笹田耕一氏を採用 Rubyの改善・開発とサービスのユーザー体験向上を加速 | クックパッド株式会社&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;「&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%AA%A1%BC%A5%D7%A5%F3%A5%BD%A1%BC%A5%B9&#34;&gt;オープンソース&lt;/a&gt;へのタダ乗りはしない。コミュニティへの貢献がビジネスも成長させる」&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;すべてのデータをRedshiftに移行
+
+&lt;ul&gt;
+&lt;li&gt;今まで&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%B5%A1%BC%A5%C9%A5%D1%A1%BC%A5%C6%A5%A3&#34;&gt;サードパーティ&lt;/a&gt;のDWHも利用していたがRedshiftに移行&lt;/li&gt;
+&lt;li&gt;
+&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A2%A5%AF%A5%BB%A5%B9%A5%ED%A5%B0&#34;&gt;アクセスログ&lt;/a&gt;もユーザデータもすべて&lt;/li&gt;
+&lt;li&gt;ログとDBデータがJoinできる素晴らしさ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;スポット&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%B9%A5%BF%A5%F3%A5%B9&#34;&gt;インスタンス&lt;/a&gt;の利用で&lt;a class=&#34;keyword&#34; href=&#34;http://d.hatena.ne.jp/keyword/API&#34;&gt;API&lt;/a&gt;サーバのコストを60％下げた&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;p&gt;&lt;a href=&#34;https://speakerdeck.com/mirakui/cookpad-under-a-microscope&#34;&gt;Cookpad Under a Microscope // Speaker Deck&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://speakerdeck.com/yoshiori/cookpad-awakens&#34;&gt;Cookpad awakens // Speaker Deck&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://speakerdeck.com/ryotarai/spot-instances-in-cookpad-number-cookpadtechconf-2017&#34;&gt;Spot Instances in Cookpad #CookpadTechConf 2017 // Speaker Deck&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
